@@ -118,7 +118,7 @@ A prompt that starts a fresh session on this, verbatim:
 | [ ] A40 | **un-maximizing puts the window back at the right size but not where it was** - a window moved to 506,286 and then maximized comes back at 680x270 at **40,38**, a fixed corner rather than the remembered spot. Measured on the *pre-change* build too, so it is older than the drag work, and the user has not reported it as such ("双击标题栏就是最大化，再次双击恢复之前的大小" was about the size, which is exact) | correctness | M |
 | ~~A41~~ | ~~single-window **full screen** grows nothing, often will not restore, and takes the Dock and menu bar with it (they come back only after a lock and unlock) - "本来应该跟最大化和退出最大化一样，能变大和恢复"~~ **fixed 2026-10-04**: macOS reports a full screen window as **maximized** as well, so A38's fill ran a moment after the Space was entered and **resized a full screen window** - and a window whose frame is changed leaves its Space without giving it back, which is the Dock the user had to lock and unlock to get back. The fill also shrank the client's window from the full screen area (1512x945 -> 1512x922) and the zoom then flipped back, so the restore ran against the wrong remembered size. The frame is now the platform's for as long as the window is full screen (`platformOwnsFrame`), the zoom report is ignored there, and the client's window grows and comes back through the ordinary path. Verified by script in both modes, with a client that resizes itself while full screen, and with the user's own ⌃⌘F exit. See the entry | correctness | L |
 | ~~A42~~ | ~~**the platform pointer is not handed back after leaving full screen**: "全屏后退出后，这时候鼠标会消失，拖回到x服务窗口恢复" - the cursor was gone over the desktop, came back over the window, and stayed right on the next trip out~~ **fixed 2026-10-04**: whether the pointer is over the window - which is what decides whether the platform's arrow is hidden - came only from JavaFX's enter and leave events, and a window that **moves or changes size under a pointer that does not move** is exactly what those events miss: leaving full screen shrank the window away from a stationary pointer, no `MOUSE_EXITED` arrived, and the arrow stayed hidden globally. The answer is now taken from where the platform says the pointer is, and re-decided whenever the window's geometry changes. Verified by log in the direction that matters - the decision is made **600 ms before** the event that used to be the only trigger (and is made at all when that event is suppressed). The measurement traps are in the entry: `screencapture -C` draws a hidden cursor and `CGCursorIsVisible()` always answers "visible" | correctness | M |
-| ~~A51~~ | ~~**the VNC password as a value** (the user's report: "密码明明配置为123456了，但是finder连接却失败了")~~ **fixed 2026-10-04**: the value form itself was fine - what Finder could not do was finish the *handshake*, and then the picture and the input each had a bug of their own. `--vnc-password VALUE` is in (A52's entry has the rest); the three real bugs were the **RFB 3.3 SecurityResult** Apple waits for, the **ZRPE CPIXEL** for a client that asks for depth 32, and **input queued behind an outstanding update request** - each measured against Finder's own Screen Sharing and pinned by a test | correctness | M |
+| ~~A51~~ | ~~**the VNC password as a value** (the user's report: "密码明明配置为<external password>了，但是finder连接却失败了")~~ **fixed 2026-10-04**: the value form itself was fine - what Finder could not do was finish the *handshake*, and then the picture and the input each had a bug of their own. `--vnc-password VALUE` is in (A52's entry has the rest); the three real bugs were the **RFB 3.3 SecurityResult** Apple waits for, the **ZRPE CPIXEL** for a client that asks for depth 32, and **input queued behind an outstanding update request** - each measured against Finder's own Screen Sharing and pinned by a test | correctness | M |
 | ~~A52~~ | ~~**the whole option surface, verified on a real machine** ("各种配置项都验证下…要完整验证所有配置项看下是否都生效")~~ **run 2026-10-04**: every option in `ServerOptions` was started for real and probed with a real client (the VM over TCP) or the host's own window list / a real RFB handshake. **Two bugs fixed**: `--title` was read by nobody (every backend got `DEFAULT_TITLE`) and **`--max-clients` had no reader at all** (a `--max-clients 2` server served four connections when the probe kept them open). One difference recorded: the depth in `-screen 0 WxHxD` is accepted for compatibility and ignored, and the server now says so at startup | correctness | M |
 | ~~A53~~ | ~~**EasyShell and termora, every backend × both window modes** ("各种backend都测试下，各种窗口模式也都是测试下…窗口弹窗，输入，右键功能，右键菜单")~~ **run 2026-10-06, its findings fixed 2026-10-08 and 2026-10-09**: everything renders and responds in javafx/swing/headless single-window, javafx/swing per-client and vnc, and the **single-window framebuffer is byte-identical across all four backends**. The finding was the user's **"中文输入实际上都是英文字符"** - three bugs in a row: the scene was never an input method client (the focus owner has to carry the requests *and* the handler), a focus that never changes is never re-decided, and the composed character was claimed on **keycode 255**, which a real toolkit cannot resolve. Then two more, from the follow-up: the **pre-edit is now typed into the field and taken back when it changes** (`ni hao` while 你好 is being typed; `a a a a a` then Return commits `aaaaa`), and **each composed character gets a keycode of its own**, because one keycode re-assigned per character is how 你好 reached a field as 好好. Verified with the Mac's Pinyin source into a forwarded EasyShell text field. Three application-side behaviours (a synthetic click on termora's menu items, on EasyShell's title-bar items, termora's empty Quick Connect) were reproduced **identically on Xvfb** and are not this server's | correctness | M |
 | ~~A54~~ | ~~**EasyShell is clipped on the left and the right without a suitable `--geometry`** - "如果不指定合适的geometry，152主机上的easyshell明显左右都被裁剪掉一小部分显示，xclock、xeyes却正常"~~ **fixed 2026-10-13**: the client is not the screen's business to crop. EasyShell's own window is **1300x700** and it centres itself on the screen it was told about, so on the default **1280x800** screen it lands at **`-10+33`** - ten pixels off each side - and the frame showed the 1280 columns that exist. xclock and xeyes fit, which is the whole of why they were never seen clipped. `XServer.fitContentOnScreen` now runs the rule C1 set for a drag - **the screen follows the window** - on the moment a window is *mapped*: a window that starts off the left or the top is moved onto the screen (pixels at a negative position do not exist, so no framebuffer size can show them; the client is told with an ordinary ConfigureNotify), and the screen grows to the far edge of what the client has mapped, up to `--max-screen`. EasyShell then sits at `+0+33` on a 1300x800 screen, whole, with no geometry asked for | correctness | M |
@@ -165,7 +165,7 @@ candidates.
 
 Every item below ends with a **Verify** step, and most of them need the same small tools and the same
 two-machine test bed. **The kit is now in this repository and complete**: the tools live in
-`src/test/java/io/github/oyzh1994/xserver/tools/` (so `mvn -o test-compile` compiles them), the
+`src/test/java/cn/oyzh/fx/xserver/tools/` (so `mvn -o test-compile` compiles them), the
 two-machine harness is `tools/vm.sh` and `tools/bed.sh`, the reference display is `tools/xvfb.sh`, and
 `tools/compare.sh` runs a whole comparison as one command. `tools/README.md` says what each tool is
 for and how to run it, which tools were **lost** when `/tmp` was cleaned (and which of those came back
@@ -197,7 +197,7 @@ a reply that is not the one being waited for is now an error instead of a wrong 
 test that asked for an empty range once came back with the previous query's three events.
 
 **Written 2026-09-25** (the rest of the item), all in
-`src/test/java/io/github/oyzh1994/xserver/tools/`:
+`src/test/java/cn/oyzh/fx/xserver/tools/`:
 
 - **`Keys`** - types a string through XTEST, resolving each character against `GetKeyboardMapping`
   rather than carrying a layout; a character no key carries is reported and skipped. Measured against
@@ -269,12 +269,12 @@ The kit, and what each piece is for:
 The test bed (as of 2026-09-24):
 
 - **The addresses changed on 2026-10-03**: the bed VM is now `192.168.22.152` (was `.147`) and the
-  user's own PC is now `192.168.22.151` (was `.150`). The password is still `user@147` - the string
+  user's own PC is now `192.168.22.151` (was `.150`). The password is still `<password from ~/.fx-xserver-vm-pass>` - the string
   is historical, not the address. Everything below, and every tool default, says the new numbers.
   **The VMs are the user's to start** - do not boot them from here (asked 2026-10-03).
 - The **server runs on the Mac**; clients run on the **Linux VM** at `192.168.22.152` and connect over
   TCP to `192.168.22.1:<display>` - or, for the reference, to the VM's own `Xvfb :98`.
-- `ssh root@192.168.22.152`, password `user@147`. **`expect` hangs on the password prompt in this
+- `ssh root@192.168.22.152`, password `<password from ~/.fx-xserver-vm-pass>`. **`expect` hangs on the password prompt in this
   environment; use `SSH_ASKPASS`**:
   `SSH_ASKPASS=<script printing the password> SSH_ASKPASS_REQUIRE=force ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no …`
 - Long-running commands must be detached (`setsid nohup … < /dev/null &`) or `ssh` kills them when the
@@ -291,8 +291,8 @@ The test bed (as of 2026-09-24):
 Server-side diagnostics that cost nothing and answer most questions:
 
 ```
---log-requests                              every request, at DEBUG, into the logback file
--Dxserver.dumpFrame=/tmp/d -Dxserver.dumpFrames=3000
+--log-requests                              every request, at DEBUG, through JulLog
+-Dfx-xserver.dumpFrame=/tmp/d -Dfx-xserver.dumpFrames=3000
                                             one frame a second: d-buffer-N.png (framebuffer),
                                             d-image-N.png (what JavaFX was handed), d-scene-N.png
                                             (what the window shows - the only place the sprite is)
@@ -1978,7 +1978,7 @@ the name it prints in `route()`, which extension requests never reach. Every ref
 was therefore reported under somebody else's name, and the only way to tell which was to read the
 message. `dispatchExtension` (and `dispatch`, for a request that does not survive decoding) now set it
 too, and `client/RequestLogTest` pins both halves - the refused request named, and the request before
-it *not* named - by reading the log through a logback appender. It fails without the change, on the
+it *not* named - by reading the log through a JUL handler. It fails without the change, on the
 line above, verbatim.
 
 **And the same generator arithmetic is in the requests this extension refuses on purpose**, which is
@@ -3001,7 +3001,7 @@ texture content bounds (contentWidth=1300, contentHeight=800)
         at com.sun.prism.impl.BaseResourceFactory.getCachedTexture(BaseResourceFactory.java:248)
         at com.sun.javafx.sg.prism.NGCanvas.handleRenderOp(NGCanvas.java:1355)
         ...
-        at io.github.oyzh1994.display.cn.oyzh.fx.xserver.JavaFxBackend.openWindow(JavaFxBackend.java:689)
+        at cn.oyzh.fx.xserver.display.JavaFxBackend.openWindow(JavaFxBackend.java:689)
 ```
 
 Three things in it say what it is before any experiment does. The destination region **runs past the
@@ -3955,7 +3955,7 @@ non-follower at once; it needs the client to say what it wants, and the protocol
 
 **What it was.** Every session opened the host window at the platform's default position.
 
-**What changed.** The position is remembered per client in `~/.xserver/host-windows.properties` and
+**What changed.** The position is remembered per client in `~/.fx-xserver/host-windows.properties` and
 handed back to the backend when the window opens, clamped to the part of the display windows may
 occupy. `DisplayBackend` grew `setWindowPosition` and an `InputSink.windowMoved` report; the JavaFX
 and Swing backends implement both, and the record of a position is written from the display tick
@@ -5116,7 +5116,7 @@ replace it.
 **Done 2026-09-26: the font path is read.** `resource/PcfFont` reads a PCF file (plain or gzipped)
 into the same `BitmapFont.Font` the generated tables carry, so nothing downstream changed, and
 `resource/FontPath` does the standard resolution - alias to full name, full name to file - with
-`~/.xserver/fonts` on the default path. Measured with `tools/FontProbe` against Xvfb for `8x13`
+`~/.fx-xserver/fonts` on the default path. Measured with `tools/FontProbe` against Xvfb for `8x13`
 (a font with no built-in table, read from `8x13-ISO8859-1.pcf.gz`): **identical line for line** -
 the header, the bounds, all 256 character metrics, the properties, `QueryTextExtents` and the pixels
 of a drawn string - and the six built-in fonts are unchanged and still identical. `mvn test`
@@ -5157,7 +5157,7 @@ own implementation - and the shape it has to fit is already here: a reader only 
   to an XLFD, `<dir>/fonts.dir` maps an XLFD to a file name, and `SetFontPath` names the directories.
   The VM's `/usr/share/fonts/X11/misc` is a working example of all three, and **the Mac has no PCF
   fonts at all** - so a live check has to copy a few (and their `fonts.dir`) somewhere the server can
-  read, `~/.xserver/fonts` being the directory this project already keeps its own files in.
+  read, `~/.fx-xserver/fonts` being the directory this project already keeps its own files in.
 - **The verification is already built**: `tools/FontProbe` compares `QueryFont`, `QueryTextExtents` and
   the *pixels* of a string against a reference server, and a font with no built-in table - `8x13` is
   one - would exercise the new path end to end the moment it resolves.
@@ -7286,7 +7286,7 @@ without a single crash on the server.
 **The report, in three acts**, each verified against **macOS's own Screen Sharing** (Finder -> `vnc://`,
 driven here with the bed's host-input tools, which is what makes a real client's behaviour measurable):
 
-1. "密码明明配置为123456了，但是finder连接却失败了" - the log said `gave the wrong password`, but the
+1. "密码明明配置为<external password>了，但是finder连接却失败了" - the log said `gave the wrong password`, but the
    password was right.
 2. After that was fixed: "画面异常，花屏等".
 3. And then: "无法正常点击vnc页面，无任何反应".

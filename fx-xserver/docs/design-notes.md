@@ -1049,7 +1049,7 @@ focus moves - `InputState.setInputFocus` and the revert when the focused window 
   deliberate and measured.
 
 The rules were taken from a reference server, not from the specification's prose:
-`src/test/java/io/github/oyzh1994/xserver/tools/FocusProbe.java` drives the same window tree and the
+`src/test/java/cn/oyzh/fx/xserver/tools/FocusProbe.java` drives the same window tree and the
 same requests against Xvfb and against this server, prints every focus event with its detail and mode
 and the server's own answer to `GetInputFocus`, and the two outputs are diffed. That is what settled
 the things prose does not: which windows are told, in what order, and with which detail. **Its default
@@ -1585,7 +1585,7 @@ else, which is what the protocol says and what a reference server does.
 
 A user who arranges their forwarded windows once expects them to come back there, and nothing in the X
 protocol carries that: the position belongs to the host window, which is the server's own. So it is
-remembered between runs, in `~/.xserver/host-windows.properties` - the first state this server keeps
+remembered between runs, in `~/.fx-xserver/host-windows.properties` - the first state this server keeps
 after it exits, and a plain properties file so that a user can read it and deleting it costs nothing
 but the remembered positions.
 
@@ -1808,7 +1808,7 @@ architecture can avoid:
 The built-in tables answer the names a client is most likely to ask for, and a **font path** answers
 every other name an X server would: `SetFontPath` names the directories, `<dir>/fonts.alias` maps a
 short name to a full one, `<dir>/fonts.dir` maps that to a file, and the file is read
-(`resource/PcfFont`, `resource/FontPath`). `~/.xserver/fonts` is on the default path, so a font
+(`resource/PcfFont`, `resource/FontPath`). `~/.fx-xserver/fonts` is on the default path, so a font
 dropped there is served without a flag.
 
 **The file format was read off `libXfont`'s `src/bitmap/pcfread.c` rather than guessed**, and four
@@ -1922,17 +1922,17 @@ opens a host window**: every server a test starts is given `--backend headless`,
 touches a toolkit (`JavaFxBackendTest`) skips itself where a window cannot be opened. That was not
 true until E2 - `HighDpiTest` took the default backend, which opens a real window inside the test JVM,
 and a machine with no display parked the toolkit's startup for ever, so the suite hung rather than
-failed. On the author's machine Maven is at `~/Documents/Tools/apache-maven-3.9.11/bin` and is not on
-PATH; `ci.sh` is the suite as a continuous integration run does it, with that path built in.
+failed. Maven is resolved from `MVN` or PATH; `ci.sh` is the suite as a continuous integration run
+does it without depending on one developer's installation path.
 
 End-to-end checks that do need one:
 
 - **The server's own frame dumps are the cheapest way to see what it drew**: run with
-  `-Dxserver.dumpFrame=<prefix> -Dxserver.dumpFrames=N` and read `<prefix>-buffer/-image/-scene-N.png`.
+  `-Dfx-xserver.dumpFrame=<prefix> -Dfx-xserver.dumpFrames=N` and read `<prefix>-buffer/-image/-scene-N.png`.
   They need no screen-recording permission, and the `-scene` one is the only place the pointer sprite
   appears.
 - A **bare-protocol client** drives the server without Xlib being installed: see
-  `src/test/java/io/github/oyzh1994/xserver/test/RawXClient.java`, which handshakes, creates windows,
+  `src/test/java/cn/oyzh/fx/xserver/test/RawXClient.java`, which handshakes, creates windows,
   sends GC-filled rectangles, reads `GetImage`, and moves the pointer through XTEST.
 - **A regression test is only worth writing once it has been seen to fail without the fix.** Several
   of the tests here were rewritten after the first version passed against the bug (`pointerKnown`, the

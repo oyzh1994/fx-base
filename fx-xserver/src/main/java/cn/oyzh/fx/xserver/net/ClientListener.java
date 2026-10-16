@@ -2,8 +2,7 @@ package cn.oyzh.fx.xserver.net;
 
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.client.ClientConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -27,7 +26,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class ClientListener {
 
-    private static final Logger log = LoggerFactory.getLogger(ClientListener.class);
 
     public static final Path UNIX_SOCKET_DIR = Path.of("/tmp/.X11-unix");
 
@@ -53,13 +51,13 @@ public final class ClientListener {
             tcp.bind(new InetSocketAddress(address, server.options().tcpPort()), 64);
             tcp.configureBlocking(true);
             channels.add(tcp);
-            log.info("listening on TCP port {}", server.options().tcpPort());
+            JulLog.info("listening on TCP port {}", server.options().tcpPort());
         }
         if (server.options().unixSocket()) {
             try {
                 startUnixSocket(display);
             } catch (IOException | UnsupportedOperationException e) {
-                log.info("unix domain socket unavailable: {}", e.getMessage());
+                JulLog.info("unix domain socket unavailable: {}", e.getMessage());
             }
         }
         if (channels.isEmpty()) {
@@ -94,7 +92,7 @@ public final class ClientListener {
         channels.add(unix);
         socketPaths.add(path);
         unixSocketPath = path;
-        log.info("listening on unix socket {}", path);
+        JulLog.info("listening on unix socket {}", path);
     }
 
     private void acceptLoop(ServerSocketChannel channel) {
@@ -111,7 +109,7 @@ public final class ClientListener {
                 return;
             } catch (IOException e) {
                 if (running.get()) {
-                    log.warn("accept failed: {}", e.getMessage());
+                    JulLog.warn("accept failed: {}", e.getMessage());
                 }
             }
         }
@@ -122,7 +120,7 @@ public final class ClientListener {
         if (index < 0) {
             // Name the limit, because the one that is usually reached is the caller's: the default
             // 256 is the index space, and a smaller --max-clients is a choice somebody made.
-            log.warn("refusing connection: {} clients are already connected (--max-clients)",
+            JulLog.warn("refusing connection: {} clients are already connected (--max-clients)",
                     server.options().maxClients());
             try {
                 channel.close();
@@ -142,7 +140,7 @@ public final class ClientListener {
             thread.setDaemon(true);
             thread.start();
         } catch (IOException e) {
-            log.warn("failed to set up client: {}", e.getMessage());
+            JulLog.warn("failed to set up client: {}", e.getMessage());
             server.releaseClientIndex(index);
             try {
                 channel.close();
@@ -166,7 +164,7 @@ public final class ClientListener {
             try {
                 Files.deleteIfExists(path);
             } catch (IOException e) {
-                log.debug("could not remove {}: {}", path, e.getMessage());
+                JulLog.debug("could not remove {}: {}", path, e.getMessage());
             }
         }
         socketPaths.clear();

@@ -6,8 +6,7 @@ import cn.oyzh.fx.xserver.display.DisplayBackend;
 import cn.oyzh.fx.xserver.display.Screen;
 import cn.oyzh.fx.xserver.draw.Framebuffer;
 import cn.oyzh.fx.xserver.input.Keymap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -44,7 +43,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class SwingBackend implements DisplayBackend {
 
-    private static final Logger log = LoggerFactory.getLogger(SwingBackend.class);
 
     private final String title;
     private volatile boolean closed;
@@ -80,7 +78,7 @@ public final class SwingBackend implements DisplayBackend {
         this.input = input;
         Framebuffer framebuffer = screen.framebuffer();
         runOnEdtAndWait(() -> openWindow(framebuffer));
-        log.info("swing window {}x{} for display :{}", framebuffer.width(), framebuffer.height(),
+        JulLog.info("swing window {}x{} for display :{}", framebuffer.width(), framebuffer.height(),
                 displayNumber);
     }
 
@@ -334,7 +332,7 @@ public final class SwingBackend implements DisplayBackend {
                             clamp(at.y + viewport.y, screenHeight));
                     return true;
                 } catch (Exception e) {
-                    log.debug("a drop the host offered could not be read: {}", e.toString());
+                    JulLog.debug("a drop the host offered could not be read: {}", e.toString());
                     return false;
                 }
             }

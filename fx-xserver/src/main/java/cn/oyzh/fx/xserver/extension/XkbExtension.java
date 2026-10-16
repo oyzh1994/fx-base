@@ -16,8 +16,7 @@ import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.input.InputState;
 import cn.oyzh.fx.xserver.input.Keymap;
 import cn.oyzh.fx.xserver.input.XkbMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.util.List;
@@ -78,7 +77,6 @@ import java.util.List;
  */
 public final class XkbExtension implements Extension {
 
-    private static final Logger log = LoggerFactory.getLogger(XkbExtension.class);
 
     /** Xlib speaks 1.0 to a server that has the extension and 1.0 is all it needs of it. */
     private static final short MAJOR_VERSION = 1;
@@ -310,7 +308,7 @@ public final class XkbExtension implements Extension {
             input.setRepeatRate(request.getRepeatDelay() & 0xFFFF,
                     request.getRepeatInterval() & 0xFFFF);
         }
-        log.debug("{} set XKB controls: enabledControls 0x{} (repeat {}), changeControls 0x{},"
+        JulLog.debug("{} set XKB controls: enabledControls 0x{} (repeat {}), changeControls 0x{},"
                         + " repeat delay {} interval {}; the per-key bitmap and every other control"
                         + " are ignored, as the reference ignores them",
                 client, Integer.toHexString(request.getEnabledControls()),
@@ -343,7 +341,7 @@ public final class XkbExtension implements Extension {
      * not applied either. Group locking has nothing to lock: there is one layout.
      */
     private void latchLockState(ClientConnection client, LatchLockState request) {
-        log.debug("{} asked to latch modifiers (locks 0x{} latches 0x{} group {}): there is one"
+        JulLog.debug("{} asked to latch modifiers (locks 0x{} latches 0x{} group {}): there is one"
                         + " keyboard and it is the host's", client,
                 Integer.toHexString(request.getModLocks() & 0xFF),
                 Integer.toHexString(request.getAffectModLatches() & 0xFF),
@@ -369,7 +367,7 @@ public final class XkbExtension implements Extension {
      * per client.
      */
     private void perClientFlags(ClientConnection client, PerClientFlags request) {
-        log.debug("{} asked for per-client XKB flags 0x{}: none are supported", client,
+        JulLog.debug("{} asked for per-client XKB flags 0x{}: none are supported", client,
                 Integer.toHexString(request.getChange()));
         byte[] bytes = new byte[32];
         bytes[0] = 1;
@@ -419,13 +417,13 @@ public final class XkbExtension implements Extension {
             symbolsName = null;
             server.broadcastMappingNotify((byte) 0, (byte) first, (byte) changed);
         }
-        log.info("{} set the keymap through XKB: {} keycode(s) of keysyms applied, the types,"
+        JulLog.info("{} set the keymap through XKB: {} keycode(s) of keysyms applied, the types,"
                 + " actions, behaviours and modifier map dropped", client, changed);
     }
 
     /** A request accepted with nothing done about it, which for these is the honest answer. */
     private void ignored(ClientConnection client, Ignored request) {
-        log.debug("{} sent XKEYBOARD request {}: accepted, nothing here to set", client,
+        JulLog.debug("{} sent XKEYBOARD request {}: accepted, nothing here to set", client,
                 request.minor());
     }
 
@@ -470,7 +468,7 @@ public final class XkbExtension implements Extension {
             server.broadcastMappingNotify((byte) 0, Keymap.MIN_KEYCODE,
                     (byte) (Keymap.MAX_KEYCODE - Keymap.MIN_KEYCODE + 1));
         }
-        log.debug("{} asked this server to load a keymap by name ({}): {}", client,
+        JulLog.debug("{} asked this server to load a keymap by name ({}): {}", client,
                 request.symbols(), loaded ? "loaded " + name : "not a layout this server has");
         byte[] map = loaded
                 ? XkbMap.getMapReply(XkbMap.ALL_CLIENT_INFO_MASK, 0, 0, 0, 0, 0, 0,

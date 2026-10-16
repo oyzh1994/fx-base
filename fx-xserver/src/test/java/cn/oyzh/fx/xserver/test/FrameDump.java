@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.test;
 
+import cn.oyzh.common.log.JulLevel;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.xserver.ServerOptions;
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.draw.Framebuffer;
@@ -33,9 +35,7 @@ public final class FrameDump {
         if (logRequests) {
             // The request log is debug level, so the flag turns it on rather than leaving it to the
             // logging configuration, exactly as Main does.
-            ((ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
-                    .getLogger("cn.oyzh.fx.xserver"))
-                    .setLevel(ch.qos.logback.classic.Level.DEBUG);
+            JulLog.setLevel(JulLevel.DEBUG);
         }
         XServer server = new XServer(options);
         server.start();

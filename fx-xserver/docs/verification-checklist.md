@@ -18,11 +18,11 @@ Tick as you go. A line that fails is worth a `docs/backlog.md` entry of its own;
 | 0.1 | `mvn -o test` on this machine | Maven | **456 tests, 0 failures, 0 errors, 0 skipped** (a desktop run should skip nothing) |
 | 0.2 | `MVN_OPTS=-Djava.awt.headless=true ci.sh` | `ci.sh` | 456 tests, **2 skipped** (exactly `JavaFxBackendTest`'s two toolkit cases) and `BUILD SUCCESS`; it prints the surefire report path |
 | 0.3 | `tools/xvfb.sh start` | the reference display | Xvfb `:98` and x11vnc up, `6098` and `5900` listening. `tools/xvfb.sh secure` additionally starts `:97` **with access control**, which §3.14 needs |
-| 0.4 | start this server on `:61`, `--single-window --no-clipboard --no-tray --no-focus-on-click` (the last one for a *comparison* run: focusing on a click is on by default and a reference does not do it) | `java -cp target/classes:$(cat target/tools-cp.txt) io.github.oyzh1994.xserver.Main --display 61 --geometry 1300x800 --single-window --no-clipboard --no-tray --no-focus-on-click` | it says `display :61 ready` |
+| 0.4 | start this server on `:61`, `--single-window --no-clipboard --no-tray --no-focus-on-click` (the last one for a *comparison* run: focusing on a click is on by default and a reference does not do it) | `java -cp target/classes:$(cat target/tools-cp.txt) cn.oyzh.fx.xserver.Main --display 61 --geometry 1300x800 --single-window --no-clipboard --no-tray --no-focus-on-click` | it says `display :61 ready` |
 | 0.5 | `tools/sweep.sh` | the probe sweep | **19 identical of 28, and the 9 differences are exactly the documented ones** (the list in `tools/README.md`) - a *tenth* difference is a finding (run it twice before believing a single run: two probes sit on timing, and the diff's id mapping is a run's own) |
 | 0.7 | **before comparing two servers, put both in the same state** | the probes, and the reason below | a run compared against a reference that still carries the *previous* run's state reports differences that are not differences - `setxkbmap`'s layout, `xset r rate`, the parked pointer. Restart both, or set both to the same thing, before believing a diff |
 
-| 0.6 | stop everything: `pkill -f 'io.github.oyzh1994.xserver.Main'`, `tools/xvfb.sh stop`, kill the VM's clients | - | nothing left listening on 6010 or 6062-6099, no `Xvfb`/`x11vnc`/AppImage on the VM (a leftover makes the *next* run fail as if the code were broken) |
+| 0.6 | stop everything: `pkill -f 'cn.oyzh.fx.xserver.Main'`, `tools/xvfb.sh stop`, kill the VM's clients | - | nothing left listening on 6010 or 6062-6099, no `Xvfb`/`x11vnc`/AppImage on the VM (a leftover makes the *next* run fail as if the code were broken) |
 
 `tools/kit.sh <Tool> <args>` is the launcher with the classpath filled in; run `mvn -o test-compile`
 first if `tools/` has changed. Probes take `host port` - `127.0.0.1 6061` for the server above,
@@ -117,9 +117,9 @@ mouse and keyboard do is drive the X pointer and keyboard (`RfbSession` -> `inpu
 
 ```sh
 # A password file is one line; macOS's Screen Sharing insists on a password.
-echo 'my-password' > ~/.xserver-vnc-pass
+echo 'my-password' > ~/.fx-xserver-vnc-pass
 mvn exec:java -Dexec.args="--backend vnc --vnc-port 0 --geometry 1300x800 \
-    --vnc-password-file ~/.xserver-vnc-pass --vnc-ws-port 6080"
+    --vnc-password-file ~/.fx-xserver-vnc-pass --vnc-ws-port 6080"
 # (or --vnc-password VALUE - the same password as a value, for an embedded launch)
 # the log then says:  VNC on port <N>: connect with vnc://<this machine>:<N>
 #                     VNC over WebSocket on port 6080: point noVNC at ws://<this machine>:6080/

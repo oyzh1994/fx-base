@@ -16,8 +16,7 @@ import cn.oyzh.fx.xserver.input.InputState;
 import cn.oyzh.fx.xserver.resource.XCursor;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 /**
  * XTEST.
@@ -32,7 +31,6 @@ import org.slf4j.LoggerFactory;
  */
 public final class XTestExtension implements Extension {
 
-    private static final Logger log = LoggerFactory.getLogger(XTestExtension.class);
 
     /** XTEST 2.2 is what the generated plugin reports and what clients expect. */
     private static final byte MAJOR_VERSION = 2;
@@ -158,10 +156,10 @@ public final class XTestExtension implements Extension {
                 } else if (detail == MOTION_ABSOLUTE) {
                     asXtest(input, XInputMasks.XTEST_POINTER_DEVICE, () -> input.pointerMoved(x, y));
                 } else {
-                    log.debug("XTEST FakeInput: ignoring unknown motion detail {}", detail);
+                    JulLog.debug("XTEST FakeInput: ignoring unknown motion detail {}", detail);
                 }
             }
-            default -> log.debug("XTEST FakeInput: ignoring unknown event type {}", type);
+            default -> JulLog.debug("XTEST FakeInput: ignoring unknown event type {}", type);
         }
     }
 
@@ -178,7 +176,7 @@ public final class XTestExtension implements Extension {
     private void grabControl(GrabControl request) {
         // An impervious grab would keep other clients from taking a server grab. This server has no
         // such mode, so the request is accepted and otherwise ignored.
-        log.debug("XTEST GrabControl impervious={}: accepted and ignored", request.isImpervious());
+        JulLog.debug("XTEST GrabControl impervious={}: accepted and ignored", request.isImpervious());
     }
 
     /** The cursor a window shows: its own, or the closest ancestor's, or the root cursor. */

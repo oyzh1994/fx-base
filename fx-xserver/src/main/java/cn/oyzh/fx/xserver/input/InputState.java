@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.input;
 
+import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.XEvent;
 import com.github.moaxcp.x11.protocol.xproto.ButtonPressEvent;
 import com.github.moaxcp.x11.protocol.xproto.ButtonReleaseEvent;
@@ -32,7 +33,6 @@ import java.util.List;
  */
 public final class InputState implements DisplayBackend.InputSink {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(InputState.class);
 
     /** X button state occupies bits 8..12 of the event state field. */
     private static final int BUTTON_MASK_SHIFT = 8;
@@ -481,8 +481,8 @@ public final class InputState implements DisplayBackend.InputSink {
         this.focusIsPointerRoot = pointerRoot && window != null && window.isRoot();
         this.focusRevertTo = revertTo;
         this.focusSet = true;
-        if (log.isDebugEnabled()) {
-            log.debug("focus set to {}, was {}, reverting to {}",
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("focus set to {}, was {}, reverting to {}",
                     describeFocus(inputFocus, focusIsPointerRoot), describeFocus(previous,
                             previousFollows), revertTo);
         }
@@ -747,12 +747,12 @@ public final class InputState implements DisplayBackend.InputSink {
                 // when a client freezes a device and never starts it again; this server refuses to
                 // grow without limit, for the same reason its output queue to a client does (E5).
                 Held dropped = held.remove(0);
-                log.warn("dropped a {} held for a frozen {}: {} events were waiting for a client"
+                JulLog.warn("dropped a {} held for a frozen {}: {} events were waiting for a client"
                                 + " that has not released it", kindName(dropped.kind()),
                         dropped.pointer() ? "pointer" : "keyboard", MAX_HELD_EVENTS);
             }
-            if (log.isDebugEnabled()) {
-                log.debug("held a {} for a frozen {}: {} event(s) waiting", kindName(event.kind()),
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("held a {} for a frozen {}: {} event(s) waiting", kindName(event.kind()),
                         event.pointer() ? "pointer" : "keyboard", held.size());
             }
             return;
@@ -887,8 +887,8 @@ public final class InputState implements DisplayBackend.InputSink {
         boolean thisSynced = sync.other != null && sync.other.client() == client;
         boolean othersFrozen = pairedGrab != null && pairedGrab.client() == client && paired.frozen();
         if (!((thisGrabbed && sync.state >= FROZEN) || thisSynced)) {
-            if (log.isDebugEnabled()) {
-                log.debug("AllowEvents(mode {}) from {} ignored: it does not hold a frozen device",
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("AllowEvents(mode {}) from {} ignored: it does not hold a frozen device",
                         mode, client);
             }
             return;
@@ -899,8 +899,8 @@ public final class InputState implements DisplayBackend.InputSink {
         // client that names a time is entitled to the same answer a reference server gives it.
         if (time != 0 && grab != null
                 && (laterThan(time, (int) server.events().time()) || laterThan(grab.grabTime(), time))) {
-            if (log.isDebugEnabled()) {
-                log.debug("AllowEvents(mode {}) from {} ignored: its time is outside the grab ({} vs"
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("AllowEvents(mode {}) from {} ignored: its time is outside the grab ({} vs"
                         + " now {}, grabbed at {})", mode, client, time, server.events().time(),
                         grab.grabTime());
             }
@@ -945,8 +945,8 @@ public final class InputState implements DisplayBackend.InputSink {
                 }
             }
         }
-        if (log.isDebugEnabled()) {
-            log.debug("AllowEvents(mode {}) from {}: pointer {} keyboard {}", mode, client,
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("AllowEvents(mode {}) from {}: pointer {} keyboard {}", mode, client,
                     syncName(pointerSync), syncName(keyboardSync));
         }
         computeFreezes();
@@ -1002,8 +1002,8 @@ public final class InputState implements DisplayBackend.InputSink {
      */
     private void reportKeyboardGrabStart(Grab grab) {
         if (inputFocus == null) {
-            if (log.isDebugEnabled()) {
-                log.debug("keyboard grabbed by 0x{} with the focus nowhere: nothing to report",
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("keyboard grabbed by 0x{} with the focus nowhere: nothing to report",
                         Integer.toHexString(grab.window().id()));
             }
             return;
@@ -1037,8 +1037,8 @@ public final class InputState implements DisplayBackend.InputSink {
         // that is gone - measured, and it is what made two runs of the same probe disagree.
         int arms = server.passiveGrabs().size();
         server.passiveGrabs().removeIf(grab -> grab.client() == client);
-        if (arms != server.passiveGrabs().size() && log.isDebugEnabled()) {
-            log.debug("dropped {} passive grab(s) with the client that armed them",
+        if (arms != server.passiveGrabs().size() && JulLog.isDebugEnabled()) {
+            JulLog.debug("dropped {} passive grab(s) with the client that armed them",
                     arms - server.passiveGrabs().size());
         }
         if (pointerGrab != null && pointerGrab.client() == client) {
@@ -1135,13 +1135,13 @@ public final class InputState implements DisplayBackend.InputSink {
         } else {
             buttons &= ~mask;
         }
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // Which window a click is *reported against* is otherwise invisible from the server
             // side, and it is the first thing to check when a client behaves as if it was never
             // clicked: while a button is down that is the window the press landed on, not the one
             // under the pointer, and an active grab overrides both.
             XWindow target = eventTarget();
-            log.debug("button {} {} at ({},{}) -> {}{}", button, pressed ? "down" : "up", x, y,
+            JulLog.debug("button {} {} at ({},{}) -> {}{}", button, pressed ? "down" : "up", x, y,
                     target == null ? "no window" : "0x" + Integer.toHexString(target.id()),
                     pointerGrab != null
                             ? " (grab on 0x" + Integer.toHexString(pointerGrab.window().id())
@@ -1192,7 +1192,7 @@ public final class InputState implements DisplayBackend.InputSink {
         // the same character typed twice is two keystrokes, and the second one has to be sent like
         // the first.
         boolean alreadyOnAKey = onTheKeyboard != 0 && !Keymap.isClaimed(onTheKeyboard);
-        log.debug("keyTyped '{}' keysym=0x{} onTheKeyboard={} already={}", character,
+        JulLog.debug("keyTyped '{}' keysym=0x{} onTheKeyboard={} already={}", character,
                 Integer.toHexString(keysym), onTheKeyboard, alreadyOnAKey);
         if (keysym == Keysyms.NONE || alreadyOnAKey) {
             return;
@@ -1219,12 +1219,12 @@ public final class InputState implements DisplayBackend.InputSink {
         int onTheKeyboard = Keymap.keycodeForKeysym(keysym);
         if (onTheKeyboard != 0 && !Keymap.isClaimed(onTheKeyboard)) {
             boolean shifted = Keymap.keysym(onTheKeyboard, 0) != keysym;
-            log.debug("input method typed '{}' on keycode {}{}", character, onTheKeyboard,
+            JulLog.debug("input method typed '{}' on keycode {}{}", character, onTheKeyboard,
                     shifted ? " with shift" : "");
             pressKey(onTheKeyboard, shifted);
             return;
         }
-        log.debug("input method typed '{}' on a claimed keycode", character);
+        JulLog.debug("input method typed '{}' on a claimed keycode", character);
         typeComposed(keysym);
     }
 
@@ -1721,8 +1721,8 @@ public final class InputState implements DisplayBackend.InputSink {
             return;
         }
         XWindow window = windowAtPointer();
-        if (window != announcedWindow && log.isDebugEnabled()) {
-            log.debug("the window under the pointer is now 0x{}: the tree changed, not the pointer",
+        if (window != announcedWindow && JulLog.isDebugEnabled()) {
+            JulLog.debug("the window under the pointer is now 0x{}: the tree changed, not the pointer",
                     window == null ? "none" : Integer.toHexString(window.id()));
         }
         settlePointerWindow();
@@ -1891,15 +1891,15 @@ public final class InputState implements DisplayBackend.InputSink {
         }
         if (pointerGrab != null && pointerGrab.window() == window) {
             pointerGrab = null;
-            if (log.isDebugEnabled()) {
-                log.debug("released the pointer grab held on 0x{}: the window went away",
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("released the pointer grab held on 0x{}: the window went away",
                         Integer.toHexString(window.id()));
             }
         }
         if (keyboardGrab != null && keyboardGrab.window() == window) {
             keyboardGrab = null;
-            if (log.isDebugEnabled()) {
-                log.debug("released the keyboard grab held on 0x{}: the window went away",
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("released the keyboard grab held on 0x{}: the window went away",
                         Integer.toHexString(window.id()));
             }
         }
@@ -2107,8 +2107,8 @@ public final class InputState implements DisplayBackend.InputSink {
             sync.state = FROZEN_WITH_EVENT;
             sync.event = event;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("passive {} grab on 0x{} fired by {}: the input belongs to {} until the release"
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("passive {} grab on 0x{} fired by {}: the input belongs to {} until the release"
                             + " ({})", passive.pointer() ? "button" : "key",
                     Integer.toHexString(passive.window().id()), detail, passive.client(),
                     syncName(sync));
@@ -2403,8 +2403,8 @@ public final class InputState implements DisplayBackend.InputSink {
         // its client can still act on.
         server.events().deliverFocusChange(previous, false, inputFocus, focusIsPointerRoot,
                 EventDispatcher.NOTIFY_MODE_NORMAL, false);
-        if (log.isDebugEnabled()) {
-            log.debug("focus reverted from {} to {}: 0x{} went away", describe(previous),
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("focus reverted from {} to {}: 0x{} went away", describe(previous),
                     describeFocus(inputFocus, focusIsPointerRoot), Integer.toHexString(window.id()));
         }
     }

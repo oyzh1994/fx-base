@@ -8,8 +8,7 @@ import com.github.moaxcp.x11.protocol.xproto.SetupRequest;
 import cn.oyzh.fx.xserver.ScreenSession;
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.net.ClientOutput;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,7 +30,6 @@ import java.nio.channels.SocketChannel;
  */
 public final class ClientConnection implements Runnable {
 
-    private static final Logger log = LoggerFactory.getLogger(ClientConnection.class);
 
     /** Client index occupies the top bits of a resource id, giving 256 clients. */
     public static final int CLIENT_BITS = 8;
@@ -98,7 +96,7 @@ public final class ClientConnection implements Runnable {
     /** Set while a client connection is being torn down, so late events are dropped. */
     private volatile boolean shuttingDown;
 
-    /** How many requests have been handled, and the last few, kept for the disconnect log. */
+    /** How many requests have been handled, and the last few, kept for the disconnect JulLog. */
     private static final int RECENT_REQUEST_COUNT = 12;
     private int requestCount;
     private int recentRequestIndex;
@@ -261,13 +259,13 @@ public final class ClientConnection implements Runnable {
             reason = "read failed: " + e;
         } catch (RuntimeException e) {
             reason = "failed handling " + currentRequestName();
-            log.warn("client {} failed during {}", peer, currentRequestName(), e);
+            JulLog.warn("client " + peer + " failed during " + currentRequestName(), e);
         } catch (Error e) {
             // An Error would otherwise kill the thread and drop the connection with no explanation
             // at all, which is exactly the kind of silent disconnect that is impossible to debug
             // from the outside.
             reason = "fatal error handling " + currentRequestName();
-            log.error("client {} hit {} during {}", peer, e.getClass().getSimpleName(),
+            JulLog.error("client {} hit {} during {}", peer, e.getClass().getSimpleName(),
                     currentRequestName(), e);
         } finally {
             logDisconnect(reason);
@@ -287,16 +285,16 @@ public final class ClientConnection implements Runnable {
         loggedDisconnect = true;
         if (requestCount == 0 && reason.startsWith("the client closed")) {
             // A connection that never sent a request is noise, not a diagnostic.
-            log.debug("client {} connected and left without a request", peer);
+            JulLog.debug("client {} connected and left without a request", peer);
             return;
         }
-        log.info("client {} disconnected after {} requests: {}; last requests: {}", peer,
+        JulLog.info("client {} disconnected after {} requests: {}; last requests: {}", peer,
                 requestCount, reason, recentRequests());
     }
 
     private final Class<?>[] recentRequests = new Class<?>[RECENT_REQUEST_COUNT];
 
-    /** Names of the last few requests, oldest first, for the disconnect log. */
+    /** Names of the last few requests, oldest first, for the disconnect JulLog. */
     private String recentRequests() {
         StringBuilder text = new StringBuilder();
         for (int i = 0; i < RECENT_REQUEST_COUNT; i++) {
@@ -317,7 +315,7 @@ public final class ClientConnection implements Runnable {
         return current == null ? "the request loop" : current.getSimpleName();
     }
 
-    /** Records the request now being handled, for the disconnect log. */
+    /** Records the request now being handled, for the disconnect JulLog. */
     public void recordRequest(Class<?> type) {
         currentRequest = type;
         recentRequests[recentRequestIndex] = type;
@@ -325,7 +323,7 @@ public final class ClientConnection implements Runnable {
         requestCount++;
     }
 
-    /** How many requests this client has sent, used in the disconnect log. */
+    /** How many requests this client has sent, used in the disconnect JulLog. */
     public int requestCount() {
         return requestCount;
     }
@@ -556,7 +554,7 @@ public final class ClientConnection implements Runnable {
         try {
             output.writeReply(reply);
         } catch (IOException e) {
-            log.debug("failed to send reply to {}: {}", peer, e.getMessage());
+            JulLog.debug("failed to send reply to {}: {}", peer, e.getMessage());
             close();
             throw new RuntimeException(e);
         }
@@ -569,7 +567,7 @@ public final class ClientConnection implements Runnable {
         try {
             output.writeError(errorCode, badValue, sequenceNumber, currentOpcode, currentMinorOpcode);
         } catch (IOException e) {
-            log.debug("failed to send error to {}: {}", peer, e.getMessage());
+            JulLog.debug("failed to send error to {}: {}", peer, e.getMessage());
             close();
         }
     }

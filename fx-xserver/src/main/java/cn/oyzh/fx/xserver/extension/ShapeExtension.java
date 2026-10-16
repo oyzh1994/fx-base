@@ -26,8 +26,7 @@ import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -73,7 +72,6 @@ public final class ShapeExtension implements Extension {
     /** {@code ShapeRectangles}, whose decoder this class has to supply: see {@link #decodeRequest}. */
     private static final int RECTANGLES = 1;
 
-    private static final Logger log = LoggerFactory.getLogger(ShapeExtension.class);
 
     /** SHAPE 1.1 is what the generated plugin reports, so it is what clients are told. */
     private static final short MAJOR_VERSION = 1;
@@ -328,7 +326,7 @@ public final class ShapeExtension implements Extension {
         int operation = unsigned(request.getOperation());
         checkOperation(operation);
         List<Rectangle> rectangles = toAwt(request.getRectangles());
-        log.debug("SHAPE rectangles on {} kind {} op {} count {}", window,
+        JulLog.debug("SHAPE rectangles on {} kind {} op {} count {}", window,
                 ShapeState.kindName(kind), operation, rectangles.size());
         apply(server, window, kind, operation,
                 ShapeState.Shape.ofRectangles(rectangles, request.getXOffset(), request.getYOffset()));

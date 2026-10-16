@@ -61,8 +61,7 @@ import org.eclipse.collections.api.list.primitive.IntList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.ByteLists;
 import org.eclipse.collections.impl.factory.primitive.IntLists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -114,7 +113,6 @@ public final class XFixesExtension implements Extension {
     private static final int CREATE_REGION = 5;
     private static final int SET_REGION = 11;
 
-    private static final Logger log = LoggerFactory.getLogger(XFixesExtension.class);
 
     /** XFIXES 4.0: everything below is answered, and nothing above it is claimed. */
     private static final int MAJOR_VERSION = 4;
@@ -612,11 +610,11 @@ public final class XFixesExtension implements Extension {
                                       SelectSelectionInput request) {
         XWindow window = requireWindow(server, client, request.getWindow());
         int mask = request.getEventMask();
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // Which selection a client asked to hear about, on which window, and with which bits:
             // the first thing to check when a notification never arrives, and the reason a
             // subscription is not simply "this client wants selection events".
-            log.debug("XFIXES 0x{} watches {} mask 0x{} on 0x{}", client.index(),
+            JulLog.debug("XFIXES 0x{} watches {} mask 0x{} on 0x{}", client.index(),
                     server.atoms().name(request.getSelection()), Integer.toHexString(mask),
                     Integer.toHexString(window.id()));
         }
@@ -668,12 +666,12 @@ public final class XFixesExtension implements Extension {
     private void changeSaveSet(ChangeSaveSet request) {
         // XFIXES extends the save set to windows owned by other clients. The core save set lives in
         // the window handlers and has no hook for that, so the request is accepted and ignored.
-        log.debug("XFIXES ChangeSaveSet ignored: only the core save set is tracked");
+        JulLog.debug("XFIXES ChangeSaveSet ignored: only the core save set is tracked");
     }
 
     private void deletePointerBarrier(DeletePointerBarrier request) {
         // No barrier can have been created, so there is nothing to delete.
-        log.debug("XFIXES DeletePointerBarrier ignored: barriers are not implemented");
+        JulLog.debug("XFIXES DeletePointerBarrier ignored: barriers are not implemented");
     }
 
     // ------------------------------------------------------------------

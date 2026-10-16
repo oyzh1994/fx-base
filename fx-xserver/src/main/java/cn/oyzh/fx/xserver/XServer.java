@@ -37,8 +37,7 @@ import cn.oyzh.fx.xserver.resource.XFont;
 import cn.oyzh.fx.xserver.resource.XProperty;
 import cn.oyzh.fx.xserver.resource.XWindow;
 import cn.oyzh.fx.xserver.tray.TrayBridge;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.xserver.draw.Framebuffer;
 import cn.oyzh.fx.xserver.extension.ProtocolRecorder;
 
@@ -60,7 +59,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public final class XServer {
 
-    private static final Logger log = LoggerFactory.getLogger(XServer.class);
 
     /**
      * Client index 0 is reserved for the server, which owns the root window and colormaps.
@@ -172,7 +170,7 @@ public final class XServer {
         // Said out loud rather than silently ignored, so a configuration that wanted a 16 bit root
         // finds out here instead of from a client that asked for one.
         if (options.depth() != ROOT_DEPTH) {
-            log.warn("--geometry asked for a {} bit root; this server's root is always {} bit"
+            JulLog.warn("--geometry asked for a {} bit root; this server's root is always {} bit"
                     + " TrueColor, and the depth in a geometry is accepted for compatibility only",
                     options.depth(), ROOT_DEPTH);
         }
@@ -570,7 +568,7 @@ public final class XServer {
     private void suggestScale() {
         int host = ServerOptions.hostScale();
         if (host > 1 && options.scale() == 1) {
-            log.info("this display is {}x: '--scale auto' draws the screen at {}x pixels per logical "
+            JulLog.info("this display is {}x: '--scale auto' draws the screen at {}x pixels per logical "
                             + "pixel, which a client that reads Xft.dpi follows by itself - one that "
                             + "does not has to be started with its own scale setting, or it will lay "
                             + "itself out for a screen half this size (see the README)",
@@ -696,7 +694,7 @@ public final class XServer {
         byte[] value = ("Xft.dpi:\t" + (96 * options.scale()) + "\n")
                 .getBytes(java.nio.charset.StandardCharsets.ISO_8859_1);
         screen.root().properties().put(atom, new XProperty(atom, string, 8, value));
-        log.info("display :{} is scaled {}x: clients that read Xft.dpi will draw at {} dpi",
+        JulLog.info("display :{} is scaled {}x: clients that read Xft.dpi will draw at {} dpi",
                 options.displayNumber(), options.scale(), 96 * options.scale());
     }
 
@@ -874,7 +872,7 @@ public final class XServer {
         resources.free(session.screen().rootCursor().id());
         screens.remove(session.screen());
         screenInputs.remove(session.screen());
-        log.info("screen of display :{} freed", options.displayNumber());
+        JulLog.info("screen of display :{} freed", options.displayNumber());
     }
 
     public List<Screen> screens() {
@@ -1203,11 +1201,11 @@ public final class XServer {
             control = new cn.oyzh.fx.xserver.net.ControlListener(this, options.controlPort());
             control.start();
         }
-        log.info("xserver listening on display :{} ({}x{}), {}", options.displayNumber(),
+        JulLog.info("fx-xserver listening on display :{} ({}x{}), {}", options.displayNumber(),
                 options.width(), options.height(),
                 options.perClientWindows() ? "one window per client" : "a single shared window");
-        System.out.printf("xserver: display :%d ready, run clients with DISPLAY=:%d%n",
-                options.displayNumber(), options.displayNumber());
+        JulLog.info("fx-xserver: display :{} ready, run clients with DISPLAY=:{}", options.displayNumber(),
+                options.displayNumber());
     }
 
     /**
@@ -1255,7 +1253,7 @@ public final class XServer {
         } catch (Throwable e) {
             // A display-less or broken AWT does not stop the server: JavaFX is what draws the window,
             // and this call is only about who answers the platform's Quit.
-            log.debug("the host application stays unclaimed: {}", e.toString());
+            JulLog.debug("the host application stays unclaimed: {}", e.toString());
         }
     }
 
@@ -1469,7 +1467,7 @@ public final class XServer {
                     // session - so the line named a window that does not exist, the same fault as
                     // the "opened a window" claim beside it (see openedMessage).
                     DisplayBackend showing = session.backend();
-                    log.info("nothing to show on display :{}: {}", options.displayNumber(),
+                    JulLog.info("nothing to show on display :{}: {}", options.displayNumber(),
                             showing != null && !showing.isHeadless()
                                     ? "the window holds its last frame"
                                     : "no window is showing it");
@@ -1508,7 +1506,7 @@ public final class XServer {
                     viewportChanged = true;
                     // The window following its content is otherwise invisible from the server side,
                     // and a window that jumps or shrinks is exactly what this line accounts for.
-                    log.debug("display :{} window now shows {}, was {}", options.displayNumber(),
+                    JulLog.debug("display :{} window now shows {}, was {}", options.displayNumber(),
                             settled, was);
                 }
             }
@@ -1563,7 +1561,7 @@ public final class XServer {
             // The last client is gone: the window that was framing it goes too. Nothing else is done
             // with it - there is no frame to present and no cursor to show - and the next tick that has
             // content opens a window again, on the path below.
-            log.debug("display :{} has had nothing to show for {} ms: its window is closed",
+            JulLog.debug("display :{} has had nothing to show for {} ms: its window is closed",
                     options.displayNumber(), IDLE_WINDOW_GRACE_MILLIS);
             closeSessionBackend(session);
             return;
@@ -1584,10 +1582,8 @@ public final class XServer {
                 // anything - measured: with the JavaFX toolkit on a machine that cannot show a
                 // window the tick thread parked for ever and the server went on serving, its only
                 // explanation a stack trace from a render thread. Stop, and say why in one line.
-                log.error("cannot show display :{} with the {} backend: {}",
-                        options.displayNumber(), options.backend(), e.getMessage());
-                System.err.println("xserver: cannot show display :" + options.displayNumber() + ": "
-                        + e.getMessage());
+                JulLog.error("fx-xserver: cannot show display :" + options.displayNumber()
+                        + " with the " + options.backend() + " backend: " + e.getMessage(), e);
                 stop();
                 return;
             }
@@ -1643,7 +1639,7 @@ public final class XServer {
             }
             // Which window a client's title ends up on is otherwise only visible in the host
             // window's title bar, which nobody looking at a log has.
-            log.debug("display :{} window is now \"{}\"{}", options.displayNumber(),
+            JulLog.debug("display :{} window is now \"{}\"{}", options.displayNumber(),
                     identity.title(), identity.iconArgb() == null ? ""
                             : " with a " + identity.iconWidth() + "x" + identity.iconHeight()
                                     + " icon");
@@ -1667,7 +1663,7 @@ public final class XServer {
             // drawing, which is the one moment the user is waiting for it - unlike the urgency hint,
             // which only asks to be looked at (see DisplayBackend.raiseAndFocus).
             window.raiseAndFocus();
-            log.debug("display :{} host window brought to the front for a new client window",
+            JulLog.debug("display :{} host window brought to the front for a new client window",
                     options.displayNumber());
         }
         if (session.takeFullFrame()) {
@@ -1870,7 +1866,7 @@ public final class XServer {
         if (capped) {
             // Debug rather than info: a drag delivers a resize a frame at a time, so holding the
             // pointer past the edge would write this line sixty times a second.
-            log.debug("a window on display :{} was dragged to {}x{}, which the {}x{} screen cannot "
+            JulLog.debug("a window on display :{} was dragged to {}x{}, which the {}x{} screen cannot "
                             + "show all of", options.displayNumber(), requested.width,
                     requested.height, screen.width(), screen.height());
         }
@@ -1932,12 +1928,12 @@ public final class XServer {
         int height = Math.min(wantedHeight, options.maxScreenHeight());
         if (width == screen.width() && height == screen.height()) {
             if (wantedWidth > width || wantedHeight > height) {
-                log.debug("display :{} asked for a {}x{} screen, which --max-screen holds at {}x{}",
+                JulLog.debug("display :{} asked for a {}x{} screen, which --max-screen holds at {}x{}",
                         options.displayNumber(), wantedWidth, wantedHeight, width, height);
             }
             return false;
         }
-        log.info("growing the screen of display :{} to {}x{}: {}",
+        JulLog.info("growing the screen of display :{} to {}x{}: {}",
                 options.displayNumber(), width, height, why);
         screen.resize(width, height);
         tellClientsTheScreenChanged(screen);
@@ -1990,7 +1986,7 @@ public final class XServer {
                 continue;
             }
             if (window.x() < 0 || window.y() < 0) {
-                log.info("moving a {}x{} window of display :{} from {},{} to {},{}: a window that starts "
+                JulLog.info("moving a {}x{} window of display :{} from {},{} to {},{}: a window that starts "
                                 + "off the screen can never be shown in full",
                         window.width(), window.height(), options.displayNumber(),
                         window.x(), window.y(), Math.max(0, window.x()), Math.max(0, window.y()));
@@ -2177,7 +2173,7 @@ public final class XServer {
         // tick does not say the same thing twice.
         window.setIdle(session.idle());
         session.setIdleApplied(session.idle());
-        log.info("{}", openedMessage(window, options.displayNumber(), viewport, remembered));
+        JulLog.info("{}", openedMessage(window, options.displayNumber(), viewport, remembered));
     }
 
     /**
@@ -2303,7 +2299,7 @@ public final class XServer {
         session.setPersistedWindowPosition(moved);
         session.setPositionHeldSince(0);
         windowStore().rememberPosition(session.clientKey(), moved.x, moved.y);
-        log.debug("display :{} window for {} is at {},{}", options.displayNumber(),
+        JulLog.debug("display :{} window for {} is at {},{}", options.displayNumber(),
                 session.clientKey(), moved.x, moved.y);
     }
 
@@ -2322,7 +2318,7 @@ public final class XServer {
             // set here - the tick is what closes the backend, because closing one waits on the
             // toolkit's thread and this is called from the tick with the lock already released.
             detachSession(session);
-            log.info("display :{} window closed and --detach-on-close is on: {} client(s) keep"
+            JulLog.info("display :{} window closed and --detach-on-close is on: {} client(s) keep"
                             + " running with no window; attach again with the control port",
                     options.displayNumber(), clients.size());
             return;
@@ -2334,7 +2330,7 @@ public final class XServer {
         if (session.closeDeadline() == 0) {
             session.setCloseDeadline(System.currentTimeMillis() + options.closeGraceMillis());
             closeClientWindows(session.screen(), session.client());
-            log.info("the window of {} was closed: asked it to quit, {} ms before it is cut off",
+            JulLog.info("the window of {} was closed: asked it to quit, {} ms before it is cut off",
                     session.client().peer(), options.closeGraceMillis());
             return;
         }
@@ -2463,7 +2459,7 @@ public final class XServer {
         for (ClientConnection client : clients) {
             closeClientWindows(screen, client);
         }
-        log.info("the window is closed: asked {} client(s) to close, {} ms before they are cut off",
+        JulLog.info("the window is closed: asked {} client(s) to close, {} ms before they are cut off",
                 clients.size(), options.closeGraceMillis());
     }
 
@@ -2485,7 +2481,7 @@ public final class XServer {
         int asked = 0;
         for (XWindow window : screen.root().children()) {
             if (window.owner() == client && asksToClose(window, protocols, deleteWindow)) {
-                log.debug("asking 0x{} to close", Integer.toHexString(window.id()));
+                JulLog.debug("asking 0x{} to close", Integer.toHexString(window.id()));
                 events.send(client, deleteWindowMessage(client, window, protocols, deleteWindow));
                 asked++;
             }
@@ -2772,15 +2768,15 @@ public final class XServer {
             currentRequestClient = client;
             currentRequestSequence = client.sequenceNumber();
             if (options.logRequests()) {
-                log.debug("{} opcode {} minor {}", client, opcode & 0xFF, minorOpcode & 0xFF);
+                JulLog.debug("{} opcode {} minor {}", client, opcode & 0xFF, minorOpcode & 0xFF);
             }
             dispatcher.dispatch(client, opcode, minorOpcode, in, requestBytes, request);
         } catch (ProtocolException e) {
-            log.info("{}: {} rejected the request (error {}): {}", client,
+            JulLog.info("{}: {} rejected the request (error {}): {}", client,
                     dispatcher.currentRequest(), e.errorCode(), e.getMessage());
             client.sendError(e.errorCode(), e.badValue());
         } catch (RuntimeException e) {
-            log.error("{} opcode {} failed", client, opcode & 0xFF, e);
+            JulLog.error(client + " opcode " + (opcode & 0xFF) + " failed", e);
             client.sendError(ProtocolException.IMPLEMENTATION, 0);
         } finally {
             currentRequestClient = null;
@@ -2795,7 +2791,7 @@ public final class XServer {
 
     public void registerClient(ClientConnection client) {
         clients.add(client);
-        log.info("client {} connected", client.peer());
+        JulLog.info("client {} connected", client.peer());
     }
 
     public void removeClient(ClientConnection client) {
@@ -2826,7 +2822,7 @@ public final class XServer {
         // screen was made - so the screen is freed whether or not the client was in the list.
         closeClientScreen(session);
         if (registered) {
-            log.info("client {} disconnected", client.peer());
+            JulLog.info("client {} disconnected", client.peer());
         }
     }
 

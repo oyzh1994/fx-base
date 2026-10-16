@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.extension;
 
+import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.randr.GetCrtcGamma;
@@ -106,8 +107,6 @@ public final class RandRExtension implements Extension {
     /** The gamma ramp's size: what a client expects to be able to read, and what a real one has. */
     private static final int GAMMA_SIZE = 256;
 
-    private static final org.slf4j.Logger log =
-            org.slf4j.LoggerFactory.getLogger(RandRExtension.class);
 
     private final RandrPlugin plugin = new RandrPlugin();
 

@@ -3,8 +3,7 @@ package cn.oyzh.fx.xserver.draw;
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.resource.GlyphSet;
 import cn.oyzh.fx.xserver.resource.Picture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -54,7 +53,6 @@ import java.util.List;
  */
 public final class Compositor {
 
-    private static final Logger log = LoggerFactory.getLogger(Compositor.class);
 
     /**
      * How many pixels the last rectangle drawn put down, and how many the destination's clip refused.
@@ -239,10 +237,10 @@ public final class Compositor {
      * was refused, which is the case worth reading.
      */
     private void report(Picture dst, int x, int y, int width, int height) {
-        if (dst.window() == null || !log.isDebugEnabled()) {
+        if (dst.window() == null || !JulLog.isDebugEnabled()) {
             return;
         }
-        log.debug("composite onto window 0x{} at ({},{}) {}x{}: {} pixels written, {} refused; "
+        JulLog.debug("composite onto window 0x{} at ({},{}) {}x{}: {} pixels written, {} refused; "
                         + "picture origin ({},{}), window at ({},{}), visible {}",
                 Integer.toHexString(dst.window().id()), x, y, width, height, written, blocked,
                 dst.originX(), dst.originY(), dst.window().absoluteX(), dst.window().absoluteY(),

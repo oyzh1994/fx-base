@@ -10,8 +10,7 @@ import cn.oyzh.fx.xserver.extension.XFixesExtension;
 import cn.oyzh.fx.xserver.resource.XProperty;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
@@ -68,7 +67,6 @@ import java.util.Map;
  */
 public final class ClipboardBridge {
 
-    private static final Logger log = LoggerFactory.getLogger(ClipboardBridge.class);
 
     /** The selection that is bridged. */
     private static final String CLIPBOARD = "CLIPBOARD";
@@ -230,7 +228,7 @@ public final class ClipboardBridge {
         worker = new Thread(this::poll, "xserver-clipboard");
         worker.setDaemon(true);
         worker.start();
-        log.info("host clipboard bridged to the X CLIPBOARD selection");
+        JulLog.info("host clipboard bridged to the X CLIPBOARD selection");
     }
 
     public void stop() {
@@ -305,11 +303,11 @@ public final class ClipboardBridge {
      */
     public void serve(ClientConnection client, XWindow requestor, int selection, int target,
                       int property, int time) {
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // Which target a client asks for is the whole of "why did my paste get nothing": a
             // toolkit that asks for one this bridge cannot serve goes away empty-handed, and the
             // request is the only place that says so.
-            log.debug("clipboard: 0x{} asks for {} into {}", Integer.toHexString(requestor.id()),
+            JulLog.debug("clipboard: 0x{} asks for {} into {}", Integer.toHexString(requestor.id()),
                     name(target), name(property));
         }
         if (property == 0) {
@@ -347,7 +345,7 @@ public final class ClipboardBridge {
             // Refused for this target: ask for the next one down the list, or give up.
             fetchAttempt++;
             if (fetchAttempt >= textAtoms.length) {
-                log.debug("the owner of {} offered none of the text targets", CLIPBOARD);
+                JulLog.debug("the owner of {} offered none of the text targets", CLIPBOARD);
                 clearFetch();
                 return;
             }
@@ -370,7 +368,7 @@ public final class ClipboardBridge {
             server.atomHandlers().notifyProperty(fetchRequestor, propertyAtom,
                     cn.oyzh.fx.xserver.handler.AtomHandlers.DELETED);
             fetchProgressAt = System.currentTimeMillis();
-            log.debug("the owner of {} is sending the data in chunks", CLIPBOARD);
+            JulLog.debug("the owner of {} is sending the data in chunks", CLIPBOARD);
             return;
         }
         outgoing = decode(value.typeAtom(), value.data());
@@ -392,7 +390,7 @@ public final class ClipboardBridge {
             } catch (RuntimeException e) {
                 // The bridge is not worth taking the server down for: a platform clipboard that
                 // misbehaves costs the user copy and paste, not their session.
-                log.warn("clipboard bridge: {}", e.toString());
+                JulLog.warn("clipboard bridge: {}", e.toString());
             }
         }
     }
@@ -473,7 +471,7 @@ public final class ClipboardBridge {
         }
         if (!fetchingIncr) {
             if (System.currentTimeMillis() - fetchStartedAt > FETCH_TIMEOUT_MILLIS) {
-                log.debug("the owner of {} never answered the selection request", CLIPBOARD);
+                JulLog.debug("the owner of {} never answered the selection request", CLIPBOARD);
                 clearFetch();
             }
             return;
@@ -481,7 +479,7 @@ public final class ClipboardBridge {
         XProperty value = fetchRequestor.properties().get(propertyAtom);
         if (value == null) {
             if (System.currentTimeMillis() - fetchProgressAt > FETCH_TIMEOUT_MILLIS) {
-                log.debug("{} transfer stalled after {} bytes", "INCR", fetched.size());
+                JulLog.debug("{} transfer stalled after {} bytes", "INCR", fetched.size());
                 finishIncr();
             }
             return;

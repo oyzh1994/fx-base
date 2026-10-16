@@ -9,8 +9,7 @@ import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.resource.XWindow;
 import cn.oyzh.fx.xserver.resource.XWindow.OtherClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 
@@ -25,7 +24,6 @@ import java.io.IOException;
  */
 public final class EventDispatcher {
 
-    private static final Logger log = LoggerFactory.getLogger(EventDispatcher.class);
 
     /**
      * Detail codes for EnterNotify, LeaveNotify, FocusIn and FocusOut: one lattice, shared.
@@ -113,18 +111,18 @@ public final class EventDispatcher {
         }
         try {
             client.output().writeEvent(event);
-            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 // What the server tells the client matters as much as what the client asks for: a
                 // toolkit that never learns its window is visible will never draw into it.
                 // The event itself rather than its class name: half of what is delivered now is an
                 // Xi2Event, and "Xi2Event" forty times over says nothing about which device event it
                 // was - which is exactly what a delivery question turns on. Xi2Event's toString
                 // carries the evtype and the device for that reason.
-                log.debug("event {} -> {}", event.getClass() == Xi2Event.class
+                JulLog.debug("event {} -> {}", event.getClass() == Xi2Event.class
                         ? event.toString() : event.getClass().getSimpleName(), client);
             }
         } catch (IOException e) {
-            log.debug("dropping event for {}: {}", client.peer(), e.getMessage());
+            JulLog.debug("dropping event for {}: {}", client.peer(), e.getMessage());
             client.close();
         }
     }
@@ -645,18 +643,18 @@ public final class EventDispatcher {
         if (inside != null && inside != window && !inside.isAncestorOf(window)) {
             // A grab is held on another window: this one is outside the tree the pointer belongs to
             // for as long as the grab lasts, so it is told nothing.
-            if (log.isDebugEnabled()) {
-                log.debug("{}Notify for 0x{} withheld: the grab on 0x{} does not cover it",
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("{}Notify for 0x{} withheld: the grab on 0x{} does not cover it",
                         enter ? "Enter" : "Leave", Integer.toHexString(window.id()),
                         Integer.toHexString(inside.id()));
             }
             return;
         }
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // Which window a crossing is reported against, and whether a grab produced it, is what
             // tells a client where its pointer is: the events are indistinguishable in the log
             // otherwise, and this is the pair a menu's submenu lives or dies by.
-            log.debug("{}Notify on 0x{} detail={}", enter ? "Enter" : "Leave",
+            JulLog.debug("{}Notify on 0x{} detail={}", enter ? "Enter" : "Leave",
                     Integer.toHexString(window.id()), detail);
         }
         int maskBit = enter ? EventMasks.ENTER_WINDOW : EventMasks.LEAVE_WINDOW;

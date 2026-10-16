@@ -38,7 +38,7 @@ did not depend on a screen, a permission, or the user's hand on the mouse. What 
 **2026-09-29, driving EasyShell from the kit (checked, and the one trap that wastes a click):** the
 whole loop is `tools/kit.sh Drive 127.0.0.1 6095 "M x y" "W 200" "P 1" "R 1" "W 800"`, `tools/kit.sh
 Shot`, `tools/kit.sh Keys`, `tools/kit.sh WinTree`, against a `--single-window` server started exactly
-as `tools/bed.sh single 95` does (the server log needs `--log-requests` and a logback config with the
+as `tools/bed.sh single 95` does (the server log needs `--log-requests` and JulLog debug level with the
 package at DEBUG). **A toplevel lands at `+0+33` in root coordinates while its pixels look like they
 start at y=0 in the screen capture** (`WinTree` is the truth): a click aimed at the position the
 *screenshot* shows hits the root for the top 33 rows, so add 33 to every y read off a capture - the
@@ -72,7 +72,7 @@ behaves as if it were never told something, check what it **subscribed to**: the
 Two more traps found the hard way: a manual server on :92 or :93 makes `PerClientWindowTest` /
 `XServerShutdownTest` fail with `BindException: Address already in use`, which reads exactly like a
 code regression - kill the manual server before running `mvn test`. And the request log is already
-complete enough to see the client's decisions: `/tmp/xs92-logback.xml` sets DEBUG for the package,
+complete enough to see the client's decisions: `-Djullog.level=DEBUG` enables the request log,
 so `--log-requests` gives every request, every event delivered and the `InputState` lines that say
 which window a click was reported against.
 

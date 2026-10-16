@@ -78,8 +78,7 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.ByteLists;
 import org.eclipse.collections.impl.factory.primitive.IntLists;
 import org.eclipse.collections.impl.factory.primitive.ShortLists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -156,7 +155,6 @@ import java.util.Map;
  */
 public final class RenderExtension implements Extension {
 
-    private static final Logger log = LoggerFactory.getLogger(RenderExtension.class);
 
     /** 0.11 is the last release with a specification, and everything it adds is answered here. */
     private static final int MAJOR_VERSION = 0;
@@ -251,7 +249,7 @@ public final class RenderExtension implements Extension {
         this.server = server;
         this.compositor = new Compositor(server);
         buildFormats(server);
-        log.info("RENDER ready: {} picture formats, fallback 0x{}", formats.size(),
+        JulLog.info("RENDER ready: {} picture formats, fallback 0x{}", formats.size(),
                 Integer.toHexString(fallback.id()));
     }
 
@@ -485,9 +483,9 @@ public final class RenderExtension implements Extension {
 
         int totalDepths = 0;
         int totalVisuals = 0;
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             for (PictFormat format : formats) {
-                log.debug("RENDER format 0x{} depth {} {} alpha 0x{} visual {}",
+                JulLog.debug("RENDER format 0x{} depth {} {} alpha 0x{} visual {}",
                         Integer.toHexString(format.id()), format.depth(),
                         format.type() == PictFormat.DIRECT ? "direct" : "indexed",
                         Integer.toHexString(format.alphaMask()),
@@ -704,12 +702,12 @@ public final class RenderExtension implements Extension {
                 throw ProtocolException.badValue(repeat);
             }
             picture.setRepeat(repeat);
-            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 // The repeat mode is what decides whether a source smaller than the composite is
                 // tiled or reads as empty. A compositor's alpha mask is a **1x1** picture it samples
                 // at an offset *outside* it, so a repeat of None reads as nothing and the frame comes
                 // out blank - which is a bug report that looks nothing like its cause.
-                log.debug("SetPicture repeat={} on {} ({})", repeat, picture.drawable(),
+                JulLog.debug("SetPicture repeat={} on {} ({})", repeat, picture.drawable(),
                         picture.width() + "x" + picture.height());
             }
         }
@@ -849,10 +847,10 @@ public final class RenderExtension implements Extension {
         Picture src = requirePicture(request.getSrc());
         Picture mask = request.getMask() == 0 ? null : requirePicture(request.getMask());
         Picture dst = requirePicture(request.getDst());
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // The arguments matter more than the request name here: a composite that reaches the
-            // wrong drawable, or one whose source is empty, looks identical in a request log.
-            log.debug("Composite op={} src={}({},filter {}) mask={} dst={} "
+            // wrong drawable, or one whose source is empty, looks identical in a request JulLog.
+            JulLog.debug("Composite op={} src={}({},filter {}) mask={} dst={} "
                             + "srcAt ({},{}) maskAt ({},{}) size {}x{} dstAt ({},{})",
                     Byte.toUnsignedInt(request.getOp()), src.drawable(), describe(src.format()),
                     src.filter(),
@@ -868,18 +866,18 @@ public final class RenderExtension implements Extension {
                 request.getSrcX(), request.getSrcY(), request.getMaskX(), request.getMaskY(),
                 request.getDstX(), request.getDstY(), Short.toUnsignedInt(request.getWidth()),
                 Short.toUnsignedInt(request.getHeight()));
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // How many pixels the request actually wrote. A composite that is accepted and writes
             // nothing is a different bug from one that writes the wrong colour, and the difference is
             // invisible in the request log - it is what a compositor's blank frame turns out to be.
-            log.debug("  -> wrote {} pixels, {} blocked", compositor.written(), compositor.blocked());
+            JulLog.debug("  -> wrote {} pixels, {} blocked", compositor.written(), compositor.blocked());
         }
     }
 
     private void fillRectangles(XServer server, ClientConnection client, FillRectangles request) {
         Picture dst = requirePicture(request.getDst());
-        if (log.isDebugEnabled()) {
-            log.debug("FillRectangles dst={} colour=#{} rects={} first={}", dst.drawable(),
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("FillRectangles dst={} colour=#{} rects={} first={}", dst.drawable(),
                     Integer.toHexString(colorArgb(request.getColor())), request.getRects().size(),
                     request.getRects().isEmpty() ? "none" : describe(request.getRects().get(0)));
         }
@@ -1129,7 +1127,7 @@ public final class RenderExtension implements Extension {
             throw ProtocolException.badLength();
         }
         byte[] data = request.getData().toArray();
-        log.debug("RENDER AddGlyphs: {} glyphs, {} data bytes, format depth {}",
+        JulLog.debug("RENDER AddGlyphs: {} glyphs, {} data bytes, format depth {}",
                 infos.size(), data.length, format.depth());
         int offset = 0;
         for (int i = 0; i < infos.size(); i++) {
@@ -1248,7 +1246,7 @@ public final class RenderExtension implements Extension {
         GlyphSet set = requireGlyphSet(glyphSetId);
         boolean componentAlpha = set.isComponentAlpha();
 
-        log.debug("RENDER CompositeGlyphs: {} command bytes, glyphSize {}, set size {}, src 0x{}"
+        JulLog.debug("RENDER CompositeGlyphs: {} command bytes, glyphSize {}, set size {}, src 0x{}"
                         + " dst 0x{}",
                 commands.length, glyphSize, set.size(), Integer.toHexString(srcId),
                 Integer.toHexString(dstId));
@@ -1300,7 +1298,7 @@ public final class RenderExtension implements Extension {
                 if (glyph == null) {
                     // A glyph the set does not hold contributes nothing, and does not advance the
                     // origin either. See the note above on why this is not a BadGlyph.
-                    log.debug("glyph set 0x{} has no glyph 0x{}", Integer.toHexString(set.id()),
+                    JulLog.debug("glyph set 0x{} has no glyph 0x{}", Integer.toHexString(set.id()),
                             Integer.toHexString(glyphId));
                     continue;
                 }

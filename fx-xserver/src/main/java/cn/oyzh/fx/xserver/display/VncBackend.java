@@ -2,8 +2,7 @@ package cn.oyzh.fx.xserver.display;
 
 import cn.oyzh.fx.xserver.display.DisplayBackend;
 import cn.oyzh.fx.xserver.display.RfbSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -38,7 +37,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class VncBackend implements DisplayBackend {
 
-    private static final Logger log = LoggerFactory.getLogger(VncBackend.class);
 
     private final int port;
     /** The port the browser path listens on (a WebSocket carrying RFB), or -1 for none. */
@@ -117,11 +115,11 @@ public final class VncBackend implements DisplayBackend {
                 websocket = new cn.oyzh.fx.xserver.net.WebSocketListener(webSocketPort,
                         loopbackOnly, this::acceptWebSocket);
                 websocket.start();
-                log.info("VNC over WebSocket on port {}: point noVNC at ws://<this machine>:{}/ and"
+                JulLog.info("VNC over WebSocket on port {}: point noVNC at ws://<this machine>:{}/ and"
                         + " it needs nothing installed on the client machine", websocket.boundPort(),
                         websocket.boundPort());
             }
-            log.info("VNC on port {}: connect with vnc://<this machine>:{} - {}",
+            JulLog.info("VNC on port {}: connect with vnc://<this machine>:{} - {}",
                     boundPort, boundPort, password == null
                             ? "the display is served to anyone who connects, so this is for a"
                                     + " network you trust (--vnc-password asks for a password)"
@@ -208,7 +206,7 @@ public final class VncBackend implements DisplayBackend {
             try {
                 bound.close();
             } catch (IOException e) {
-                log.debug("closing the VNC listener", e);
+                JulLog.debug("closing the VNC listener", e);
             }
         }
         for (RfbSession session : sessions) {
@@ -232,7 +230,7 @@ public final class VncBackend implements DisplayBackend {
                 thread.start();
             } catch (IOException e) {
                 if (running.get()) {
-                    log.debug("accepting a VNC client failed", e);
+                    JulLog.debug("accepting a VNC client failed", e);
                 }
             }
         }
@@ -269,7 +267,7 @@ public final class VncBackend implements DisplayBackend {
                 sessions.remove(session);
             }
         } catch (IOException e) {
-            log.debug("a VNC client could not be started", e);
+            JulLog.debug("a VNC client could not be started", e);
             transport.close();
         }
     }
@@ -309,7 +307,7 @@ public final class VncBackend implements DisplayBackend {
             try {
                 socket.close();
             } catch (IOException e) {
-                log.debug("closing a VNC socket", e);
+                JulLog.debug("closing a VNC socket", e);
             }
         }
     }

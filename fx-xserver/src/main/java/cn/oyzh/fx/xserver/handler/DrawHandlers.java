@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.handler;
 
+import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.xproto.ClearArea;
 import com.github.moaxcp.x11.protocol.xproto.CopyArea;
 import com.github.moaxcp.x11.protocol.xproto.CopyPlane;
@@ -48,8 +49,6 @@ import java.util.List;
  */
 public final class DrawHandlers {
 
-    private static final org.slf4j.Logger LOG =
-            org.slf4j.LoggerFactory.getLogger(DrawHandlers.class);
 
 
     /** Coordinate modes. */
@@ -116,8 +115,8 @@ public final class DrawHandlers {
         XResource destination = server.resources().requireDrawable(client, r.getDstDrawable());
         XGC gc = gc(client, r.getGc());
         Target target = target(destination, gc);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("CopyArea {} -> {} {}x{} from ({},{}) to ({},{})", source, destination,
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("CopyArea {} -> {} {}x{} from ({},{}) to ({},{})", source, destination,
                     Short.toUnsignedInt(r.getWidth()), Short.toUnsignedInt(r.getHeight()),
                     r.getSrcX(), r.getSrcY(), r.getDstX(), r.getDstY());
         }
@@ -132,8 +131,8 @@ public final class DrawHandlers {
         XResource destination = server.resources().requireDrawable(client, r.getDstDrawable());
         XGC gc = gc(client, r.getGc());
         Target target = target(destination, gc);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("CopyPlane {} -> {} {}x{} from ({},{}) to ({},{})", source, destination,
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("CopyPlane {} -> {} {}x{} from ({},{}) to ({},{})", source, destination,
                     Short.toUnsignedInt(r.getWidth()), Short.toUnsignedInt(r.getHeight()),
                     r.getSrcX(), r.getSrcY(), r.getDstX(), r.getDstY());
         }
@@ -159,19 +158,19 @@ public final class DrawHandlers {
             throw ProtocolException.badMatch();
         }
         Target target = target(drawable, gc);
-        if (drawable instanceof XWindow && LOG.isDebugEnabled()) {
+        if (drawable instanceof XWindow && JulLog.isDebugEnabled()) {
             // Drawing into a window is what puts something on the screen; a run in which it never
             // happens says the client is rendering somewhere else and never presenting. Debug and
             // not info: an application uploads every frame this way, so at info this wrote a line
             // per frame to the console - which is where a forwarded JavaFX or GTK client's time
             // went (measured: a synchronous formatted line per PutImage, thousands a second while
             // scrolling).
-            LOG.debug("PutImage draws into WINDOW {} at ({},{}) {}x{}",
+            JulLog.debug("PutImage draws into WINDOW {} at ({},{}) {}x{}",
                     drawable, r.getDstX(), r.getDstY(), Short.toUnsignedInt(r.getWidth()),
                     Short.toUnsignedInt(r.getHeight()));
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("PutImage format={} depth={} data={} bytes {}x{} to {} at ({},{})",
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("PutImage format={} depth={} data={} bytes {}x{} to {} at ({},{})",
                     format, Byte.toUnsignedInt(r.getDepth()), r.getData().size(),
                     Short.toUnsignedInt(r.getWidth()), Short.toUnsignedInt(r.getHeight()),
                     drawable, r.getDstX(), r.getDstY());
@@ -182,12 +181,12 @@ public final class DrawHandlers {
                 target.y(r.getDstY()),
                 width, height, format, Byte.toUnsignedInt(r.getLeftPad()), depthOf(drawable),
                 r.getData().toArray(), 0, client.isBigEndian());
-        if (LOG.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // The decoded corners: a put that "succeeds" but lands black is otherwise invisible in
             // the log, and that is exactly the difference between a drawn window and a black one.
             int x = target.x(r.getDstX());
             int y = target.y(r.getDstY());
-            LOG.debug("PutImage landed: tl={} tr={} bl={} br={} values={}",
+            JulLog.debug("PutImage landed: tl={} tr={} bl={} br={} values={}",
                     hex(target.store().pixel(x, y)),
                     hex(target.store().pixel(x + width - 1, y)),
                     hex(target.store().pixel(x, y + height - 1)),

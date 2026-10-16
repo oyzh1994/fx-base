@@ -1,7 +1,6 @@
 package cn.oyzh.fx.xserver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -22,7 +21,7 @@ import java.util.Properties;
  *
  * <p><b>This is the first state this server keeps between runs</b>, and it is a plain properties file
  * rather than anything cleverer for that reason: it is small, a user can read and edit it, and
- * deleting it costs nothing but the remembered positions. It lives in {@code ~/.xserver/}.
+ * deleting it costs nothing but the remembered positions. It lives in {@code ~/.fx-xserver/}.
  *
  * <p>Nothing here is allowed to be the reason a server fails to start: an unreadable file is a
  * server that has not remembered anything yet, and an unwritable one is a server that will not
@@ -30,10 +29,9 @@ import java.util.Properties;
  */
 public final class HostWindowStore {
 
-    private static final Logger log = LoggerFactory.getLogger(HostWindowStore.class);
 
-    /** Where the positions are kept unless {@code -Dxserver.hostWindows} says otherwise. */
-    private static final String DEFAULT_PATH = ".xserver/host-windows.properties";
+    /** Where the positions are kept unless {@code -Dfx-xserver.hostWindows} says otherwise. */
+    private static final String DEFAULT_PATH = ".fx-xserver/host-windows.properties";
 
     private final Path file;
     private final Properties entries = new Properties();
@@ -45,7 +43,7 @@ public final class HostWindowStore {
 
     /** The store in the user's home directory. */
     public static HostWindowStore open() {
-        String configured = System.getProperty("xserver.hostWindows");
+        String configured = System.getProperty("fx-xserver.hostWindows");
         if (configured != null && !configured.isEmpty()) {
             return at(Path.of(configured));
         }
@@ -79,7 +77,7 @@ public final class HostWindowStore {
             return new Point(Integer.parseInt(x.trim()), Integer.parseInt(y.trim()));
         } catch (NumberFormatException e) {
             // A hand edited file is allowed to be wrong; it just means nothing is remembered.
-            log.debug("ignoring an unreadable remembered position for {}: {},{}", key, x, y);
+            JulLog.debug("ignoring an unreadable remembered position for {}: {},{}", key, x, y);
             return null;
         }
     }
@@ -132,7 +130,7 @@ public final class HostWindowStore {
         try (InputStream in = Files.newInputStream(file)) {
             entries.load(in);
         } catch (IOException e) {
-            log.info("no remembered window positions: {} could not be read ({})", file,
+            JulLog.info("no remembered window positions: {} could not be read ({})", file,
                     e.getMessage());
         }
     }
@@ -148,7 +146,7 @@ public final class HostWindowStore {
             }
         } catch (IOException e) {
             // Remembering is a convenience. A server that cannot write here still forwards windows.
-            log.info("window positions will not be remembered: {} could not be written ({})", file,
+            JulLog.info("window positions will not be remembered: {} could not be written ({})", file,
                     e.getMessage());
         }
     }

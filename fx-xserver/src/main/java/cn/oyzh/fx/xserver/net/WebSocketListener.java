@@ -1,7 +1,6 @@
 package cn.oyzh.fx.xserver.net;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -47,7 +46,6 @@ import java.util.function.Consumer;
  */
 public final class WebSocketListener {
 
-    private static final Logger log = LoggerFactory.getLogger(WebSocketListener.class);
 
     /** The magic string RFC 6455 appends to a client's key to prove the server understood the ask. */
     private static final String GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
@@ -107,7 +105,7 @@ public final class WebSocketListener {
             try {
                 open.close();
             } catch (IOException e) {
-                log.debug("closing the websocket listener", e);
+                JulLog.debug("closing the websocket listener", e);
             }
         }
     }
@@ -119,7 +117,7 @@ public final class WebSocketListener {
                 new Thread(() -> upgrade(client), "xserver-websocket-client").start();
             } catch (IOException e) {
                 if (running.get()) {
-                    log.debug("accepting a websocket client failed", e);
+                    JulLog.debug("accepting a websocket client failed", e);
                 }
             }
         }
@@ -139,7 +137,7 @@ public final class WebSocketListener {
             connection = new Connection(client, in, out);
             onConnection.accept(connection);
         } catch (IOException e) {
-            log.debug("websocket connection failed", e);
+            JulLog.debug("websocket connection failed", e);
         } finally {
             if (connection != null) {
                 connection.close();
@@ -275,7 +273,7 @@ public final class WebSocketListener {
             try {
                 socket.close();
             } catch (IOException e) {
-                log.debug("closing a websocket", e);
+                JulLog.debug("closing a websocket", e);
             }
         }
 

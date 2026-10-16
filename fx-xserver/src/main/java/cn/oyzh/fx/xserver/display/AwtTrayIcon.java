@@ -1,8 +1,7 @@
 package cn.oyzh.fx.xserver.display;
 
 import cn.oyzh.fx.xserver.display.DisplayBackend;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.AWTException;
 import java.awt.EventQueue;
@@ -29,7 +28,6 @@ import java.awt.image.BufferedImage;
  */
 final class AwtTrayIcon {
 
-    private static final Logger log = LoggerFactory.getLogger(AwtTrayIcon.class);
 
     /** The one icon this backend owns, or null when the menu bar shows nothing. */
     private TrayIcon icon;
@@ -45,7 +43,7 @@ final class AwtTrayIcon {
         boolean supported = SystemTray.isSupported();
         unavailable = !supported;
         if (!supported) {
-            log.warn("this platform has no system tray: a forwarded application's tray icons cannot"
+            JulLog.warn("this platform has no system tray: a forwarded application's tray icons cannot"
                     + " be shown");
         }
         return supported;
@@ -63,7 +61,7 @@ final class AwtTrayIcon {
     }
 
     private void apply(BufferedImage image, String tooltip) {
-        log.debug("the menu bar is being shown a {} icon", image == null ? "no"
+        JulLog.debug("the menu bar is being shown a {} icon", image == null ? "no"
                 : image.getWidth() + "x" + image.getHeight());
         try {
             if (image == null) {
@@ -90,7 +88,7 @@ final class AwtTrayIcon {
                     }
                 });
                 SystemTray.getSystemTray().add(icon);
-                log.info("an icon is in the menu bar now");
+                JulLog.info("an icon is in the menu bar now");
             } else {
                 icon.setImage(image);
                 if (tooltip != null) {
@@ -100,7 +98,7 @@ final class AwtTrayIcon {
         } catch (AWTException e) {
             // The platform refused the icon: worth one line, and the client's own icon window is
             // still where the client drew it, so nothing is lost that was ever visible.
-            log.warn("could not put an icon in the menu bar", e);
+            JulLog.warn("could not put an icon in the menu bar", e);
         }
     }
 

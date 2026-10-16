@@ -1,7 +1,6 @@
 package cn.oyzh.fx.xserver.resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +28,6 @@ import java.util.Map;
  */
 public final class FontPath {
 
-    private static final Logger log = LoggerFactory.getLogger(FontPath.class);
 
     /** The alias and directory files, which are the two names the standard fixes. */
     private static final String ALIASES = "fonts.alias";
@@ -130,12 +128,12 @@ public final class FontPath {
             Path path = Path.of(element, file);
             try (java.io.InputStream in = Files.newInputStream(path)) {
                 BitmapFont.Font font = PcfFont.read(in, name);
-                log.debug("opened {} from {}", name, path);
+                JulLog.debug("opened {} from {}", name, path);
                 return font;
             } catch (IOException | RuntimeException e) {
                 // A file that is there and cannot be read is worth one line: the alternative is a
                 // client being told the font does not exist while it is looking right at it.
-                log.warn("could not read the font file {} for {}", path, name, e);
+                JulLog.warn("could not read the font file " + path + " for " + name, e);
             }
         }
         return null;
@@ -227,7 +225,7 @@ public final class FontPath {
             }
             return lines;
         } catch (IOException e) {
-            log.warn("could not read {}", path, e);
+            JulLog.warn("could not read {}", path, e);
             return List.of();
         }
     }

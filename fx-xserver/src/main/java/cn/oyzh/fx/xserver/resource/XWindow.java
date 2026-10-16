@@ -7,8 +7,7 @@ import cn.oyzh.fx.xserver.display.VisualInfo;
 import cn.oyzh.fx.xserver.draw.Framebuffer;
 import cn.oyzh.fx.xserver.resource.XColormap;
 import cn.oyzh.fx.xserver.resource.XProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public final class XWindow extends XResource {
 
-    private static final Logger log = LoggerFactory.getLogger(XWindow.class);
 
     // window classes
     public static final int COPY_FROM_PARENT = 0;
@@ -380,7 +378,7 @@ public final class XWindow extends XResource {
             // but this is where the 17 GB allocation of A29 would come from, and a warning in the
             // log is worth more than an OutOfMemoryError with no explanation.
             warnedAboutStore = true;
-            log.warn("0x{} is {}x{} and keeps no pixels of its own (over the {} pixel budget), so"
+            JulLog.warn("0x{} is {}x{} and keeps no pixels of its own (over the {} pixel budget), so"
                             + " this allocation is unbounded - see A29 in docs/backlog.md",
                     Integer.toHexString(id()), width(), height(), MAX_STORE_PIXELS);
         }

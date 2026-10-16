@@ -32,8 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Dimension;
 import java.awt.MouseInfo;
@@ -63,7 +62,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class JavaFxBackend implements DisplayBackend {
 
-    private static final Logger log = LoggerFactory.getLogger(JavaFxBackend.class);
 
     static {
         // **The window's own title bar is a preview feature of JavaFX 27** (`StageStyle.EXTENDED`
@@ -359,7 +357,7 @@ public final class JavaFxBackend implements DisplayBackend {
             throw e;
         }
         javafx.stage.Screen display = javafx.stage.Screen.getPrimary();
-        log.info("javafx window {}x{} for display :{}, on a {}x{} display at scale {}x{}",
+        JulLog.info("javafx window {}x{} for display :{}, on a {}x{} display at scale {}x{}",
                 width, height, displayNumber, display.getBounds().getWidth(),
                 display.getBounds().getHeight(), display.getOutputScaleX(), display.getOutputScaleY());
     }
@@ -459,8 +457,8 @@ public final class JavaFxBackend implements DisplayBackend {
                 // title bar at a time. It was measured when the window was opened, where it is known
                 // to fit its content, and it does not change while the window lives.
                 sizeFrameToContent();
-                if (log.isDebugEnabled()) {
-                    log.debug("window sized to {}x{} for content {}x{}",
+                if (JulLog.isDebugEnabled()) {
+                    JulLog.debug("window sized to {}x{} for content {}x{}",
                             open.getWidth(), open.getHeight(), viewport.width, viewport.height);
                 }
                 keepOnScreen();
@@ -518,10 +516,10 @@ public final class JavaFxBackend implements DisplayBackend {
             maxClientAreaWidth = width;
             maxClientAreaHeight = height;
             applyMaxClientArea();
-            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 // How far the window may be dragged is otherwise only visible by dragging it, and a
                 // limit that is somehow too small cannot be resized out of.
-                log.debug("window may be dragged up to {}x{} of content, plus {}x{} around it",
+                JulLog.debug("window may be dragged up to {}x{} of content, plus {}x{} around it",
                         width, height, sceneBorderWidth, headerHeight() + sceneBorderHeight);
             }
         });
@@ -1089,7 +1087,7 @@ public final class JavaFxBackend implements DisplayBackend {
                 handBackPointerThenClose();
             });
         } catch (RuntimeException e) {
-            log.debug("JavaFX had already stopped", e);
+            JulLog.debug("JavaFX had already stopped", e);
         }
         // The toolkit is deliberately left running: another client's window may still be open, and
         // Platform.exit() is one-way - it would take every window with it and refuse to start again.
@@ -1105,7 +1103,7 @@ public final class JavaFxBackend implements DisplayBackend {
             // server has finished.
             runOnFxThreadAndWait(Platform::exit);
         } catch (RuntimeException e) {
-            log.debug("JavaFX had already stopped", e);
+            JulLog.debug("JavaFX had already stopped", e);
         }
     }
 
@@ -1128,7 +1126,7 @@ public final class JavaFxBackend implements DisplayBackend {
             // rather than a window stretched to cover the menu bar: it is what the system does for
             // an application that asks to fill the display, and the user can leave it the usual way.
             stage.setFullScreen(fullScreen);
-            log.debug("window is {}full screen", fullScreen ? "now " : "no longer ");
+            JulLog.debug("window is {}full screen", fullScreen ? "now " : "no longer ");
         });
     }
 
@@ -1374,7 +1372,7 @@ public final class JavaFxBackend implements DisplayBackend {
             // Logged because the two halves of a host drag fail in ways that look identical from
             // outside: the platform never reporting the drag at all, and the platform reporting it
             // and the X side not delivering it. This is the first of the two.
-            log.debug("a host drag is over the window with {} file(s); accepted={}",
+            JulLog.debug("a host drag is over the window with {} file(s); accepted={}",
                     event.getDragboard().getFiles().size(), event.getDragboard().hasFiles());
             event.consume();
         });
@@ -1385,7 +1383,7 @@ public final class JavaFxBackend implements DisplayBackend {
                 for (java.io.File file : event.getDragboard().getFiles()) {
                     paths.add(file.getAbsolutePath());
                 }
-                log.debug("the host dropped {} file(s) at {},{}", paths.size(),
+                JulLog.debug("the host dropped {} file(s) at {},{}", paths.size(),
                         screenX(event.getSceneX()), screenY(event.getSceneY()));
                 input.hostDrop(paths, screenX(event.getSceneX()), screenY(event.getSceneY()));
                 taken = true;
@@ -1398,7 +1396,7 @@ public final class JavaFxBackend implements DisplayBackend {
         // The character the input method or the dead key produced, which is not the key that was
         // pressed: JavaFX reports it here, after the platform's own composition has run.
         scene.setOnKeyTyped(event -> {
-            log.debug("key typed '{}' (code {})", event.getCharacter(), event.getCode());
+            JulLog.debug("key typed '{}' (code {})", event.getCharacter(), event.getCode());
             input.keyTyped(event.getCharacter().isEmpty() ? 0 : event.getCharacter().charAt(0));
         });
         // **An input method's result arrives at the scene's focus owner, and the platform is only
@@ -1430,7 +1428,7 @@ public final class JavaFxBackend implements DisplayBackend {
         focusParking.setManaged(false);
         focusParking.setFocusTraversable(true);
         root.getChildren().add(focusParking);
-        log.debug("input method owner: requests={} handler={} traversable={}",
+        JulLog.debug("input method owner: requests={} handler={} traversable={}",
                 content.getInputMethodRequests() != null,
                 content.getOnInputMethodTextChanged() != null, content.isFocusTraversable());
 
@@ -1475,13 +1473,13 @@ public final class JavaFxBackend implements DisplayBackend {
             // leave behind is kept out of the way for a while longer than the drag deadline.
             platformGestureUntil = System.currentTimeMillis() + 1500;
             rememberSettledFrame();
-            log.debug("platform gesture settled at {}x{}", settled.width, settled.height);
+            JulLog.debug("platform gesture settled at {}x{}", settled.width, settled.height);
             input.windowResized(settled.width, settled.height);
         });
         scene.widthProperty().addListener((observable, was, is) -> clientAreaChanged());
         scene.heightProperty().addListener((observable, was, is) -> clientAreaChanged());
         stage.maximizedProperty().addListener((observable, was, is) -> {
-            log.debug("host window maximized {} -> {} ({}x{})", was, is,
+            JulLog.debug("host window maximized {} -> {} ({}x{})", was, is,
                     contentWidth(), contentHeight());
             // **The zoom is the platform's, geometry and all, from JavaFX 27 on.** It used to be
             // replaced by a fill of this backend's own - the window set to the display's usable area,
@@ -1504,7 +1502,7 @@ public final class JavaFxBackend implements DisplayBackend {
             platformGestureUntil = System.currentTimeMillis() + 2000;
         });
         stage.fullScreenProperty().addListener((observable, was, is) -> {
-            log.debug("host window fullScreen {} -> {}", was, is);
+            JulLog.debug("host window fullScreen {} -> {}", was, is);
             fullScreenChangedAt = System.currentTimeMillis();
             // Whatever edge a drag pulled before the window went full screen, and wherever the window
             // stood, has nothing to do with where it comes back to: the Space puts it at the top left
@@ -1583,7 +1581,7 @@ public final class JavaFxBackend implements DisplayBackend {
                 }
                 content.requestFocus();
             }
-            log.debug("stage focused {} -> {}, input method owner is {} (was {})", wasFocused, focused,
+            JulLog.debug("stage focused {} -> {}, input method owner is {} (was {})", wasFocused, focused,
                     scene.getFocusOwner(), ownerBefore);
         });
         stage.setOnCloseRequest(event -> {
@@ -1691,7 +1689,7 @@ public final class JavaFxBackend implements DisplayBackend {
             // One line per change of the decision, which is the whole of what a pointer that is not
             // where it should be leaves behind: whether it was hidden or handed back, and the three
             // things that decide it.
-            log.debug("host pointer {}: over the client's page={}, application active={}, idle={}",
+            JulLog.debug("host pointer {}: over the client's page={}, application active={}, idle={}",
                     wantHidden ? "hidden" : "handed back", pointerOverWindow, applicationActive(),
                     idle);
             cursorHidden = wantHidden;
@@ -1881,7 +1879,7 @@ public final class JavaFxBackend implements DisplayBackend {
         startPulseProbe();
         placeOnScreen(windowSize.width, windowSize.height);
         rememberSettledFrame();
-        log.debug("window shown ({}x{})", windowSize.width, windowSize.height);
+        JulLog.debug("window shown ({}x{})", windowSize.width, windowSize.height);
     }
 
     /** Takes the window off the screen without closing it. Runs on the FX thread. */
@@ -1892,7 +1890,7 @@ public final class JavaFxBackend implements DisplayBackend {
         shown = false;
         stage.hide();
         releaseHostCursor();
-        log.debug("window hidden: nothing to show in it");
+        JulLog.debug("window hidden: nothing to show in it");
     }
 
     /**
@@ -1923,7 +1921,7 @@ public final class JavaFxBackend implements DisplayBackend {
      * reading it: what it reports is the rate the window was being presented at anyway.
      */
     private void startPulseProbe() {
-        if (!log.isDebugEnabled()) {
+        if (!JulLog.isDebugEnabled()) {
             return;
         }
         long[] last = {System.nanoTime()};
@@ -1934,8 +1932,8 @@ public final class JavaFxBackend implements DisplayBackend {
             public void handle(long now) {
                 total[0] += now - last[0];
                 last[0] = now;
-                if (log.isDebugEnabled() && ++count[0] % 120 == 0) {
-                    log.debug("pulse {} frames, {} ms/frame, {} fps", count[0],
+                if (JulLog.isDebugEnabled() && ++count[0] % 120 == 0) {
+                    JulLog.debug("pulse {} frames, {} ms/frame, {} fps", count[0],
                             total[0] / 1_000_000.0 / count[0], 1e9 / (total[0] / (double) count[0]));
                 }
             }
@@ -2070,7 +2068,7 @@ public final class JavaFxBackend implements DisplayBackend {
             pb.getBuffer().rewind();
             return new Rectangle2D(damage.x, damage.y, damage.width, damage.height);
         });
-        if (System.getProperty("xserver.dumpFrame") != null) {
+        if (System.getProperty("fx-xserver.dumpFrame") != null) {
             scheduleDump();
         }
         long tempStart = System.nanoTime();
@@ -2080,8 +2078,8 @@ public final class JavaFxBackend implements DisplayBackend {
         drawCursor(cursor);
         BLIT_NANOS.addAndGet(System.nanoTime() - tempStart);
         long frames = FRAMES.incrementAndGet();
-        if (log.isDebugEnabled() && frames % 120 == 0) {
-            log.debug("{} frames presented, {} ms per frame blitted", frames,
+        if (JulLog.isDebugEnabled() && frames % 120 == 0) {
+            JulLog.debug("{} frames presented, {} ms per frame blitted", frames,
                     BLIT_NANOS.get() / 1_000_000.0 / frames);
         }
     }
@@ -2164,7 +2162,7 @@ public final class JavaFxBackend implements DisplayBackend {
     }
 
     /**
-     * Diagnostic aid: with {@code -Dxserver.dumpFrame=<prefix>} the window's image and the
+     * Diagnostic aid: with {@code -Dfx-xserver.dumpFrame=<prefix>} the window's image and the
      * framebuffer behind it are written to PNG files once a second.
      *
      * <p>This exists because a window that shows nothing is otherwise hard to tell apart from a
@@ -2175,7 +2173,7 @@ public final class JavaFxBackend implements DisplayBackend {
         if (!dumpScheduled.compareAndSet(false, true)) {
             return;
         }
-        String prefix = System.getProperty("xserver.dumpFrame");
+        String prefix = System.getProperty("fx-xserver.dumpFrame");
         Thread thread = new Thread(() -> {
             for (int i = 0; i < DUMP_FRAMES; i++) {
                 try {
@@ -2190,16 +2188,16 @@ public final class JavaFxBackend implements DisplayBackend {
                     dumpScene(prefix + "-scene-" + frame + ".png");
                 });
             }
-        }, "xserver-frame-dump");
+        }, "fx-xserver-frame-dump");
         thread.setDaemon(true);
         thread.start();
     }
 
     /**
      * How many frames the dump captures, one a second. A client that takes a while to paint its
-     * first frame can miss a thirty second window, so {@code -Dxserver.dumpFrames} lengthens it.
+     * first frame can miss a thirty second window, so {@code -Dfx-xserver.dumpFrames} lengthens it.
      */
-    private static final int DUMP_FRAMES = Integer.getInteger("xserver.dumpFrames", 30);
+    private static final int DUMP_FRAMES = Integer.getInteger("fx-xserver.dumpFrames", 30);
 
     private final AtomicBoolean dumpScheduled = new AtomicBoolean();
 
@@ -2301,7 +2299,7 @@ public final class JavaFxBackend implements DisplayBackend {
         try {
             javax.imageio.ImageIO.write(image, "png", new java.io.File(path));
         } catch (Exception e) {
-            log.warn("frame dump to {} failed", path, e);
+            JulLog.warn("frame dump to " + path + " failed", e);
         }
     }
 
@@ -2318,8 +2316,8 @@ public final class JavaFxBackend implements DisplayBackend {
      * is logged too, by {@code InputState} and the request log; this is the other end of the wire.
      */
     private void hostEvent(String what, MouseEvent event) {
-        if (log.isDebugEnabled()) {
-            log.debug("host window {} {} at scene ({},{}), stage focused {}", what, event.getButton(),
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("host window {} {} at scene ({},{}), stage focused {}", what, event.getButton(),
                     event.getX(), event.getY(), stage != null && stage.isFocused());
         }
     }
@@ -2510,7 +2508,7 @@ public final class JavaFxBackend implements DisplayBackend {
         for (javafx.scene.input.InputMethodTextRun run : event.getComposed()) {
             composed.append(run.getText());
         }
-        log.debug("input method: composed='{}' committed='{}'", composed, committed);
+        JulLog.debug("input method: composed='{}' committed='{}'", composed, committed);
         // **What the client is being shown as the pre-edit comes off first.** The composition is a
         // conversation between the platform and the person; the application on the other side of this
         // server never sees it - the composition window is the platform's own - so the only way the
@@ -2523,7 +2521,7 @@ public final class JavaFxBackend implements DisplayBackend {
         }
         preEditLength = 0;
         if (!committed.isEmpty()) {
-            log.debug("input method committed {} characters", committed.length());
+            JulLog.debug("input method committed {} characters", committed.length());
             for (int i = 0; i < committed.length(); i++) {
                 input.inputMethodTyped(committed.charAt(i));
             }
@@ -2622,11 +2620,11 @@ public final class JavaFxBackend implements DisplayBackend {
                     new javafx.scene.transform.Scale(viewScale, viewScale, 0, 0));
         }
         if (viewScale < 1) {
-            log.info("this display cannot show the whole screen: it is drawn at {}% of its size, "
+            JulLog.info("this display cannot show the whole screen: it is drawn at {}% of its size, "
                             + "because a window bigger than the display is clipped by it and the "
                             + "rest of it could not be reached", Math.round(viewScale * 100));
         } else {
-            log.info("the whole screen fits the display again: it is drawn at its own size");
+            JulLog.info("the whole screen fits the display again: it is drawn at its own size");
         }
     }
 

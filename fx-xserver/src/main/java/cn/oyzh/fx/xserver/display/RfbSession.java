@@ -1,8 +1,7 @@
 package cn.oyzh.fx.xserver.display;
 
 import cn.oyzh.fx.xserver.input.Keymap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.io.BufferedInputStream;
@@ -79,7 +78,6 @@ final class RfbSession implements Runnable {
         void close();
     }
 
-    private static final Logger log = LoggerFactory.getLogger(RfbSession.class);
 
     /** What this server speaks; a client that asks for less is answered in its own terms. */
     private static final int MAJOR = 3;
@@ -314,18 +312,18 @@ final class RfbSession implements Runnable {
     public void run() {
         try {
             handshake();
-            log.info("VNC client {} connected: {}x{} at {}bpp, {}", peer(), screen.width(),
+            JulLog.info("VNC client {} connected: {}x{} at {}bpp, {}", peer(), screen.width(),
                     screen.height(), format.bitsPerPixel,
                     desktopSizeWanted ? "desktop size supported" : "no desktop size");
             serve();
         } catch (EOFException e) {
-            log.debug("VNC client {} went away", peer());
+            JulLog.debug("VNC client {} went away", peer());
         } catch (IOException e) {
             if (running) {
-                log.debug("VNC client {} failed", peer(), e);
+                JulLog.debug("VNC client " + peer() + " failed", e);
             }
         } catch (RuntimeException e) {
-            log.warn("VNC client {} failed", peer(), e);
+            JulLog.warn("VNC client " + peer() + " failed", e);
         } finally {
             close();
         }
@@ -364,10 +362,10 @@ final class RfbSession implements Runnable {
      */
     void setCursor(CursorSprite sprite) {
         if (sprite == null) {
-            log.debug("VNC client {} has no pointer sprite yet", peer());
+            JulLog.debug("VNC client {} has no pointer sprite yet", peer());
             return;
         }
-        log.debug("VNC client {} was handed a {}x{} sprite", peer(), sprite.width(),
+        JulLog.debug("VNC client {} was handed a {}x{} sprite", peer(), sprite.width(),
                 sprite.height());
         synchronized (lock) {
             if (sprite.pixels() != lastCursorPixels) {
@@ -505,7 +503,7 @@ final class RfbSession implements Runnable {
         try {
             return in.read();
         } catch (java.net.SocketTimeoutException noInitYet) {
-            log.debug("this client waited for a SecurityResult: it is an Apple one (RFB 3.3 without"
+            JulLog.debug("this client waited for a SecurityResult: it is an Apple one (RFB 3.3 without"
                     + " the ClientInit that the specification sends)");
             writeInt(0);                             // SecurityResult: OK
             out.flush();
@@ -538,7 +536,7 @@ final class RfbSession implements Runnable {
         byte[] expected = encryptChallenge(challenge, password);
         boolean ok = java.security.MessageDigest.isEqual(expected, response);
         if (!ok) {
-            log.info("VNC client {} gave the wrong password", peer());
+            JulLog.info("VNC client {} gave the wrong password", peer());
         }
         return ok;
     }
@@ -707,7 +705,7 @@ final class RfbSession implements Runnable {
         format.redShift = redShift;
         format.greenShift = greenShift;
         format.blueShift = blueShift;
-        log.debug("VNC client {} asked for {}bpp {}, r/g/b max {}/{}/{} at shifts {}/{}/{}", peer(),
+        JulLog.debug("VNC client {} asked for {}bpp {}, r/g/b max {}/{}/{} at shifts {}/{}/{}", peer(),
                 bitsPerPixel, bigEndian != 0 ? "big endian" : "little endian", redMax, greenMax,
                 blueMax, redShift, greenShift, blueShift);
     }
@@ -743,7 +741,7 @@ final class RfbSession implements Runnable {
         // encoding the client listed, and this list is what decides between lossless ZRLE and Tight's
         // JPEG method - which is the difference a user sees as "blurrier than x11vnc". A negative
         // number is one of the JPEG quality pseudo-encodings: -23 is the best a client can ask for.
-        log.debug("VNC client {} offers [{}]: zrle={} tight={} jpegQuality={} cursor={} desktopSize={}",
+        JulLog.debug("VNC client {} offers [{}]: zrle={} tight={} jpegQuality={} cursor={} desktopSize={}",
                 peer(), offered, zrleWanted, tightWanted, jpegQuality, cursorWanted, desktopSizeWanted);
         synchronized (lock) {
             queueCursor();
@@ -848,7 +846,7 @@ final class RfbSession implements Runnable {
         int keysym = readInt();
         int keycode = Keymap.keycodeForKeysym(keysym);
         if (keycode == 0) {
-            log.debug("VNC client {} pressed keysym 0x{}: no keycode carries it, and RFB has no"
+            JulLog.debug("VNC client {} pressed keysym 0x{}: no keycode carries it, and RFB has no"
                     + " message for a character", peer(), Integer.toHexString(keysym));
             return;
         }
@@ -896,11 +894,11 @@ final class RfbSession implements Runnable {
         String copied = new String(text, java.nio.charset.StandardCharsets.UTF_8);
         java.util.function.Consumer<String> sink = backend.clipboardSink();
         if (sink == null) {
-            log.debug("VNC client {} copied {} byte(s), and this server has no clipboard to put"
+            JulLog.debug("VNC client {} copied {} byte(s), and this server has no clipboard to put"
                     + " them in", peer(), text.length);
             return;
         }
-        log.debug("VNC client {} copied {} byte(s) into the X clipboard", peer(), text.length);
+        JulLog.debug("VNC client {} copied {} byte(s) into the X clipboard", peer(), text.length);
         sink.accept(copied);
     }
 
@@ -971,7 +969,7 @@ final class RfbSession implements Runnable {
         out.write(image);
         out.write(mask);
         out.flush();
-        log.debug("VNC client {} sent a {}x{} cursor, hotspot {},{}", peer(), width, height,
+        JulLog.debug("VNC client {} sent a {}x{} cursor, hotspot {},{}", peer(), width, height,
                 sprite.hotX(), sprite.hotY());
     }
 
@@ -1000,7 +998,7 @@ final class RfbSession implements Runnable {
         writeU16(screen.height());
         writeInt(ENCODING_DESKTOP_SIZE);
         out.flush();
-        log.debug("VNC client {} told the screen is now {}x{}", peer(), screen.width(),
+        JulLog.debug("VNC client {} told the screen is now {}x{}", peer(), screen.width(),
                 screen.height());
     }
 
@@ -1051,7 +1049,7 @@ final class RfbSession implements Runnable {
                 byte[] jpeg = TightEncoder.jpeg(argb, width, height, jpegQuality / 9f * 0.55f + 0.25f);
                 // Worth a line: a lossy rectangle is the one thing in this encoder a user can see,
                 // and "why is the picture soft" is answered by how many of these went out.
-                log.debug("VNC client {}: {}x{}+{}+{} as Tight/JPEG quality {} ({}/9), {} bytes",
+                JulLog.debug("VNC client {}: {}x{}+{}+{} as Tight/JPEG quality {} ({}/9), {} bytes",
                         peer(), width, height, rectangle.x, rectangle.y,
                         String.format("%.2f", jpegQuality / 9f * 0.55f + 0.25f), jpegQuality,
                         jpeg.length);

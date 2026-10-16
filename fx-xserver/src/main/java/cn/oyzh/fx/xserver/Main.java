@@ -1,7 +1,9 @@
 package cn.oyzh.fx.xserver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLevel;
+import cn.oyzh.common.log.JulLog;
+
+import java.io.IOException;
 
 /**
  * Command line entry point.
@@ -12,44 +14,25 @@ import org.slf4j.LoggerFactory;
  */
 public final class Main {
 
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
-
     private Main() {
     }
 
-    public static void main(String[] args) {
-        ServerOptions options;
-        try {
-            options = ServerOptions.parse(args);
-        } catch (IllegalArgumentException e) {
-            System.err.println("xserver: " + e.getMessage());
-//            System.exit(2);
-            return;
-        }
+    public static void main(String[] args) throws IOException {
+        ServerOptions options = ServerOptions.parse(args);
 
         options.fitToDisplay();
 
         if (options.logRequests()) {
-            // The request log is debug level, so the flag turns it on rather than leaving it to
-            // the logging configuration.
-            var logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("cn.oyzh.fx.xserver");
-            logger.setLevel(ch.qos.logback.classic.Level.DEBUG);
+            JulLog.setLevel(JulLevel.DEBUG);
         }
 
         XServer server = new XServer(options);
-        try {
-            server.start();
-        } catch (Exception e) {
-            log.error("failed to start", e);
-            System.err.println("xserver: " + e.getMessage());
-//            System.exit(1);
-            return;
-        }
+        server.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             server.stop();
-            System.out.println("xserver: display :" + options.displayNumber() + " stopped");
-        }, "xserver-shutdown"));
+            JulLog.info("fx-xserver: display :" + options.displayNumber() + " stopped");
+        }, "fx-xserver-shutdown"));
 
         // The display loop runs on its own thread - and it is the server's life, so this one waits
         // for it and then ends the process. Returning from main is *not* enough: the JavaFX toolkit's

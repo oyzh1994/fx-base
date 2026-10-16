@@ -171,7 +171,7 @@ public final class ResourceHandlers {
      */
     private final cn.oyzh.fx.xserver.resource.FontPath fontPath =
             new cn.oyzh.fx.xserver.resource.FontPath(
-                    java.nio.file.Path.of(System.getProperty("user.home", "."), ".xserver", "fonts")
+                java.nio.file.Path.of(System.getProperty("user.home", "."), ".fx-xserver", "fonts")
                             .toString());
 
     public ResourceHandlers(XServer server) {

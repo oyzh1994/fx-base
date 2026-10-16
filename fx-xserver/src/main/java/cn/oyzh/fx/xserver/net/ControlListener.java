@@ -1,8 +1,7 @@
 package cn.oyzh.fx.xserver.net;
 
 import cn.oyzh.fx.xserver.XServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +42,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class ControlListener {
 
-    private static final Logger log = LoggerFactory.getLogger(ControlListener.class);
 
     private final XServer server;
     private final int port;
@@ -66,7 +64,7 @@ public final class ControlListener {
         thread = new Thread(this::accept, "xserver-control");
         thread.setDaemon(true);
         thread.start();
-        log.info("control port on 127.0.0.1:{}: attach, detach, status", bound.getLocalPort());
+        JulLog.info("control port on 127.0.0.1:{}: attach, detach, status", bound.getLocalPort());
     }
 
     /** The port actually bound, which is what a test that asked for port 0 needs to know. */
@@ -82,7 +80,7 @@ public final class ControlListener {
             try {
                 bound.close();
             } catch (IOException e) {
-                log.debug("closing the control socket", e);
+                JulLog.debug("closing the control socket", e);
             }
         }
         Thread open = thread;
@@ -97,7 +95,7 @@ public final class ControlListener {
                 answer(client);
             } catch (IOException e) {
                 if (running.get()) {
-                    log.debug("control connection failed", e);
+                    JulLog.debug("control connection failed", e);
                 }
             }
         }

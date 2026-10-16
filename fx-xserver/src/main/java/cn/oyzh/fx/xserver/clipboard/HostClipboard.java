@@ -1,7 +1,6 @@
 package cn.oyzh.fx.xserver.clipboard;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
@@ -27,7 +26,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
  */
 public final class HostClipboard {
 
-    private static final Logger log = LoggerFactory.getLogger(HostClipboard.class);
 
     /** Null when there is no clipboard to talk to: no display, or the platform refused. */
     private final Clipboard clipboard;
@@ -52,7 +50,7 @@ public final class HostClipboard {
      */
     public static HostClipboard open() {
         if (GraphicsEnvironment.isHeadless()) {
-            log.debug("no host clipboard: this JVM is headless");
+            JulLog.debug("no host clipboard: this JVM is headless");
             return new HostClipboard(null);
         }
         try {
@@ -60,7 +58,7 @@ public final class HostClipboard {
         } catch (RuntimeException | Error e) {
             // A toolkit that cannot start is not this server's problem to solve; it just means the
             // bridge has nothing to bridge to.
-            log.info("no host clipboard: {}", e.toString());
+            JulLog.info("no host clipboard: {}", e.toString());
             return new HostClipboard(null);
         }
     }
@@ -89,7 +87,7 @@ public final class HostClipboard {
             // A clipboard that advertises text and then cannot produce it - a source application
             // that has gone away mid-transfer, typically. Not an error worth breaking the bridge
             // over; the next poll asks again.
-            log.debug("the host clipboard offered no text: {}", e.toString());
+            JulLog.debug("the host clipboard offered no text: {}", e.toString());
             return null;
         }
     }

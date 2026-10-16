@@ -8,7 +8,7 @@ import java.io.File;
  * Prints the colour of one pixel of a PNG, so a screenshot can be checked without eyes.
  *
  * <p>Usage: {@code Pixel file.png x y}. Part of the verification kit ({@code docs/backlog.md} §1);
- * the images it reads are the ones the server dumps ({@code -Dxserver.dumpFrame}) or the ones
+ * the images it reads are the ones the server dumps ({@code -Dfx-xserver.dumpFrame}) or the ones
  * {@link Xwd} converts from an {@code xwd} capture.
  */
 public class Pixel {

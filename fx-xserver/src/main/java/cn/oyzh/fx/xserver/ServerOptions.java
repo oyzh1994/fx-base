@@ -268,7 +268,7 @@ public final class ServerOptions {
                 default -> positional.add(arg);
             }
         }
-        // bare form: "xserver :2"
+        // bare form: "fx-xserver :2"
         for (String value : positional) {
             if (value.startsWith(":")) {
                 options.displayNumber = parseDisplay(value);
@@ -327,9 +327,9 @@ public final class ServerOptions {
 
     private static void printUsage() {
         System.out.println("""
-                xserver - a modern X11 display server
+                fx-xserver - a modern X11 display server
 
-                Usage: xserver [display] [options]
+                Usage: fx-xserver [display] [options]
 
                   --display :N          display number (default :1)
                   --geometry WxH[xD]    root window size (default 1280x800x24)

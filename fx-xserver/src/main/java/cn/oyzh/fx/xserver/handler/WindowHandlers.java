@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.handler;
 
+import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.xproto.ChangeSaveSet;
 import com.github.moaxcp.x11.protocol.xproto.ChangeWindowAttributes;
 import com.github.moaxcp.x11.protocol.xproto.Circulate;
@@ -73,8 +74,6 @@ import java.util.Map;
  */
 public final class WindowHandlers {
 
-    private static final org.slf4j.Logger log =
-            org.slf4j.LoggerFactory.getLogger(WindowHandlers.class);
 
     /**
      * How many Exposes one change may put in a series before it is sent as its bounding rectangle.
@@ -277,10 +276,10 @@ public final class WindowHandlers {
             if ((eventMask & ~EventMasks.ALL) != 0) {
                 throw ProtocolException.badValue(eventMask);
             }
-            if (log.isDebugEnabled()) {
+            if (JulLog.isDebugEnabled()) {
                 // Which events a client asked for is the first thing to check when one it needs never
                 // arrives, and the request itself says nothing about it.
-                log.debug("{} selected 0x{} on 0x{}", client.peer(),
+                JulLog.debug("{} selected 0x{} on 0x{}", client.peer(),
                         Integer.toHexString(eventMask), Integer.toHexString(window.id()));
             }
             if (window.owner() == client) {
@@ -840,7 +839,7 @@ public final class WindowHandlers {
         if (gravity == FORGET_GRAVITY) {
             paintBackground(window, windowRect);
             deliverExpose(window, windowRect);
-            log.debug("bit gravity Forget on 0x{}: the contents are thrown away",
+            JulLog.debug("bit gravity Forget on 0x{}: the contents are thrown away",
                     Integer.toHexString(window.id()));
             return;
         }
@@ -883,8 +882,8 @@ public final class WindowHandlers {
             paintBackground(window, area);
         }
         deliverExpose(window, left);
-        if (log.isDebugEnabled()) {
-            log.debug("bit gravity {} on 0x{}: the contents moved by {},{}",
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("bit gravity {} on 0x{}: the contents moved by {},{}",
                     gravity, Integer.toHexString(window.id()), shiftX, shiftY);
         }
     }
@@ -909,7 +908,7 @@ public final class WindowHandlers {
         if (gravity == FORGET_GRAVITY) {
             paintBackground(window, window.absoluteBounds());
             deliverExpose(window, window.absoluteBounds());
-            log.debug("bit gravity Forget on 0x{}: the contents are thrown away",
+            JulLog.debug("bit gravity Forget on 0x{}: the contents are thrown away",
                     Integer.toHexString(window.id()));
             return;
         }
@@ -953,8 +952,8 @@ public final class WindowHandlers {
         }
         deliverExpose(window, left);
         server.compositeOwnPixels(window, newBounds);
-        if (log.isDebugEnabled()) {
-            log.debug("bit gravity {} on 0x{}: the contents moved by {},{} in its own store",
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("bit gravity {} on 0x{}: the contents moved by {},{} in its own store",
                     gravity, Integer.toHexString(window.id()), shiftX, shiftY);
         }
     }
@@ -1003,8 +1002,8 @@ public final class WindowHandlers {
             }
             List<Rectangle> was = coveredRegionOf(child);
             child.setPosition(x, y);
-            if (log.isDebugEnabled()) {
-                log.debug("child 0x{} moved to {},{} by win gravity {}: the parent grew by {},{}",
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("child 0x{} moved to {},{} by win gravity {}: the parent grew by {},{}",
                         Integer.toHexString(child.id()), x, y, gravity, deltaWidth, deltaHeight);
             }
             visibilityChanged(child, was, coveredRegionOf(child), true, false);

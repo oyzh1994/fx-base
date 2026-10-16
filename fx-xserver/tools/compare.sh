@@ -22,21 +22,26 @@
 # Before believing any difference, remember the two that are by design (rule 4): this server's root
 # is #E8E8E8 where Xvfb's is black, and it draws a window border that a WM-less real server does not.
 #
-#   CLIENT=/root/EasyShell.AppImage     what to run on the VM (default: the termora AppImage)
+#   CLIENT=/path/to/client.AppImage     required command or AppImage to run on the VM
 #   GESTURE_WAIT=1200                   how long to wait after the gesture, before capturing (ms)
 #   PARK="2 2"                          where to park the pointer before capturing, on both sides
 #   NAME=run1                           labels the files under /tmp/xs-compare/
 set -e
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-VM="192.168.22.152"
+VM="${FX_XSERVER_VM_HOST:-}"
 VM_DISPLAY_PORT=6098                        # the VM's Xvfb :98
 DISPLAY_NUMBER="${DISPLAY_NUMBER:-95}"
-HOST_IP="$(ipconfig getifaddr bridge101 2>/dev/null || echo 192.168.22.1)"
+HOST_IP="${FX_XSERVER_HOST_IP:-}"
 GESTURE_WAIT="${GESTURE_WAIT:-1200}"
 PARK="${PARK:-2 2}"
 NAME="${NAME:-compare}"
 OUT="/tmp/xs-compare"
-MVN="${MVN:-/Users/oyzh/Documents/Tools/apache-maven-3.9.11/bin/mvn}"
+MVN="${MVN:-mvn}"
+
+if [ -z "$VM" ] || [ -z "$HOST_IP" ]; then
+    echo "set FX_XSERVER_VM_HOST and FX_XSERVER_HOST_IP for the verification bed" >&2
+    exit 2
+fi
 
 STEPS=""
 if [ "${1:-}" = "--" ]; then
@@ -50,7 +55,7 @@ CP="target/test-classes:target/classes:$(cat "$HERE/target/tools-cp.txt")"
 drive() {                                   # drive <host> <port> <steps...>
     host="$1"; port="$2"; shift 2
     # shellcheck disable=SC2086
-    (cd "$HERE" && java -cp "$CP" io.github.oyzh1994.xserver.tools.Drive "$host" "$port" $STEPS \
+    (cd "$HERE" && java -cp "$CP" cn.oyzh.fx.xserver.tools.Drive "$host" "$port" $STEPS \
         "W $GESTURE_WAIT" "M $PARK")
 }
 
@@ -73,11 +78,11 @@ drive "$VM" "$VM_DISPLAY_PORT"
 capture ":98" "$NAME-xvfb.xwd"
 
 echo "== diff =="
-(cd "$HERE" && java -cp "$CP" io.github.oyzh1994.xserver.tools.Xwd png "$OUT/$NAME-here.xwd" \
-    "$OUT/$NAME-here.png" >/dev/null && java -cp "$CP" io.github.oyzh1994.xserver.tools.Xwd png \
+(cd "$HERE" && java -cp "$CP" cn.oyzh.fx.xserver.tools.Xwd png "$OUT/$NAME-here.xwd" \
+    "$OUT/$NAME-here.png" >/dev/null && java -cp "$CP" cn.oyzh.fx.xserver.tools.Xwd png \
     "$OUT/$NAME-xvfb.xwd" "$OUT/$NAME-xvfb.png" >/dev/null)
 echo "PNGs: $OUT/$NAME-here.png  $OUT/$NAME-xvfb.png"
-(cd "$HERE" && java -cp "$CP" io.github.oyzh1994.xserver.tools.Xwd diff "$OUT/$NAME-xvfb.xwd" \
+(cd "$HERE" && java -cp "$CP" cn.oyzh.fx.xserver.tools.Xwd diff "$OUT/$NAME-xvfb.xwd" \
     "$OUT/$NAME-here.xwd")
-(cd "$HERE" && java -cp "$CP" io.github.oyzh1994.xserver.tools.Blocks "$OUT/$NAME-xvfb.xwd" \
+(cd "$HERE" && java -cp "$CP" cn.oyzh.fx.xserver.tools.Blocks "$OUT/$NAME-xvfb.xwd" \
     "$OUT/$NAME-here.xwd" 40)

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.handler;
 
+import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.xproto.AllowEvents;
 import com.github.moaxcp.x11.protocol.xproto.ChangeActivePointerGrab;
 import com.github.moaxcp.x11.protocol.xproto.ChangeKeyboardMapping;
@@ -56,8 +57,6 @@ import java.util.Set;
  */
 public final class InputHandlers {
 
-    private static final org.slf4j.Logger log =
-            org.slf4j.LoggerFactory.getLogger(InputHandlers.class);
 
     /** Grab status values reported to clients. */
     private static final byte GRAB_SUCCESS = InputState.GRAB_SUCCESS;
@@ -256,11 +255,11 @@ public final class InputHandlers {
                 .sequenceNumber(client.sequenceNumber())
                 .status(status)
                 .build());
-        if (log.isDebugEnabled()) {
+        if (JulLog.isDebugEnabled()) {
             // A grab decides which window every later button and motion event is reported against,
             // which is otherwise invisible from the client's side: a menu that ignores clicks looks
             // exactly like a server that delivered them somewhere else.
-            log.debug("grab pointer on 0x{} ownerEvents={} mask=0x{} confining={} -> {}",
+            JulLog.debug("grab pointer on 0x{} ownerEvents={} mask=0x{} confining={} -> {}",
                     Integer.toHexString(window.id()), r.isOwnerEvents(),
                     Integer.toHexString(Short.toUnsignedInt(r.getEventMask())),
                     r.getConfineTo() == 0 ? "no" : "0x" + Integer.toHexString(r.getConfineTo()),
@@ -277,8 +276,8 @@ public final class InputHandlers {
     public void ungrabPointer(ClientConnection client, UngrabPointer r) {
         InputState.Grab grab = server.inputFor(client).pointerGrab();
         if (grab != null && grab.client() == client) {
-            if (log.isDebugEnabled()) {
-                log.debug("ungrab pointer held on 0x{}", Integer.toHexString(grab.window().id()));
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("ungrab pointer held on 0x{}", Integer.toHexString(grab.window().id()));
             }
             server.inputFor(client).setPointerGrab(null);
         }
@@ -517,7 +516,7 @@ public final class InputHandlers {
             System.arraycopy(keysyms, i * perKeycode, row, 0, perKeycode);
             Keymap.assign(first + i, row);
         }
-        log.debug("client mapping change: first={} count={} perKeycode={} keysyms={}", first, count,
+        JulLog.debug("client mapping change: first={} count={} perKeycode={} keysyms={}", first, count,
                 perKeycode, keysyms);
         // Clients are told the mapping changed so they can refresh their caches.
         server.broadcastMappingNotify((byte) 0, (byte) first, (byte) count);

@@ -1,18 +1,19 @@
 package cn.oyzh.fx.xserver.client;
 
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
+import cn.oyzh.common.log.JulFormatter;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.xserver.ServerOptions;
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.test.RawXClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,25 +37,53 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class RequestLogTest {
 
+    private static final JulFormatter FORMATTER = new JulFormatter() {
+        @Override
+        public String format(LogRecord record) {
+            return formatMessage(record);
+        }
+
+        @Override
+        public String formatThrow(String message, Throwable throwable, String sourceClassName,
+                                  String sourceMethodName, int lineNumber) {
+            return message + System.lineSeparator() + throwable;
+        }
+    };
+
     /** A display number nothing else in the suite uses; the server listens on TCP 6000 + it. */
     private static final int DISPLAY = 72;
 
     private static XServer server;
-    private static ListAppender<ILoggingEvent> logLines;
+    private static Handler logLines;
+    private static final List<String> logMessages = new CopyOnWriteArrayList<>();
 
     @BeforeAll
     static void startServer() throws IOException {
         server = new XServer(ServerOptions.parse(new String[]{"--display", ":" + DISPLAY,
                 "--backend", "headless", "--no-unix", "--single-window"}));
         server.start();
-        logLines = new ListAppender<>();
-        logLines.start();
-        ((Logger) LoggerFactory.getLogger(XServer.class)).addAppender(logLines);
+        logLines = new Handler() {
+            @Override
+            public void publish(LogRecord record) {
+                if (isLoggable(record)) {
+                    logMessages.add(FORMATTER.format(record).trim());
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() {
+            }
+        };
+        JulLog.getLogger().addHandler(logLines);
     }
 
     @AfterAll
     static void stopServer() {
-        ((Logger) LoggerFactory.getLogger(XServer.class)).detachAppender(logLines);
+        JulLog.getLogger().removeHandler(logLines);
         if (server != null) {
             server.stop();
         }
@@ -76,7 +105,7 @@ class RequestLogTest {
             // A core request that succeeds, immediately before: it is the one the old code named.
             client.internAtom("EDID");
 
-            logLines.list.clear();
+            logMessages.clear();
             client.sendRequest(getProviderInfo(randr));
             client.flush();
             client.readEvent();                     // the error, which is what makes it "refused"
@@ -92,8 +121,7 @@ class RequestLogTest {
 
     /** The log lines that contain a marker, so a failure prints what was written. */
     private static List<String> lines(String marker) {
-        return logLines.list.stream()
-                .map(ILoggingEvent::getFormattedMessage)
+        return logMessages.stream()
                 .filter(message -> message.contains(marker))
                 .toList();
     }

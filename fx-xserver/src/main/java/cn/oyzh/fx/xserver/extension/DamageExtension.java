@@ -19,8 +19,7 @@ import cn.oyzh.fx.xserver.resource.ShapeState;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -86,7 +85,6 @@ public final class DamageExtension implements Extension {
     /** Resource class of a damage object, shared by every one this extension creates. */
     private static final int WATCHER_CLASS = XResource.newExtensionClass();
 
-    private static final Logger log = LoggerFactory.getLogger(DamageExtension.class);
 
     private final DamagePlugin plugin = new DamagePlugin();
 
@@ -222,8 +220,8 @@ public final class DamageExtension implements Extension {
         server.resources().add(watcher);
         byDrawable.computeIfAbsent(drawable, key -> new ArrayList<>()).add(watcher);
         watching = true;
-        if (log.isDebugEnabled()) {
-            log.debug("damage 0x{} on drawable 0x{} at level {}",
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("damage 0x{} on drawable 0x{} at level {}",
                     Integer.toHexString(watcher.id()), Integer.toHexString(drawable.id()), level);
         }
     }

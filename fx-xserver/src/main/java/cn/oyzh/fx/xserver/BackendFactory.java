@@ -6,8 +6,7 @@ import cn.oyzh.fx.xserver.display.HeadlessBackend;
 import cn.oyzh.fx.xserver.display.JavaFxBackend;
 import cn.oyzh.fx.xserver.display.SwingBackend;
 import cn.oyzh.fx.xserver.display.VncBackend;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -22,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public final class BackendFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(BackendFactory.class);
 
     /** Title for the window when the caller has none; matches the default of {@link ServerOptions}. */
     public static final String DEFAULT_TITLE = "cn/oyzh/fx/xserver";
@@ -58,8 +56,8 @@ public final class BackendFactory {
             if (java.awt.GraphicsEnvironment.isHeadless()) {
                 return headlessInstead("JavaFX is not usable (" + describe(t) + ")");
             }
-            log.warn("JavaFX is not usable ({}), falling back to the swing backend", describe(t));
-            log.debug("JavaFX startup failed", t);
+            JulLog.warn("JavaFX is not usable ({}), falling back to the swing backend", describe(t));
+            JulLog.debug("JavaFX startup failed", t);
             return new SwingBackend(title);
         }
     }
@@ -82,7 +80,7 @@ public final class BackendFactory {
      * backend, and a line saying that is what happened.
      */
     private static DisplayBackend headlessInstead(String why) {
-        log.warn("{}: nothing can be shown on this machine, so the server is running headless -"
+        JulLog.warn("{}: nothing can be shown on this machine, so the server is running headless -"
                 + " clients are served and no window is opened", why);
         return new HeadlessBackend();
     }

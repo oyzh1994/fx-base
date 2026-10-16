@@ -8,46 +8,40 @@
 #   perclient   server on :95 in the default mode, one host window per client (what a user runs)
 #   xvfb        no server here: the client runs against the VM's own Xvfb :98, the reference
 #
-# Anything else about the run - dumping frames, logging requests - goes in $XSERVER_OPTIONS, e.g.
-#   XSERVER_OPTIONS="-Dxserver.dumpFrame=/tmp/d -Dxserver.dumpFrames=3000" tools/bed.sh single
+# Anything else about the run - dumping frames, logging requests - goes in $FX_XSERVER_OPTIONS, e.g.
+#   FX_XSERVER_OPTIONS="-Dfx-xserver.dumpFrame=/tmp/d -Dfx-xserver.dumpFrames=3000" tools/bed.sh single
 #
-# The server is started from target/classes (run `mvn -o test-compile` first); the client is whatever
-# $CLIENT is, and the default is the termora AppImage the author tests with.
+# The server is started from target/classes (run `mvn -o test-compile` first). Set CLIENT to the
+# client command or AppImage to run on the verification VM.
 set -e
 MODE="${1:-single}"
 DISPLAY_NUMBER="${2:-95}"
-CLIENT="${CLIENT:-/root/termora-2.0.0-beta.16-linux-aarch64.AppImage}"
-MVN="${MVN:-/Users/oyzh/Documents/Tools/apache-maven-3.9.11/bin/mvn}"
+CLIENT="${CLIENT:-}"
+MVN="${MVN:-mvn}"
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-HOST_IP="$(ipconfig getifaddr bridge101 2>/dev/null || echo 192.168.22.1)"
+HOST_IP="${FX_XSERVER_HOST_IP:-}"
+
+if [ -z "$CLIENT" ] || [ -z "$HOST_IP" ]; then
+    echo "set CLIENT and FX_XSERVER_HOST_IP for the verification bed" >&2
+    exit 2
+fi
 
 if [ "$MODE" != "xvfb" ]; then
-    pkill -f "io.github.oyzh1994.xserver.Main --display $DISPLAY_NUMBER" 2>/dev/null || true
+    pkill -f "cn.oyzh.fx.xserver.Main --display $DISPLAY_NUMBER" 2>/dev/null || true
     sleep 1
     if [ ! -f target/tools-cp.txt ]; then
         (cd "$HERE" && "$MVN" -o -q dependency:build-classpath -Dmdep.outputFile=target/tools-cp.txt)
     fi
-    # One logback config per run: the log file is named after the display, and `append` false so a
-    # restarted run does not mix its requests with the previous one's.
+    # One JulLog file per run, named after the display. Removing it first keeps a restarted run from
+    # mixing its requests with the previous one's.
     rm -f /tmp/xs-bed-$DISPLAY_NUMBER.log
-    cat > /tmp/xs-bed-logback.xml <<XML
-<configuration>
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>/tmp/xs-bed-$DISPLAY_NUMBER.log</file>
-        <append>false</append>
-        <encoder><pattern>%d{HH:mm:ss.SSS} %-5level %logger{20} - %msg%n</pattern></encoder>
-    </appender>
-    <logger name="io.github.oyzh1994.xserver" level="DEBUG"/>
-    <root level="INFO"><appender-ref ref="file"/></root>
-</configuration>
-XML
     case "$MODE" in
         single) EXTRA="--single-window" ;;
         perclient) EXTRA="" ;;
         *) echo "unknown mode $MODE" >&2; exit 2 ;;
     esac
-    (cd "$HERE" && nohup java -Dlogback.configurationFile=/tmp/xs-bed-logback.xml $XSERVER_OPTIONS \
-        -cp "target/classes:$(cat target/tools-cp.txt)" io.github.oyzh1994.xserver.Main \
+    (cd "$HERE" && nohup java -Djullog.file=/tmp/xs-bed-$DISPLAY_NUMBER.log $FX_XSERVER_OPTIONS \
+        -cp "target/classes:$(cat target/tools-cp.txt)" cn.oyzh.fx.xserver.Main \
         --display "$DISPLAY_NUMBER" --geometry 1300x800 $EXTRA --log-requests \
         > /tmp/xs-bed-$DISPLAY_NUMBER.out 2>&1 &)
     sleep 5

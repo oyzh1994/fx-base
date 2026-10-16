@@ -12,8 +12,7 @@ import cn.oyzh.fx.xserver.event.XInputMasks;
 import cn.oyzh.fx.xserver.event.Xi2Event;
 import cn.oyzh.fx.xserver.event.Xi2RawEvent;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,7 +65,6 @@ import java.util.List;
  */
 public final class XInputExtension implements Extension {
 
-    private static final Logger log = LoggerFactory.getLogger(XInputExtension.class);
 
     /**
      * The version this server answers with, which is now the one a reference answers (2.4, measured
@@ -267,7 +265,7 @@ public final class XInputExtension implements Extension {
             case Bodyless bodyless -> listInputDevices(client, bodyless.minor());
             case DeviceRequest device -> deviceRequest(client, device);
             case UnusedQuery unused -> answerUnused(client, unused);
-            case Accepted accepted -> log.debug("{} sent XInput2 request {}: accepted, nothing"
+            case Accepted accepted -> JulLog.debug("{} sent XInput2 request {}: accepted, nothing"
                     + " here to do for it", client, accepted.minor());
             default -> throw ProtocolException.unimplemented(
                     "XInput2 request " + request.getClass().getSimpleName());
@@ -302,7 +300,7 @@ public final class XInputExtension implements Extension {
         putCard16(reply, 8, MAJOR_VERSION, client.isBigEndian());
         putCard16(reply, 10, MINOR_VERSION, client.isBigEndian());
         reply[12] = 1;                              // present
-        log.debug("{} asked for the XInput extension version, answering {}.{}", client,
+        JulLog.debug("{} asked for the XInput extension version, answering {}.{}", client,
                 MAJOR_VERSION, MINOR_VERSION);
         send(client, reply);
     }
@@ -496,7 +494,7 @@ public final class XInputExtension implements Extension {
             throw ProtocolException.badCursor(request.cursor());
         }
         window.setCursor((cn.oyzh.fx.xserver.resource.XCursor) cursor);
-        log.debug("XInput2 sets the cursor of 0x{} to {}", Integer.toHexString(window.id()),
+        JulLog.debug("XInput2 sets the cursor of 0x{} to {}", Integer.toHexString(window.id()),
                 request.cursor() == 0 ? "none" : "0x" + Integer.toHexString(request.cursor()));
     }
 
@@ -518,7 +516,7 @@ public final class XInputExtension implements Extension {
             putCard32(reply, 8, focus == null ? 0 : focus.id(), client.isBigEndian());
         }
         send(client, reply);
-        log.debug("{} sent XInput2 request {}: answered", client, request.minor());
+        JulLog.debug("{} sent XInput2 request {}: answered", client, request.minor());
     }
 
     // ------------------------------------------------------------------
@@ -550,7 +548,7 @@ public final class XInputExtension implements Extension {
         putCard16(reply, 2, client.sequenceNumber() & 0xFFFF, client.isBigEndian());
         putCard16(reply, 8, major, client.isBigEndian());
         putCard16(reply, 10, minor, client.isBigEndian());
-        log.debug("{} asked for XInput2 {}.{}, answering {}.{}", client, query.major(),
+        JulLog.debug("{} asked for XInput2 {}.{}, answering {}.{}", client, query.major(),
                 query.minor(), major, minor);
         send(client, reply);
     }
@@ -740,8 +738,8 @@ public final class XInputExtension implements Extension {
                 deviceStateWatchers.add(client);
             }
             window.selectXi2(client, mask.deviceId(), mask.mask());
-            if (log.isDebugEnabled()) {
-                log.debug("{} selects XInput2 device {} mask {} on 0x{}", client, mask.deviceId(),
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("{} selects XInput2 device {} mask {} on 0x{}", client, mask.deviceId(),
                         java.util.Arrays.toString(mask.mask()), Integer.toHexString(window.id()));
             }
         }
@@ -810,8 +808,8 @@ public final class XInputExtension implements Extension {
             putCard32(reply, 32 + i * 4, conflicts.get(i), client.isBigEndian());
         }
         send(client, reply);
-        if (log.isDebugEnabled()) {
-            log.debug("{} armed an XI2 passive {} grab on 0x{} for detail {} with mask 0x{}: {}"
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("{} armed an XI2 passive {} grab on 0x{} for detail {} with mask 0x{}: {}"
                             + " conflict(s)", client, pointer ? "button" : "key",
                     Integer.toHexString(window.id()), request.detail(),
                     Integer.toHexString(coreMask), conflicts.size());
@@ -1087,8 +1085,8 @@ public final class XInputExtension implements Extension {
         if (request.count() == 0) {
             return;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("{} released barrier 0x{} on device {}: no such barrier here (XFIXES is"
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("{} released barrier 0x{} on device {}: no such barrier here (XFIXES is"
                             + " {} and creates none)", client, Integer.toHexString(request.barrier()),
                     request.deviceId(), XFixesExtension.reportedVersion());
         }
@@ -1147,7 +1145,7 @@ public final class XInputExtension implements Extension {
         putCard16(reply, 2, client.sequenceNumber() & 0xFFFF, client.isBigEndian());
         // num_properties at 8 stays zero, and there is no tail: this server's devices have none.
         send(client, reply);
-        log.debug("{} listed device properties on device {}: this server has no device properties",
+        JulLog.debug("{} listed device properties on device {}: this server has no device properties",
                 client, request.device());
     }
 
@@ -1191,7 +1189,7 @@ public final class XInputExtension implements Extension {
         // property, so every read comes back "not there" - which is what a reference answers for the
         // read of a property that does not exist (`format = 0` and nothing after the header).
         send(client, reply);
-        log.debug("{} read device property {} on device {}: this server has no device properties,"
+        JulLog.debug("{} read device property {} on device {}: this server has no device properties,"
                         + " answering \"absent\"", client, server.atoms().name(request.property()),
                 request.device());
     }
@@ -1307,7 +1305,7 @@ public final class XInputExtension implements Extension {
         putCard16(reply, 2, client.sequenceNumber() & 0xFFFF, client.isBigEndian());
         reply[8] = status;
         send(client, reply);
-        log.debug("{} asked to grab the {} with XI2 on 0x{}: status {}", client,
+        JulLog.debug("{} asked to grab the {} with XI2 on 0x{}: status {}", client,
                 pointer ? "pointer" : "keyboard", Integer.toHexString(window.id()), status);
     }
 

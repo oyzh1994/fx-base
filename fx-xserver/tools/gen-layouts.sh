@@ -15,9 +15,13 @@
 # in one initialiser is well past it.
 set -e
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-VM="${XSERVER_VM_HOST:-192.168.22.152}"
+VM="${FX_XSERVER_VM_HOST:-}"
+if [ -z "$VM" ]; then
+    echo "set FX_XSERVER_VM_HOST to the verification VM address" >&2
+    exit 2
+fi
 VM_REFERENCE_PORT="${VM_REFERENCE_PORT:-6098}"
-OUT="$HERE/src/main/java/io/github/oyzh1994/xserver/input/Layouts.java"
+OUT="$HERE/src/main/java/cn/oyzh/fx/xserver/input/Layouts.java"
 LAYOUTS="${LAYOUTS:-us gb de fr es ru cn}"
 
 ENTRIES="$(mktemp -t xs-layouts)"
@@ -31,7 +35,7 @@ done
 
 {
     cat <<'HEADER'
-package io.github.oyzh1994.xserver.input;
+package cn.oyzh.fx.xserver.input;
 
 import java.util.Map;
 

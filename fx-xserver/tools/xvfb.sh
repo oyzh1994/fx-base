@@ -26,7 +26,11 @@ set -e
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 ACTION="${1:-start}"
 GEOMETRY="${2:-1300x800x24}"
-VM_HOST="${XSERVER_VM_HOST:-192.168.22.152}"
+VM_HOST="${FX_XSERVER_VM_HOST:-}"
+if [ -z "$VM_HOST" ]; then
+    echo "set FX_XSERVER_VM_HOST to the verification VM address" >&2
+    exit 2
+fi
 # The cookie the access-controlled reference on :97 is started with; fixed so the probes and the
 # documentation can name it (see `secure` below).
 SECURE_COOKIE="${SECURE_COOKIE:-deadbeefcafebabe0123456789abcdef}"

@@ -80,7 +80,7 @@ same two-click report for a dialog's 确定 and for a popup dismissed by clickin
 clicks (their server, their hand) the trace showed `button 1 down at (957,141) -> 0x200032` for the
 first click and `-> 0x200021` for the second - i.e. the dialog was already gone by the second click,
 which meant the click was never the problem. What settled it was dumping the **framebuffer** after a
-scripted single click (`-Dxserver.dumpFrame`, or `xwd -root` on a `--single-window` server) and seeing
+scripted single click (`-Dfx-xserver.dumpFrame`, or `xwd -root` on a `--single-window` server) and seeing
 that the closed dialog's pixels were still there, byte for byte. Two useful diagnostics came out of
 this hunt and are kept: `JavaFxBackend.hostEvent` logs every press/release the host window itself
 receives (before anything is done with it), which separates "the platform swallowed the click" from

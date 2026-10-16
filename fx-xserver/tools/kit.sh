@@ -10,7 +10,7 @@
 # the paste and the quoting from every invocation.
 set -e
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-MVN="${MVN:-/Users/oyzh/Documents/Tools/apache-maven-3.9.11/bin/mvn}"
+MVN="${MVN:-mvn}"
 
 if [ $# -lt 1 ]; then
     echo "usage: tools/kit.sh <Tool> [args ...]" >&2
@@ -47,4 +47,4 @@ shift
 # settings costs nothing and covers anything else that opens a socket.
 exec java -Djava.net.useSystemProxies=false \
     -cp "$HERE/target/test-classes:$HERE/target/classes:$(cat "$HERE/target/tools-cp.txt")" \
-    "io.github.oyzh1994.xserver.tools.$TOOL" "$@"
+    "cn.oyzh.fx.xserver.tools.$TOOL" "$@"

@@ -29,14 +29,8 @@ set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
 cd "$HERE"
 
-# Maven is not on PATH on the author's machine; anything else can set MVN or put it on PATH.
-if [ -z "$MVN" ]; then
-    if [ -x "$HOME/Documents/Tools/apache-maven-3.9.11/bin/mvn" ]; then
-        MVN="$HOME/Documents/Tools/apache-maven-3.9.11/bin/mvn"
-    else
-        MVN=mvn
-    fi
-fi
+# Resolve Maven from MVN when supplied, otherwise use the executable on PATH.
+MVN="${MVN:-mvn}"
 
 # A leftover server, bed or ssh tunnel on a display the suite binds makes a test fail as if it were
 # broken - `BindException: Address already in use` from one, and from another (a tunnel to the

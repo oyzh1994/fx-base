@@ -1,4 +1,4 @@
-# xserver
+# fx-xserver
 
 A modern X11 display server written in Java, rendered into a JavaFX window.
 
@@ -16,8 +16,8 @@ mvn compile
 mvn exec:java -Dexec.args="--display :1 --geometry 1280x800"
 ```
 
-Or run `io.github.oyzh1994.xserver.Main` straight from the IDE, which is what the tests do. The only
-runtime dependency beyond the JDK is the JavaFX and protocol jars Maven resolves.
+Or run `cn.oyzh.fx.xserver.Main` straight from the IDE, which is what the tests do. The runtime
+dependencies beyond the JDK are `base-common`, JavaFX and the X11 protocol jars Maven resolves.
 
 Then point any X client at it:
 
@@ -59,6 +59,10 @@ with a line saying so - where the platform reports no display at all, since neit
 window there. `headless` itself runs the server with no window whatever, which is what tests use and
 what `xwd` needs.
 
+Logging is handled by `cn.oyzh.common.log.JulLog` from `base-common`. `--log-requests` raises the
+global level to DEBUG for the process; `jullog.file` selects the output file and `jullog.level`
+selects the default level.
+
 `vnc` presents no window either, and serves the screen to VNC clients instead:
 
 ```sh
@@ -66,8 +70,8 @@ what `xwd` needs.
 mvn exec:java -Dexec.args="--backend vnc --vnc-port 5900 --geometry 1300x800"
 
 # or ask clients for a password (one line in the file; macOS's Screen Sharing requires one)
-echo 'my-password' > ~/.xserver-vnc-pass
-mvn exec:java -Dexec.args="--backend vnc --vnc-password-file ~/.xserver-vnc-pass"
+echo 'my-password' > ~/.fx-xserver-vnc-pass
+mvn exec:java -Dexec.args="--backend vnc --vnc-password-file ~/.fx-xserver-vnc-pass"
 
 # the same password as a value, which is what embedding this server wants -
 # a library has the password in hand and no file to put it in. It is visible
@@ -108,7 +112,7 @@ the pointer sprite and the host pointer, the default colours, and what is delibe
 in [docs/design-notes.md](docs/design-notes.md).
 
 ```
-io.github.oyzh1994.xserver
+cn.oyzh.fx.xserver
 ├── net/          sockets: accepting clients, and encoding replies/events/errors
 ├── client/       one object per connection: handshake, request loop, dispatch, resource ids
 ├── protocol/     decoders for the requests the generated ones get wrong
@@ -283,7 +287,7 @@ its urgency hint (`WM_HINTS`) brings the frame to the front once, without taking
 Maximising is left to the client, which resizes its own window for it.
 
 The host window comes back where it was left: where the user arranged it is remembered per client (by
-`WM_CLASS`) in `~/.xserver/host-windows.properties`, and the next session opens there - clamped to the
+`WM_CLASS`) in `~/.fx-xserver/host-windows.properties`, and the next session opens there - clamped to the
 part of the display windows may occupy, so a position remembered on a monitor that is no longer
 attached does not put the window out of reach. The window's *size* is not remembered: it follows the
 client's own windows, and a client that cares how big it is asks for that itself.
@@ -380,7 +384,7 @@ blend every other composite here uses. A translucent fill is translucent, a cove
 pixels and gets them back, and the window the screen holds is still an ordinary opaque picture - which
 is what the rest of this section is about.
 
-If a window is ever blank again, `-Dxserver.dumpFrame=<prefix>` writes the JavaFX image and the
+If a window is ever blank again, `-Dfx-xserver.dumpFrame=<prefix>` writes the JavaFX image and the
 framebuffer behind it to PNG files once a second. Comparing the two says immediately whether the
 server failed to draw or the display failed to show it.
 
@@ -393,7 +397,7 @@ enlarged, and everything in it is soft. `--scale N` fixes that by making the scr
 pixels across for the same physical size:
 
 ```
-xserver :1 --geometry 1200x800 --scale 2
+fx-xserver :1 --geometry 1200x800 --scale 2
 ```
 
 `--geometry` stays the size the window looks; the screen, the framebuffer and the client's windows
@@ -606,7 +610,7 @@ item with a plan and a way to verify each one, is [docs/backlog.md](docs/backlog
 - **Fonts are real X fonts.** `fixed`, `6x13`, `7x13`, `9x15`, `10x20` and `12x24` - and the XLFD
   names they answer to - are served from tables captured off a reference server, and **any other name
   is looked up on the font path**: `fonts.alias` maps a short name to a full one, `fonts.dir` maps
-  that to a file, and the file (`.pcf`, `.pcf.gz` or `.bdf`) is read. `~/.xserver/fonts` is on the
+  that to a file, and the file (`.pcf`, `.pcf.gz` or `.bdf`) is read. `~/.fx-xserver/fonts` is on the
   default path, and `SetFontPath` replaces it. Measured against Xvfb with `tools/kit.sh FontProbe`,
   `QueryFont` field by field, `QueryTextExtents` and the pixels of a drawn string are **identical**
   for the built-in fonts and for one read from a file. The last resort - a name nothing has - is a

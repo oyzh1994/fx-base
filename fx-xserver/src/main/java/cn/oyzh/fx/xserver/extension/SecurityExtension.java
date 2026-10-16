@@ -13,8 +13,7 @@ import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.extension.Extension;
 import cn.oyzh.fx.xserver.resource.XResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -91,7 +90,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class SecurityExtension implements Extension {
 
-    private static final Logger log = LoggerFactory.getLogger(SecurityExtension.class);
 
     private static final int QUERY_VERSION = 0;
     private static final int GENERATE_AUTHORIZATION = 1;
@@ -322,7 +320,7 @@ public final class SecurityExtension implements Extension {
         random.nextBytes(cookie);
         int id = nextAuthorizationId.getAndIncrement();
         authorizations.put(id, new Authorization(id, request.protocol(), cookie, trusted, eventMask));
-        log.debug("SECURITY: authorization {} for {} (trusted={}, timeout={}, group={}, events={})",
+        JulLog.debug("SECURITY: authorization {} for {} (trusted={}, timeout={}, group={}, events={})",
                 id, request.protocol(), trusted, timeout, group, eventMask);
         client.sendReply(new AuthorizationReply(client.sequenceNumber(), id, cookie));
     }

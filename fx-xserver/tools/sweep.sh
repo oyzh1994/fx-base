@@ -15,7 +15,7 @@
 # screen is what a probe sees (a probe does not care what the backend is; the headless one is fine).
 #
 #   tools/xvfb.sh start                                       the reference, on the VM's :98
-#   java -cp target/classes:$(cat target/tools-cp.txt) io.github.oyzh1994.xserver.Main \
+#   java -cp target/classes:$(cat target/tools-cp.txt) cn.oyzh.fx.xserver.Main \
 #       --display 61 --geometry 1300x800 --single-window \
 #       --no-clipboard --no-tray &                           this server
 #   tools/sweep.sh
@@ -41,9 +41,13 @@
 # `tools/README.md` ("What the sweep is expected to differ on"). Read that before chasing one.
 set -e
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-MVN="${MVN:-/Users/oyzh/Documents/Tools/apache-maven-3.9.11/bin/mvn}"
+MVN="${MVN:-mvn}"
 DISPLAY_NUMBER="${DISPLAY_NUMBER:-61}"
-VM="${VM:-192.168.22.152}"
+VM="${FX_XSERVER_VM_HOST:-}"
+if [ -z "$VM" ]; then
+    echo "set FX_XSERVER_VM_HOST to the verification VM address" >&2
+    exit 2
+fi
 VM_REFERENCE_PORT="${VM_REFERENCE_PORT:-6098}"          # the VM's Xvfb :98
 OUT="${OUT:-/tmp/xs-sweep}"
 
@@ -64,9 +68,9 @@ run_probe() {                               # run_probe <probe> <host> <port> <o
     probe="$1"; host="$2"; port="$3"; out="$4"
     shift 4
     # Parked first, and from this machine, so both runs start from the same place.
-    (cd "$HERE" && java -cp "$CP" io.github.oyzh1994.xserver.tools.Drive "$host" "$port" \
+    (cd "$HERE" && java -cp "$CP" cn.oyzh.fx.xserver.tools.Drive "$host" "$port" \
         "M 2 2" "W 200" >/dev/null 2>&1) || true
-    (cd "$HERE" && java -cp "$CP" "io.github.oyzh1994.xserver.tools.$probe" "$host" "$port" "$@") \
+    (cd "$HERE" && java -cp "$CP" "cn.oyzh.fx.xserver.tools.$probe" "$host" "$port" "$@") \
         > "$out" 2>&1 || echo "  ($probe against $host:$port exited non-zero)"
 }
 

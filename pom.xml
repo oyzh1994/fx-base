@@ -184,6 +184,12 @@
                 <artifactId>fx-terminal</artifactId>
                 <version>${fx-base.version}</version>
             </dependency>
+            <!-- 自定义类库，x服务相关 -->
+            <dependency>
+                <groupId>io.github.oyzh1994</groupId>
+                <artifactId>fx-xserver</artifactId>
+                <version>${fx-base.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

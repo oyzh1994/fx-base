@@ -355,10 +355,10 @@ mouse - and the fix is three lines in `InputState.focusOnClick`.** `mvn test` **
   control: **a fresh server AND a fresh client per run**. Restart the client between rows - the app's
   own state drifts across scripted gestures, and one successful activation leaves a modal dialog over
   the next run.
-- **Bed notes this round**: `tools/bed.sh` passes `$XSERVER_OPTIONS` to the **JVM**, so `--backend` and
+- **Bed notes this round**: `tools/bed.sh` passes `$FX_XSERVER_OPTIONS` to the **JVM**, so `--backend` and
   friends cannot go there (`Unrecognized option: --backend`) - start the server by hand instead
-  (`nohup java -Dlogback.configurationFile=... -cp "target/classes:$(cat target/tools-cp.txt)"
-  io.github.oyzh1994.xserver.Main --display 95 ...`). The EasyShell AppImage is
+  (`nohup java -Djullog.file=... -cp "target/classes:$(cat target/tools-cp.txt)"
+  cn.oyzh.fx.xserver.Main --display 95 ...`). The EasyShell AppImage is
   `/root/EasyShell_v1.2.2_linux_arm64_build.AppImage` and the left-panel **search box is at screen
   (186,115)**; the menu it opens is the *host list's* (添加连接/添加目录/…), not a text menu - the
   复制/粘贴/全选 of the report belong to a text field elsewhere. In per-client mode the host window was
@@ -1379,7 +1379,7 @@ client kept exiting between finding the icon's coordinates and pressing it (the 
 
 **D3 is now complete** (`ec823be`): the second half - a font **file on a font path** - is in.
 `resource/PcfFont` reads PCF (plain or gzipped) into the same `BitmapFont.Font` the generated tables
-carry, `resource/FontPath` does `fonts.alias` → `fonts.dir` → file with `~/.xserver/fonts` on the
+carry, `resource/FontPath` does `fonts.alias` → `fonts.dir` → file with `~/.fx-xserver/fonts` on the
 default path, and `tools/FontProbe` against Xvfb for `8x13` (no built-in table, read from a file) is
 **identical line for line** - metrics, properties, extents and pixels. The format's traps are in the
 design notes; the sharpest is that **the encodings are section 32 and the accelerators 256** (swap
@@ -1465,7 +1465,7 @@ REVERTED, and the reason is worth not re-deriving.**
   master window must be opened by `start()` and not by the first tick (`TrayBridgeTest` "the backend
   never started"); a frame whose client window is destroyed goes with it (`PerClientWindowTest`).
 - **Debugging note for the next session**: surefire **swallows stdout/stderr** of a test JVM here -
-  `System.out`, `System.err` and a `-Dlogback.configurationFile` file all produced nothing - so a
+  `System.out`, `System.err` and a `-Djullog.file` file all produced nothing - so a
   print-based hunt inside a test run is a dead end. Reason about the behaviour and let the assertion
   be the signal.
 

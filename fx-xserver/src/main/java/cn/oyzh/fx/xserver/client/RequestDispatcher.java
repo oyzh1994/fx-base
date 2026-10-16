@@ -18,8 +18,7 @@ import cn.oyzh.fx.xserver.protocol.VariableLengthDecoders;
 import cn.oyzh.fx.xserver.resource.ResourceTable;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +33,6 @@ import java.util.List;
  */
 public final class RequestDispatcher {
 
-    private static final Logger log = LoggerFactory.getLogger(RequestDispatcher.class);
 
     private final XServer server;
     private final XprotoPlugin xproto = new XprotoPlugin();
@@ -73,7 +71,7 @@ public final class RequestDispatcher {
         }
         XRequest decoded = decodeCore(client, opcode, minorOpcode, in, requestBytes, request);
         if (server.options().logRequests()) {
-            log.debug("{} -> {}", client, decoded.getClass().getSimpleName());
+            JulLog.debug("{} -> {}", client, decoded.getClass().getSimpleName());
         }
         route(client, decoded);
     }
@@ -150,7 +148,7 @@ public final class RequestDispatcher {
                             + ": " + e);
         }
         if (server.options().logRequests()) {
-            log.debug("{} -> {} ({} minor {})", client, request.getClass().getSimpleName(),
+            JulLog.debug("{} -> {} ({} minor {})", client, request.getClass().getSimpleName(),
                     extension.name(), minorOpcode & 0xFF);
         }
         // Set before the handler runs, so a handler that raises a protocol error is reported under
@@ -161,7 +159,7 @@ public final class RequestDispatcher {
     }
 
     /**
-     * The name of the request being handled, for the error log. Set before routing so a handler
+     * The name of the request being handled, for the error JulLog. Set before routing so a handler
      * that throws can say which request it was; an opcode number alone makes a client's error
      * report hard to act on.
      */
@@ -395,7 +393,7 @@ public final class RequestDispatcher {
             try {
                 extension.clientDisconnected(server, client);
             } catch (RuntimeException e) {
-                log.warn("extension {} failed during disconnect cleanup", extension.name(), e);
+                JulLog.warn("extension " + extension.name() + " failed during disconnect cleanup", e);
             }
         }
         ResourceTable table = server.resources();

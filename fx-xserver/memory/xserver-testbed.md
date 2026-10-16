@@ -8,18 +8,18 @@ metadata:
   modified: 2026-09-27T07:47:06.699Z
 ---
 
-**Two client machines as of 2026-09-26** (`tools/vm.sh` takes the host from `$XSERVER_VM_HOST` and the
-password from `$XSSH_PASSWORD`, or from `~/.xserver-vm-pass` for the default host). **The addresses
+**Two client machines as of 2026-09-26** (`tools/vm.sh` takes the host from `$FX_XSERVER_VM_HOST` and the
+password from `$XSSH_PASSWORD`, or from `~/.fx-xserver-vm-pass` for the default host). **The addresses
 changed on 2026-10-03, and every document in the repository was updated with them**: the bed VM was
 `192.168.22.147` and is now **`192.168.22.152`**, and the user's own PC was `192.168.22.150` and is now
-**`192.168.22.151`**. The password did *not* change (`user@147` - the string is historical, not the
+**`192.168.22.151`**. The password did *not* change (`<password from ~/.fx-xserver-vm-pass>` - the string is historical, not the
 address). The VM is the user's to start: **do not start it yourself** (asked 2026-10-03 after `vmrun
 start` was tried on a machine the user was using).
 
 | host | user / password | what it has |
 |------|-----------------|-------------|
-| `192.168.22.152` | `root` / `user@147` (in `~/.xserver-vm-pass`) | the original bed: Xvfb `:98`, x11vnc, xterm, ibus + `dbus-x11`, xwd/xwininfo, apt with network (2026-09-26), both AppImages |
-| `192.168.22.151` | `root` / `123456` | the user's own PC (`oyzh-PC`, aarch64, `zh_CN.UTF-8`): **both AppImages** (`/root/EasyShell_v1.2.2_linux_arm64_build.AppImage`, `/root/termora-2.0.0-beta.16-linux-aarch64.AppImage`) and `dbus-launch`; **no** Xvfb, xterm, ibus, xwd or x11vnc |
+| `192.168.22.152` | `root` / `<password from ~/.fx-xserver-vm-pass>` (in `~/.fx-xserver-vm-pass`) | the original bed: Xvfb `:98`, x11vnc, xterm, ibus + `dbus-x11`, xwd/xwininfo, apt with network (2026-09-26), both AppImages |
+| `192.168.22.151` | `root` / `<external password>` | the user's own PC (`oyzh-PC`, aarch64, `zh_CN.UTF-8`): **both AppImages** (`/root/EasyShell_v1.2.2_linux_arm64_build.AppImage`, `/root/termora-2.0.0-beta.16-linux-aarch64.AppImage`) and `dbus-launch`; **no** Xvfb, xterm, ibus, xwd or x11vnc |
 
 `.151` is the machine to run a client on when `.152` is unavailable or being restarted (it was
 restarted under me on 2026-09-26 and came back on a new address-less boot: the whole bed - Xvfb, the
@@ -58,13 +58,13 @@ DISPLAY=192.168.22.1:<display> /root/termora-2.0.0-beta.16-linux-aarch64.AppImag
   the server with `--single-window` to reproduce: every client then shares one screen, the probe's
   synthetic input lands on termora, and `xwininfo -root -tree`/`xwd` can see the windows (in per-client
   mode a fresh client gets an empty root of its own and sees nothing).
-- Screenshots: the frame dumps (`-Dxserver.dumpFrame`) work in either mode; `xwd` on the VM only works
+- Screenshots: the frame dumps (`-Dfx-xserver.dumpFrame`) work in either mode; `xwd` on the VM only works
   against Xvfb or `--single-window`.
 - **The verification kit now lives in the repository** (2026-09-24), because `/tmp` is volatile - the
   author cleared it by hand once and macOS recycles it: the tools are in
-  `src/test/java/io/github/oyzh1994/xserver/tools/` (`Drive`, `WinTree`, `Focus`, `Pixel`, `Xwd`,
+  `src/test/java/cn/oyzh/fx/xserver/tools/` (`Drive`, `WinTree`, `Focus`, `Pixel`, `Xwd`,
   `Blocks`, `Colors`, `Shift`, `Rect`, `Crop`, a reconstructed `XProxy`), the harness scripts are
-  `tools/vm.sh` + `tools/bed.sh` (the VM password is read from `~/.xserver-vm-pass`, never committed),
+  `tools/vm.sh` + `tools/bed.sh` (the VM password is read from `~/.fx-xserver-vm-pass`, never committed),
   and `tools/README.md` is the entry point. `docs/backlog.md` is the item-by-item list of what is
   still missing, written to be worked through one item per branch in a fresh session.
 - **Comparing "does it look right" against Xvfb**: run the same AppImage against Xvfb :98 and against
@@ -77,11 +77,11 @@ DISPLAY=192.168.22.1:<display> /root/termora-2.0.0-beta.16-linux-aarch64.AppImag
   3-3-2 colour, not the client rasterising badly.
 
 The VM login (the user has had to repeat this three times, so it goes here): `ssh root@192.168.22.152`,
-password `user@147`. There is no key auth. **`expect` hangs on the password prompt in this environment
+password `<password from ~/.fx-xserver-vm-pass>`. There is no key auth. **`expect` hangs on the password prompt in this environment
 (2026-09-23) - use `SSH_ASKPASS`, which works**: 
 
 ```
-printf '#!/bin/sh\necho "user@147"\n' > /tmp/askpass.sh && chmod +x /tmp/askpass.sh
+printf '#!/bin/sh\necho "<password from ~/.fx-xserver-vm-pass>"\n' > /tmp/askpass.sh && chmod +x /tmp/askpass.sh
 SSH_ASKPASS=/tmp/askpass.sh SSH_ASKPASS_REQUIRE=force ssh -o StrictHostKeyChecking=no \
   -o UserKnownHostsFile=/dev/null -o PreferredAuthentications=password -o PubkeyAuthentication=no \
   root@192.168.22.152 'COMMAND'
@@ -102,7 +102,7 @@ The older form, for reference:
 
 ```
 expect -c 'set timeout 90; spawn ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-  root@192.168.22.152 "REMOTE COMMAND"; expect { -re "assword:" { send "user@147\r"; exp_continue } eof }'
+  root@192.168.22.152 "REMOTE COMMAND"; expect { -re "assword:" { send "<password from ~/.fx-xserver-vm-pass>\r"; exp_continue } eof }'
 ```
 
 The VM is a **client-only** host - `xclock`, `xeyes`, `xcalc`, `xev`, `xwininfo`, `xdpyinfo`, `xmodmap`,
@@ -120,14 +120,14 @@ Two failures that look like server bugs but are not:
 1. `org.h2.jdbc.JdbcSQLNonTransientConnectionException … SingleFileStore.lockFileChannel` from `cn.oyzh.store.jdbc.JdbcManager.takeoff`: a **second** EasyShell instance dies during `init`, before it creates any window, because `/root/.easyshell/db.mv.db` is locked by the first one. Always `pkill -f EasyShell; sleep 2` before launching, or isolate with `JDK_JAVA_OPTIONS="-Dstore.dir=/root/.easyshell-dev/"`.
 2. A black screen for EasyShell on a display where `xwininfo -root -tree` shows **0 children** means no client ever connected — check `echo $DISPLAY` on the remote and the server's `--log-requests` before blaming rendering.
 
-Diagnostics that actually settle "server drew nothing" vs "window shows nothing": run with `-Dxserver.dumpFrame=<prefix> -Dxserver.dumpFrames=N` and compare `<prefix>-buffer-N.png` (framebuffer), `-image-N.png` (WritableImage handed to JavaFX) and `-scene-N.png` (scene snapshot = what the window shows). See [[xserver-open-bugs]].
+Diagnostics that actually settle "server drew nothing" vs "window shows nothing": run with `-Dfx-xserver.dumpFrame=<prefix> -Dfx-xserver.dumpFrames=N` and compare `<prefix>-buffer-N.png` (framebuffer), `-image-N.png` (WritableImage handed to JavaFX) and `-scene-N.png` (scene snapshot = what the window shows). See [[xserver-open-bugs]].
 
 Building and driving it without the VM (verified 2026-09-22):
 
-- **`mvn` is not on PATH and the repo has no wrapper** — use `/Users/oyzh/Documents/Tools/apache-maven-3.9.11/bin/mvn`. `~/.m2` already holds every dependency, so `-o` (offline) works and is fast; the full suite is 79 tests, most of them seconds. Java on PATH is 27, which satisfies the pom's `release 25`.
-- The bare-protocol Java clients in `/tmp` need no Xlib and no VM: `Keys.java` types a string via XTEST, `Click.java` clicks, `KeymapProbe.java` reads back `GetKeyboardMapping` — the equivalent of `xmodmap -pke`, and the way to see what a client actually resolves a keycode to. Compile with `javac`, then run against `127.0.0.1 6090` with the headless server on `:90` (`java -cp target/classes:<$(mvn -o dependency:build-classpath)> io.github.oyzh1994.xserver.Main --display 90 --backend headless`).
+- **The repo has no Maven wrapper** — put Maven on PATH or set `MVN` to its executable. `~/.m2` already holds every dependency, so `-o` (offline) works and is fast. The JDK on PATH must satisfy the pom's `release 25`.
+- The bare-protocol Java clients in `/tmp` need no Xlib and no VM: `Keys.java` types a string via XTEST, `Click.java` clicks, `KeymapProbe.java` reads back `GetKeyboardMapping` — the equivalent of `xmodmap -pke`, and the way to see what a client actually resolves a keycode to. Compile with `javac`, then run against `127.0.0.1 6090` with the headless server on `:90` (`java -cp target/classes:<$(mvn -o dependency:build-classpath)> cn.oyzh.fx.xserver.Main --display 90 --backend headless`).
 - The Mac has **no XQuartz and no `xmodmap`/`xev`**, and the VM refuses `ssh -o BatchMode` (publickey/password only), so a client-side check has to go through those `/tmp` harnesses unless the user is there to type a password.
-- **Reading the rendering needs neither the screen nor any permission**: start the server with `-Dxserver.dumpFrame=<prefix> -Dxserver.dumpFrames=<n>` and it writes `<prefix>-buffer-N.png` (framebuffer), `-image-N.png` and `-scene-N.png` (what the window shows) once a second. That is how `xclock`/`xeyes`/`xcalc` were confirmed fixed on 2026-09-22.
+- **Reading the rendering needs neither the screen nor any permission**: start the server with `-Dfx-xserver.dumpFrame=<prefix> -Dfx-xserver.dumpFrames=<n>` and it writes `<prefix>-buffer-N.png` (framebuffer), `-image-N.png` and `-scene-N.png` (what the window shows) once a second. That is how `xclock`/`xeyes`/`xcalc` were confirmed fixed on 2026-09-22.
 - **`screencapture` screenshots the real screen, cursor included** (`screencapture -x -C`), once Screen Recording is granted. Until the user granted it (2026-09-22) it returned wallpaper only - no windows, no cursor - and it is **not** the sandbox (identical with the sandbox disabled). The permission belongs to the app at the top of the session's chain, which here is `IntelliJ IDEA.app` → `node` → `claude` → `zsh`: System Settings → Privacy & Security → Screen & System Audio Recording → `+` → `/Users/oyzh/Applications/IntelliJ IDEA.app`, then a full ⌘Q and relaunch. `screencapture` itself never appears in that list; granting it to Terminal instead only helps captures run from Terminal.
 - **Never match a screenshot colour by exact RGB**: macOS colour-manages the capture, so the probe's `#FF00FF` came back as `#CA26D5`. Match a range, or diff two captures (`/tmp/Crop.java`, `/tmp/Diff.java`, `/tmp/Magenta.java`).
 - Tools that made this work, all in `/tmp`: `winlist.c` (on-screen windows with owner, layer and bounds via `CGWindowListCopyWindowInfo` - needs no permission; note floating windows have layer != 0, so filter carefully), `warpcursor.c` (`CGDisplayMoveCursorToPoint`, moves the hardware cursor to a point so a screenshot can be aimed at it), `movemouse.c` (a `CGEventPost` of `kCGEventMouseMoved`, the only one of the two that JavaFX actually sees), `click.c` (move + click, which is how a real window close button gets pressed - that is what verified the ssh-returns-on-window-close behaviour), plus the crop/diff/colour helpers above.

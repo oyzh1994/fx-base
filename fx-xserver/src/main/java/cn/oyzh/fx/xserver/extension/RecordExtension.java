@@ -11,8 +11,7 @@ import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.extension.ProtocolRecorder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,7 +95,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class RecordExtension implements Extension, ProtocolRecorder {
 
-    private static final Logger log = LoggerFactory.getLogger(RecordExtension.class);
 
     // Minor opcodes, in the protocol's own order.
     private static final int QUERY_VERSION = 0;
@@ -815,7 +813,7 @@ public final class RecordExtension implements Extension, ProtocolRecorder {
         } catch (IOException gone) {
             // The recorder stopped reading: its own connection is being torn down, and that is not
             // the business of the client whose message this was.
-            log.debug("RECORD datum for {} could not be written: {}", recorder.peer(),
+            JulLog.debug("RECORD datum for {} could not be written: {}", recorder.peer(),
                     gone.getMessage());
         }
     }

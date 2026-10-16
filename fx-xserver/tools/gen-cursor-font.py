@@ -120,7 +120,7 @@ def rows(image):
 
 def main():
     font = PcfFontFile.PcfFontFile(gzip.open(FONT, "rb"))
-    print("package io.github.oyzh1994.xserver.resource;")
+    print("package cn.oyzh.fx.xserver.resource;")
     print()
     print("/**")
     print(" * The X cursor font's bitmaps, so a client that asks for a cursor shape gets it.")

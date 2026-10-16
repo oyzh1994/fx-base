@@ -9,8 +9,7 @@ import cn.oyzh.fx.xserver.display.Screen;
 import org.eclipse.collections.api.list.primitive.ByteList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 public final class ConnectionSetup {
 
-    private static final Logger log = LoggerFactory.getLogger(ConnectionSetup.class);
 
     public static final String AUTH_COOKIE = "MIT-MAGIC-COOKIE-1";
 
@@ -57,12 +55,12 @@ public final class ConnectionSetup {
         byte[] authData = toBytes(request.getAuthorizationProtocolData());
 
         if (!authenticate(client, authName, authData)) {
-            log.info("rejecting client {}: authentication failed", client.peer());
+            JulLog.info("rejecting client {}: authentication failed", client.peer());
             sendFailed(client, "Authentication rejected");
             return;
         }
         if (request.getProtocolMajorVersion() != PROTOCOL_MAJOR) {
-            log.info("rejecting client {}: protocol version {}.{}", client.peer(),
+            JulLog.info("rejecting client {}: protocol version {}.{}", client.peer(),
                     request.getProtocolMajorVersion(), request.getProtocolMinorVersion());
             sendFailed(client, "Protocol version not supported");
             return;
@@ -92,7 +90,7 @@ public final class ConnectionSetup {
                         : server.security().authorizationFor(authName, authData);
         if (authorization != null) {
             client.authenticatedBy(authorization.id(), authorization.trusted());
-            log.info("client {} authenticated as authorization {} (trusted={})", client.peer(),
+            JulLog.info("client {} authenticated as authorization {} (trusted={})", client.peer(),
                     authorization.id(), authorization.trusted());
             return true;
         }
@@ -105,14 +103,14 @@ public final class ConnectionSetup {
             // setup request always has room for credentials, so "none offered" is a client asking to
             // skip them, and accepting it makes --auth decorative - any client that leaves the block
             // empty would be let in. (An empty *cookie* is a different thing and is checked below.)
-            log.info("rejecting client {}: access control is on and no credentials were offered",
+            JulLog.info("rejecting client {}: access control is on and no credentials were offered",
                     client.peer());
             return false;
         }
         if (AUTH_COOKIE.equals(authName)) {
             return checkCookie(authData);
         }
-        log.info("unknown authorization protocol '{}'", authName);
+        JulLog.info("unknown authorization protocol '{}'", authName);
         return false;
     }
 
@@ -125,7 +123,7 @@ public final class ConnectionSetup {
         if (defaultFile != null && defaultFile.exists() && checkCookieIn(defaultFile, authData)) {
             return true;
         }
-        log.warn("no matching MIT-MAGIC-COOKIE-1 entry found; rejecting client");
+        JulLog.warn("no matching MIT-MAGIC-COOKIE-1 entry found; rejecting client");
         return false;
     }
 
@@ -239,7 +237,7 @@ public final class ConnectionSetup {
         // RECORD sees it (F2): one hook covers replies, events, errors and every hand-encoded image
         // an extension writes.
         client.output().setListener(bytes -> server.recordServerMessage(client, bytes));
-        log.debug("setup sent to {}", client.peer());
+        JulLog.debug("setup sent to {}", client.peer());
     }
 
     private void putCard16(ClientConnection client, byte[] bytes, int offset, int value) {

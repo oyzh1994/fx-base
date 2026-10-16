@@ -6,8 +6,7 @@ import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.resource.XProperty;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ import java.util.List;
  */
 public final class DropBridge {
 
-    private static final Logger log = LoggerFactory.getLogger(DropBridge.class);
 
     /** The selection a drag's data is served through, by the convention every toolkit implements. */
     private static final String XDND_SELECTION = "XdndSelection";
@@ -129,7 +127,7 @@ public final class DropBridge {
     public void start() {
         // The bridge is a source, not a target: nothing drops onto its own window, so it does not
         // publish XdndAware for itself.
-        log.info("host drags into forwarded applications are bridged to XDND");
+        JulLog.info("host drags into forwarded applications are bridged to XDND");
     }
 
     public void stop() {
@@ -165,7 +163,7 @@ public final class DropBridge {
             // Nothing under the pointer takes drops, which is not an error: a drag onto an
             // application that does not do drag and drop is a drag that did nothing, the same as it
             // would be on a real desktop.
-            log.debug("a drop of {} file(s) landed on a window that does not take drops", paths.size());
+            JulLog.debug("a drop of {} file(s) landed on a window that does not take drops", paths.size());
             return;
         }
         uris = toUris(paths);
@@ -184,7 +182,7 @@ public final class DropBridge {
         // answer promptly get their answer honoured; one that says nothing is dropped on anyway once
         // the wait is up, because a drag the user has already finished cannot hang on it.
         waitingForStatus = true;
-        log.debug("dropping {} file(s) on 0x{}", paths.size(), Integer.toHexString(target));
+        JulLog.debug("dropping {} file(s) on 0x{}", paths.size(), Integer.toHexString(target));
     }
 
     /**
@@ -219,7 +217,7 @@ public final class DropBridge {
         if (willTake) {
             send(dropAtom, 0, server.events().time());
         } else {
-            log.debug("0x{} refused the drop", Integer.toHexString(target));
+            JulLog.debug("0x{} refused the drop", Integer.toHexString(target));
             target = 0;
             uris = List.of();
         }
@@ -277,8 +275,8 @@ public final class DropBridge {
         draggingOwner = owner;
         dragOutUris = List.of();
         awaitingDragOut = false;
-        if (log.isDebugEnabled()) {
-            log.debug("a forwarded application is dragging from 0x{}", Integer.toHexString(owner));
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("a forwarded application is dragging from 0x{}", Integer.toHexString(owner));
         }
         // **Not asked here.** The ask is a round trip to a client that is in the middle of setting up
         // its own drag, and an application dragging something *inside itself* takes the same
@@ -338,7 +336,7 @@ public final class DropBridge {
         }
         awaitingDragOut = false;
         if (property != dragOutPropertyAtom) {
-            log.debug("the dragging client offered no text/uri-list");
+            JulLog.debug("the dragging client offered no text/uri-list");
             dragOutUris = List.of();
             return;
         }
@@ -348,8 +346,8 @@ public final class DropBridge {
             return;
         }
         dragOutUris = parseUriList(value.data());
-        if (log.isDebugEnabled()) {
-            log.debug("the dragging client offers {} file(s)", dragOutUris.size());
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("the dragging client offers {} file(s)", dragOutUris.size());
         }
     }
 

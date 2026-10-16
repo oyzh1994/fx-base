@@ -8,8 +8,7 @@ import cn.oyzh.fx.xserver.draw.Framebuffer;
 import cn.oyzh.fx.xserver.resource.XProperty;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ import java.util.List;
  */
 public final class TrayBridge {
 
-    private static final Logger log = LoggerFactory.getLogger(TrayBridge.class);
 
     /** The selection the protocol reserves for the first screen's notification area. */
     private static final String SELECTION = "_NET_SYSTEM_TRAY_S0";
@@ -149,7 +147,7 @@ public final class TrayBridge {
         worker = new Thread(this::poll, "xserver-tray");
         worker.setDaemon(true);
         worker.start();
-        log.info("the notification area is served by the host window's menu bar: {} is owned",
+        JulLog.info("the notification area is served by the host window's menu bar: {} is owned",
                 SELECTION);
     }
 
@@ -203,8 +201,8 @@ public final class TrayBridge {
         // the log and an application that reports it cannot show its icon.
         int opcode = data[1];
         int windowId = data[2];
-        if (log.isDebugEnabled()) {
-            log.debug("tray message: opcode={} window=0x{} data={}", opcode,
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("tray message: opcode={} window=0x{} data={}", opcode,
                     Integer.toHexString(windowId), Arrays.toString(data));
         }
         if (opcode == OPCODE_REQUEST_DOCK) {
@@ -215,7 +213,7 @@ public final class TrayBridge {
                 server.unlockServer();
             }
         } else if (opcode != OPCODE_BEGIN_MESSAGE && opcode != OPCODE_CANCEL_MESSAGE) {
-            log.debug("the tray was sent opcode {}, which is not one of the three the protocol has",
+            JulLog.debug("the tray was sent opcode {}, which is not one of the three the protocol has",
                     opcode);
         }
     }
@@ -224,7 +222,7 @@ public final class TrayBridge {
     private void dock(int windowId) {
         XResource resource = server.resources().get(windowId);
         if (!(resource instanceof XWindow window)) {
-            log.warn("a client asked the tray to dock 0x{}, which is not a window",
+            JulLog.warn("a client asked the tray to dock 0x{}, which is not a window",
                     Integer.toHexString(windowId));
             return;
         }
@@ -256,8 +254,8 @@ public final class TrayBridge {
         // this message never comes. data[3] is the embedder's window, which the client uses as the
         // parent it was reparented into, and data[4] is the protocol version.
         sendEmbeddedNotify(window, trayWindow);
-        if (log.isDebugEnabled()) {
-            log.debug("docked 0x{} ({}x{}) into the tray: icon {} of {}", Integer.toHexString(windowId),
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("docked 0x{} ({}x{}) into the tray: icon {} of {}", Integer.toHexString(windowId),
                     width, height, docked.size(), docked.size());
         }
     }
@@ -329,8 +327,8 @@ public final class TrayBridge {
             if (server.resources().get(icon.trayWindow().id()) != null) {
                 server.resources().free(icon.trayWindow().id());
             }
-            if (log.isDebugEnabled()) {
-                log.debug("an icon left the tray: 0x{}", Integer.toHexString(icon.window().id()));
+            if (JulLog.isDebugEnabled()) {
+                JulLog.debug("an icon left the tray: 0x{}", Integer.toHexString(icon.window().id()));
             }
         }
     }
@@ -362,7 +360,7 @@ public final class TrayBridge {
         return width;
     }
 
-    /** The icon windows on display, for tests and for the log. */
+    /** The icon windows on display, for tests and for the JulLog. */
     public List<XWindow> icons() {
         List<XWindow> windows = new ArrayList<>();
         server.lockServer();
@@ -403,7 +401,7 @@ public final class TrayBridge {
             } catch (RuntimeException e) {
                 // A poll that throws must not kill the thread: the next one may be fine, and a tray
                 // that stops updating is worse than one that logged.
-                log.warn("could not read the docked icons", e);
+                JulLog.warn("could not read the docked icons", e);
             }
         }
     }
@@ -449,8 +447,8 @@ public final class TrayBridge {
         }
         shown = image;
         shownTooltip = tooltip;
-        if (log.isDebugEnabled()) {
-            log.debug("the menu bar is given a {}x{} icon ({} icon(s) docked)",
+        if (JulLog.isDebugEnabled()) {
+            JulLog.debug("the menu bar is given a {}x{} icon ({} icon(s) docked)",
                     image.getWidth(), image.getHeight(), docked.size());
         }
         backend.setTrayIcon(image, tooltip);

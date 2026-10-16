@@ -7,8 +7,7 @@ import com.github.moaxcp.x11.protocol.X11OutputStream;
 import com.github.moaxcp.x11.protocol.XError;
 import com.github.moaxcp.x11.protocol.XEvent;
 import com.github.moaxcp.x11.protocol.XReply;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.oyzh.common.log.JulLog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -46,7 +45,6 @@ import java.util.Map;
  */
 public final class ClientOutput {
 
-    private static final Logger log = LoggerFactory.getLogger(ClientOutput.class);
 
 
     /** Fixed size of an event or error on the wire. */
@@ -153,8 +151,8 @@ public final class ClientOutput {
         // length is "everything after the 32 byte header, in 4 byte units"
         int length = (bytes.length - REPLY_HEADER_SIZE) / 4;
         putCard32(bytes, 4, length);
-        if (log.isTraceEnabled()) {
-            log.trace("reply {}: {} bytes, length field {}", reply.getClass().getSimpleName(),
+        if (JulLog.isTraceEnabled()) {
+            JulLog.trace("reply {}: {} bytes, length field {}", reply.getClass().getSimpleName(),
                     bytes.length, length);
         }
         write(bytes);
@@ -318,7 +316,7 @@ public final class ClientOutput {
      * stopped reading, and the caller - which is either the display tick or another client's request
      * - has to be released rather than blocked. The exception's message is what the log line says, so
      * it names the reason: a client that is gone and a client that is not reading look the same from
-     * a closed socket, and they are not the same thing to whoever reads the log.
+     * a closed socket, and they are not the same thing to whoever reads the JulLog.
      */
     private void write(byte[] bytes) throws IOException {
         if (broken) {
