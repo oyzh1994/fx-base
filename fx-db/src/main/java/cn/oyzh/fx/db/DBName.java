@@ -4,6 +4,7 @@ import cn.oyzh.common.util.StringUtil;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 命名接口，提供名称的读写及新对象判断能力
@@ -43,7 +44,18 @@ public interface DBName {
      */
     static void sortItems(List<? extends DBName> list) {
         if (list != null) {
-            list.sort(Comparator.comparing(DBName::getName));
+            list.sort((Comparator<DBName>) (o1, o2) -> {
+                if (Objects.equals(o1.getName(),o2.getName())) {
+                    return 0;
+                }
+                if (o1.getName() == null) {
+                    return -1;
+                }
+                if (o2.getName() == null) {
+                    return -1;
+                }
+                return o1.getName().compareTo(o2.getName());
+            });
         }
     }
 }
