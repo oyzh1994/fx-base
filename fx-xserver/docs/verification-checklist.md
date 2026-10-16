@@ -107,6 +107,7 @@ first if `tools/` has changed. Probes take `host port` - `127.0.0.1 6061` for th
 | 5.1 | TCP | a client on the VM at `192.168.22.1:61` | it connects and works |
 | 5.2 | a unix socket and `--no-tcp`/`--no-unix`/`--local` | a client on this machine | the transports restrict exactly as asked |
 | 5.3 | `--auth` and the no-credentials case | `AuthProbe` | a client with no credentials is refused; with the cookie it connects |
+| 5.3b | `--xserver-cookie HEX` | `AuthProbe`, `AuthenticationTest`, `ServerOptionsTest` | the standard `MIT-MAGIC-COOKIE-1` value supplied directly connects; a wrong/empty cookie, no credentials or another protocol is refused; no Xauthority file is read |
 | 5.4 | VNC: raw, ZRLE and (A32) Tight's JPEG method for photographic rectangles, the cursor pseudo-encoding, a password, the clipboard | `--backend vnc`, a VNC viewer, `ZrleEncoderTest`, `TightEncoderTest` | the screen appears, the pointer is drawn, the clipboard crosses - the recipe is below |
 | 5.5 | VNC over WebSocket, in a browser | `--vnc-ws-port`, noVNC | the screen appears with no bridge process |
 

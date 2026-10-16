@@ -53,6 +53,8 @@ public final class ServerOptions {
     private int maxClients = 256;
     private boolean authRequired;
     private File authFile;
+    /** The MIT-MAGIC-COOKIE-1 value an X client must offer, or null when it is not configured. */
+    private String xserverCookieValue;
     private String title = "cn/oyzh/fx/xserver";
     private boolean logRequests;
     private boolean noResetOnLastClose = true;
@@ -233,6 +235,8 @@ public final class ServerOptions {
                     }
                 }
                 case "--no-auth" -> options.authRequired = false;
+                case "--xserver-cookie", "--auth-cookie", "--mit-magic-cookie" ->
+                        options.xserverCookieValue = next(args, ++i);
                 case "--no-tcp" -> options.tcp = false;
                 case "--no-unix" -> options.unixSocket = false;
                 case "--local" -> options.listenAll = false;
@@ -286,6 +290,9 @@ public final class ServerOptions {
             throw new IllegalArgumentException("--vnc-password and --vnc-password-file are the same"
                     + " password two ways: give one of them");
         }
+        if (options.xserverCookieValue != null) {
+            options.xserverCookie();
+        }
         return options;
     }
 
@@ -338,6 +345,9 @@ public final class ServerOptions {
                   --max-clients N       maximum simultaneous clients (default 256)
                   --auth [FILE]         require MIT-MAGIC-COOKIE-1 using ~/.Xauthority
                   --no-auth             disable access control (default)
+                  --xserver-cookie HEX     require this standard MIT-MAGIC-COOKIE-1 value from X
+                                        clients, without reading an Xauthority file (for example,
+                                        the 32 hexadecimal digits printed by `xauth list`)
                   --no-tcp              do not listen on TCP port 6000+N
                   --no-unix             do not listen on /tmp/.X11-unix/XN
                   --local               only listen on loopback
@@ -469,11 +479,21 @@ public final class ServerOptions {
     }
 
     public boolean authRequired() {
-        return authRequired;
+        return authRequired || xserverCookieValue != null;
     }
 
     public File authFile() {
         return authFile;
+    }
+
+    /** Whether the legacy Xauthority-file cookie mode was explicitly enabled. */
+    public boolean authFileRequired() {
+        return authRequired;
+    }
+
+    /** Whether a direct MIT-MAGIC-COOKIE-1 value was configured instead of an Xauthority file. */
+    public boolean xserverCookieRequired() {
+        return xserverCookieValue != null;
     }
 
     public String title() {
@@ -655,5 +675,16 @@ public final class ServerOptions {
             throw new IllegalArgumentException("cannot read the VNC password file "
                     + vncPasswordFile + ": " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * The configured standard MIT-MAGIC-COOKIE-1 bytes, or null when direct cookie authentication
+     * is not configured. The argument is hexadecimal, as printed by {@code xauth list}.
+     */
+    public byte[] xserverCookie() {
+        if (xserverCookieValue == null) {
+            return null;
+        }
+        return XAuthorityCookie.parseHex(xserverCookieValue);
     }
 }

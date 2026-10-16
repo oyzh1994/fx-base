@@ -35,6 +35,7 @@ Options:
 | `--geometry WxH[xD]` | root window size (default 1280x800). The depth is accepted for compatibility with the usual `-screen 0 WxHxD` invocation and **ignored**: the root is always 24 bit TrueColor and the server warns once at startup when a geometry names another depth |
 | `--backend NAME` | `javafx` (default), `swing`, `headless`, or `vnc` |
 | `--auth [FILE]` | require MIT-MAGIC-COOKIE-1 from `~/.Xauthority` |
+| `--xserver-cookie HEX` | require this standard `MIT-MAGIC-COOKIE-1` value from X clients, without reading an Xauthority file |
 | `--no-tcp` / `--no-unix` | restrict the transports |
 | `--log-requests` | log every request at debug level |
 | `--tick-rate N` | display refresh rate (default 60) |
@@ -62,6 +63,25 @@ what `xwd` needs.
 Logging is handled by `cn.oyzh.common.log.JulLog` from `base-common`. `--log-requests` raises the
 global level to DEBUG for the process; `jullog.file` selects the output file and `jullog.level`
 selects the default level.
+
+Direct cookie authentication is the value form of `--auth FILE`: the server is given the standard
+`MIT-MAGIC-COOKIE-1` bytes directly and reads no Xauthority file. The option accepts the hexadecimal
+value printed by `xauth list`. A client can put the same value in its own Xauthority file:
+
+```sh
+xauth add :1 MIT-MAGIC-COOKIE-1 00112233445566778899aabbccddeeff
+DISPLAY=:1 xdpyinfo
+```
+
+The cookie is sent as part of the X11 setup request, so use a trusted network or an SSH tunnel. The
+value is also visible in the process list when passed as a command-line argument.
+
+`cn.oyzh.fx.xserver.XAuthorityCookie` generates a standard random value for an embedded launch:
+
+```java
+String cookie = XAuthorityCookie.generateHex();
+ServerOptions options = ServerOptions.parse(new String[]{"--xserver-cookie", cookie});
+```
 
 `vnc` presents no window either, and serves the screen to VNC clients instead:
 

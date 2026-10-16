@@ -46,6 +46,9 @@ class AuthenticationTest {
      */
     private static final int OPEN_DISPLAY = 89;
 
+    /** A server using a direct MIT-MAGIC-COOKIE-1 value instead of an Xauthority file. */
+    private static final int COOKIE_DISPLAY = 88;
+
     /** Sixteen bytes, as a real cookie is; the value itself does not matter. */
     private static final byte[] COOKIE = {
             0x0f, 0x1e, 0x2d, 0x3c, 0x4b, 0x5a, 0x69, 0x78, 0x01, 0x23, 0x45, 0x67, 0x10, 0x32,
@@ -113,6 +116,24 @@ class AuthenticationTest {
         }
     }
 
+    @Test
+    void theXserverCookieValueAuthenticatesX11Setup() throws IOException {
+        XServer cookieServer = new XServer(ServerOptions.parse(new String[]{
+                "--display", ":" + COOKIE_DISPLAY, "--backend", "headless", "--no-unix",
+                "--xserver-cookie", hex(COOKIE)}));
+        cookieServer.start();
+        try {
+            assertEquals("setup", handshakeAt(COOKIE_DISPLAY, ConnectionSetup.AUTH_COOKIE, COOKIE));
+            byte[] wrong = COOKIE.clone();
+            wrong[0] ^= 0x01;
+            assertEquals("", handshakeAt(COOKIE_DISPLAY, ConnectionSetup.AUTH_COOKIE, wrong));
+            assertEquals("", handshakeAt(COOKIE_DISPLAY, ConnectionSetup.AUTH_COOKIE, new byte[0]));
+            assertEquals("", handshakeAt(COOKIE_DISPLAY, "XDM-AUTHORIZATION-1", COOKIE));
+        } finally {
+            cookieServer.stop();
+        }
+    }
+
     /**
      * Sends a connection setup and returns {@code "setup"} when the server answered one, or
      * {@code ""} when it refused - which is the whole answer these tests need.
@@ -172,6 +193,10 @@ class AuthenticationTest {
 
     private static int pad4(int value) {
         return (value + 3) & ~3;
+    }
+
+    private static String hex(byte[] bytes) {
+        return java.util.HexFormat.of().formatHex(bytes);
     }
 
     /**

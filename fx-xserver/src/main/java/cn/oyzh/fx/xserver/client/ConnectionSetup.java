@@ -4,6 +4,7 @@ import com.github.moaxcp.x11.protocol.XAuthority;
 import com.github.moaxcp.x11.protocol.xproto.Setup;
 import com.github.moaxcp.x11.protocol.xproto.SetupRequest;
 import cn.oyzh.fx.xserver.XServer;
+import cn.oyzh.fx.xserver.XAuthorityCookie;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.display.Screen;
 import org.eclipse.collections.api.list.primitive.ByteList;
@@ -14,6 +15,7 @@ import cn.oyzh.common.log.JulLog;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ import java.util.List;
 public final class ConnectionSetup {
 
 
-    public static final String AUTH_COOKIE = "MIT-MAGIC-COOKIE-1";
+    public static final String AUTH_COOKIE = XAuthorityCookie.PROTOCOL_NAME;
 
     /** Protocol version we speak. 11.0 is the version every client understands. */
     private static final short PROTOCOL_MAJOR = 11;
@@ -93,6 +95,28 @@ public final class ConnectionSetup {
             JulLog.info("client {} authenticated as authorization {} (trusted={})", client.peer(),
                     authorization.id(), authorization.trusted());
             return true;
+        }
+        if (server.options().xserverCookieRequired()) {
+            byte[] cookie;
+            try {
+                cookie = server.options().xserverCookie();
+            } catch (IllegalArgumentException e) {
+                JulLog.warn("cannot load the configured X server cookie: {}", e.getMessage());
+                return false;
+            }
+            if (AUTH_COOKIE.equals(authName)
+                    && MessageDigest.isEqual(cookie, authData)) {
+                JulLog.info("client {} authenticated with the configured MIT-MAGIC-COOKIE-1 value",
+                        client.peer());
+                return true;
+            }
+            // A direct cookie is the whole configuration unless the legacy Xauthority-file mode was
+            // also enabled, in which case a matching file entry remains an additional credential.
+            if (!server.options().authFileRequired()) {
+                JulLog.info("rejecting client {}: invalid configured MIT-MAGIC-COOKIE-1 value",
+                        client.peer());
+                return false;
+            }
         }
         if (!server.options().authRequired()) {
             // An -ac server: no cookie is asked for, and anything else offered is ignored.

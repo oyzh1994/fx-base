@@ -87,4 +87,24 @@ class ServerOptionsTest {
         assertTrue(both.getMessage().contains("--vnc-password"), both.getMessage());
         assertThrows(IllegalArgumentException.class, () -> parse("--vnc-password", "").vncPassword());
     }
+
+    /** The direct X server credential is the standard MIT-MAGIC-COOKIE-1 value, as hexadecimal. */
+    @Test
+    void theXserverCookieIsConfiguredAsAValue() {
+        String hex = "00112233445566778899aabbccddeeff";
+        ServerOptions options = parse("--xserver-cookie", hex);
+        assertEquals(hex, java.util.HexFormat.of().formatHex(options.xserverCookie()),
+                "the hexadecimal value is decoded to the standard cookie bytes");
+        assertTrue(options.xserverCookieRequired());
+        assertTrue(options.authRequired(), "a configured cookie turns access control on");
+        assertEquals(null, parse().xserverCookie(), "and no cookie means no direct cookie authentication");
+
+        assertEquals(hex, java.util.HexFormat.of().formatHex(
+                parse("--xserver-cookie", "0x" + hex).xserverCookie()),
+                "a 0x prefix is accepted");
+        assertThrows(IllegalArgumentException.class,
+                () -> parse("--xserver-cookie", "not-hex"));
+        assertThrows(IllegalArgumentException.class,
+                () -> parse("--xserver-cookie", "abc"));
+    }
 }
