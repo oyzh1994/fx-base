@@ -1,7 +1,7 @@
 package cn.oyzh.fx.xserver.display;
 
-import cn.oyzh.fx.xserver.display.AwtTrayIcon;
-import cn.oyzh.fx.xserver.display.DisplayBackend;
+import cn.oyzh.common.log.JulLog;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.xserver.draw.Framebuffer;
 import cn.oyzh.fx.xserver.input.Keymap;
 import javafx.animation.AnimationTimer;
@@ -32,7 +32,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import cn.oyzh.common.log.JulLog;
 
 import java.awt.Dimension;
 import java.awt.MouseInfo;
@@ -63,17 +62,17 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class JavaFxBackend implements DisplayBackend {
 
 
-    static {
-        // **The window's own title bar is a preview feature of JavaFX 27** (`StageStyle.EXTENDED`
-        // and the header bar that goes with it), and opting in has to happen before the toolkit reads
-        // the property - which is why it is here rather than on a command line: this class is loaded
-        // before the toolkit starts, so this is the earliest the backend can speak for itself. An
-        // application that has already answered for itself keeps its answer, and one that says no
-        // gets the platform's own decorated window instead (see the stage in {@link #openWindow}).
-        if (System.getProperty("javafx.enablePreview") == null) {
-            System.setProperty("javafx.enablePreview", "true");
-        }
-    }
+    //static {
+    //    // **The window's own title bar is a preview feature of JavaFX 27** (`StageStyle.EXTENDED`
+    //    // and the header bar that goes with it), and opting in has to happen before the toolkit reads
+    //    // the property - which is why it is here rather than on a command line: this class is loaded
+    //    // before the toolkit starts, so this is the earliest the backend can speak for itself. An
+    //    // application that has already answered for itself keeps its answer, and one that says no
+    //    // gets the platform's own decorated window instead (see the stage in {@link #openWindow}).
+    //    if (System.getProperty("javafx.enablePreview") == null) {
+    //        System.setProperty("javafx.enablePreview", "true");
+    //    }
+    //}
 
     /**
      * How long the toolkit gets to run a task before it counts as unusable.
@@ -349,7 +348,7 @@ public final class JavaFxBackend implements DisplayBackend {
         // way the pixel buffer wants it and can be wrapped rather than copied.
         IntBuffer pixels = IntBuffer.wrap(framebuffer.pixels());
         try {
-            runOnFxThreadAndWait(() -> openWindow(width, height, pixels));
+            FXUtil.runWait(() -> openWindow(width, height, pixels));
         } catch (RuntimeException | Error e) {
             // An open toolkit would keep the JVM alive through its non-daemon FX thread even though
             // this backend never got as far as showing anything.
@@ -385,7 +384,7 @@ public final class JavaFxBackend implements DisplayBackend {
             return;
         }
         try {
-            Platform.runLater(this::flushDamage);
+            FXUtil.runLater(this::flushDamage);
         } catch (IllegalStateException runtimeStopped) {
             // Platform.exit() raced with the last frame; there is nothing left to show anyway.
             closed = true;
@@ -394,7 +393,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void setViewport(Rectangle wanted) {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             if (wanted.equals(viewport)) {
                 return;
             }
@@ -470,7 +469,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void setWindowTitle(String title) {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             // Null means the client publishes no title: the server's own name is the fallback.
             String wanted = title == null || title.isEmpty() ? this.title : title;
             if (stage != null) {
@@ -487,7 +486,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void setWindowIcon(int[] argb, int width, int height) {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             if (stage == null) {
                 return;
             }
@@ -504,7 +503,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void setMaxClientArea(int width, int height) {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             if (stage == null || width <= 0 || height <= 0) {
                 return;
             }
@@ -782,7 +781,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void setWindowPosition(int x, int y) {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             if (stage == null) {
                 return;
             }
@@ -1082,7 +1081,7 @@ public final class JavaFxBackend implements DisplayBackend {
             return;
         }
         try {
-            runOnFxThreadAndWait(() -> {
+            FXUtil.runWait(() -> {
                 setWindowFocused(false);
                 handBackPointerThenClose();
             });
@@ -1098,13 +1097,13 @@ public final class JavaFxBackend implements DisplayBackend {
         if (!toolkitStarted) {
             return;
         }
-        try {
-            // The FX thread is not a daemon, so without this the JVM would stay alive after the
-            // server has finished.
-            runOnFxThreadAndWait(Platform::exit);
-        } catch (RuntimeException e) {
-            JulLog.debug("JavaFX had already stopped", e);
-        }
+        //try {
+        //    // The FX thread is not a daemon, so without this the JVM would stay alive after the
+        //    // server has finished.
+        //    FXUtil.runWait(Platform::exit);
+        //} catch (RuntimeException e) {
+        //    JulLog.debug("JavaFX had already stopped", e);
+        //}
     }
 
     @Override
@@ -1118,7 +1117,7 @@ public final class JavaFxBackend implements DisplayBackend {
         // this call: the server has already decided, and the toolkit runs these in the order they were
         // submitted, so the window is still full screen before anything else this backend is asked to
         // do with it.
-        Platform.runLater(() -> {
+        FXUtil.runLater(() -> {
             if (stage == null || stage.isFullScreen() == fullScreen) {
                 return;
             }
@@ -1150,7 +1149,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void raise() {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             if (stage != null) {
                 // toFront and not requestFocus: a client asking for attention has not asked to take
                 // the keyboard away from whatever the user is typing into.
@@ -1161,7 +1160,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void raiseAndFocus() {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             if (stage != null) {
                 // **A window that has just appeared is one the user is waiting for**, so it takes the
                 // front and the keyboard - unlike {@link #raise()}, which is the urgency hint and does
@@ -1182,7 +1181,7 @@ public final class JavaFxBackend implements DisplayBackend {
         // cannot be resized again while the tick is between the two, and the FX thread must not read
         // it while a client is drawing into it.
         IntBuffer pixels = IntBuffer.wrap(framebuffer.pixels());
-        runOnFxThreadAndWait(() -> showNewScreenSize(width, height, pixels));
+        FXUtil.runWait(() -> showNewScreenSize(width, height, pixels));
     }
 
     /**
@@ -1738,7 +1737,7 @@ public final class JavaFxBackend implements DisplayBackend {
      *
      * <p>Closing on the **second** pulse after the release is enough by the queue's own order: the
      * scene's pass runs inside a pulse and the task it queues is drained before the next pulse
-     * ({@code Platform.runLater} and {@code Application.invokeLater} are the same queue), so by then
+     * ({@code FXUtil.runLater} and {@code Application.invokeLater} are the same queue), so by then
      * the window the pointer is over has taken the arrow back. A pulse later than that costs nothing
      * either way - the window is on its way out and the pointer is already the platform's.
      *
@@ -1836,7 +1835,7 @@ public final class JavaFxBackend implements DisplayBackend {
 
     @Override
     public void setIdle(boolean idle) {
-        runOnFxThreadAndWait(() -> {
+        FXUtil.runWait(() -> {
             this.idle = idle;
             if (idle) {
                 // **Nothing to show means no window.** The window is the frame around a client's
@@ -2182,7 +2181,7 @@ public final class JavaFxBackend implements DisplayBackend {
                     return;
                 }
                 int frame = i;
-                Platform.runLater(() -> {
+                FXUtil.runLater(() -> {
                     dumpImage(prefix + "-image-" + frame + ".png");
                     dumpFramebuffer(prefix + "-buffer-" + frame + ".png");
                     dumpScene(prefix + "-scene-" + frame + ".png");
@@ -2905,43 +2904,43 @@ public final class JavaFxBackend implements DisplayBackend {
         toolkitStarted = true;
     }
 
-    /**
-     * Runs the action on the FX thread and waits for it, rethrowing whatever it threw.
-     */
-    private static void runOnFxThreadAndWait(Runnable action) {
-        if (Platform.isFxApplicationThread()) {
-            action.run();
-            return;
-        }
-        CountDownLatch done = new CountDownLatch(1);
-        AtomicReference<Throwable> failure = new AtomicReference<>();
-        Platform.runLater(() -> {
-            try {
-                action.run();
-            } catch (Throwable t) {
-                failure.set(t);
-            } finally {
-                done.countDown();
-            }
-        });
-        try {
-            if (!done.await(STARTUP_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("the JavaFX toolkit did not start within "
-                        + STARTUP_TIMEOUT_SECONDS + "s");
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("interrupted while waiting for the JavaFX thread", e);
-        }
-        Throwable thrown = failure.get();
-        if (thrown instanceof RuntimeException runtime) {
-            throw runtime;
-        }
-        if (thrown instanceof Error error) {
-            throw error;
-        }
-        if (thrown != null) {
-            throw new IllegalStateException("the JavaFX thread failed", thrown);
-        }
-    }
+    ///**
+    // * Runs the action on the FX thread and waits for it, rethrowing whatever it threw.
+    // */
+    //private static void runOnFxThreadAndWait(Runnable action) {
+    //    if (Platform.isFxApplicationThread()) {
+    //        action.run();
+    //        return;
+    //    }
+    //    CountDownLatch done = new CountDownLatch(1);
+    //    AtomicReference<Throwable> failure = new AtomicReference<>();
+    //    FXUtil.runLater(() -> {
+    //        try {
+    //            action.run();
+    //        } catch (Throwable t) {
+    //            failure.set(t);
+    //        } finally {
+    //            done.countDown();
+    //        }
+    //    });
+    //    try {
+    //        if (!done.await(STARTUP_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+    //            throw new IllegalStateException("the JavaFX toolkit did not start within "
+    //                    + STARTUP_TIMEOUT_SECONDS + "s");
+    //        }
+    //    } catch (InterruptedException e) {
+    //        Thread.currentThread().interrupt();
+    //        throw new IllegalStateException("interrupted while waiting for the JavaFX thread", e);
+    //    }
+    //    Throwable thrown = failure.get();
+    //    if (thrown instanceof RuntimeException runtime) {
+    //        throw runtime;
+    //    }
+    //    if (thrown instanceof Error error) {
+    //        throw error;
+    //    }
+    //    if (thrown != null) {
+    //        throw new IllegalStateException("the JavaFX thread failed", thrown);
+    //    }
+    //}
 }
