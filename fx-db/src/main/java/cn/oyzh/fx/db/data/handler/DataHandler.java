@@ -52,7 +52,7 @@ public class DataHandler {
      *
      * @throws InterruptedException 中断异常
      */
-    protected void checkInterrupt() throws InterruptedException {
+    public void checkInterrupt() throws InterruptedException {
         if (this.interrupt != null && this.interrupt.get()) {
             throw new InterruptedException();
         }
@@ -89,7 +89,7 @@ public class DataHandler {
      *
      * @param processed 进度
      */
-    protected void processed(int processed) {
+    public void processed(int processed) {
         if (this.processedHandler != null) {
             this.processedHandler.accept(processed);
         }
