@@ -7,8 +7,6 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.ScreenUtil;
-import cn.oyzh.fx.plus.window.StageAdapter;
-import cn.oyzh.fx.plus.window.StageManager;
 import javafx.application.ColorScheme;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -78,7 +76,9 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
 //        if (pane == null) {
 //            pane = new FXLabel();
         label.setPadding(TITLE_PADDING);
-        label.setMouseTransparent(true);
+        if (!OSUtil.isLinux()) {
+            label.setMouseTransparent(true);
+        }
         double w = ScreenUtil.getAllWidth();
         label.setPrefWidth(w);
         label.setFontWeight(FontWeight.BOLD);
@@ -294,11 +294,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
                 if (event.getClickCount() == 2) {
                     Stage stage = this.stage();
                     stage.setMaximized(!stage.isMaximized());
-                    StageAdapter adapter = StageManager.getAdapter(stage);
-                    if (adapter != null) {
-                        adapter.updateContentLater();
-                    }
-                    event.consume();
                 }
             });
         }

@@ -342,13 +342,13 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
             // 最大化
             stage.maximizedProperty().addListener((observableValue, aBoolean, t1) -> {
                 if (t1) {
-                    this.updateContent();
+                    this.updateContentLater();
                 }
             });
             // 全屏
             stage.fullScreenProperty().addListener((observableValue, aBoolean, t1) -> {
                 if (t1) {
-                    this.updateContent();
+                    this.updateContentLater();
                 }
             });
             // 初始化
