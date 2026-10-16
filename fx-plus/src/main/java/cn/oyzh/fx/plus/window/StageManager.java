@@ -398,6 +398,9 @@ public class StageManager {
                 return window;
             }
         }
+        if (primaryStage != null && primaryStage.isShowing()) {
+            return primaryStage;
+        }
         return null;
     }
 
