@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.svg.label;
 
+import cn.oyzh.fx.gui.svg.glyph.CollapseListSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.ExpandListSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 
 /**
@@ -21,7 +23,7 @@ public class ExpandListSVGLabel extends SVGLabel {
      * 展开
      */
     public void expand() {
-        this.setUrl("/fx-svg/arrow-down-double-line.svg");
+        this.graphic(new ExpandListSVGGlyph());
         //super.setText("\u200B");
     }
 
@@ -29,7 +31,7 @@ public class ExpandListSVGLabel extends SVGLabel {
      * 收起
      */
     public void collapse() {
-        this.setUrl("/fx-svg/arrow-up-double-line.svg");
+        this.graphic(new CollapseListSVGGlyph());
         //super.setText("\u200B");
     }
 

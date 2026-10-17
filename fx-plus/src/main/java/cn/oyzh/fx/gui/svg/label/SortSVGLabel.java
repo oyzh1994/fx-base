@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.svg.label;
 
+import cn.oyzh.fx.gui.svg.glyph.SortAscSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.SortDescSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import javafx.scene.text.Font;
 
@@ -22,7 +24,7 @@ public class SortSVGLabel extends SVGLabel {
      * 切换为降序图标
      */
     public void desc() {
-        this.setUrl("/fx-svg/sort-ascending.svg");
+        this.graphic(new SortAscSVGGlyph());
         //super.setText("\u200B");
     }
 
@@ -30,7 +32,7 @@ public class SortSVGLabel extends SVGLabel {
      * 切换为升序图标
      */
     public void asc() {
-        this.setUrl("/fx-svg/sort-descending.svg");
+        this.graphic(new SortDescSVGGlyph());
         //super.setText("\u200B");
     }
 

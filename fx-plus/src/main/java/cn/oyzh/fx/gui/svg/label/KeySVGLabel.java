@@ -3,7 +3,6 @@ package cn.oyzh.fx.gui.svg.label;
 import cn.oyzh.fx.gui.svg.glyph.key.KeySVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.i18n.I18nHelper;
-import javafx.geometry.Insets;
 
 /**
  * 密钥标签
@@ -32,7 +31,6 @@ public class KeySVGLabel extends SVGLabel {
 
     @Override
     public void initNode() {
-        this.setPadding(Insets.EMPTY);
         this.setText(I18nHelper.key1());
         super.initNode();
     }

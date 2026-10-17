@@ -49,6 +49,10 @@ public class SVGLabel extends FXLabel {
         return (SVGGlyph) this.getGraphic();
     }
 
+    public void graphic(SVGGlyph graphic) {
+        FXUtil.runWait(() -> this.setGraphic(graphic));
+    }
+
     /**
      * 设置URL地址
      *
@@ -56,7 +60,7 @@ public class SVGLabel extends FXLabel {
      */
     public void setUrl(String url) {
         //if (this.graphic() == null) {
-        FXUtil.runWait(() -> this.setGraphic(new SVGGlyph(url)));
+        this.graphic(new SVGGlyph(url));
         //}
     }
 

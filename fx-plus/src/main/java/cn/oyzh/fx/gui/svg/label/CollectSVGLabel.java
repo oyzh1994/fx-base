@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.svg.label;
 
+import cn.oyzh.fx.gui.svg.glyph.CollectSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.UnCollectSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import javafx.scene.text.Font;
 
@@ -22,7 +24,7 @@ public class CollectSVGLabel extends SVGLabel {
      * 切换为已收藏图标
      */
     public void collect() {
-        this.setUrl("/fx-svg/star.svg");
+        this.graphic(new UnCollectSVGGlyph());
         //super.setText("\u200B");
     }
 
@@ -30,7 +32,7 @@ public class CollectSVGLabel extends SVGLabel {
      * 切换为未收藏图标
      */
     public void unCollect() {
-        this.setUrl("/fx-svg/star-l.svg");
+        this.graphic(new CollectSVGGlyph());
         //super.setText("\u200B");
     }
 

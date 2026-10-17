@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.svg.label;
 
+import cn.oyzh.fx.gui.svg.glyph.layout.Layout1SVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.layout.Layout2SVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 
 /**
@@ -21,7 +23,7 @@ public class LayoutSVGLabel extends SVGLabel {
      * 切换为布局1图标
      */
     public void layout1() {
-        super.setUrl("/fx-svg/layout/layout1.svg");
+        super.graphic(new Layout1SVGGlyph());
         //super.setText("\u200B");
     }
 
@@ -29,7 +31,7 @@ public class LayoutSVGLabel extends SVGLabel {
      * 切换为布局2图标
      */
     public void layout2() {
-        super.setUrl("/fx-svg/layout/layout2.svg");
+        super.graphic(new Layout2SVGGlyph());
         //super.setText("\u200B");
     }
 

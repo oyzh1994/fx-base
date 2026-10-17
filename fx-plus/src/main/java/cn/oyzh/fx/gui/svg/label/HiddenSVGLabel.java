@@ -1,5 +1,7 @@
 package cn.oyzh.fx.gui.svg.label;
 
+import cn.oyzh.fx.gui.svg.glyph.EyeCloseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.EyeOpenSVGGlyph;
 import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import javafx.scene.text.Font;
 
@@ -22,7 +24,7 @@ public class HiddenSVGLabel extends SVGLabel {
      * 切换为显示图标（睁眼）
      */
     public void show() {
-        this.setUrl("/fx-svg/eye-open.svg");
+        this.graphic(new EyeOpenSVGGlyph());
         //super.setText("\u200B");
     }
 
@@ -30,7 +32,7 @@ public class HiddenSVGLabel extends SVGLabel {
      * 切换为隐藏图标（闭眼）
      */
     public void hidden() {
-        this.setUrl("/fx-svg/eye-close.svg");
+        this.graphic(new EyeCloseSVGGlyph());
         //super.setText("\u200B");
     }
 
