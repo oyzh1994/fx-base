@@ -87,7 +87,7 @@ public class SVGLabel extends FXLabel {
     public void setSize(double size) {
         if (this.graphic() != null) {
             this.graphic().setSize(size);
-            this.syncGraphicHeight();
+            this.syncHeight();
         }
     }
 
@@ -111,7 +111,7 @@ public class SVGLabel extends FXLabel {
     public void setSizeStr(String size) {
         if (this.graphic() != null) {
             this.graphic().setSizeStr(size);
-            this.syncGraphicHeight();
+            this.syncHeight();
         }
     }
 
@@ -159,12 +159,13 @@ public class SVGLabel extends FXLabel {
     public void initNode() {
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
-        this.graphicProperty().addListener((observable, oldValue, newValue) -> this.syncGraphicHeight());
-        this.syncGraphicHeight();
+        this.textProperty().addListener((observable, oldValue, newValue) -> this.syncHeight());
+        this.graphicProperty().addListener((observable, oldValue, newValue) -> this.syncHeight());
+        this.syncHeight();
         super.initNode();
     }
 
-    private SyncHeightType syncHeightType;
+    private SyncHeightType syncHeightType = SyncHeightType.AUTO;
 
     public SyncHeightType getSyncHeightType() {
         return syncHeightType;
@@ -172,9 +173,10 @@ public class SVGLabel extends FXLabel {
 
     public void setSyncHeightType(SyncHeightType syncHeightType) {
         this.syncHeightType = syncHeightType;
+        this.syncHeight();
     }
 
-    public enum SyncHeightType{
+    public enum SyncHeightType {
         AUTO,
         TEXT,
         GRAPHIC
@@ -183,7 +185,7 @@ public class SVGLabel extends FXLabel {
     /**
      * 同步标签高度与图标高度
      */
-    private void syncGraphicHeight() {
+    private void syncHeight() {
         String text = this.getText();
         SyncHeightType type = this.getSyncHeightType();
         double height = -1;

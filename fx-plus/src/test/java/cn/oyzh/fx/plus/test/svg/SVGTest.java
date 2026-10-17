@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.test.svg;
 import cn.oyzh.fx.gui.svg.glyph.UploadDownloadSVGGlyph;
 import cn.oyzh.fx.gui.svg.label.UploadDownloadSVGLabel;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
+import cn.oyzh.fx.plus.controls.svg.SVGLabel;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.Themes;
 import javafx.application.Application;
@@ -34,6 +35,7 @@ public class SVGTest extends Application {
         UploadDownloadSVGGlyph1 svgGlyph1 = new UploadDownloadSVGGlyph1();
         UploadDownloadSVGLabel svgLabel = new UploadDownloadSVGLabel();
         UploadDownloadSVGLabel1 svgLabel1 = new UploadDownloadSVGLabel1();
+        svgLabel1.setSyncHeightType(SVGLabel.SyncHeightType.GRAPHIC);
         FXHBox hBox = new FXHBox(svgGlyph, svgGlyph1, svgLabel, svgLabel1);
         //FXHBox.setMargin(svgGlyph, new Insets(0, 0, 0, 5));
         //FXHBox.setMargin(svgGlyph1, new Insets(0, 0, 0, 5));
