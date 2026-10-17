@@ -1,10 +1,13 @@
 package cn.oyzh.fx.plus.controls.svg;
 
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.font.FontUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 
 /**
  * svg标签控件
@@ -84,6 +87,7 @@ public class SVGLabel extends FXLabel {
     public void setSize(double size) {
         if (this.graphic() != null) {
             this.graphic().setSize(size);
+            this.syncGraphicHeight();
         }
     }
 
@@ -107,6 +111,7 @@ public class SVGLabel extends FXLabel {
     public void setSizeStr(String size) {
         if (this.graphic() != null) {
             this.graphic().setSizeStr(size);
+            this.syncGraphicHeight();
         }
     }
 
@@ -146,10 +151,58 @@ public class SVGLabel extends FXLabel {
     }
 
     @Override
+    public void changeFont(Font font) {
+        super.changeFont(font);
+    }
+
+    @Override
     public void initNode() {
         this.setCursor(Cursor.HAND);
         this.setPadding(Insets.EMPTY);
-        this.setMinSize(0, 0);
+        this.graphicProperty().addListener((observable, oldValue, newValue) -> this.syncGraphicHeight());
+        this.syncGraphicHeight();
         super.initNode();
+    }
+
+    private SyncHeightType syncHeightType;
+
+    public SyncHeightType getSyncHeightType() {
+        return syncHeightType;
+    }
+
+    public void setSyncHeightType(SyncHeightType syncHeightType) {
+        this.syncHeightType = syncHeightType;
+    }
+
+    public enum SyncHeightType{
+        AUTO,
+        TEXT,
+        GRAPHIC
+    }
+
+    /**
+     * 同步标签高度与图标高度
+     */
+    private void syncGraphicHeight() {
+        String text = this.getText();
+        SyncHeightType type = this.getSyncHeightType();
+        double height = -1;
+        boolean syncText = (type == SyncHeightType.AUTO && StringUtil.isNotBlank(text)) || type == SyncHeightType.TEXT;
+        if (syncText) {
+            height = FontUtil.textHeight(text, this.getFont());
+            this.setMinHeight(height);
+            this.setPrefHeight(height);
+            this.setMaxHeight(height);
+        } else {
+            SVGGlyph graphic = this.graphic();
+            if (graphic != null) {
+                height = graphic.prefHeight(-1);
+            }
+        }
+        if (height > 0) {
+            this.setMinHeight(height);
+            this.setPrefHeight(height);
+            this.setMaxHeight(height);
+        }
     }
 }
