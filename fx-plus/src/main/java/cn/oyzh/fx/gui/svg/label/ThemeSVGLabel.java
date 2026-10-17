@@ -15,6 +15,7 @@ public class ThemeSVGLabel extends SVGLabel {
      */
     public ThemeSVGLabel() {
         this.setUrl("/fx-svg/contrast.svg");
+        //super.setText("\u200B");
     }
 
     /**

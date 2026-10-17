@@ -16,6 +16,7 @@ public class UploadDownloadSVGLabel extends SVGLabel {
      */
     public UploadDownloadSVGLabel() {
         this.setGraphic(new UploadDownloadSVGGlyph());
+        //super.setText("\u200B");
     }
 
     /**

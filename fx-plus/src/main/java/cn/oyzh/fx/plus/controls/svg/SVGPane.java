@@ -12,6 +12,7 @@ import javafx.scene.Node;
  * @author oyzh
  * @since 2025-01-07
  */
+@Deprecated
 public class SVGPane extends FXPane implements MouseAdapter, TipAdapter {
 
     /**

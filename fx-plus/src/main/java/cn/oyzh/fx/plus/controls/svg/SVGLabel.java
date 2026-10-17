@@ -1,6 +1,8 @@
 package cn.oyzh.fx.plus.controls.svg;
 
 import cn.oyzh.fx.plus.controls.label.FXLabel;
+import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Paint;
 
@@ -11,10 +13,6 @@ import javafx.scene.paint.Paint;
  * @since 2023-10-09
  */
 public class SVGLabel extends FXLabel {
-
-    {
-        this.setCursor(Cursor.HAND);
-    }
 
     /**
      * 构造标签对象。
@@ -35,7 +33,7 @@ public class SVGLabel extends FXLabel {
     /**
      * 构造标签对象。
      *
-     * @param text 文本
+     * @param text    文本
      * @param graphic 图形
      */
     public SVGLabel(String text, SVGGlyph graphic) {
@@ -58,7 +56,7 @@ public class SVGLabel extends FXLabel {
      */
     public void setUrl(String url) {
         //if (this.graphic() == null) {
-            this.setGraphic(new SVGGlyph(url));
+        FXUtil.runWait(() -> this.setGraphic(new SVGGlyph(url)));
         //}
     }
 
@@ -120,7 +118,6 @@ public class SVGLabel extends FXLabel {
         return null;
     }
 
-
     /**
      * 获取颜色
      *
@@ -142,5 +139,13 @@ public class SVGLabel extends FXLabel {
         if (this.graphic() != null) {
             this.graphic().setColor(color);
         }
+    }
+
+    @Override
+    public void initNode() {
+        this.setCursor(Cursor.HAND);
+        this.setPadding(Insets.EMPTY);
+        this.setMinSize(0, 0);
+        super.initNode();
     }
 }

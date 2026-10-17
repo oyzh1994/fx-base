@@ -276,8 +276,8 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         // 设置光标
         this.original.setCursor(this.getCursor());
         // 动态绑定缩放比例
-        this.original.scaleXProperty().bind(this.widthProperty().divide(this.original.getBoundsInLocal().getWidth()));
-        this.original.scaleYProperty().bind(this.heightProperty().divide(this.original.getBoundsInLocal().getHeight()));
+        this.original.scaleXProperty().bind(this.widthProperty().multiply(this.contentScaleX()).divide(this.original.getBoundsInLocal().getWidth()));
+        this.original.scaleYProperty().bind(this.heightProperty().multiply(this.contentScaleY()).divide(this.original.getBoundsInLocal().getHeight()));
         // 设置节点
         this.setChild(this.original);
         // 更新内容
@@ -397,6 +397,24 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
         double w, h;
         w = h = size;
         return new double[]{w, h};
+    }
+
+    /**
+     * 获取内容X轴缩放比例
+     *
+     * @return 结果
+     */
+    protected double contentScaleX() {
+        return 1.d;
+    }
+
+    /**
+     * 获取内容Y轴缩放比例
+     *
+     * @return 结果
+     */
+    protected double contentScaleY() {
+        return 1.d;
     }
 
     /**

@@ -22,6 +22,7 @@ public class LayoutSVGLabel extends SVGLabel {
      */
     public void layout1() {
         super.setUrl("/fx-svg/layout/layout1.svg");
+        //super.setText("\u200B");
     }
 
     /**
@@ -29,6 +30,7 @@ public class LayoutSVGLabel extends SVGLabel {
      */
     public void layout2() {
         super.setUrl("/fx-svg/layout/layout2.svg");
+        //super.setText("\u200B");
     }
 
     /**

@@ -1,6 +1,5 @@
 package cn.oyzh.fx.plus.controls.svg;
 
-import javafx.geometry.Insets;
 import javafx.scene.paint.Paint;
 
 
@@ -51,32 +50,42 @@ public class ScalingSVGGlyph extends SVGGlyph {
         super(url, size);
     }
 
+    //@Override
+    //protected double[] calculateSize(double size) {
+    //    double w, h;
+    //    // 针对部分图标的处理
+    //    if (this.sizeScaling() != 1.0) {
+    //        w = h = size * this.sizeScaling();
+    //    } else {
+    //        w = h = size;
+    //    }
+    //    if (this.widthScaling() != 1.0) {
+    //        w *= this.widthScaling();
+    //    }
+    //    if (this.heightScaling() != 1.0) {
+    //        h *= this.heightScaling();
+    //    }
+    //    if (h != size) {
+    //        Insets padding = this.getPadding();
+    //        Insets insets;
+    //        if (padding == null) {
+    //            insets = new Insets(size - h, 0, 0, 0);
+    //        } else {
+    //            insets = new Insets(size - h, padding.getRight(), padding.getBottom(), padding.getLeft());
+    //        }
+    //        this.setPadding(insets);
+    //    }
+    //    return new double[]{w, h};
+    //}
+
     @Override
-    protected double[] calculateSize(double size) {
-        double w, h;
-        // 针对部分图标的处理
-        if (this.sizeScaling() != 1.0) {
-            w = h = size * this.sizeScaling();
-        } else {
-            w = h = size;
-        }
-        if (this.widthScaling() != 1.0) {
-            w *= this.widthScaling();
-        }
-        if (this.heightScaling() != 1.0) {
-            h *= this.heightScaling();
-        }
-        if (h != size) {
-            Insets padding = this.getPadding();
-            Insets insets;
-            if (padding == null) {
-                insets = new Insets(size - h, 0, 0, 0);
-            } else {
-                insets = new Insets(size - h, padding.getRight(), padding.getBottom(), padding.getLeft());
-            }
-            this.setPadding(insets);
-        }
-        return new double[]{w, h};
+    protected double contentScaleX() {
+        return this.sizeScaling() * this.widthScaling();
+    }
+
+    @Override
+    protected double contentScaleY() {
+        return this.sizeScaling() * this.heightScaling();
     }
 
     /**
