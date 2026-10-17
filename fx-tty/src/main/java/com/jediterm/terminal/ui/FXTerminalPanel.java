@@ -549,8 +549,13 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     private void handleHyperlinks(Node component) {
-        Point2D a = myLastMousePosition != null ? myLastMousePosition : component.localToScreen(0, 0);
-        handleHyperlinks(a);
+        try {
+            Point2D a = myLastMousePosition != null ? myLastMousePosition : component.localToScreen(0, 0);
+            handleHyperlinks(a);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.error("handleHyperlinks error", ex);
+        }
     }
 
     private @Nullable HyperlinkStyle findHyperlink(@NotNull Point2D p) {
