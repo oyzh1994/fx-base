@@ -209,6 +209,41 @@ public final class JavaFxBackend implements DisplayBackend {
     private boolean pointerOverWindow;
     /** Whether the platform pointer is currently the one this window asked to be hidden. */
     private boolean cursorHidden;
+
+    /**
+     * Watches the platform pointer while the platform cursor is hidden, for the moves the scene
+     * never sees.
+     *
+     * <p>Almost every move re-decides the pointer - {@link #pointerMoved} calls
+     * {@link #applyHostCursor} - because most of the window's input reaches the scene. **The
+     * window's own controls are the exception.** JavaFX 27's extended window draws its
+     * minimize/maximize/close buttons as a Glass overlay ({@code HeaderButtonOverlay}), and a mouse
+     * move over one of them is <em>consumed by the platform</em> before the scene is dispatched: the
+     * scene gets no move and, because the move is what would have moved the entered node, not even a
+     * {@code MOUSE_EXITED} for the canvas. On X11/GTK the cursor a window sets covers the whole
+     * window, that overlay included, so a pointer that goes from the page straight onto one of those
+     * buttons keeps the hidden cursor and leaves the client's sprite painted at the edge of the page:
+     * it is the report "从页面移动到标题栏的按钮，比如最小化最大化，关闭时，明显卡卡的…而且光标位置有点
+     * 错位". A scene event filter cannot help with an event the platform swallowed, so while the
+     * cursor is hidden the pointer's real position is asked of the platform (the same
+     * {@code MouseInfo} query {@link #updatePointerOverWindow} makes) and the pointer is handed back
+     * as soon as it is no longer over the page. It runs only while the cursor is hidden, which is
+     * exactly while there is something to hand back.
+     */
+    private volatile java.util.TimerTask pointerWatch;
+    /**
+     * The thread the watch runs on, created once and parked between watches: crossing the page's
+     * edge back and forth would otherwise create and destroy a thread each time.
+     */
+    private java.util.Timer pointerWatchTimer;
+    private final java.util.concurrent.atomic.AtomicBoolean pointerPollPending =
+            new java.util.concurrent.atomic.AtomicBoolean();
+    /**
+     * The rectangle of the screen the client's page occupies, in screen coordinates, as last
+     * computed on the FX thread by {@link #updatePointerOverWindow}. Read by the watcher's own
+     * thread so a pointer that is still over the page costs the FX thread nothing at all.
+     */
+    private volatile Rectangle2D pointerContentArea;
     /** Whether the window is on the screen: it is built before it is shown - see {@link #showWindow}. */
     private boolean shown;
     /** What to place the window by when it is first shown, in framebuffer pixels. */
@@ -1684,6 +1719,14 @@ public final class JavaFxBackend implements DisplayBackend {
         }
         updatePointerOverWindow();
         boolean wantHidden = !idle && hostCursor(pointerOverWindow, applicationActive()) == Cursor.NONE;
+        // Started with the decision and stopped with it: while the pointer is over the page there is
+        // a hidden cursor to take back, and the moves that would say otherwise are the ones the
+        // window's own buttons swallow - see {@link #pointerWatch}.
+        if (wantHidden) {
+            startPointerWatch();
+        } else {
+            stopPointerWatch();
+        }
         if (wantHidden != cursorHidden) {
             // One line per change of the decision, which is the whole of what a pointer that is not
             // where it should be leaves behind: whether it was hidden or handed back, and the three
@@ -1712,9 +1755,81 @@ public final class JavaFxBackend implements DisplayBackend {
     }
 
     /**
+     * Starts {@link #pointerWatch} if it is not running. Runs on the FX thread.
+     */
+    private void startPointerWatch() {
+        if (pointerWatch != null || scene == null || stage == null) {
+            return;
+        }
+        if (pointerWatchTimer == null) {
+            pointerWatchTimer = new java.util.Timer("xserver-pointer-watch", true);
+        }
+        java.util.TimerTask watch = new java.util.TimerTask() {
+            @Override
+            public void run() {
+                if (pointerWatch != this) {
+                    return;
+                }
+                // The common answer is "still over the page", and it is answered without waking the
+                // toolkit: the rectangle is the one the FX thread last worked out, and the platform
+                // query is the same one `updatePointerOverWindow` makes.
+                Rectangle2D area = pointerContentArea;
+                if (area != null) {
+                    Point pointer = pointerLocation();
+                    if (pointer != null && pointerInside(area.getMinX(), area.getMinY(),
+                            area.getWidth(), area.getHeight(), pointer.x, pointer.y)) {
+                        return;
+                    }
+                }
+                if (!pointerPollPending.compareAndSet(false, true)) {
+                    return;
+                }
+                Platform.runLater(() -> {
+                    pointerPollPending.set(false);
+                    if (pointerWatch != this) {
+                        return;
+                    }
+                    applyHostCursor();
+                    if (!cursorHidden) {
+                        stopPointerWatch();
+                    }
+                });
+            }
+        };
+        pointerWatch = watch;
+        pointerWatchTimer.scheduleAtFixedRate(watch, 0, 16);
+    }
+
+    /**
+     * Stops {@link #pointerWatch}. Runs on the FX thread.
+     */
+    private void stopPointerWatch() {
+        java.util.TimerTask watch = pointerWatch;
+        pointerWatch = null;
+        if (watch != null) {
+            watch.cancel();
+        }
+    }
+
+    /**
+     * Stops the watch and takes its thread with it, for a backend whose window is gone. A hidden
+     * window keeps the thread parked - it will be shown again - but a closed one has nothing left to
+     * watch, and per-client mode opens one of these per client. Runs on the FX thread.
+     */
+    private void disposePointerWatch() {
+        stopPointerWatch();
+        java.util.Timer timer = pointerWatchTimer;
+        pointerWatchTimer = null;
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    /**
      * Hands the platform pointer back, whatever state the window is in. Runs on the FX thread.
      */
     private void releaseHostCursor() {
+        stopPointerWatch();
         if (scene != null) {
             scene.setCursor(Cursor.DEFAULT);
         }
@@ -1750,6 +1865,9 @@ public final class JavaFxBackend implements DisplayBackend {
         // Whatever happens next, the pointer is the platform's from here on: nothing in this backend
         // can decide to hide it again, because every decision needs the stage that has just gone.
         releaseHostCursor();
+        // And the watch's thread goes with the window: it is this backend's, and a per-client window
+        // is one backend per client.
+        disposePointerWatch();
         if (closing == null) {
             return;
         }
@@ -1796,27 +1914,42 @@ public final class JavaFxBackend implements DisplayBackend {
     private void updatePointerOverWindow() {
         if (stage == null || !stage.isShowing()) {
             pointerOverWindow = false;
+            pointerContentArea = null;
             return;
         }
-        Point pointer;
-        try {
-            PointerInfo info = MouseInfo.getPointerInfo();
-            if (info == null) {
-                return;                         // no pointer to ask about: keep the events' answer
-            }
-            pointer = info.getLocation();
-        } catch (RuntimeException | Error refused) {
-            // A platform that will not answer (headless, or a security manager): the events are all
-            // there is, which is what this did before.
-            return;
+        Point pointer = pointerLocation();
+        if (pointer == null) {
+            return;                             // no pointer to ask about: keep the events' answer
         }
         // The scene's own frame around the window is not part of the content either, and the content
         // itself is placed inside the scene by the layout (below the header bar).
         double sceneX = stage.getX() + (stage.getWidth() - scene.getWidth()) / 2;
         double sceneY = stage.getY() + (stage.getHeight() - scene.getHeight()) / 2;
         javafx.geometry.Bounds content = canvas.localToScene(canvas.getBoundsInLocal());
-        pointerOverWindow = pointerInside(sceneX + content.getMinX(), sceneY + content.getMinY(),
+        double contentX = sceneX + content.getMinX();
+        double contentY = sceneY + content.getMinY();
+        // Also kept for `pointerWatch`, which asks it from its own thread: the page's rectangle in
+        // screen coordinates, so "the pointer is still over the page" needs no FX thread at all.
+        pointerContentArea = new Rectangle2D(contentX, contentY,
+                content.getWidth(), content.getHeight());
+        pointerOverWindow = pointerInside(contentX, contentY,
                 content.getWidth(), content.getHeight(), pointer.x, pointer.y);
+    }
+
+    /**
+     * Where the platform pointer is, or null when the platform will not say.
+     *
+     * <p>Asked from the FX thread by {@link #updatePointerOverWindow} and from the watcher's own
+     * thread by {@link #pointerWatch}; {@code MouseInfo} answers both, and the null case is the same
+     * one it always was - no pointer to ask about, so the events' answer stands.
+     */
+    private static Point pointerLocation() {
+        try {
+            PointerInfo info = MouseInfo.getPointerInfo();
+            return info == null ? null : info.getLocation();
+        } catch (RuntimeException | Error refused) {
+            return null;
+        }
     }
 
     /**
