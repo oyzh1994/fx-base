@@ -111,44 +111,44 @@ public class AppTestMain extends Application {
 
     private void test4(Stage stage) {
         //FXUtil.disablePreview();
-        MessageBox.info("测试1");
-        MessageBox.warn("测试2");
-        MessageBox.error("测试3");
-        boolean b1 = MessageBox.confirm("测试5");
+        MessageBox.info("测试1", stage);
+        MessageBox.warn("测试2", stage);
+        MessageBox.error("测试3", stage);
+        boolean b1 = MessageBox.confirm("测试5", stage);
         System.out.println("b1=" + b1);
-        String result1 = MessageBox.prompt("测试1", "内容1");
+        String result1 = MessageBox.prompt("测试1", "内容1", stage);
         System.out.println("result1:" + result1);
         try {
             throw new UnsupportedOperationException("test\n".repeat(1));
         } catch (Exception ex) {
-            MessageBox.exception(ex);
+            MessageBox.exception(ex, stage);
         }
         try {
             throw new UnsupportedOperationException("test\n".repeat(100));
         } catch (Exception ex) {
-            MessageBox.exception(ex);
+            MessageBox.exception(ex, stage);
         }
-        MessageBox.none("测试4");
+        MessageBox.none("测试4", stage);
         //        FXUtil.disablePreview();
         MessageBox.enableNewStyle = false;
-        MessageBox.info("测试1");
-        MessageBox.warn("测试2");
-        MessageBox.error("测试3");
-        boolean b2 = MessageBox.confirm("测试5");
+        MessageBox.info("测试1", stage);
+        MessageBox.warn("测试2", stage);
+        MessageBox.error("测试3", stage);
+        boolean b2 = MessageBox.confirm("测试5", stage);
         System.out.println("b2=" + b2);
-        String result2 = MessageBox.prompt("测试2", "内容2");
+        String result2 = MessageBox.prompt("测试2", "内容2", stage);
         System.out.println("result2:" + result2);
         try {
             throw new UnsupportedOperationException("test\n".repeat(1));
         } catch (Exception ex) {
-            MessageBox.exception(ex);
+            MessageBox.exception(ex, stage);
         }
         try {
             throw new UnsupportedOperationException("test\n".repeat(100));
         } catch (Exception ex) {
-            MessageBox.exception(ex);
+            MessageBox.exception(ex, stage);
         }
-        MessageBox.none("测试4");
+        MessageBox.none("测试4", stage);
     }
 
     private void test5(Stage stage) {

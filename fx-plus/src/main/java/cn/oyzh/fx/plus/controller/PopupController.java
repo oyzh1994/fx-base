@@ -3,6 +3,7 @@ package cn.oyzh.fx.plus.controller;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.PopupListener;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 /**
@@ -93,5 +94,9 @@ public class PopupController extends Controller implements PopupListener {
     @Override
     public void onWindowCloseRequest(WindowEvent event) {
 
+    }
+
+    protected Window getWindow() {
+        return this.window.popup();
     }
 }

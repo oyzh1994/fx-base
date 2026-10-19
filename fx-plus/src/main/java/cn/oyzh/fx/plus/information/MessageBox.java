@@ -67,8 +67,19 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
+    @Deprecated
     public static boolean confirm(String content) {
         return confirm(I18nHelper.tips(), content, null, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static boolean confirm(String content, Window owner) {
+        return confirm(I18nHelper.tips(), content, null, owner);
     }
 
     /**
@@ -77,6 +88,7 @@ public class MessageBox {
      * @param title   标题信息
      * @param content 文本信息
      */
+    @Deprecated
     public static boolean confirm(String title, String content) {
         return confirm(title, content, null, StageManager.getFrontWindow());
     }
@@ -86,8 +98,20 @@ public class MessageBox {
      *
      * @param title   标题信息
      * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static boolean confirm(String title, String content, Window owner) {
+        return confirm(title, content, null, owner);
+    }
+
+    /**
+     * 确认窗口
+     *
+     * @param title   标题信息
+     * @param content 文本信息
      * @param header  头信息
      */
+    @Deprecated
     public static boolean confirm(String title, String content, String header) {
         return confirm(title, content, header, StageManager.getFrontWindow());
     }
@@ -145,6 +169,7 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
+    @Deprecated
     public static void warn(String content) {
         alert(Alert.AlertType.WARNING, I18nHelper.tips(), null, content);
     }
@@ -174,10 +199,11 @@ public class MessageBox {
      *
      * @param ex 异常信息
      */
+    @Deprecated
     public static void exception(Throwable ex) {
         ex.printStackTrace();
         JulLog.error("exception", ex);
-        exception(ex, null);
+        exception(ex, (String) null);
     }
 
     /**
@@ -186,6 +212,7 @@ public class MessageBox {
      * @param ex    异常信息
      * @param title 标题
      */
+    @Deprecated
     public static void exception(Throwable ex, String title) {
         String err;
         if (Exception_Parser != null) {
@@ -198,12 +225,54 @@ public class MessageBox {
     }
 
     /**
+     * 异常窗口
+     *
+     * @param ex    异常信息
+     * @param owner 父窗口
+     */
+    public static void exception(Throwable ex, Window owner) {
+        JulLog.error("exception", ex);
+        exception(ex, null, owner);
+    }
+
+    /**
+     * 异常窗口
+     *
+     * @param ex    异常信息
+     * @param title 标题
+     * @param owner 父窗口
+     */
+    public static void exception(Throwable ex, String title, Window owner) {
+        ex.printStackTrace();
+        String err;
+        if (Exception_Parser != null) {
+            err = Exception_Parser.apply(ex);
+        } else {
+            err = ex.getMessage();
+        }
+        title = title == null ? I18nHelper.exception() : title;
+        alert(Alert.AlertType.WARNING, title, null, err, owner);
+    }
+
+
+    /**
      * 信息窗口
      *
      * @param content 文本信息
      */
+    @Deprecated
     public static void info(String content) {
         alert(Alert.AlertType.INFORMATION, I18nHelper.tips(), null, content);
+    }
+
+    /**
+     * 信息窗口
+     *
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void info(String content, Window owner) {
+        alert(Alert.AlertType.INFORMATION, I18nHelper.tips(), null, content, owner);
     }
 
     /**
@@ -211,8 +280,19 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
+    @Deprecated
     public static void error(String content) {
         alert(Alert.AlertType.ERROR, I18nHelper.tips(), null, content);
+    }
+
+    /**
+     * 错误窗口
+     *
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void error(String content, Window owner) {
+        alert(Alert.AlertType.ERROR, I18nHelper.tips(), null, content, owner);
     }
 
     /**
@@ -220,8 +300,19 @@ public class MessageBox {
      *
      * @param content 文本信息
      */
+    @Deprecated
     public static void none(String content) {
         alert(Alert.AlertType.NONE, I18nHelper.tips(), null, content);
+    }
+
+    /**
+     * 默认窗口
+     *
+     * @param content 文本信息
+     * @param owner   父窗口
+     */
+    public static void none(String content, Window owner) {
+        alert(Alert.AlertType.NONE, I18nHelper.tips(), null, content, owner);
     }
 
     /**
@@ -232,6 +323,7 @@ public class MessageBox {
      * @param header  提示头
      * @param content 文本信息
      */
+    @Deprecated
     public static void alert(Alert.AlertType type, String title, String header, String content) {
         alert(type, title, header, content, StageManager.getFrontWindow());
     }
@@ -327,6 +419,7 @@ public class MessageBox {
      * @param title 标题
      * @return 结果
      */
+    @Deprecated
     public static String prompt(String title) {
         return prompt(title, null);
     }
@@ -334,11 +427,23 @@ public class MessageBox {
     /**
      * 输入窗口
      *
-     * @param title    标题
-     * @param initText 初始值
+     * @param title 标题
+     * @param owner 父窗口
      * @return 结果
      */
-    public static String prompt(String title, String initText) {
+    public static String prompt(String title, Window owner) {
+        return prompt(title, null, owner);
+    }
+
+    /**
+     * 输入窗口
+     *
+     * @param title    标题
+     * @param initText 初始值
+     * @param owner    父窗口
+     * @return 结果
+     */
+    public static String prompt(String title, String initText, Window owner) {
         title = title == null ? I18nHelper.tips() : title;
         initText = initText == null ? "" : initText;
         String finalTitle = title;
@@ -348,12 +453,14 @@ public class MessageBox {
             if (enableNewStyle) {
                 //            if (FXUtil.isEnablePreview()) {
                 InputStage stage = new InputStage(finalInitText);
+                stage.initOwner(owner);
                 stage.title(finalTitle);
                 ref.set(stage.getResult());
             } else {
                 TextInputDialog dialog = new TextInputDialog(finalInitText);
                 dialog.setTitle(finalTitle);
                 dialog.setGraphic(null);
+                dialog.initOwner(owner);
                 dialog.setHeaderText(null);
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(ref::set);
@@ -428,6 +535,7 @@ public class MessageBox {
      *
      * @param msg 消息
      */
+    @Deprecated
     public static void okToast(String msg) {
         okToast(msg, StageManager.getFrontWindow());
         //        okToast(msg, null);
@@ -444,10 +552,21 @@ public class MessageBox {
     }
 
     /**
+     * ok提示
+     *
+     * @param msg     消息
+     * @param adapter 父窗口
+     */
+    public static void okToast(String msg, StageAdapter adapter) {
+        okToast(msg, adapter.stage());
+    }
+
+    /**
      * 警告提示
      *
      * @param msg 消息
      */
+    @Deprecated
     public static void warnToast(String msg) {
         warnToast(msg, null);
     }
@@ -467,6 +586,7 @@ public class MessageBox {
      *
      * @param msg 消息
      */
+    @Deprecated
     public static void questionToast(String msg) {
         questionToast(msg, null);
     }

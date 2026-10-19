@@ -28,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Window;
 
 import java.util.List;
 
@@ -394,4 +395,5 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
         NodeDestroyUtil.destroyNode(this);
         NodeDestroyUtil.destroyObject(this);
     }
+
 }

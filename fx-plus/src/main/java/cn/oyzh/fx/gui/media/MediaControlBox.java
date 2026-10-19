@@ -250,7 +250,7 @@ public class MediaControlBox extends FXVBox implements Destroyable {
         player.setOnError(() -> {
             this.ended = true;
             failed.run();
-            MessageBox.exception(player.getError());
+            MessageBox.exception(player.getError(), this.getWindow());
         });
         player.setOnReady(() -> {
             this.ended = false;

@@ -75,7 +75,7 @@ public class TtyZModemProcessor implements CopyStreamListener {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            MessageBox.exception(ex);
+            MessageBox.exception(ex, StageManager.getFrontWindow());
         }
     }
 

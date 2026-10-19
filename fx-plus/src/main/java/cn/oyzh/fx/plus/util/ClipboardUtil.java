@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.fx.plus.information.MessageBox;
+import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.Clipboard;
@@ -78,7 +79,7 @@ public class ClipboardUtil {
      */
     public static boolean setStringAndTip(String content) {
         if (setString(content)) {
-            MessageBox.okToast(I18nHelper.copySuccess());
+            MessageBox.okToast(I18nHelper.copySuccess(), StageManager.getFrontWindow());
             return true;
         }
         return false;

@@ -104,18 +104,18 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentWidth() {
         Parent parent = this.parent();
-//         if (parent instanceof Region region) {
-//             return region.getWidth();
-//         }
-//         if (parent != null) {
-//             return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
-// //            return NodeUtil.getWidth(parent);
-//         }
-//         if (this instanceof Node node && node.getScene() != null) {
-//             return node.getScene().getWidth();
-// //            return NodeUtil.getWidth(node.getScene());
-//         }
-//         return Double.NaN;
+        //         if (parent instanceof Region region) {
+        //             return region.getWidth();
+        //         }
+        //         if (parent != null) {
+        //             return Math.max(parent.prefWidth(-1), parent.minWidth(-1));
+        // //            return NodeUtil.getWidth(parent);
+        //         }
+        //         if (this instanceof Node node && node.getScene() != null) {
+        //             return node.getScene().getWidth();
+        // //            return NodeUtil.getWidth(node.getScene());
+        //         }
+        //         return Double.NaN;
         return NodeUtil.getWidth(parent);
     }
 
@@ -126,18 +126,18 @@ public interface NodeAdapter extends EventTarget {
      */
     default double parentHeight() {
         Parent parent = this.parent();
-//         if (parent instanceof Region region) {
-//             return region.getHeight();
-//         }
-//         if (parent != null) {
-//             return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
-// //            return NodeUtil.getHeight(parent);
-//         }
-//         if (this instanceof Node node && node.getScene() != null) {
-//             return node.getScene().getHeight();
-// //            return NodeUtil.getHeight(node.getScene());
-//         }
-//         return Double.NaN;
+        //         if (parent instanceof Region region) {
+        //             return region.getHeight();
+        //         }
+        //         if (parent != null) {
+        //             return Math.max(parent.prefHeight(-1), parent.minHeight(-1));
+        // //            return NodeUtil.getHeight(parent);
+        //         }
+        //         if (this instanceof Node node && node.getScene() != null) {
+        //             return node.getScene().getHeight();
+        // //            return NodeUtil.getHeight(node.getScene());
+        //         }
+        //         return Double.NaN;
         return NodeUtil.getHeight(parent);
     }
 
@@ -511,7 +511,7 @@ public interface NodeAdapter extends EventTarget {
      */
     default void clearFocus() {
         FXUtil.runWait(() -> {
-//            this.scene().focusCleanup();
+            //            this.scene().focusCleanup();
             try {
                 ReflectUtil.invoke(this.scene(), "focusCleanup");
             } catch (Exception ex) {
@@ -526,7 +526,7 @@ public interface NodeAdapter extends EventTarget {
     default void focusNode() {
         if (this instanceof Node node) {
             FXUtil.runWait(() -> {
-//                this.scene().setFocusOwner(node, true);
+                //                this.scene().setFocusOwner(node, true);
                 try {
                     ReflectUtil.invoke(this.scene(), "setFocusOwner", node, true);
                 } catch (Exception ex) {
@@ -549,5 +549,24 @@ public interface NodeAdapter extends EventTarget {
                 node.setOpacity(0.5);
             }
         }
+    }
+
+    default Window getWindow() {
+        if (this instanceof Node n) {
+            if (n.getScene() == null) {
+                return null;
+            }
+            return n.getScene().getWindow();
+        }
+        if (this instanceof Tab n) {
+            if (n.getTabPane() == null) {
+                return null;
+            }
+            if (n.getTabPane().getScene() == null) {
+                return null;
+            }
+            return n.getTabPane().getScene().getWindow();
+        }
+        return null;
     }
 }

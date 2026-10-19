@@ -1,12 +1,11 @@
 package cn.oyzh.fx.plus.controller;
 
-import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.event.EventListener;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageListener;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 /**
@@ -29,6 +28,15 @@ public class StageController extends Controller implements StageListener, EventL
      */
     public StageAdapter getStage() {
         return stage;
+    }
+
+    /**
+     * 获取窗口
+     *
+     * @return 结果
+     */
+    public Window getWindow() {
+        return stage == null ? null : stage.stage();
     }
 
     /**

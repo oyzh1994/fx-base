@@ -64,17 +64,17 @@ public class EditorTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         //ThemeManager.apply(Themes.BLACK_ON_WHITE);
-//         ThemeManager.apply(Themes.PRIMER_DARK);
+        //         ThemeManager.apply(Themes.PRIMER_DARK);
         ThemeManager.apply(Themes.PRIMER_LIGHT);
-//        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
-//        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
-//        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
-//        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+        //        System.setProperty("com.sun.javafx.highContrastTheme", "YELLOWONBLACK");
+        //        System.setProperty("com.sun.javafx.highContrastTheme", "BLACKONWHITE");
+        //        System.setProperty("com.sun.javafx.highContrastTheme", "WHITEONBLACK");
+        //        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
         test1(stage);
         stage.getScene().getStylesheets().add("/fx-plus/css/fx-base.css");
         // test2(stage);
         // test3(stage);
-//        test4(stage);
+        //        test4(stage);
         stage.setTitle("编辑器测试");
     }
 
@@ -88,16 +88,16 @@ public class EditorTest extends Application {
         editor.setFlexWidth("100%");
         editor.setFlexHeight("100% - 120");
         editor.showLineNum();
-//        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
+        //        editor.setLineNumPolicy(EditorLineNumPolicy.ALWAYS);
 
         FXHBox hBox = new FXHBox();
 
         // 高亮
         HighlightTextField text_31 = new HighlightTextField();
         text_31.setPromptText("查找内容");
-//        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
-//            EditorUtil.clearHighlightSearchIndex(editor);
-//        });
+        //        text_31.textProperty().addListener((observable, oldValue, newValue) -> {
+        //            EditorUtil.clearHighlightSearchIndex(editor);
+        //        });
         EditorUtil.bindHighlight(editor, text_31);
         hBox.addChild(text_31);
 
@@ -260,21 +260,21 @@ public class EditorTest extends Application {
             editor.positionCaret(editor.getLength() / 2);
         });
         hBox3.addChild(btn_311);
-//         Button btn_312 = new Button("设置颜色");
-//         btn_312.setOnAction(event -> {
-//             editor.setStyle(0, 10, Color.RED);
-//         });
-//         hBox3.addChild(btn_312);
+        //         Button btn_312 = new Button("设置颜色");
+        //         btn_312.setOnAction(event -> {
+        //             editor.setStyle(0, 10, Color.RED);
+        //         });
+        //         hBox3.addChild(btn_312);
 
         FXHBox hBox4 = new FXHBox();
         Button btn_41 = new Button("获取光标位置");
         btn_41.setOnAction(event -> {
-            MessageBox.info(editor.caretPosition() + "");
+            MessageBox.info(editor.caretPosition() + "", stage);
         });
         hBox4.addChild(btn_41);
         Button btn_42 = new Button("获取光标边界");
         btn_42.setOnAction(event -> {
-            MessageBox.info(editor.getCaretBounds() + "");
+            MessageBox.info(editor.getCaretBounds() + "", stage);
         });
         hBox4.addChild(btn_42);
         Button btn_43 = new Button("在光标处弹窗");
@@ -306,7 +306,7 @@ public class EditorTest extends Application {
 
         Button btn_46 = new Button("获取选中文本");
         btn_46.setOnAction(event -> {
-            MessageBox.info(editor.getSelectedText());
+            MessageBox.info(editor.getSelectedText(), stage);
         });
         hBox4.addChild(btn_46);
 
@@ -314,12 +314,12 @@ public class EditorTest extends Application {
         btn_47.setOnAction(event -> {
             TextPos start = TextPos.ofLeading(0, 0);
             TextPos end = TextPos.ofLeading(0, 10);
-//             StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
+            //             StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.TEXT_COLOR, Color.ORANGE);
             StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BACKGROUND, Color.ORANGE);
-//            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
-//            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.ITALIC,true);
-//            StyledTextModel model = editor.getModel();
-//            model.applyStyle(start, end, attributeMap, false);
+            //            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.BOLD, true);
+            //            StyleAttributeMap attributeMap = StyleAttributeMap.of(StyleAttributeMap.ITALIC,true);
+            //            StyledTextModel model = editor.getModel();
+            //            model.applyStyle(start, end, attributeMap, false);
             editor.setStyle(start, end, attributeMap);
         });
         hBox4.addChild(btn_47);
@@ -327,7 +327,7 @@ public class EditorTest extends Application {
         FXHBox hBox5 = new FXHBox();
         Button btn_51 = new Button("获取选区位置");
         btn_51.setOnAction(event -> {
-            MessageBox.info(editor.getSelectionRange().toString());
+            MessageBox.info(editor.getSelectionRange().toString(), stage);
         });
         hBox5.addChild(btn_51);
 

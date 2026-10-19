@@ -104,7 +104,7 @@ public class JfxVncViewerStage implements IRfbSessionListener {
         CompletableFuture.runAsync(this::connect, executorService)
                 .exceptionally(ex -> {
                     ex.printStackTrace();
-                    MessageBox.exception(ex);
+                    MessageBox.exception(ex, this.stage);
                     return null;
                 });
     }
