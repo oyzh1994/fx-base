@@ -62,6 +62,33 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class JavaFxBackend implements DisplayBackend {
 
 
+//    static {
+//        // JavaFX 27's macOS Metal pipeline can SIGSEGV in MTLContext.nUpdateRenderTarget while the
+//        // user live-resizes the window (observed 2026-10-19 on macOS 15.8.1 / Apple M4 Pro). ES2 is
+//        // still shipped and GPU-backed on macOS, so prefer it there and keep the software pipeline as
+//        // a fallback. An explicit prism.order always wins, so the workaround remains overridable.
+//        String order = preferredPrismOrder(System.getProperty("os.name"),
+//                System.getProperty("prism.order"));
+//        if (order != null) {
+//            System.setProperty("prism.order", order);
+//        }
+//    }
+//
+//    /**
+//     * The Prism order this backend should ask for, or null when the caller's choice should stand.
+//     *
+//     * <p>Package-private so the platform rule is pinned without starting the toolkit.
+//     */
+//    static String preferredPrismOrder(String osName, String configuredOrder) {
+//        if (configuredOrder != null && !configuredOrder.isBlank()) {
+//            return null;
+//        }
+//        if (osName != null && osName.toLowerCase(Locale.ROOT).startsWith("mac")) {
+//            return "es2,sw";
+//        }
+//        return null;
+//    }
+
     //static {
     //    // **The window's own title bar is a preview feature of JavaFX 27** (`StageStyle.EXTENDED`
     //    // and the header bar that goes with it), and opting in has to happen before the toolkit reads

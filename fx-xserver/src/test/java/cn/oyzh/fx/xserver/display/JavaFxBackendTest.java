@@ -480,6 +480,18 @@ class JavaFxBackendTest {
                 "every other frame is this backend's to size");
     }
 
+//    @Test
+//    void prefersEs2OnMacUnlessTheCallerChoseAPipeline() {
+//        assertEquals("es2,sw", JavaFxBackend.preferredPrismOrder("Mac OS X", null),
+//                "macOS must not default to the Metal pipeline that crashes during live resize");
+//        assertEquals("es2,sw", JavaFxBackend.preferredPrismOrder("Mac OS X", "  "),
+//                "a blank prism.order is the same as no choice at all");
+//        assertNull(JavaFxBackend.preferredPrismOrder("Mac OS X", "sw"),
+//                "an explicit pipeline choice must not be overridden");
+//        assertNull(JavaFxBackend.preferredPrismOrder("Linux", null),
+//                "other platforms keep their normal pipeline selection");
+//    }
+
     /** The server only calls back into this when the pointer moves, which the test never does. */
     private static final class NoopInput implements DisplayBackend.InputSink {
         @Override
