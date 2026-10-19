@@ -230,7 +230,6 @@ public class StageManager {
      * @param clazz 舞台类
      * @return StageAdapter
      */
-    @Deprecated
     public static StageAdapter parseStage(Class<?> clazz) {
         //        Window frontWindow = getFrontWindow();
         //        if (Primary_Stage != null && Primary_Stage.isShowing()) {
@@ -247,9 +246,9 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz, Window owner) {
-        if (owner == null) {
-            owner = getFrontWindow();
-        }
+//        if (owner == null) {
+//            owner = getFrontWindow();
+//        }
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
