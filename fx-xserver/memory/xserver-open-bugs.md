@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 20e98c73-c9b5-4cc8-9d2e-466cca178651
-  modified: 2026-09-23T18:59:59.528Z
+  modified: 2026-10-19T05:40:00.000Z
 ---
 
 Fixed and verified in this repo (uncommitted as of 2026-09-22): `WindowHandlers.deliverExpose()` sent Expose events with **screen** coordinates instead of window-relative ones (a window at screen (102,602) was told to repaint from `(102,602)` inside a 200x198 window), which makes any client that clips its repaint to the exposed rectangle draw nothing — a black window that never paints. Proof: `xev -geometry 200x200+100+600` before `(102,602)`, after `(0,0)`. Also added a `-scene-N.png` dump next to the existing `-image`/`-buffer` dumps in `JavaFxBackend`.
@@ -448,3 +448,35 @@ the things that were measured and found **not** to be the cause, so a later read
   that worst case, a client damaging continuously: **2.2% of one core**, against 1.7% with the tick alone -
   bounded, and left as it is; the comparison is what the wire path needed, and the toolkit coalesces the
   frames it is handed.
+
+**2026-10-19, real machine (Linux/X11, xclock and xev on display :5): the pointer was stuck at the
+page's edge when it went straight onto a window button.** "从页面移动到标题栏的按钮，比如最小化最大化，
+关闭时，明显卡卡的…而且光标位置有点错位". The page's own pointer was fine (the sprite followed the
+pointer at 60 fps, measured frame by frame from an `ffmpeg -f x11grab` capture), so this was the same
+class of report as the 2026-10-04 one, with a different cause.
+
+- **A move over JavaFX 27's window buttons never reaches the scene.** An `EXTENDED` window's
+  minimize/maximize/close buttons are drawn and hit-tested by the platform's Glass
+  `HeaderButtonOverlay`, not by scene-graph nodes: `handleMouseEvent` returns *true* for a
+  `MOVE`/`DRAG` over a button and the event is swallowed before dispatch. The scene therefore gets no
+  move, and because the move is what would have changed the entered node, not even the canvas's
+  `MOUSE_EXITED` fires (verified with temporary canvas enter/exit handlers: page -> button printed
+  nothing, button -> title printed `CANVAS exited`). Every other path re-decides the host cursor from
+  `pointerMoved` -> `applyHostCursor`, so this one did not, and:
+- **On X11/GTK the cursor a window set covers the whole window, overlay included.** The platform cursor
+  stayed the blank one (`XFixesGetCursorImage`: 1x1, serial of `Cursor.NONE`) while the pointer was over
+  a button, and the client's sprite stayed painted at the last position over the page - the "错位" -
+  because `pointerOverWindow` still said true. Windows/macOS do not show it because their window-button
+  overlay is a native window/view with a cursor of its own. Measured with `XFixesGetCursorImage`:
+  over the page `1x1` blank, over any of the three buttons a 32x32 `left_ptr` after the fix; before it,
+  `1x1` over a button whenever the pointer came straight from the page, and the sprite box was still
+  drawn in the page (`-draw_mouse 0` screen capture).
+- **A scene event filter cannot see a swallowed event, so the position is asked of the platform.**
+  `JavaFxBackend.pointerWatch` is a 16 ms `java.util.Timer` (one thread per backend, parked between
+  watches) that runs only while the cursor is hidden. It reads the page rectangle cached by
+  `updatePointerOverWindow` and `MouseInfo`'s pointer; while the pointer is still inside it nothing is
+  posted to the FX thread at all, and the first position outside posts `applyHostCursor`, which hands
+  the pointer back, erases the sprite and stops the watch. Crossing a page/header boundary a hundred
+  times left the thread count unchanged, and the hand-back is one poll at most. Cost while the pointer
+  rests over the page: ~1.3% of one core (the same 60 Hz wake-up cost either an `AnimationTimer` or a
+  posted task has; the timer thread's `MouseInfo` query is 0.045 ms).
