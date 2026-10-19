@@ -11,7 +11,10 @@ import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * 主题工具类
@@ -103,14 +106,14 @@ public class ThemeUtil {
             }
         }
         // 生成文件名
-        String path = SysConst.storeDir() + "theme_" + UUIDUtil.uuidSimple() + ".css";
+        Path path = Path.of(SysConst.storeDir(), "theme_" + UUIDUtil.uuidSimple() + ".css");
         // 写入文件
         FileUtil.writeUtf8String(content.toString(), path);
-        // 替换特殊符号
-        while (path.contains("\\")) {
-            path = path.replace("\\", "/");
-        }
-        return path;
+        //        // 替换特殊符号
+        //        while (path.contains("\\")) {
+        //            path = path.replace("\\", "/");
+        //        }
+        return path.toString();
     }
 
     /**
@@ -123,52 +126,38 @@ public class ThemeUtil {
         if (current instanceof SystemTheme theme) {
             return getInverseTheme(theme.getBaseTheme());
         }
-        ThemeStyle target;
-        if (current.isDarkMode()) {
-            if (current == Themes.PRIMER_DARK) {
-                target = Themes.PRIMER_LIGHT;
-            } else if (current == Themes.NORD_DARK) {
-                target = Themes.NORD_LIGHT;
-            } else if (current == Themes.CUPERTINO_DARK) {
-                target = Themes.CUPERTINO_LIGHT;
-            } else if (current == Themes.INTELLIJ_DARK) {
-                target = Themes.INTELLIJ_LIGHT;
-            } else if (current == Themes.VSCODE_DARK) {
-                target = Themes.VSCODE_LIGHT;
-            } else if (current == Themes.CYBERPUNK_DARK) {
-                target = Themes.CYBERPUNK_LIGHT;
-            } else if (current == Themes.LIQUID_GLASS_DARK) {
-                target = Themes.LIQUID_GLASS_LIGHT;
-            } else if (current == Themes.ANIME_WARM_DARK) {
-                target = Themes.ANIME_WARM_LIGHT;
-            } else if (current == Themes.BUSINESS_DARK) {
-                target = Themes.BUSINESS_LIGHT;
-            } else {
-                target = Themes.PRIMER_LIGHT;
-            }
-        } else {
-            if (current == Themes.PRIMER_LIGHT) {
-                target = Themes.PRIMER_DARK;
-            } else if (current == Themes.NORD_LIGHT) {
-                target = Themes.NORD_DARK;
-            } else if (current == Themes.CUPERTINO_LIGHT) {
-                target = Themes.CUPERTINO_DARK;
-            } else if (current == Themes.INTELLIJ_LIGHT) {
-                target = Themes.INTELLIJ_DARK;
-            } else if (current == Themes.VSCODE_LIGHT) {
-                target = Themes.VSCODE_DARK;
-            } else if (current == Themes.CYBERPUNK_LIGHT) {
-                target = Themes.CYBERPUNK_DARK;
-            } else if (current == Themes.LIQUID_GLASS_LIGHT) {
-                target = Themes.LIQUID_GLASS_DARK;
-            } else if (current == Themes.ANIME_WARM_LIGHT) {
-                target = Themes.ANIME_WARM_DARK;
-            } else if (current == Themes.BUSINESS_LIGHT) {
-                target = Themes.BUSINESS_DARK;
-            } else {
-                target = Themes.PRIMER_DARK;
+        String currentKey = inverseThemeKey(current);
+        for (ThemeStyle theme : Themes.themes()) {
+            if (!Objects.equals(current, theme)
+                    && theme.isDarkMode() != current.isDarkMode()
+                    && currentKey.equals(inverseThemeKey(theme))) {
+                return theme;
             }
         }
-        return target;
+        return current.isDarkMode() ? Themes.PRIMER_LIGHT : Themes.PRIMER_DARK;
+    }
+
+    /**
+     * 获取主题系列标识，忽略明暗差异。
+     *
+     * @param theme 主题
+     * @return 系列标识
+     */
+    private static String inverseThemeKey(ThemeStyle theme) {
+        String name = theme.getName();
+        if (name == null) {
+            return theme.getClass().getSimpleName().toLowerCase(Locale.ROOT);
+        }
+        String key = name.trim().toLowerCase(Locale.ROOT).replaceAll("[\\s_-]+", " ");
+        if (key.equals("github light default") || key.equals("github soft dark")) {
+            return "github default";
+        }
+        if (key.startsWith("github ") && key.contains("colorblind")) {
+            return "github colorblind";
+        }
+        if (key.startsWith("github ") && key.contains("tritanopia")) {
+            return "github tritanopia";
+        }
+        return key.replaceAll("\\b(?:light|dark)\\b", "mode");
     }
 }
