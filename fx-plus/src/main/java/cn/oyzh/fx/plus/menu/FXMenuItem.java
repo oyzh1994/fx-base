@@ -23,10 +23,6 @@ import javafx.scene.text.Font;
  */
 public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, StateAdapter, ThemeAdapter, Destroyable {
 
-    {
-        NodeManager.init(this);
-    }
-
     /**
      * 禁用状态监听，同步禁用图标
      */
@@ -37,14 +33,18 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
     };
 
     {
-        this.setStyle("-fx-padding: 0 0 0 0;");
-        this.disableProperty().addListener(this.disableListener);
-        //        this.disableProperty().addListener((observable, oldValue, newValue) -> {
-        //            if (this.getGraphic() != null) {
-        //                this.getGraphic().setDisable(newValue);
-        //            }
-        //        });
+        NodeManager.init(this);
     }
+
+//    {
+////        this.setStyle("-fx-padding: 0 0 0 0;");
+//        this.disableProperty().addListener(this.disableListener);
+//        //        this.disableProperty().addListener((observable, oldValue, newValue) -> {
+//        //            if (this.getGraphic() != null) {
+//        //                this.getGraphic().setDisable(newValue);
+//        //            }
+//        //        });
+//    }
 
     /**
      * 构造菜单项对象。
@@ -92,26 +92,26 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         }
     }
 
-    /**
-     * 获取宽度
-     *
-     * @return 宽度
-     */
-    public double getWidth() {
-        // String str = this.getText();
-        // Node graphic = this.getGraphic();
-        // double w = FontUtil.stringWidth(str);
-        // if (graphic != null) {
-        //     w += NodeUtil.getWidth(graphic);
-        // }
-        // KeyCombination combination = this.getAccelerator();
-        // if (combination != null) {
-        //     w = w + 60 + FontUtil.stringWidth(combination.getDisplayText());
-        //     System.out.println(w + "====");
-        // }
-        // return w;
-        return getWidth(this);
-    }
+//    /**
+//     * 获取宽度
+//     *
+//     * @return 宽度
+//     */
+//    public double getWidth() {
+//        // String str = this.getText();
+//        // Node graphic = this.getGraphic();
+//        // double w = FontUtil.stringWidth(str);
+//        // if (graphic != null) {
+//        //     w += NodeUtil.getWidth(graphic);
+//        // }
+//        // KeyCombination combination = this.getAccelerator();
+//        // if (combination != null) {
+//        //     w = w + 60 + FontUtil.stringWidth(combination.getDisplayText());
+//        //     System.out.println(w + "====");
+//        // }
+//        // return w;
+//        return getWidth(this);
+//    }
 
     //    /**
     //     * 使用svg和文字来生成菜单项
@@ -154,30 +154,12 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
 
     @Override
     public void initNode() {
+        //        this.setStyle("-fx-padding: 0 0 0 0;");
+        this.disableProperty().addListener(this.disableListener);
         this.setMnemonicParsing(false);
         NodeAdapter.super.initNode();
     }
 
-    /**
-     * 获取宽度
-     *
-     * @return 宽度
-     */
-    public static double getWidth(MenuItem item) {
-        String str = item.getText();
-        Node graphic = item.getGraphic();
-        Font font = FontUtil.getFont(item);
-        double w = FontUtil.textWidth(str, font);
-        if (graphic != null) {
-            w += NodeUtil.getWidth(graphic);
-        }
-        KeyCombination combination = item.getAccelerator();
-        if (combination != null) {
-            w = w + 20 + FontUtil.stringWidth(combination.getDisplayText(), font);
-        }
-        w += 80;
-        return w;
-    }
 
     @Override
     public void destroy() {
@@ -187,4 +169,25 @@ public class FXMenuItem extends MenuItem implements FontAdapter, NodeAdapter, St
         this.disableProperty().removeListener(this.disableListener);
         NodeDestroyUtil.destroyObject(this);
     }
+//
+//    /**
+//     * 获取宽度
+//     *
+//     * @return 宽度
+//     */
+//    public static double getWidth(MenuItem item) {
+//        String str = item.getText();
+//        Node graphic = item.getGraphic();
+//        Font font = FontUtil.getFont(item);
+//        double w = FontUtil.textWidth(str, font);
+//        if (graphic != null) {
+//            w += NodeUtil.getWidth(graphic);
+//        }
+//        KeyCombination combination = item.getAccelerator();
+//        if (combination != null) {
+//            w = w + 20 + FontUtil.stringWidth(combination.getDisplayText(), font);
+//        }
+//        w += 80;
+//        return w;
+//    }
 }

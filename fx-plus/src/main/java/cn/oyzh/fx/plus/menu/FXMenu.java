@@ -4,6 +4,7 @@ import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.adapter.StateAdapter;
 import cn.oyzh.fx.plus.font.FontAdapter;
 import cn.oyzh.fx.plus.font.FontUtil;
+import cn.oyzh.fx.plus.node.NodeAdapter;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.node.NodeUtil;
@@ -17,20 +18,20 @@ import javafx.scene.control.Menu;
  * @author oyzh
  * @since 2025-07-24
  */
-public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdapter, Destroyable {
+public class FXMenu extends Menu implements NodeAdapter, StateAdapter, ThemeAdapter, FontAdapter, Destroyable {
 
     {
         NodeManager.init(this);
     }
 
-    {
-        this.setStyle("-fx-padding: 0 0 0 0;");
-        this.disableProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.getGraphic() != null) {
-                this.getGraphic().setDisable(newValue);
-            }
-        });
-    }
+    //    {
+    ////        this.setStyle("-fx-padding: 0 0 0 0;");
+    //        this.disableProperty().addListener((observable, oldValue, newValue) -> {
+    //            if (this.getGraphic() != null) {
+    //                this.getGraphic().setDisable(newValue);
+    //            }
+    //        });
+    //    }
 
     /**
      * 构造菜单对象。
@@ -51,7 +52,7 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdap
     /**
      * 构造菜单对象。
      *
-     * @param text 文本
+     * @param text   文本
      * @param action 执行动作
      */
     public FXMenu(String text, Runnable action) {
@@ -62,8 +63,8 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdap
      * 构造菜单对象。
      *
      * @param graphic 图形
-     * @param text 文本
-     * @param action 执行动作
+     * @param text    文本
+     * @param action  执行动作
      */
     public FXMenu(Node graphic, String text, Runnable action) {
         if (text != null) {
@@ -90,6 +91,17 @@ public class FXMenu extends Menu implements StateAdapter, ThemeAdapter, FontAdap
             w += NodeUtil.getWidth(graphic);
         }
         return w;
+    }
+
+    @Override
+    public void initNode() {
+        //        this.setStyle("-fx-padding: 0 0 0 0;");
+        this.disableProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.getGraphic() != null) {
+                this.getGraphic().setDisable(newValue);
+            }
+        });
+        NodeAdapter.super.initNode();
     }
 
     @Override

@@ -135,7 +135,7 @@ public class FXContextMenu extends ContextMenu implements Destroyable, NodeAdapt
     public void initNode() {
         ObjectWatcherManager.watch(this);
         this.sizeToScene();
-        this.setStyle("-fx-padding: 0 0 0 0;");
+//        this.setStyle("-fx-padding: 0 0 0 0;");
 //        this.getItems().addListener(this.itemsListener);
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
