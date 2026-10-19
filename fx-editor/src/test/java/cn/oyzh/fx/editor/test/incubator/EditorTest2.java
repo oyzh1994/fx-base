@@ -38,7 +38,7 @@ public class EditorTest2 extends Application {
     private void test1(Stage stage) {
         Button button = new Button("新页面");
         button.setOnAction(event -> {
-            StageAdapter adapter =  StageManager.parseStage(Test1Controler.class);
+            StageAdapter adapter =  StageManager.parseStage(Test1Controler.class, StageManager.getFrontWindow());
 
             adapter.show();
         });

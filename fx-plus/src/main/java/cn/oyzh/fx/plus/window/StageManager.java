@@ -179,6 +179,7 @@ public class StageManager {
      *
      * @param clazz 舞台类
      */
+    @Deprecated
     public static void showStage(Class<?> clazz) {
         showStage(clazz, (Window) null);
     }
@@ -187,10 +188,10 @@ public class StageManager {
      * 显示舞台
      *
      * @param clazz   舞台类
-     * @param wrapper 舞台包装
+     * @param adapter 舞台包装
      */
-    public static void showStage(Class<?> clazz, StageAdapter wrapper) {
-        showStage(clazz, wrapper == null ? null : wrapper.stage());
+    public static void showStage(Class<?> clazz, StageAdapter adapter) {
+        showStage(clazz, adapter == null ? null : adapter.stage());
     }
 
     /**
@@ -229,6 +230,7 @@ public class StageManager {
      * @param clazz 舞台类
      * @return StageAdapter
      */
+    @Deprecated
     public static StageAdapter parseStage(Class<?> clazz) {
         //        Window frontWindow = getFrontWindow();
         //        if (Primary_Stage != null && Primary_Stage.isShowing()) {
@@ -245,6 +247,9 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz, Window owner) {
+        if (owner == null) {
+            owner = getFrontWindow();
+        }
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
@@ -331,6 +336,7 @@ public class StageManager {
      *
      * @param callback 遮罩关闭处理完成后的回调
      */
+    @Deprecated
     public static void showMask(Runnable callback) {
         Window window = getFrontWindow();
         if (window == null || !window.isShowing()) {
@@ -360,11 +366,15 @@ public class StageManager {
      * @param callback 遮罩关闭处理完成后的回调
      */
     public static void showMask(Window window, Runnable callback) {
+        if (window == null) {
+            window = getFrontWindow();
+        }
         // 判断是否处于mask状态
         if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
             // 设置状态位
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 显示遮罩
+            Window finalWindow = window;
             StageMask.showMask(window, () -> {
                 try {
                     if (callback != null) {
@@ -375,7 +385,7 @@ public class StageManager {
                     JulLog.warn("showMask callback error:{}", ex);
                 } finally {
                     // 移除标志位
-                    PropertiesUtil.remove(window, MASK_SHOWING_KEY);
+                    PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
                 }
             });
         } else {// 直接执行
@@ -404,21 +414,21 @@ public class StageManager {
         return null;
     }
 
-    /**
-     * 是否有焦点窗口
-     *
-     * @return 结果
-     */
-    public static boolean hasFocusedWindow() {
-        for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask) {
-                //            if (window instanceof StageMask || window instanceof PopupMask) {
-                continue;
-            }
-            if (window.isShowing() && window.isFocused()) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // /**
+    //  * 是否有焦点窗口
+    //  *
+    //  * @return 结果
+    //  */
+    // public static boolean hasFocusedWindow() {
+    //     for (Window window : Window.getWindows()) {
+    //         if (window instanceof StageMask) {
+    //             //            if (window instanceof StageMask || window instanceof PopupMask) {
+    //             continue;
+    //         }
+    //         if (window.isShowing() && window.isFocused()) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 }

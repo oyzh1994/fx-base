@@ -39,7 +39,7 @@ public class PopupExt2Test extends Application {
         ObjectWatcherManager.enable();
         Button button = new Button("新页面");
         button.setOnAction(event -> {
-            StageAdapter adapter =  StageManager.parseStage(Test1Controler.class);
+            StageAdapter adapter =  StageManager.parseStage(Test1Controler.class, StageManager.getFrontWindow());
             adapter.show();
         });
 

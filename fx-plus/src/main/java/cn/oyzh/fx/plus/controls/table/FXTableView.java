@@ -30,6 +30,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Window;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -351,7 +352,7 @@ public class FXTableView<S> extends TableView<S> implements ContextMenuAdapter, 
      * 销毁列
      */
     protected void destroyColumn() {
-        for (TableColumn<?, ?> column : this.getColumns()) {
+        for (TableColumn<?, ?> column : new ArrayList<>(this.getColumns())) {
             if (column instanceof Destroyable destroyable) {
                 destroyable.destroy();
             }

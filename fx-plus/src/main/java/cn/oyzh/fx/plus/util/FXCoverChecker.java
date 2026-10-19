@@ -99,7 +99,7 @@ public class FXCoverChecker {
             if (attribute == null) {
                 continue;
             }
-            StageAdapter adapter = StageManager.parseStage(aClass);
+            StageAdapter adapter = StageManager.parseStage(aClass, StageManager.getFrontWindow());
             if (adapter == null) {
                 throw new RuntimeException("init stage:" + aClass + " fail");
             }

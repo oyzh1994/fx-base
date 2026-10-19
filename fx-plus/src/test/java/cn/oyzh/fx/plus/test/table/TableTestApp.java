@@ -21,7 +21,7 @@ public class TableTestApp extends FXApplication {
         super.start(primaryStage);
         // 显示主页面
         // StageManager.showStage(TableTestController.class);
-        StageManager.showStage(TableTest1Controller.class);
+        StageManager.showStage(TableTest1Controller.class, StageManager.getFrontWindow());
     }
 
     @Override

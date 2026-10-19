@@ -3,7 +3,6 @@ package cn.oyzh.fx.plus.window;
 import cn.oyzh.common.object.ObjectWatcherManager;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.BooleanUtil;
-import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.util.FXColorUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -69,30 +68,32 @@ public class StageMask extends Stage implements StageAdapter {
     public StageMask(Window target, Runnable callback) {
         this.target = target;
         this.callback = callback;
-        // 初始化
-        this.initOwner(target);
         this.initStyle(StageStyle.TRANSPARENT);
 
         // 遮罩板
         StackPane maskPane = new StackPane();
-        this.xFunc = (observable, oldValue, newValue) -> this.setX(newValue.doubleValue());
-        this.yFunc = (observable, oldValue, newValue) -> this.setY(newValue.doubleValue());
-        this.wFunc = (observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue());
-        this.hFunc = (observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue());
-        // 设置位置
-        this.setLocation(target.getX(), target.getY());
-        this.setSize(target.getWidth(), target.getHeight());
-
         // 设置透明度
         maskPane.setOpacity(0.3);
         maskPane.setFocusTraversable(false);
         // 半透明黑色背景‌
         maskPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-        // 绑定大小、位置
-        target.xProperty().addListener(this.xFunc);
-        target.yProperty().addListener(this.yFunc);
-        target.widthProperty().addListener(this.wFunc);
-        target.heightProperty().addListener(this.hFunc);
+
+        // 初始化
+        if (target != null) {
+            this.initOwner(target);
+            // 设置位置
+            this.setLocation(target.getX(), target.getY());
+            this.setSize(target.getWidth(), target.getHeight());
+            this.xFunc = (observable, oldValue, newValue) -> this.setX(newValue.doubleValue());
+            this.yFunc = (observable, oldValue, newValue) -> this.setY(newValue.doubleValue());
+            this.wFunc = (observable, oldValue, newValue) -> this.setWidth(newValue.doubleValue());
+            this.hFunc = (observable, oldValue, newValue) -> this.setHeight(newValue.doubleValue());
+            // 绑定大小、位置
+            target.xProperty().addListener(this.xFunc);
+            target.yProperty().addListener(this.yFunc);
+            target.widthProperty().addListener(this.wFunc);
+            target.heightProperty().addListener(this.hFunc);
+        }
 
         // 动画
         ProgressIndicator indicator = new ProgressIndicator();

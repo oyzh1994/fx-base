@@ -21,7 +21,7 @@ public class HeaderBarTestApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         // 显示主页面
-        StageManager.showStage(HeaderBarTestController.class);
+        StageManager.showStage(HeaderBarTestController.class, StageManager.getFrontWindow());
     }
 
 }
