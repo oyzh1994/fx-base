@@ -39,27 +39,28 @@ public class HelpTerminalCommandHandler extends BaseTerminalCommandHandler<Termi
         try {
             Collection<TerminalCommandHandler<?, ?>> handlers = TerminalManager.listHandler(terminal.terminalName());
             List<String> list = new ArrayList<>(24);
-            list.add(I18nHelper.orderNo());
-            list.add(I18nHelper.cmd());
-            list.add(I18nHelper.version());
-            list.add(I18nHelper.status());
-            list.add(I18nHelper.desc());
-            int index = 0;
+//            list.add(I18nHelper.orderNo());
+//            list.add(I18nHelper.cmd());
+//            list.add(I18nHelper.version());
+//            list.add(I18nHelper.status());
+//            list.add(I18nHelper.desc());
+//            int index = 0;
             for (TerminalCommandHandler<?, ?> handler : handlers) {
-                list.add(++index + ")");
+//                list.add(++index + ")");
                 list.add(handler.commandFullName());
-                String version = handler.commandSupportedVersion();
-                if (version == null) {
-                    list.add(">=1.0.0");
-                } else if (version.contains(".")) {
-                    list.add(">=" + version);
-                } else {
-                    list.add(version);
-                }
-                list.add(handler.commandDeprecated() ? I18nHelper.deprecated() : I18nHelper.normal());
-                list.add(handler.commandDesc());
+//                String version = handler.commandSupportedVersion();
+//                if (version == null) {
+//                    list.add(">=1.0.0");
+//                } else if (version.contains(".")) {
+//                    list.add(">=" + version);
+//                } else {
+//                    list.add(version);
+//                }
+//                list.add(handler.commandDeprecated() ? I18nHelper.deprecated() : I18nHelper.normal());
+//                list.add(handler.commandDesc());
             }
-            result.setResult(TextUtil.beautifyFormat(list, 5, 2));
+//            result.setResult(TextUtil.beautifyFormat(list, 5, 2));
+            result.setResult(TextUtil.format(list));
         } catch (Exception ex) {
             ex.printStackTrace();
             JulLog.warn("execute error", ex);

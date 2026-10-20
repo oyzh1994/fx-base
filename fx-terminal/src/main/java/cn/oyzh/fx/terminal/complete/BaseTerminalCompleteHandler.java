@@ -40,7 +40,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
     public boolean completion(String line, T terminal) {
         try {
             if (StringUtil.isEmpty(line)) {
-                HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(terminal.terminalName(), HelpTerminalCommandHandler.class);
+                HelpTerminalCommandHandler commandHandler = TerminalManager.findHelpTerminalHandler(terminal.terminalName());
                 if (commandHandler != null) {
                     TerminalExecuteResult result = commandHandler.execute(null, terminal);
                     terminal.outputLine((String) result.getResult());
@@ -107,7 +107,8 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
     protected void multiMatch(String input, T terminal, List<TerminalCommandHandler<?, ?>> handlers) {
         try {
             List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
-            String formatText = TextUtil.beautifyFormat(commands, 4, 0);
+//            String formatText = TextUtil.beautifyFormat(commands, 4, 0);
+            String formatText = TextUtil.format(commands);
             String _input = StringUtil.commonPrefix(commands);
             terminal.outputByPrompt(formatText);
             terminal.outputPrompt();

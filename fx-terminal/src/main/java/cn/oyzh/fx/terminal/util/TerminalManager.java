@@ -5,6 +5,7 @@ import cn.oyzh.common.util.ClassUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
+import cn.oyzh.fx.terminal.standard.HelpTerminalCommandHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,11 +36,11 @@ public class TerminalManager {
      */
     private static final Map<String, Runnable> LOAD_HANDLES = HashMap.newHashMap(2);
 
-//    /**
-//     * 处理器加载标记列表
-//     * key: 终端名称 value: 标记
-//     */
-//    private static final Map<String, Boolean> LOAD_FLAGS = HashMap.newHashMap(2);
+    //    /**
+    //     * 处理器加载标记列表
+    //     * key: 终端名称 value: 标记
+    //     */
+    //    private static final Map<String, Boolean> LOAD_FLAGS = HashMap.newHashMap(2);
 
     /**
      * 设置加载操作
@@ -51,15 +52,15 @@ public class TerminalManager {
         LOAD_HANDLES.put(name, loadHandler);
     }
 
-//    /**
-//     * 获取加载操作
-//     *
-//     * @param name 终端名称
-//     * @return 加载操作
-//     */
-//    public static Runnable getLoadHandler(String name) {
-//        return LOAD_HANDLES.get(name);
-//    }
+    //    /**
+    //     * 获取加载操作
+    //     *
+    //     * @param name 终端名称
+    //     * @return 加载操作
+    //     */
+    //    public static Runnable getLoadHandler(String name) {
+    //        return LOAD_HANDLES.get(name);
+    //    }
 
     /**
      * 加载处理器
@@ -67,22 +68,22 @@ public class TerminalManager {
      * @param name 终端名称
      */
     private static void doLoadHandler(String name) {
-//        if (!LOAD_FLAGS.contains(name)) {
-//            return;
-//        }
+        //        if (!LOAD_FLAGS.contains(name)) {
+        //            return;
+        //        }
         Runnable loadHandler = LOAD_HANDLES.remove(name);
         if (loadHandler == null) {
             return;
         }
-//        try {
+        //        try {
         loadHandler.run();
-//        } catch (Exception ex) {
-//            LOAD_FLAGS.r(name, false);
-//            setLoadHandler(name, loadHandler);
-//            ex.printStackTrace();
-//            JulLog.warn("doLoadHandler error", ex);
-//            throw new RuntimeException("doLoadHandler error", ex);
-//        }
+        //        } catch (Exception ex) {
+        //            LOAD_FLAGS.r(name, false);
+        //            setLoadHandler(name, loadHandler);
+        //            ex.printStackTrace();
+        //            JulLog.warn("doLoadHandler error", ex);
+        //            throw new RuntimeException("doLoadHandler error", ex);
+        //        }
     }
 
     /**
@@ -160,6 +161,26 @@ public class TerminalManager {
         } catch (Exception ex) {
             ex.printStackTrace();
             JulLog.warn("findHandlers error commandHandlerClass:{}", commandHandlerClass, ex);
+        }
+        return null;
+    }
+
+    /**
+     * 寻找帮助命令处理器
+     *
+     * @param name                终端名称
+     * @return 处理器
+     */
+    public static <T extends TerminalCommandHandler<?, ?>> T findHelpTerminalHandler(String name) {
+        try {
+            Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
+            for (TerminalCommandHandler<?, ?> commandHandler : handlers) {
+                if (commandHandler != null && HelpTerminalCommandHandler.class.isAssignableFrom(commandHandler.getClass())) {
+                    return (T) commandHandler;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return null;
     }
