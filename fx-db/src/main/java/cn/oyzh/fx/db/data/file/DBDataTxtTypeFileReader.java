@@ -1,16 +1,9 @@
 package cn.oyzh.fx.db.data.file;
 
-import cn.oyzh.common.file.SkipAbleFileReader;
 import cn.oyzh.fx.db.data.dto.DBDataImportConfig;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * TXT 定界文本类型文件读取器。

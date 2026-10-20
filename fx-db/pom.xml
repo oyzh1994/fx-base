@@ -55,14 +55,6 @@
             <version>${poi.version}</version>
         </dependency>
 
-        <!-- Apache CSV -->
-        <!-- Source: https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>${apache-csv.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

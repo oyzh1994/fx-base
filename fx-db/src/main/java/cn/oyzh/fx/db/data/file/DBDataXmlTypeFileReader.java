@@ -2,6 +2,7 @@ package cn.oyzh.fx.db.data.file;
 
 
 import cn.oyzh.fx.db.data.dto.DBDataImportConfig;
+import cn.oyzh.store.file.FileXmlUtil;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -57,9 +58,12 @@ public class DBDataXmlTypeFileReader extends DBDataTypeFileReader {
     }
 
     @Override
-    public Map<String, Object> readObject() throws Exception {
-        String name = null;
-        String value = null;
+    public Map<String, Object> readRecord() throws Exception {
+        // 属性为子节点，复用公共的 xml 记录遍历
+        if (!this.config.isAttrToColumn()) {
+            return FileXmlUtil.readRecord(this.reader);
+        }
+        // 属性读取为字段
         Map<String, Object> map = null;
         boolean objStart = false;
         boolean childStart = false;
@@ -69,51 +73,76 @@ public class DBDataXmlTypeFileReader extends DBDataTypeFileReader {
             if (event.isEndElement() && objStart && !childStart) {
                 break;
             }
-            // 属性读取为字段
-            if (this.config.isAttrToColumn()) {
-                // 读取开始
-                if (event.isStartElement() && !objStart) {
-                    objStart = true;
-                    StartElement element = event.asStartElement();
-                    Iterator<Attribute> attributes = element.getAttributes();
-                    while (attributes.hasNext()) {
-                        Attribute attribute = attributes.next();
-                        if (map == null) {
-                            map = new HashMap<>();
-                        }
-                        map.put(attribute.getName().getLocalPart(), attribute.getValue());
-                    }
-                }
-            } else {// 属性为子节点
-                // 读取开始
-                if (event.isStartElement() && !objStart) {
-                    objStart = true;
-                    continue;
-                }
-                // 子节点开始
-                if (event.isStartElement() && !childStart) {
-                    childStart = true;
-                    StartElement element = event.asStartElement();
-                    name = element.getName().getLocalPart();
-                    continue;
-                }
-                // 子节点结束
-                if (event.isEndElement() && childStart) {
-                    childStart = false;
+            // 读取开始
+            if (event.isStartElement() && !objStart) {
+                objStart = true;
+                StartElement element = event.asStartElement();
+                Iterator<Attribute> attributes = element.getAttributes();
+                while (attributes.hasNext()) {
+                    Attribute attribute = attributes.next();
                     if (map == null) {
                         map = new HashMap<>();
                     }
-                    map.put(name, value);
-                    name = null;
-                    value = null;
-                    continue;
-                }
-                // 子节点数据
-                if (event.isCharacters() && name != null) {
-                    value = event.asCharacters().getData();
+                    map.put(attribute.getName().getLocalPart(), attribute.getValue());
                 }
             }
         }
+        //        String name = null;
+        //        String value = null;
+        //        Map<String, Object> map = null;
+        //        boolean objStart = false;
+        //        boolean childStart = false;
+        //        while (this.reader.hasNext()) {
+        //            XMLEvent event = this.reader.nextEvent();
+        //            // 读取结束
+        //            if (event.isEndElement() && objStart && !childStart) {
+        //                break;
+        //            }
+        //            // 属性读取为字段
+        //            if (this.config.isAttrToColumn()) {
+        //                // 读取开始
+        //                if (event.isStartElement() && !objStart) {
+        //                    objStart = true;
+        //                    StartElement element = event.asStartElement();
+        //                    Iterator<Attribute> attributes = element.getAttributes();
+        //                    while (attributes.hasNext()) {
+        //                        Attribute attribute = attributes.next();
+        //                        if (map == null) {
+        //                            map = new HashMap<>();
+        //                        }
+        //                        map.put(attribute.getName().getLocalPart(), attribute.getValue());
+        //                    }
+        //                }
+        //            } else {// 属性为子节点
+        //                // 读取开始
+        //                if (event.isStartElement() && !objStart) {
+        //                    objStart = true;
+        //                    continue;
+        //                }
+        //                // 子节点开始
+        //                if (event.isStartElement() && !childStart) {
+        //                    childStart = true;
+        //                    StartElement element = event.asStartElement();
+        //                    name = element.getName().getLocalPart();
+        //                    continue;
+        //                }
+        //                // 子节点结束
+        //                if (event.isEndElement() && childStart) {
+        //                    childStart = false;
+        //                    if (map == null) {
+        //                        map = new HashMap<>();
+        //                    }
+        //                    map.put(name, value);
+        //                    name = null;
+        //                    value = null;
+        //                    continue;
+        //                }
+        //                // 子节点数据
+        //                if (event.isCharacters() && name != null) {
+        //                    value = event.asCharacters().getData();
+        //                }
+        //            }
+        //        }
         return map;
     }
 

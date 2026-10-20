@@ -62,7 +62,7 @@ public class DBDataJsonTypeFileReader extends DBDataTypeFileReader {
     }
 
     @Override
-    public Map<String, Object> readObject() {
+    public Map<String, Object> readRecord() {
         // 到达流末尾或数组末尾（]）时返回 null
         if (this.reader.isEnd() || this.reader.nextIfMatch(']')) {
             return null;

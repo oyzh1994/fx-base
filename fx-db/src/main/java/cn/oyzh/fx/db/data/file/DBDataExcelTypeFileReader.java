@@ -3,6 +3,7 @@ package cn.oyzh.fx.db.data.file;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.xls.WorkbookHelper;
 import cn.oyzh.fx.db.data.dto.DBDataImportConfig;
+import cn.oyzh.store.file.FileExcelUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -66,33 +67,35 @@ public class DBDataExcelTypeFileReader extends DBDataTypeFileReader {
         for (Cell cell : row) {
             this.columns.add(cell.getStringCellValue());
         }
-        this.currentRowIndex = this.config.getDataStartIndex();
+        // dataRowStarts 为 1 基，此处换算为 0 基行号
+        Integer dataRowStarts = this.config.getDataRowStarts();
+        this.currentRowIndex = dataRowStarts == null ? 0 : dataRowStarts - 1;
     }
 
     @Override
-    public Map<String, Object> readObject() {
+    public Map<String, Object> readRecord() {
         Sheet sheet = this.workbook.getSheetAt(0);
         Row row = sheet.getRow(this.currentRowIndex++);
         if (row != null) {
             Map<String, Object> map = new HashMap<>();
             for (Cell cell : row) {
-                Object val;
-                CellType cellType = cell.getCellType();
-                if (cellType == CellType.BOOLEAN) {
-                    val = cell.getBooleanCellValue();
-                } else if (cellType == CellType.NUMERIC) {
-                    if (DateUtil.isCellDateFormatted(cell)) {
-                        val = cell.getDateCellValue();
-                    } else {
-                        val = cell.getNumericCellValue();
-                    }
-                } else if (cellType == CellType.STRING) {
-                    val = cell.getStringCellValue();
-                } else {
-                    val = cell.getStringCellValue();
-                }
+//                Object val;
+//                CellType cellType = cell.getCellType();
+//                if (cellType == CellType.BOOLEAN) {
+//                    val = cell.getBooleanCellValue();
+//                } else if (cellType == CellType.NUMERIC) {
+//                    if (DateUtil.isCellDateFormatted(cell)) {
+//                        val = cell.getDateCellValue();
+//                    } else {
+//                        val = cell.getNumericCellValue();
+//                    }
+//                } else if (cellType == CellType.STRING) {
+//                    val = cell.getStringCellValue();
+//                } else {
+//                    val = cell.getStringCellValue();
+//                }
                 String columnName = this.columns.get(cell.getColumnIndex());
-                map.put(columnName, val);
+                map.put(columnName, FileExcelUtil.cellValue(cell));
             }
             return map;
         }

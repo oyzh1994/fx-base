@@ -1,7 +1,7 @@
 package cn.oyzh.fx.db.data.file;
 
 import cn.oyzh.fx.db.data.dto.DBDataImportConfig;
-import cn.oyzh.fx.db.data.file.csv.DBDataCsvFormat;
+import cn.oyzh.store.file.CsvFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
@@ -20,7 +20,8 @@ import java.util.Map;
 /**
  * 基于 Apache Commons CSV 的数据库数据导入读取器。
  *
- * <p>列索引和数据起始索引均沿用原有配置，以 CSV 记录序号从 0 开始计算。</p>
+ * <p>列索引和数据起始索引均沿用原有配置，以 CSV 记录序号从 0 开始计算。
+ * CSV 引擎来自 {@link CsvFormat}，与 base-store 共用同一套实现。</p>
  *
  * @author oyzh
  * @since 2026-09-07
@@ -73,7 +74,7 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
         boolean initialized = false;
         CSVParser csvParser = null;
         try {
-            csvParser = DBDataCsvFormat.create(fieldSeparator, config.getTxtIdentifier(), config.getRecordSeparator()).parse(reader);
+            csvParser = CsvFormat.create(fieldSeparator, config.getTxtIdentifier(), config.getRecordSeparator()).parse(reader);
             this.parser = csvParser;
             this.records = csvParser.iterator();
             this.init(config);
@@ -107,7 +108,11 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
             names.add(name);
         }
         this.columns = Collections.unmodifiableList(names);
-        this.skipTo(config.getDataStartIndex());
+        // dataRowStarts 为 1 基，此处换算为 0 基记录序号
+        Integer dataRowStarts = config.getDataRowStarts();
+        if (dataRowStarts != null) {
+            this.skipTo(dataRowStarts - 1);
+        }
     }
 
     /**
@@ -127,7 +132,7 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
     }
 
     @Override
-    public Map<String, Object> readObject() throws IOException {
+    public Map<String, Object> readRecord() throws IOException {
         if (!this.records.hasNext()) {
             return null;
         }
