@@ -41,10 +41,14 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
         try {
             if (StringUtil.isEmpty(line)) {
                 HelpTerminalCommandHandler commandHandler = TerminalManager.findHandler(terminal.terminalName(), HelpTerminalCommandHandler.class);
-                TerminalExecuteResult result = commandHandler.execute(null, terminal);
-                terminal.outputLine((String) result.getResult());
-                terminal.outputPrompt();
-                terminal.moveCaretEnd();
+                if (commandHandler != null) {
+                    TerminalExecuteResult result = commandHandler.execute(null, terminal);
+                    terminal.outputLine((String) result.getResult());
+                    terminal.outputPrompt();
+                    terminal.moveCaretEnd();
+                } else if (terminal.helpHandler() != null) {
+                    terminal.helpHandler().help("", terminal);
+                }
             } else {
                 List<TerminalCommandHandler<?, ?>> handlers = this.findCommandHandlers(terminal, line);
                 if (handlers.isEmpty()) {
