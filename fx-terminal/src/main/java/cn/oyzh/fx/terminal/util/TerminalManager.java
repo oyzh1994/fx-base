@@ -220,7 +220,7 @@ public class TerminalManager {
                             return terminalCommandHandler;
                         }
                     }
-                    return list.getFirst();
+//                    return list.getFirst();
                 }
             }
         } catch (Exception ex) {

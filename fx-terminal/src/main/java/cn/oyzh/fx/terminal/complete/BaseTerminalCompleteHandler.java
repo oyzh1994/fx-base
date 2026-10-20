@@ -38,6 +38,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
 
     @Override
     public boolean completion(String line, T terminal) {
+        boolean bool = false;
         try {
             if (StringUtil.isEmpty(line)) {
                 HelpTerminalCommandHandler commandHandler = TerminalManager.findHelpTerminalHandler(terminal.terminalName());
@@ -46,24 +47,29 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
                     terminal.outputLine((String) result.getResult());
                     terminal.outputPrompt();
                     terminal.moveCaretEnd();
+                    bool = true;
                 } else if (terminal.helpHandler() != null) {
                     terminal.helpHandler().help("", terminal);
+                    bool = true;
                 }
             } else {
                 List<TerminalCommandHandler<?, ?>> handlers = this.findCommandHandlers(terminal, line);
                 if (handlers.isEmpty()) {
+                    bool = true;
                     this.noMatch(line, terminal);
                 } else if (handlers.size() == 1) {
                     this.oneMatch(line, terminal, handlers.getFirst());
+                    bool = true;
                 } else {
                     this.multiMatch(line, terminal, handlers);
+                    bool = true;
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             JulLog.warn("completion error", ex);
         }
-        return true;
+        return bool;
     }
 
     /**
@@ -107,7 +113,7 @@ public class BaseTerminalCompleteHandler<T extends Terminal> implements Terminal
     protected void multiMatch(String input, T terminal, List<TerminalCommandHandler<?, ?>> handlers) {
         try {
             List<String> commands = handlers.parallelStream().map(TerminalCommandHandler::commandFullName).toList();
-//            String formatText = TextUtil.beautifyFormat(commands, 4, 0);
+            //            String formatText = TextUtil.beautifyFormat(commands, 4, 0);
             String formatText = TextUtil.format(commands);
             String _input = StringUtil.commonPrefix(commands);
             terminal.outputByPrompt(formatText);
