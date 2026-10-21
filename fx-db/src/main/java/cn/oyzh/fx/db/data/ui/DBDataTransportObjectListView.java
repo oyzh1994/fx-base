@@ -57,10 +57,23 @@ public class DBDataTransportObjectListView extends FXListView<FXCheckBox> {
      */
     public List<DBDataTransportObject> getSelectedObjects() {
         List<DBDataTransportObject> list = new ArrayList<>();
-        for (FXCheckBox item : this.getItems()) {
+        for (DBDataTransportObject item : this.getObjects()) {
             if (item.isSelected()) {
-                list.add(item.getProp("data"));
+                list.add(item);
             }
+        }
+        return list;
+    }
+
+    /**
+     * 获取数据传输对象
+     *
+     * @return 结果
+     */
+    public List<DBDataTransportObject> getObjects() {
+        List<DBDataTransportObject> list = new ArrayList<>();
+        for (FXCheckBox item : this.getItems()) {
+            list.add(item.getProp("data"));
         }
         return list;
     }

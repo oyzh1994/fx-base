@@ -49,6 +49,34 @@ public abstract class DBDataTransportHandler<D> extends DataTransportHandler imp
      */
     protected List<D> insertList;
 
+    /**
+     * 数据类型
+     * 0 数据和结构
+     * 1 仅结构
+     */
+    protected int dataType;
+
+    /**
+     * 错误时继续
+     */
+    protected boolean continueWithErrors;
+
+    public int getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(int dataType) {
+        this.dataType = dataType;
+    }
+
+    public boolean isContinueWithErrors() {
+        return continueWithErrors;
+    }
+
+    public void setContinueWithErrors(boolean continueWithErrors) {
+        this.continueWithErrors = continueWithErrors;
+    }
+
     @Override
     public List<D> getInsertList() {
         if (this.insertList == null) {
