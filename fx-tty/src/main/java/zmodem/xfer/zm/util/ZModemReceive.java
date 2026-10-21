@@ -20,6 +20,7 @@ import zmodem.zm.io.ZMPacketInputStream;
 import zmodem.zm.io.ZMPacketOutputStream;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -54,6 +55,9 @@ public class ZModemReceive {
     }
 
     private void open(int offset) throws IOException {
+        if (file == null) {
+            throw new IOException("Received data before ZModem file name");
+        }
         boolean append = false;
 
         if (offset != 0) {
@@ -70,7 +74,7 @@ public class ZModemReceive {
 
     }
 
-    private void decodeFileNameData(DataPacket p) {
+    private void decodeFileNameData(DataPacket p) throws IOException {
         ByteArrayOutputStream filename = new ByteArrayOutputStream();
         StringBuilder extract = new StringBuilder();
         byte[] data = p.data();
@@ -89,24 +93,34 @@ public class ZModemReceive {
             filename.write(b);
         }
 
-        final String[] segments = extract.toString().split(StringUtil.SPACE);
-        if (ArrayUtil.isNotEmpty(segments)) {
-            // filesize
-            if (segments.length >= 1) {
-                this.filesize = NumberUtil.toLong(segments[0]);
-            }
-            // remaining
-            if (segments.length >= 5) {
-                this.remaining = NumberUtil.toInt(segments[4]);
-            }
+        String safeName = new File(filename.toString().replace('\\', '/')).getName();
+        if (safeName.isEmpty() || ".".equals(safeName) || "..".equals(safeName)) {
+            throw new IOException("Invalid ZModem file name: " + filename);
         }
 
-        file = destination.getChild(filename.toString());
+        final String[] segments = extract.toString().split(StringUtil.SPACE);
+        if (ArrayUtil.isEmpty(segments)) {
+            throw new IOException("Invalid ZModem file metadata");
+        }
+        // filesize
+        this.filesize = NumberUtil.toLong(segments[0]);
+        if (this.filesize == null || this.filesize < 0) {
+            throw new IOException("Invalid ZModem file size: " + segments[0]);
+        }
+        // remaining
+        if (segments.length >= 5) {
+            this.remaining = NumberUtil.toInt(segments[4]);
+        }
+
+        file = destination.getChild(safeName);
+        if (file == null) {
+            throw new IOException("Invalid ZModem file name: " + safeName);
+        }
         fOffset = 0;
 
         index++;
 
-        adapter.bytesTransferred(new FileCopyStreamEvent(this, file.getName(), remaining - index, index,
+        adapter.bytesTransferred(new FileCopyStreamEvent(this, file.getName(), remaining, index,
                 this.filesize, fOffset, 0, false));
     }
 
@@ -119,6 +133,9 @@ public class ZModemReceive {
     }
 
     private void writeData(DataPacket p) throws IOException {
+        if (this.fileOs == null) {
+            throw new IOException("Received data before ZModem file was opened");
+        }
         final byte[] data = p.data();
 
         fileOs.write(data);
@@ -137,7 +154,7 @@ public class ZModemReceive {
         return !(destination instanceof EmptyFileAdapter);
     }
 
-    public void receive(Supplier<Boolean> isCancelled) {
+    public void receive(Supplier<Boolean> isCancelled) throws IOException {
         ZMPacketInputStream is = new ZMPacketInputStream(netIs);
         ZMPacketOutputStream os = new ZMPacketOutputStream(netOs);
 
@@ -151,17 +168,23 @@ public class ZModemReceive {
             int errorCount = 0;
             ZMPacket packet = null;
             while (!end) {
+                if (isCancelled.get()) {
+                    break;
+                }
+                packet = null;
                 try {
                     packet = is.read();
+                    errorCount = 0;
                 } catch (InvalidChecksumException ice) {
                     if (JulLog.isErrorEnabled()) {
-                        JulLog.error(ice.getMessage(), ice);
+                        JulLog.error("ZModem包校验失败", ice);
                     }
                     ++errorCount;
                     if (errorCount >= 3) {
                         os.write(new Cancel());
                         end = true;
                     }
+                    continue;
                 }
 
                 if (packet instanceof Cancel) {
@@ -192,8 +215,10 @@ public class ZModemReceive {
                             os.write(new Header(Format.HEX, ZModemCharacter.ZRINIT, recvOpt));
                             expect = Expect.NOTHING;
                             file = null;
-                            fileOs.flush();
-                            IOUtil.closeQuietly(fileOs);
+                            if (fileOs != null) {
+                                fileOs.flush();
+                                IOUtil.closeQuietly(fileOs);
+                            }
                             fileOs = null;
                             break;
                         case ZDATA:
@@ -223,7 +248,7 @@ public class ZModemReceive {
                                 break;
                             }
                             decodeFileNameData(data);
-                            if (file.length() == filesize) {
+                            if (file.exists() && file.length() == filesize) {
                                 os.write(new Header(Format.HEX, ZModemCharacter.ZSKIP));
                                 adapter.bytesTransferred(new FileCopyStreamEvent(this, file.getName(), remaining, index,
                                         this.filesize, fOffset, 0, true));
@@ -247,10 +272,20 @@ public class ZModemReceive {
                     }
                 }
             }
-        } catch (IOException e) {
-            if (JulLog.isErrorEnabled()) {
-                JulLog.error(e.getMessage(), e);
+        } catch (IOException | RuntimeException e) {
+            if (isCancelled.get()) {
+                // 取消后远端可能直接断开或只发送残留字节，不再回复 CAN。
+                throw e;
             }
+            if (JulLog.isErrorEnabled()) {
+                JulLog.error("ZModem接收失败", e);
+            }
+            try {
+                os.write(new Cancel());
+            } catch (IOException ignore) {
+                // 连接已断开时无需再次处理
+            }
+            throw e;
         } finally {
             IOUtil.closeQuietly(fileOs);
         }

@@ -1,6 +1,7 @@
 package cn.oyzh.fx.tty.zmodem;
 
 import cn.oyzh.common.file.FileUtil;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.fx.plus.chooser.DirChooserHelper;
 import cn.oyzh.fx.plus.chooser.FXChooser;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +63,7 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @param output    输出流
      * @param terminal  终端对象
      */
-    public TtyZModemProcessor(char[] frame, InputStream input, OutputStream output, Terminal terminal) {
+    public TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal) {
         this(frame, input, output, terminal, null, null);
     }
 
@@ -75,15 +77,15 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @param receiveSupplier 接收文件保存目录提供者
      * @param sendSupplier    发送文件列表提供者
      */
-    TtyZModemProcessor(char[] frame, InputStream input, OutputStream output, Terminal terminal,
+    TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal,
                        Supplier<FileAdapter> receiveSupplier, Supplier<List<FileAdapter>> sendSupplier) {
         // sz: * * 0x18 B 0 0
         // rz: * * 0x18 B 0 1
-        this.sz = frame.length > 5 && frame[5] == 48;
+        this.sz = TtyZModemDetectingInputStream.isReceiveRequest(frame);
         this.terminal = terminal;
         this.receiveSupplier = receiveSupplier;
         this.sendSupplier = sendSupplier;
-        TtyZModemInputStream in = new TtyZModemInputStream(input, new String(frame).getBytes());
+        TtyZModemInputStream in = new TtyZModemInputStream(input, frame);
         this.zmodem = new ZModem(in, output);
     }
 
@@ -97,7 +99,14 @@ public class TtyZModemProcessor implements CopyStreamListener {
             } else {
                 this.send();
             }
+        } catch (BufferUnderflowException ex) {
+            // 远端中止或连接被切断时协议包会不完整，这种情况只记录日志，不再弹出错误窗口。
+            JulLog.warn("ZModem数据不完整，传输已中止", ex);
         } catch (Exception ex) {
+            // 取消传输时底层流可能因远端退出而抛出异常，不属于需要提示用户的错误。
+            if (this.isCancelled()) {
+                return;
+            }
             ex.printStackTrace();
             MessageBox.exception(ex, StageManager.getFrontWindow());
         }
@@ -148,6 +157,9 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @throws IOException IO 异常
      */
     private void refreshProgress(FileCopyStreamEvent event) throws IOException {
+        if (this.terminal == null) {
+            return;
+        }
         // 文件索引变化，则换行
         if (this.curIndex != event.getIndex()) {
             this.curIndex = event.getIndex();
@@ -156,7 +168,7 @@ public class TtyZModemProcessor implements CopyStreamListener {
         // 是否跳过
         boolean skip = event.isSkip();
         // 文件总数
-        long total = event.getRemaining() + event.getIndex() - 1;
+        long total = Math.max(event.getIndex(), event.getRemaining() + event.getIndex());
         StringBuilder sb = new StringBuilder();
 
         // 文件索引
@@ -183,9 +195,10 @@ public class TtyZModemProcessor implements CopyStreamListener {
             allFinished = event.getIndex() == total;
         } else {// 进度
             completed = event.getBytesTransferred() >= event.getTotalBytesTransferred();
-            double rate = (event.getBytesTransferred() * 1.0 / event.getTotalBytesTransferred()) * 100.0;
+            double rate = event.getTotalBytesTransferred() > 0
+                    ? (event.getBytesTransferred() * 1.0 / event.getTotalBytesTransferred()) * 100.0 : 0.0;
             sb.append(NumberUtil.scale(rate, 2)).append('%').append("\r");
-            allFinished = completed && event.getIndex() == total;
+            allFinished = completed && event.getIndex() >= total;
         }
 
         // 全部结束了，则跳过
@@ -264,5 +277,9 @@ public class TtyZModemProcessor implements CopyStreamListener {
      */
     public void cancel() throws IOException {
         this.zmodem.cancel();
+    }
+
+    public boolean isCancelled() {
+        return this.zmodem.isCancelled();
     }
 }

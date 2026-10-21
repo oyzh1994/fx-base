@@ -29,6 +29,9 @@ public class Header extends ZMPacket {
         b = buff.get();
         crc.update(b);
         ZModemCharacter type = ZModemCharacter.forbyte(b);
+        if (type == null) {
+            throw new InvalidChecksumException();
+        }
 
         byte[] data = new byte[4];
         for (int i = 0; i < data.length; i++) {

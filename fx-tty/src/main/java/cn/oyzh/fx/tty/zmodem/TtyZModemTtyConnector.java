@@ -7,7 +7,6 @@ import com.jediterm.core.util.TermSize;
 import com.jediterm.terminal.Terminal;
 import com.jediterm.terminal.TtyConnector;
 import org.jetbrains.annotations.NotNull;
-import zmodem.xfer.zm.util.ZModemCharacter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +14,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 /**
  * ZModem协议tty连接器，读取数据时检测 ZModem 帧并交由处理器执行文件传输。
@@ -24,15 +22,6 @@ import java.util.Arrays;
  * @since 2026-07-06
  */
 public class TtyZModemTtyConnector implements TtyConnector {
-
-    /**
-     * ZModem协议前缀
-     */
-    public static final char[] ZMODEM_PREFIX = new char[]{
-            (char) ZModemCharacter.ZPAD.value(),
-            (char) ZModemCharacter.ZPAD.value(),
-            (char) ZModemCharacter.ZDLE.value()
-    };
 
     /**
      * 终端容器
@@ -50,19 +39,24 @@ public class TtyZModemTtyConnector implements TtyConnector {
     private volatile TtyZModemProcessor processor;
 
     /**
-     * ZModem传输使用的原始输入流
+     * ZModem检测输入流
      */
-    private InputStream zmodemInput;
+    private TtyZModemDetectingInputStream zmodemInput;
 
     /**
-     * ZModem传输结束后继续读取的reader
+     * 原始输入流
+     */
+    private InputStream input;
+
+    /**
+     * 原始输出流
+     */
+    private OutputStream output;
+
+    /**
+     * 终端字符读取器
      */
     private Reader reader;
-
-    /**
-     * 跨读取保留的可能构成ZModem前缀的数据
-     */
-    private char[] prefixTail = new char[0];
 
     /**
      * 获取被包装的真实连接器。
@@ -86,70 +80,65 @@ public class TtyZModemTtyConnector implements TtyConnector {
 
     @Override
     public int read(char[] buffer, int offset, int length) throws IOException {
-        // 处理ZModem
-        if (this.processor != null) {
-            try {
-                this.processor.process();
-            } finally {
-                this.processor = null;
-                this.resetReader();
-            }
+        this.ensureReader();
+        int lengthRead = this.reader.read(buffer, offset, length);
+        if (lengthRead > 0) {
+            this.connector.onRead(buffer, offset, lengthRead);
         }
-
-        // 部分SSH实现（例如JSch）每次调用input()都会创建新的流并替换channel的接收端。
-        // ZModem结束后必须继续读取协议使用的同一条流，不能回到连接器缓存的旧reader。
-        if (this.prefixTail.length >= length) {
-            return 0;
-        }
-
-        char[] chunk = new char[length - this.prefixTail.length];
-        int i = this.readSource(chunk, 0, chunk.length);
-        if (i <= 0) {
-            return i;
-        }
-
-        char[] data = new char[this.prefixTail.length + i];
-        System.arraycopy(this.prefixTail, 0, data, 0, this.prefixTail.length);
-        System.arraycopy(chunk, 0, data, this.prefixTail.length, i);
-        int e = indexOfZModem(data);
-        if (e == -1) {
-            int hold = prefixTailLength(data);
-            int resultLength = data.length - hold;
-            System.arraycopy(data, 0, buffer, offset, resultLength);
-            this.prefixTail = Arrays.copyOfRange(data, resultLength, data.length);
-            return resultLength;
-        }
-
-        // sz/rz类型位于ZModem帧头的第6个字符，头部未到齐时继续缓存，避免误判传输方向。
-        if (data.length - e < 6) {
-            System.arraycopy(data, 0, buffer, offset, e);
-            this.prefixTail = Arrays.copyOfRange(data, e, data.length);
-            return e;
-        }
-
-        char[] frame = Arrays.copyOfRange(data, e, data.length);
-        this.prefixTail = new char[0];
-        System.arraycopy(data, 0, buffer, offset, e);
-        this.zmodemInput = this.connector.input();
-        // 创建ZModem处理器
-        this.processor = this.createProcessor(frame, this.zmodemInput, this.connector.output(), this.terminal);
-        return e;
+        return lengthRead;
     }
 
     /**
-     * 从当前数据源读取字符。
+     * 初始化基于原始输入流的终端读取器。
      *
-     * @param buffer 目标缓冲区
-     * @param offset 偏移
-     * @param length 长度
-     * @return 读取长度
      * @throws IOException IO异常
      */
-    private int readSource(char[] buffer, int offset, int length) throws IOException {
+    private void ensureReader() throws IOException {
         if (this.reader != null) {
-            return this.reader.read(buffer, offset, length);
+            return;
         }
-        return this.connector.read(buffer, offset, length);
+        this.input = this.connector.input();
+        if (this.input == null) {
+            throw new IOException("ZModem tty input stream is unavailable");
+        }
+        this.output = this.connector.output();
+        this.zmodemInput = new TtyZModemDetectingInputStream(this.input, this::processZModem);
+        Charset charset = this.connector instanceof TtyCharsetble charsetble
+                ? charsetble.charset() : Charset.defaultCharset();
+        this.reader = new InputStreamReader(this.zmodemInput, charset);
+    }
+
+    /**
+     * 同步处理检测到的ZModem帧。
+     *
+     * @param frame 帧头字节
+     * @throws IOException IO异常
+     */
+    private void processZModem(byte[] frame) throws IOException {
+        TtyZModemProcessor current = this.createProcessor(
+                frame, this.input, this.output, this.terminal);
+        this.processor = current;
+        try {
+            current.process();
+            if (current.isCancelled()) {
+                this.zmodemInput.discardAvailable();
+                synchronized (this.output) {
+                    this.output.write('\r');
+                    this.output.flush();
+                }
+            }
+        } finally {
+            this.processor = null;
+            this.onProcessorFinished(current);
+        }
+    }
+
+    /**
+     * ZModem处理器结束后的回调。
+     *
+     * @param processor 处理器
+     */
+    protected void onProcessorFinished(TtyZModemProcessor processor) {
     }
 
     /**
@@ -161,26 +150,17 @@ public class TtyZModemTtyConnector implements TtyConnector {
      * @param terminal 终端对象
      * @return ZModem处理器
      */
-    protected TtyZModemProcessor createProcessor(char[] frame, InputStream input, OutputStream output, Terminal terminal) {
+    protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal) {
         return new TtyZModemProcessor(frame, input, output, terminal);
-    }
-
-    /**
-     * 使用ZModem协议流重置读取器，用于传输结束后恢复普通终端读取。
-     */
-    private void resetReader() {
-        if (this.zmodemInput != null) {
-            Charset charset = this.connector instanceof TtyCharsetble charsetble
-                    ? charsetble.charset() : Charset.defaultCharset();
-            this.reader = new InputStreamReader(this.zmodemInput, charset);
-        }
     }
 
     @Override
     public void write(byte[] bytes) throws IOException {
-        // 取消ZModem
-        if (this.processor != null && bytes.length > 0 && bytes[0] == 0x03) {
-            this.processor.cancel();
+        if (this.processor != null) {
+            // 文件传输期间普通输入会破坏ZModem数据，只允许Ctrl+C取消传输。
+            if (bytes.length > 0 && bytes[0] == 0x03) {
+                this.processor.cancel();
+            }
             return;
         }
         this.connector.write(bytes);
@@ -188,6 +168,12 @@ public class TtyZModemTtyConnector implements TtyConnector {
 
     @Override
     public void write(String string) throws IOException {
+        if (this.processor != null) {
+            if (!string.isEmpty() && string.charAt(0) == 0x03) {
+                this.processor.cancel();
+            }
+            return;
+        }
         this.connector.write(string);
     }
 
@@ -214,67 +200,27 @@ public class TtyZModemTtyConnector implements TtyConnector {
     @Override
     public void close() {
         if (this.connector != null) {
+            TtyZModemProcessor currentProcessor = this.processor;
+            if (currentProcessor != null) {
+                try {
+                    currentProcessor.cancel();
+                } catch (IOException ignore) {
+                    // 连接已经不可用时无需再次处理
+                }
+            }
+            TtyStreamable currentConnector = this.connector;
             this.terminal = null;
             this.connector = null;
             this.processor = null;
             this.zmodemInput = null;
+            this.input = null;
+            this.output = null;
             this.reader = null;
-            this.prefixTail = new char[0];
+            currentConnector.close();
             if (JulLog.isInfoEnabled()) {
                 JulLog.info("close ZModem tty");
             }
         }
-    }
-
-    /**
-     * 获取ZModem协议前缀位置
-     *
-     * @param a 字符数组
-     * @return 前缀起始位置，未找到时返回 -1
-     */
-    private static int indexOfZModem(char[] a) {
-        if (a.length >= ZMODEM_PREFIX.length) {
-            for (int i = 0; i <= a.length - ZMODEM_PREFIX.length; i++) {
-                if (a[i] != ZMODEM_PREFIX[0]) {
-                    continue;
-                }
-                if (a[i + 1] != ZMODEM_PREFIX[1]) {
-                    continue;
-                }
-                if (a[i + 2] != ZMODEM_PREFIX[2]) {
-                    continue;
-                }
-                // char[] range = Arrays.copyOfRange(a, i, i + ZMODEM_PREFIX.length);
-                // if (Arrays.equals(range, ZMODEM_PREFIX)) {
-                //     return i;
-                // }
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * 获取数组末尾可能是ZModem前缀的字符数。
-     *
-     * @param data 数据
-     * @return 需要保留到下次读取的字符数
-     */
-    private static int prefixTailLength(char[] data) {
-        int max = Math.min(ZMODEM_PREFIX.length - 1, data.length);
-        for (int length = max; length > 0; length--) {
-            boolean matches = true;
-            for (int i = 0; i < length; i++) {
-                if (data[data.length - length + i] != ZMODEM_PREFIX[i]) {
-                    matches = false;
-                    break;
-                }
-            }
-            if (matches) {
-                return length;
-            }
-        }
-        return 0;
     }
 
     @Override

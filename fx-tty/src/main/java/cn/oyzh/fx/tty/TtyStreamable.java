@@ -37,4 +37,15 @@ public interface TtyStreamable extends TtyConnector {
     default void writeLine(String str) throws IOException {
         this.write(str + "\r");
     }
+
+    /**
+     * 读取字符后的处理回调。
+     *
+     * @param buffer 数据缓冲区
+     * @param offset 偏移
+     * @param length 长度
+     * @throws IOException IO异常
+     */
+    default void onRead(char[] buffer, int offset, int length) throws IOException {
+    }
 }

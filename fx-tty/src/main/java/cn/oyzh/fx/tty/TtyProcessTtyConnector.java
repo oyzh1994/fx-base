@@ -66,6 +66,11 @@ public abstract class TtyProcessTtyConnector extends ProcessTtyConnector impleme
     }
 
     @Override
+    public void onRead(char[] buffer, int offset, int length) throws IOException {
+        this.doRead(buffer, offset, length);
+    }
+
+    @Override
     public void write(String str) throws IOException {
         if (JulLog.isDebugEnabled()) {
             JulLog.debug("shell write : {}", str);

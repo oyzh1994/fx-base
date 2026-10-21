@@ -79,6 +79,11 @@ public abstract class TtyStreamConnector implements TtyTerminalSizeable, TtyStre
     }
 
     @Override
+    public void onRead(char[] buffer, int offset, int length) throws IOException {
+        this.doRead(buffer, offset, length);
+    }
+
+    @Override
     public void write(byte[] bytes) throws IOException {
         if (this.writer == null) {
             return;

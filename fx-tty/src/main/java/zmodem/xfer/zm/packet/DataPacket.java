@@ -19,6 +19,9 @@ public class DataPacket extends ZMPacket {
 
         ZModemCharacter type;
         type = ZModemCharacter.forbyte(buff.get());
+        if (type == null) {
+            throw new InvalidChecksumException();
+        }
 
 
         byte[] netCrc = new byte[crc.size()];

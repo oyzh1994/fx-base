@@ -28,39 +28,42 @@ public class ZMPacketOutputStream extends ObjectOutputStream<ZMPacket> {
 
     @Override
     public void write(ZMPacket o) throws IOException {
-        Buffer buff = o.marshall();
-        Format fmt = null;
+        // 一个协议包必须原子写入，否则并发的取消序列会破坏包边界。
+        synchronized (os) {
+            Buffer buff = o.marshall();
+            Format fmt = null;
 
-        if (o instanceof Header)
-            fmt = ((Header) o).format();
+            if (o instanceof Header)
+                fmt = ((Header) o).format();
 
 
-        if (fmt != null) {
-            for (int i = 0; i < fmt.width(); i++)
-                implWrite(ZModemCharacter.ZPAD.value());
+            if (fmt != null) {
+                for (int i = 0; i < fmt.width(); i++)
+                    implWrite(ZModemCharacter.ZPAD.value());
 
-            implWrite(ZModemCharacter.ZDLE.value());
-            implWrite(fmt.character());
+                implWrite(ZModemCharacter.ZDLE.value());
+                implWrite(fmt.character());
+            }
+
+
+            if (buff.hasRemaining()) {
+                byte[] buf = new byte[buff.remaining()];
+                buff.get(buf);
+                os.write(buf);
+            }
+
+            if (fmt != null) if (fmt.hex()) {
+                implWrite(ASCII.CR.value());
+                implWrite(ASCII.LF.value());
+                implWrite(ASCII.XON.value());
+            }
+
+            if (o instanceof DataPacket) if (((DataPacket) o).type() == ZModemCharacter.ZCRCW)
+                implWrite(ASCII.XON.value());
+
+
+            os.flush();
         }
-
-
-        if (buff.hasRemaining()) {
-            byte[] buf = new byte[buff.remaining()];
-            buff.get(buf);
-            os.write(buf);
-        }
-
-        if (fmt != null) if (fmt.hex()) {
-            implWrite(ASCII.CR.value());
-            implWrite(ASCII.LF.value());
-            implWrite(ASCII.XON.value());
-        }
-
-        if (o instanceof DataPacket) if (((DataPacket) o).type() == ZModemCharacter.ZCRCW)
-            implWrite(ASCII.XON.value());
-
-
-        os.flush();
 
     }
 

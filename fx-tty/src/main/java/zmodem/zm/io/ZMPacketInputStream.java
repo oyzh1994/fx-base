@@ -1,6 +1,7 @@
 package zmodem.zm.io;
 
 import zmodem.xfer.io.ObjectInputStream;
+import zmodem.xfer.util.ASCII;
 import zmodem.xfer.util.ByteBuffer;
 import zmodem.xfer.util.CRC;
 import zmodem.xfer.zm.packet.Cancel;
@@ -15,17 +16,20 @@ import zmodem.xfer.zm.util.ZModemCharacter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PushbackInputStream;
 
 
 public class ZMPacketInputStream extends ObjectInputStream<ZMPacket> {
 
-    private final InputStream netIs;
+    private static final int MAX_PACKET_SIZE = 64 * 1024;
+
+    private final PushbackInputStream netIs;
     private CRC dataCRC = new CRC(CRC.Type.CRC16);
     private boolean gotFIN = false;
     private boolean acceptsHeader = true;
 
     public ZMPacketInputStream(InputStream is) {
-        netIs = is;
+        netIs = new PushbackInputStream(is, 16);
     }
 
     private boolean ignored(int b) {
@@ -47,7 +51,7 @@ public class ZMPacketInputStream extends ObjectInputStream<ZMPacket> {
 
     @Override
     public ZMPacket read() throws IOException {
-        ByteBuffer zbuff = ByteBuffer.allocate(1024 * 10);
+        ByteBuffer zbuff = ByteBuffer.allocate(MAX_PACKET_SIZE);
         boolean doread = true;
         Action action = Action.ESCAPE;
 
@@ -100,6 +104,7 @@ public class ZMPacketInputStream extends ObjectInputStream<ZMPacket> {
                 beforeStop--;
 
             if (countCan >= 5) {
+                drainCancelSequence(countCan);
                 doread = false;
                 action = Action.CANCEL;
             }
@@ -108,42 +113,87 @@ public class ZMPacketInputStream extends ObjectInputStream<ZMPacket> {
         zbuff.flip();
 
         ZMPacket r = null;
-        switch (action) {
-            case HEADER:
-                r = Header.unmarshall(zbuff);
+        try {
+            switch (action) {
+                case HEADER:
+                    r = Header.unmarshall(zbuff);
 
 
-                if (((Header) r).format() == Format.BIN32)
-                    dataCRC = new CRC(CRC.Type.CRC32);
-                else
-                    dataCRC = new CRC(CRC.Type.CRC16);
+                    if (((Header) r).format() == Format.BIN32)
+                        dataCRC = new CRC(CRC.Type.CRC32);
+                    else
+                        dataCRC = new CRC(CRC.Type.CRC16);
 
-                if (((Header) r).type() == ZModemCharacter.ZFIN)
-                    gotFIN = true;
-                if (((Header) r).type() == ZModemCharacter.ZDATA || ((Header) r).type() == ZModemCharacter.ZFILE)
-                    acceptsHeader = false;
+                    if (((Header) r).type() == ZModemCharacter.ZFIN)
+                        gotFIN = true;
+                    if (((Header) r).type() == ZModemCharacter.ZDATA || ((Header) r).type() == ZModemCharacter.ZFILE)
+                        acceptsHeader = false;
 
-                break;
-            case DATA:
-                dataCRC.finalized();
+                    break;
+                case DATA:
+                    dataCRC.finalized();
 
-                r = DataPacket.unmarshall(zbuff, dataCRC);
+                    r = DataPacket.unmarshall(zbuff, dataCRC);
 
-                dataCRC = new CRC(dataCRC.type());
+                    dataCRC = new CRC(dataCRC.type());
 
-                if (((DataPacket) r).type() == ZModemCharacter.ZCRCG)
-                    acceptsHeader = false;
-                else
-                    acceptsHeader = true;
+                    if (((DataPacket) r).type() == ZModemCharacter.ZCRCG)
+                        acceptsHeader = false;
+                    else
+                        acceptsHeader = true;
 
-                break;
-            case CANCEL:
-                r = new Cancel();
-                dataCRC = new CRC(dataCRC.type());
-                break;
+                    break;
+                case CANCEL:
+                    r = new Cancel();
+                    dataCRC = new CRC(dataCRC.type());
+                    break;
+            }
+        } catch (RuntimeException ex) {
+            // 校验失败后下一次读取必须从干净的CRC状态开始，否则会把后续正常包也解析坏。
+            dataCRC = new CRC(dataCRC.type());
+            throw ex;
         }
 
         return r;
+    }
+
+    /**
+     * 消费完整的标准取消序列，避免剩余的CAN/BS控制字符泄漏到终端。
+     *
+     * @param canCount 已经消费的CAN数量
+     * @throws IOException IO异常
+     */
+    private void drainCancelSequence(int canCount) throws IOException {
+        int cans = canCount;
+        int backspaces = 0;
+        while (cans < 8) {
+            int value = this.netIs.read();
+            if (value < 0) {
+                return;
+            }
+            byte b = (byte) value;
+            if (b == ZModemCharacter.ZDLE.value()) {
+                cans++;
+            } else if (b == ASCII.BS.value()) {
+                cans = 8;
+                backspaces = 1;
+            } else {
+                this.netIs.unread(value);
+                return;
+            }
+        }
+        while (backspaces < 8) {
+            int value = this.netIs.read();
+            if (value < 0) {
+                return;
+            }
+            if ((byte) value == ASCII.BS.value()) {
+                backspaces++;
+            } else {
+                this.netIs.unread(value);
+                return;
+            }
+        }
     }
 
 }

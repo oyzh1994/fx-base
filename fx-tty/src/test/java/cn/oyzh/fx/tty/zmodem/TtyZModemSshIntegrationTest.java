@@ -8,7 +8,9 @@ import com.jediterm.terminal.Terminal;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session.Shell;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
+import org.apache.commons.net.io.CopyStreamEvent;
 import org.junit.Test;
+import zmodem.FileCopyStreamEvent;
 import zmodem.util.CustomFile;
 import zmodem.util.FileAdapter;
 
@@ -27,7 +29,10 @@ import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -90,11 +95,159 @@ public class TtyZModemSshIntegrationTest {
         }
     }
 
+    @Test(timeout = 60000)
+    public void sshjCancelDownloadRecoversTerminal() throws Exception {
+        SSHClient ssh = new SSHClient();
+        ssh.addHostKeyVerifier(new PromiscuousVerifier());
+        ssh.connect(HOST, PORT);
+        ssh.authPassword(USER, PASSWORD);
+
+        net.schmizz.sshj.connection.channel.direct.Session session = ssh.startSession();
+        session.allocateDefaultPTY();
+        Shell shell = session.startShell();
+        InputStream input = shell.getInputStream();
+        OutputStream output = shell.getOutputStream();
+        try (SshjTestConnector connector = new SshjTestConnector(input, output)) {
+            assertCancelDownloadRecoversTerminal(connector);
+        } finally {
+            shell.close();
+            session.close();
+            ssh.close();
+        }
+    }
+
+    @Test(timeout = 60000)
+    public void jschCancelDownloadRecoversTerminal() throws Exception {
+        Session session = new JSch().getSession(USER, HOST, PORT);
+        session.setPassword(PASSWORD);
+        session.setConfig("StrictHostKeyChecking", "no");
+        session.connect(10000);
+
+        ChannelShell channel = (ChannelShell) session.openChannel("shell");
+        channel.setPty(true);
+        channel.setPtyType("xterm");
+        InputStream firstInput = channel.getInputStream();
+        OutputStream firstOutput = channel.getOutputStream();
+        channel.connect(10000);
+        try (JschTestConnector connector = new JschTestConnector(channel, firstInput, firstOutput)) {
+            assertCancelDownloadRecoversTerminal(connector);
+        } finally {
+            channel.disconnect();
+            session.disconnect();
+        }
+    }
+
+    private void assertCancelDownloadRecoversTerminal(TestConnector connector) throws Exception {
+        String remoteDir = "/tmp/fx-tty-zmodem-cancel-" + System.nanoTime();
+        Path localDir = Files.createTempDirectory("fx-tty-zmodem-cancel-");
+        Path unusedFile = localDir.resolve("unused.bin");
+        Files.write(unusedFile, new byte[0]);
+        TestZModemConnector zmodemConnector = new TestZModemConnector(
+                connector, localDir.toFile(), unusedFile.toFile());
+        zmodemConnector.setCancelAfterData(true);
+        OutputBuffer terminalOutput = new OutputBuffer();
+        AtomicReference<Throwable> readError = new AtomicReference<>();
+        AtomicBoolean running = new AtomicBoolean(true);
+        Thread reader = startReader(zmodemConnector, terminalOutput, readError, running);
+        try {
+            send(zmodemConnector, "echo ZMODEM_${NONE:-}CANCEL_READY");
+            assertTrue("terminal did not become ready", terminalOutput.waitFor("ZMODEM_CANCEL_READY", 5000));
+
+            send(zmodemConnector, "mkdir -p " + remoteDir
+                    + " && dd if=/dev/urandom of=" + remoteDir + "/big.bin bs=1M count=16 status=none"
+                    + " && sz " + remoteDir + "/big.bin");
+            assertTrue("cancel did not finish", zmodemConnector.awaitProcessorFinished(30000));
+            assertEquals("cancel started more than one ZModem processor", 1,
+                    zmodemConnector.processorCount());
+            int outputAfterCancel = terminalOutput.length();
+            assertTrue("protocol data leaked after cancel, output length=" + outputAfterCancel,
+                    outputAfterCancel < 8192);
+
+            send(zmodemConnector, "echo ZMODEM_${NONE:-}AFTER_CANCEL");
+            assertTrue("terminal did not recover after cancel: " + terminalOutput,
+                    terminalOutput.waitFor("ZMODEM_AFTER_CANCEL", 5000));
+            assertNoReadError(readError);
+            assertEquals("stray data started another ZModem processor", 1,
+                    zmodemConnector.processorCount());
+
+            send(zmodemConnector, "dd if=/dev/urandom of=" + remoteDir
+                    + "/small.bin bs=4096 count=8 status=none && sz " + remoteDir + "/small.bin"
+                    + "; echo ZMODEM_${NONE:-}AFTER_CANCEL_SZ_DONE");
+            assertTrue("second sz after cancel did not finish: " + terminalOutput,
+                    terminalOutput.waitFor("ZMODEM_AFTER_CANCEL_SZ_DONE", 20000));
+            assertTrue("second sz after cancel did not receive file",
+                    Files.exists(localDir.resolve("small.bin")));
+            assertEquals("second sz after cancel started unexpected processors", 2,
+                    zmodemConnector.processorCount());
+            assertNoReadError(readError);
+        } finally {
+            running.set(false);
+            reader.interrupt();
+        }
+    }
+
+    @Test(timeout = 120000)
+    public void jschSupportsRepeatedUploads() throws Exception {
+        Session session = new JSch().getSession(USER, HOST, PORT);
+        session.setPassword(PASSWORD);
+        session.setConfig("StrictHostKeyChecking", "no");
+        session.connect(10000);
+
+        ChannelShell channel = (ChannelShell) session.openChannel("shell");
+        channel.setPty(true);
+        channel.setPtyType("xterm");
+        InputStream firstInput = channel.getInputStream();
+        OutputStream firstOutput = channel.getOutputStream();
+        channel.connect(10000);
+
+        Path localDir = Files.createTempDirectory("fx-tty-zmodem-repeat-");
+        Path uploadFile = localDir.resolve("upload.bin");
+        String remoteDir = "/tmp/fx-tty-zmodem-repeat-" + System.nanoTime();
+        try (JschTestConnector connector = new JschTestConnector(channel, firstInput, firstOutput)) {
+            TestZModemConnector zmodemConnector = new TestZModemConnector(
+                    connector, localDir.toFile(), uploadFile.toFile());
+            OutputBuffer terminalOutput = new OutputBuffer();
+            AtomicReference<Throwable> readError = new AtomicReference<>();
+            AtomicBoolean running = new AtomicBoolean(true);
+            Thread reader = startReader(zmodemConnector, terminalOutput, readError, running);
+            try {
+                send(zmodemConnector, "echo ZMODEM_${NONE:-}READY");
+                assertTrue("terminal did not become ready", terminalOutput.waitFor("ZMODEM_READY", 5000));
+
+                for (int i = 0; i < 100; i++) {
+                    int size = uploadSize(i);
+                    Files.write(uploadFile, bytesWithSeed(size, i + 1));
+                    zmodemConnector.setUploadFile(uploadFile.toFile());
+
+                    String marker = "RZ_" + i;
+                    send(zmodemConnector, "mkdir -p " + remoteDir + " && cd " + remoteDir
+                            + " && rm -f upload.bin && rz"
+                            + "; echo ZMODEM_${NONE:-}" + marker + "_DONE; sha256sum upload.bin");
+                    assertNoReadError(readError);
+                    assertTrue("upload " + i + " did not finish: " + terminalOutput,
+                            terminalOutput.waitFor("ZMODEM_" + marker + "_DONE", 10000));
+                    assertTrue("upload " + i + " hash mismatch: " + terminalOutput,
+                            terminalOutput.waitFor(sha256(uploadFile), 5000));
+                }
+                assertNoReadError(readError);
+            } finally {
+                running.set(false);
+                reader.interrupt();
+            }
+        } finally {
+            channel.disconnect();
+            session.disconnect();
+        }
+    }
+
     private void runTransfers(TestConnector connector) throws Exception {
         Path localDir = Files.createTempDirectory("fx-tty-zmodem-");
         Path receivedFile = localDir.resolve("sample.bin");
+        Path emptyFile = localDir.resolve("empty.bin");
         Path uploadFile = localDir.resolve("upload.bin");
-        Files.write(uploadFile, randomBytes(32 * 1024));
+        byte[] uploadContent = new byte[32 * 1024];
+        java.util.Arrays.fill(uploadContent, (byte) 0x18);
+        Files.write(uploadFile, uploadContent);
 
         String remoteDir = "/tmp/fx-tty-zmodem-" + System.nanoTime();
         TtyZModemTtyConnector zmodemConnector = new TestZModemConnector(
@@ -122,6 +275,14 @@ public class TtyZModemSshIntegrationTest {
                     terminalOutput.waitFor(sha256(receivedFile), 5000));
             System.out.println("sz file verified");
 
+            send(zmodemConnector, "touch " + remoteDir + "/empty.bin && sz " + remoteDir + "/empty.bin"
+                    + "; echo ZMODEM_${NONE:-}EMPTY_DONE");
+            assertTrue("empty sz did not finish: " + terminalOutput,
+                    terminalOutput.waitFor("ZMODEM_EMPTY_DONE", 20000));
+            assertTrue("received empty file is missing", Files.exists(emptyFile));
+            assertEquals(0, Files.size(emptyFile));
+            System.out.println("empty file verified");
+
             send(zmodemConnector, "cd " + remoteDir + " && rm -f upload.bin && rz"
                     + "; echo ZMODEM_${NONE:-}RZ_DONE; sha256sum upload.bin");
             assertNoReadError(readError);
@@ -130,6 +291,16 @@ public class TtyZModemSshIntegrationTest {
             assertTrue("rz hash mismatch: " + terminalOutput,
                     terminalOutput.waitFor(sha256(uploadFile), 5000));
             System.out.println("rz file verified");
+
+            Files.delete(uploadFile);
+            send(zmodemConnector, "sz " + remoteDir + "/upload.bin"
+                    + "; echo ZMODEM_${NONE:-}SZ_ESCAPED_DONE");
+            assertTrue("escaped sz did not finish: " + terminalOutput,
+                    terminalOutput.waitFor("ZMODEM_SZ_ESCAPED_DONE", 20000));
+            assertTrue("escaped file was not received", Files.exists(uploadFile));
+            assertEquals(HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(uploadContent)),
+                    sha256(uploadFile));
+            System.out.println("escaped file verified");
 
             assertNoReadError(readError);
         } finally {
@@ -175,10 +346,17 @@ public class TtyZModemSshIntegrationTest {
         }
     }
 
-    private static byte[] randomBytes(int length) {
+    private static int uploadSize(int index) {
+        int[] boundarySizes = {0, 8 * 1024, 16 * 1024, 64 * 1024};
+        return index < boundarySizes.length
+                ? boundarySizes[index]
+                : 137 + (index * 7919) % (192 * 1024);
+    }
+
+    private static byte[] bytesWithSeed(int length, int seed) {
         byte[] bytes = new byte[length];
         for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) (i * 31 + 17);
+            bytes[i] = (byte) (i * 31 + seed * 17);
         }
         return bytes;
     }
@@ -211,7 +389,10 @@ public class TtyZModemSshIntegrationTest {
     private static final class TestZModemConnector extends TtyZModemTtyConnector {
 
         private final File receiveDir;
-        private final File uploadFile;
+        private volatile File uploadFile;
+        private volatile boolean cancelAfterData;
+        private volatile CountDownLatch processorFinished = new CountDownLatch(0);
+        private final AtomicInteger processorCount = new AtomicInteger();
 
         private TestZModemConnector(TtyStreamConnector connector, File receiveDir, File uploadFile) {
             super(terminalStub(), connector);
@@ -219,12 +400,57 @@ public class TtyZModemSshIntegrationTest {
             this.uploadFile = uploadFile;
         }
 
+        private void setUploadFile(File uploadFile) {
+            this.uploadFile = uploadFile;
+        }
+
+        private void setCancelAfterData(boolean cancelAfterData) {
+            this.cancelAfterData = cancelAfterData;
+            if (cancelAfterData) {
+                this.processorCount.set(0);
+                this.processorFinished = new CountDownLatch(1);
+            }
+        }
+
+        private boolean awaitProcessorFinished(long timeoutMs) throws InterruptedException {
+            return this.processorFinished.await(timeoutMs, TimeUnit.MILLISECONDS);
+        }
+
+        private int processorCount() {
+            return this.processorCount.get();
+        }
+
         @Override
-        protected TtyZModemProcessor createProcessor(char[] frame, InputStream input,
+        protected void onProcessorFinished(TtyZModemProcessor processor) {
+            this.processorCount.incrementAndGet();
+            this.processorFinished.countDown();
+        }
+
+        @Override
+        protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
                                                       OutputStream output, Terminal terminal) {
             Supplier<FileAdapter> receiveSupplier = () -> new CustomFile(this.receiveDir);
             Supplier<List<FileAdapter>> sendSupplier = () -> Collections.singletonList(new CustomFile(this.uploadFile));
-            return new TtyZModemProcessor(frame, input, output, terminal, receiveSupplier, sendSupplier);
+            return new TtyZModemProcessor(frame, input, output, terminal, receiveSupplier, sendSupplier) {
+                private final AtomicBoolean cancelled = new AtomicBoolean(false);
+
+                @Override
+                public void bytesTransferred(CopyStreamEvent event) {
+                    super.bytesTransferred(event);
+                    if (TestZModemConnector.this.cancelAfterData
+                            && event instanceof FileCopyStreamEvent fileEvent
+                            && fileEvent.getBytesTransferred() > 0
+                            && this.cancelled.compareAndSet(false, true)) {
+                        try {
+                            this.cancel();
+                            // 只取消第一次传输，便于验证取消后还能继续正常传输。
+                            TestZModemConnector.this.cancelAfterData = false;
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            };
         }
     }
 
@@ -335,6 +561,12 @@ public class TtyZModemSshIntegrationTest {
         public String toString() {
             synchronized (this.content) {
                 return this.content.toString();
+            }
+        }
+
+        private int length() {
+            synchronized (this.content) {
+                return this.content.length();
             }
         }
     }
