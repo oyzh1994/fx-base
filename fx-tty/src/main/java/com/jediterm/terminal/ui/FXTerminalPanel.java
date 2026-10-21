@@ -537,15 +537,40 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     private @NotNull LineCellInterval findIntervalWithStyle(@NotNull Cell initialCell, @NotNull HyperlinkStyle style) {
-        int startColumn = initialCell.getColumn();
-        while (startColumn > 0 && style == myTerminalTextBuffer.getStyleAt(startColumn - 1, initialCell.getLine())) {
-            startColumn--;
+//        int startColumn = initialCell.getColumn();
+//        while (startColumn > 0 && style == myTerminalTextBuffer.getStyleAt(startColumn - 1, initialCell.getLine())) {
+//            startColumn--;
+//        }
+//        int endColumn = initialCell.getColumn();
+//        while (endColumn < myTerminalTextBuffer.getWidth() - 1 && style == myTerminalTextBuffer.getStyleAt(endColumn + 1, initialCell.getLine())) {
+//            endColumn++;
+//        }
+//        return new LineCellInterval(initialCell.getLine(), startColumn, endColumn);
+        int line = initialCell.getLine();
+        int column = initialCell.getColumn();
+        TerminalTextBuffer buffer = myTerminalTextBuffer;
+        if (buffer == null || !buffer.tryLock()) {
+            return new LineCellInterval(line, column, column);
         }
-        int endColumn = initialCell.getColumn();
-        while (endColumn < myTerminalTextBuffer.getWidth() - 1 && style == myTerminalTextBuffer.getStyleAt(endColumn + 1, initialCell.getLine())) {
-            endColumn++;
+        try {
+            if (!isValidCell(buffer, line, column)) {
+                return new LineCellInterval(line, column, column);
+            }
+            int startColumn = column;
+            while (startColumn > 0 && style == buffer.getStyleAt(startColumn - 1, line)) {
+                startColumn--;
+            }
+            int endColumn = column;
+            while (endColumn < buffer.getWidth() - 1 && style == buffer.getStyleAt(endColumn + 1, line)) {
+                endColumn++;
+            }
+            return new LineCellInterval(line, startColumn, endColumn);
+        } catch (Exception ex) {
+            JulLog.debug("findIntervalWithStyle error", ex);
+            return new LineCellInterval(line, column, column);
+        } finally {
+            buffer.unlock();
         }
-        return new LineCellInterval(initialCell.getLine(), startColumn, endColumn);
     }
 
     private void handleHyperlinks(Node component) {
@@ -563,18 +588,46 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     private @Nullable HyperlinkStyle findHyperlink(@Nullable Cell cell) {
+        TerminalTextBuffer buffer = myTerminalTextBuffer;
+        if (cell == null || buffer == null || !buffer.tryLock()) {
+            return null;
+        }
         try {
-            if (cell != null && cell.getColumn() >= 0 && cell.getColumn() < myTerminalTextBuffer.getWidth() && cell.getLine() >= -myTerminalTextBuffer.getHistoryLinesCount() &&
-                    cell.getLine() <= myTerminalTextBuffer.getHeight()) {
-                TextStyle style = myTerminalTextBuffer.getStyleAt(cell.getColumn(), cell.getLine());
+            int line = cell.getLine();
+            int column = cell.getColumn();
+            if (isValidCell(buffer, line, column)) {
+                TextStyle style = buffer.getStyleAt(column, line);
                 if (style instanceof HyperlinkStyle) {
                     return (HyperlinkStyle) style;
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JulLog.debug("findHyperlink error", ex);
+        } finally {
+            buffer.unlock();
         }
+//        try {
+//            if (cell != null && cell.getColumn() >= 0 && cell.getColumn() < myTerminalTextBuffer.getWidth() && cell.getLine() >= -myTerminalTextBuffer.getHistoryLinesCount() &&
+//                    cell.getLine() <= myTerminalTextBuffer.getHeight()) {
+//                TextStyle style = myTerminalTextBuffer.getStyleAt(cell.getColumn(), cell.getLine());
+//                if (style instanceof HyperlinkStyle) {
+//                    return (HyperlinkStyle) style;
+//                }
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
         return null;
+    }
+
+    /**
+     * 校验终端单元格是否位于有效的历史行或屏幕行范围内。
+     */
+    private static boolean isValidCell(@NotNull TerminalTextBuffer buffer, int line, int column) {
+        return line >= -buffer.getHistoryLinesCount()
+                && line < buffer.getHeight()
+                && column >= 0
+                && column < buffer.getWidth();
     }
 
     private void updateCursor(Cursor cursorType) {
