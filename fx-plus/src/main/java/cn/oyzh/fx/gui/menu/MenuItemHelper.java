@@ -2675,6 +2675,30 @@ public class MenuItemHelper {
     public static FXMenuItem moreInfo(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.moreInfo(), new MoreSVGGlyph(), action);
     }
+
+    public static FXMenuItem designSequence(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.designSequence(), new DesignSVGGlyph(), action);
+    }
+
+    public static FXMenuItem renameSequence(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.renameSequence(), new RenameSVGGlyph(), action);
+    }
+
+    public static FXMenuItem deleteSequence(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.deleteSequence(), new DeleteSVGGlyph(), action);
+    }
+
+    public static FXMenuItem cloneSequence(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.cloneSequence(), new CopySVGGlyph(), action);
+    }
+
+    public static FXMenuItem sequenceInfo(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.sequenceInfo(), new InfoSVGGlyph(), action);
+    }
+
+    public static FXMenuItem addSequence(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.addSequence(), new AddSVGGlyph(), action);
+    }
 }
 
 

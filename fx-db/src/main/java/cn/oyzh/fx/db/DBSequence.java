@@ -1,0 +1,22 @@
+package cn.oyzh.fx.db;
+
+
+import cn.oyzh.common.util.StringUtil;
+
+/**
+ * 检查接口，用于校验数据库对象名称是否有效
+ *
+ * @author oyzh
+ * @since 2026-10-21
+ */
+public interface DBSequence extends DBName {
+
+    /**
+     * 是否无效
+     *
+     * @return 结果
+     */
+    default boolean isInvalid() {
+        return StringUtil.isBlank(this.getName());
+    }
+}
