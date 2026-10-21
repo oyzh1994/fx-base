@@ -1108,7 +1108,7 @@ public class RdesktopCanvas {
     }
 
     private int getInvertedColor(int x, int y) {
-        return ((x + y) & 1) != 0 ? 0xFFFFFF : 0;
+        return ((x + y) & 1) != 0 ? 0xFFFFFFFF : 0xFF000000;
     }
 
     /**
