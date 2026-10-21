@@ -612,7 +612,10 @@ final class DrdynvcChannel extends VChannel {
         int width = checkedDimension(u32(pdu, offset + 8), "宽度");
         int height = checkedDimension(u32(pdu, offset + 12), "高度");
         surfaces.clear();
-        bitmapCache.clear();
+        // RESET_GRAPHICS only recreates the output surfaces. The server keeps
+        // bitmap cache entries across a reset and can reference them again
+        // (observed with GNOME Remote Desktop after a display reset).
+//        bitmapCache.clear();
         dirtySurfaces.clear();
         clearCodecDecoder.resetSequence();
         if (state != null && state.getCanvas() != null
