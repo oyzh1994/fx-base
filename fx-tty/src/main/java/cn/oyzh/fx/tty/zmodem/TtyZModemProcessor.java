@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 /**
  * ZModem处理器，负责接收（sz）或发送（rz）文件，并在终端上刷新传输进度。
@@ -46,6 +47,12 @@ public class TtyZModemProcessor implements CopyStreamListener {
     /** 终端对象，用于输出进度 */
     private final Terminal terminal;
 
+    /** 接收文件保存目录提供者，测试时可注入 */
+    private final Supplier<FileAdapter> receiveSupplier;
+
+    /** 发送文件列表提供者，测试时可注入 */
+    private final Supplier<List<FileAdapter>> sendSupplier;
+
     /**
      * 构造 ZModem 处理器，根据帧数据判断本次为接收还是发送。
      *
@@ -55,10 +62,27 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @param terminal  终端对象
      */
     public TtyZModemProcessor(char[] frame, InputStream input, OutputStream output, Terminal terminal) {
+        this(frame, input, output, terminal, null, null);
+    }
+
+    /**
+     * 构造 ZModem 处理器，允许注入文件提供者以便自动化测试。
+     *
+     * @param frame           ZModem 帧数据
+     * @param input           输入流
+     * @param output          输出流
+     * @param terminal        终端对象
+     * @param receiveSupplier 接收文件保存目录提供者
+     * @param sendSupplier    发送文件列表提供者
+     */
+    TtyZModemProcessor(char[] frame, InputStream input, OutputStream output, Terminal terminal,
+                       Supplier<FileAdapter> receiveSupplier, Supplier<List<FileAdapter>> sendSupplier) {
         // sz: * * 0x18 B 0 0
         // rz: * * 0x18 B 0 1
-        this.sz = frame[5] == 48;
+        this.sz = frame.length > 5 && frame[5] == 48;
         this.terminal = terminal;
+        this.receiveSupplier = receiveSupplier;
+        this.sendSupplier = sendSupplier;
         TtyZModemInputStream in = new TtyZModemInputStream(input, new String(frame).getBytes());
         this.zmodem = new ZModem(in, output);
     }
@@ -85,13 +109,14 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @throws IOException IO 异常
      */
     private void receive() throws IOException {
-        this.zmodem.receive(() -> {
+        Supplier<FileAdapter> supplier = this.receiveSupplier != null ? this.receiveSupplier : () -> {
             File file = this.openDirDialog();
             if (file != null) {
                 FileUtil.forceMkdir(file);
             }
             return file == null ? EmptyFileAdapter.INSTANCE : new CustomFile(file);
-        }, this);
+        };
+        this.zmodem.receive(supplier, this);
     }
 
     /**
@@ -100,14 +125,15 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @throws Exception 异常
      */
     private void send() throws Exception {
-        this.zmodem.send(() -> {
+        Supplier<List<FileAdapter>> supplier = this.sendSupplier != null ? this.sendSupplier : () -> {
             List<FileAdapter> files = new ArrayList<>();
             List<File> fileList = this.openFileDialog();
             for (File file : fileList) {
                 files.add(new CustomFile(file));
             }
             return files;
-        }, this);
+        };
+        this.zmodem.send(supplier, this);
     }
 
     /**

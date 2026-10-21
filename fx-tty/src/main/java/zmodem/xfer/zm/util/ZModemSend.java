@@ -143,7 +143,6 @@ public class ZModemSend {
             while (!end) {
                 try {
                     packet = is.read();
-                    System.out.println(packet);
                 } catch (InvalidChecksumException ice) {
                     ++errorCount;
                     if (errorCount > 20) {
