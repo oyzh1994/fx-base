@@ -41,7 +41,8 @@ public class Cache {
 	 */
 	public Bitmap getBitmap(int cache_id, int cache_idx) throws com.tangluobo.rdp4j.RdesktopException {
 		Bitmap bitmap = null;
-		if ((cache_id < bitmapcache.length) && (cache_idx < bitmapcache[0].length)) {
+		if (cache_id >= 0 && cache_idx >= 0
+				&& cache_id < bitmapcache.length && cache_idx < bitmapcache[0].length) {
 			bitmap = bitmapcache[cache_id][cache_idx];
 			/*
 			 * try { if (bitmap != null ||
@@ -65,7 +66,7 @@ public class Cache {
 	 */
 	public RdpCursor getCursor(int cache_idx) throws com.tangluobo.rdp4j.RdesktopException {
 		RdpCursor cursor = null;
-		if (cache_idx < cursorcache.length) {
+		if (cache_idx >= 0 && cache_idx < cursorcache.length) {
 			cursor = cursorcache[cache_idx];
 			if (cursor != null) {
 				return cursor;
@@ -84,12 +85,13 @@ public class Cache {
 	 * @throws com.tangluobo.rdp4j.RdesktopException on error
 	 */
 	public int[] getDesktopInt(int offset, int cx, int cy) throws com.tangluobo.rdp4j.RdesktopException {
+		if (offset < 0 || cx <= 0 || cy <= 0 || (long) cx * cy > Integer.MAX_VALUE) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Invalid desktop cache range");
+		}
 		int length = cx * cy;
 		int pdata = 0;
 		int[] data = new int[length];
-		if (offset > highdeskcache.length)
-			offset = 0;
-		if (offset + length <= highdeskcache.length) {
+		if ((long) offset + length <= highdeskcache.length) {
 			for (int i = 0; i < cy; i++) {
 				System.arraycopy(highdeskcache, offset, data, pdata, cx);
 				offset += cx;
@@ -109,7 +111,8 @@ public class Cache {
 	 * @throws com.tangluobo.rdp4j.RdesktopException on error
 	 */
 	public Glyph getFont(int font, int character) throws com.tangluobo.rdp4j.RdesktopException {
-		if ((font < fontcache.length) && (character < fontcache[0].length)) {
+		if (font >= 0 && character >= 0
+				&& font < fontcache.length && character < fontcache[0].length) {
 			Glyph glyph = fontcache[font][character];
 			if (glyph != null) {
 				return glyph;
@@ -127,7 +130,7 @@ public class Cache {
 	 */
 	public com.tangluobo.rdp4j.DataBlob getText(int cache_id) throws com.tangluobo.rdp4j.RdesktopException {
 		com.tangluobo.rdp4j.DataBlob entry = null;
-		if (cache_id < textcache.length) {
+		if (cache_id >= 0 && cache_id < textcache.length) {
 			entry = textcache[cache_id];
 			if (entry != null) {
 				if (entry.getData() != null) {
@@ -150,7 +153,8 @@ public class Cache {
 	 */
 	public void putBitmap(int cache_id, int cache_idx, Bitmap bitmap, int stamp) throws com.tangluobo.rdp4j.RdesktopException {
 		// Bitmap old;
-		if ((cache_id < bitmapcache.length) && (cache_idx < bitmapcache[0].length)) {
+		if (cache_id >= 0 && cache_idx >= 0
+				&& cache_id < bitmapcache.length && cache_idx < bitmapcache[0].length) {
 			bitmapcache[cache_id][cache_idx] = bitmap;
 			/*
 			 * if (Options.use_rdp5) { if (++num_bitmaps_in_memory[cache_id] >
@@ -172,7 +176,7 @@ public class Cache {
 	 * @throws com.tangluobo.rdp4j.RdesktopException on error
 	 */
 	public void putCursor(int cache_idx, RdpCursor cursor) throws com.tangluobo.rdp4j.RdesktopException {
-		if (cache_idx < cursorcache.length) {
+		if (cache_idx >= 0 && cache_idx < cursorcache.length) {
 			cursorcache[cache_idx] = cursor;
 		} else {
 			throw new com.tangluobo.rdp4j.RdesktopException("Could not put Cursor!");
@@ -189,11 +193,15 @@ public class Cache {
 	 * @throws com.tangluobo.rdp4j.RdesktopException on error
 	 */
 	public void putDesktop(int offset, int cx, int cy, int[] data) throws com.tangluobo.rdp4j.RdesktopException {
+		if (offset < 0 || cx <= 0 || cy <= 0 || (long) cx * cy > Integer.MAX_VALUE) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Invalid desktop cache range");
+		}
 		int length = cx * cy;
 		int pdata = 0;
-		if (offset > highdeskcache.length)
-			offset = 0;
-		if (offset + length <= highdeskcache.length) {
+		if (data == null || data.length < length) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Desktop cache source data is truncated");
+		}
+		if ((long) offset + length <= highdeskcache.length) {
 			for (int i = 0; i < cy; i++) {
 				System.arraycopy(data, pdata, highdeskcache, offset, cx);
 				offset += cx;
@@ -211,7 +219,8 @@ public class Cache {
 	 * @throws com.tangluobo.rdp4j.RdesktopException on error
 	 */
 	public void putFont(Glyph glyph) throws com.tangluobo.rdp4j.RdesktopException {
-		if ((glyph.getFont() < fontcache.length) && (glyph.getCharacter() < fontcache[0].length)) {
+		if (glyph.getFont() >= 0 && glyph.getCharacter() >= 0
+				&& glyph.getFont() < fontcache.length && glyph.getCharacter() < fontcache[0].length) {
 			fontcache[glyph.getFont()][glyph.getCharacter()] = glyph;
 		} else {
 			throw new com.tangluobo.rdp4j.RdesktopException("Could not put font");
@@ -226,7 +235,7 @@ public class Cache {
 	 * @throws com.tangluobo.rdp4j.RdesktopException on error
 	 */
 	public void putText(int cache_id, DataBlob entry) throws com.tangluobo.rdp4j.RdesktopException {
-		if (cache_id < textcache.length) {
+		if (cache_id >= 0 && cache_id < textcache.length) {
 			textcache[cache_id] = entry;
 		} else {
 			throw new RdesktopException("Could not put Text");
@@ -242,7 +251,8 @@ public class Cache {
 			if (state.getOptions().getPersistentCacheBackend() != null
 					&& state.getOptions().getPersistentCacheBackend().IS_PERSISTENT(id))
 				for (idx = 0; idx < bitmapcache[id].length; idx++)
-					state.getOptions().getPersistentCacheBackend().touchBitmap(id, idx, bitmapcache[id][idx].usage);
+					if (bitmapcache[id][idx] != null)
+						state.getOptions().getPersistentCacheBackend().touchBitmap(id, idx, bitmapcache[id][idx].usage);
 	}
 
 	/**

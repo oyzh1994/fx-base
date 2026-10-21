@@ -18,6 +18,8 @@ import com.tangluobo.rdp4j.State;
 
 
 public class Bitmap {
+	/** Maximum decoded pixels accepted from one server bitmap update (covers 8K). */
+	private static final long MAX_DECOMPRESSED_PIXELS = 40L * 1024 * 1024;
 	
 	public int usage;
 	private int height = 0;
@@ -151,6 +153,7 @@ public class Bitmap {
 	 * @throws RdesktopException on error
 	 */
 	public static byte[] decompress(int width, int height, int size, Packet data, int Bpp) throws RdesktopException {
+		validateDecompression(width, height, size, data, Bpp);
 		byte[] compressed_pixel = new byte[size];
 		data.copyToByteArray(compressed_pixel, 0, data.getPosition(), size);
 		data.incrementPosition(size);
@@ -531,6 +534,7 @@ public class Bitmap {
 	 */
 	public static IntArrayDisplay decompressImg(State state, int width, int height, int size, Packet data, int Bpp, RdpPalette cm)
 			throws RdesktopException {
+		validateDecompression(width, height, size, data, Bpp);
 		com.tangluobo.rdp4j.graphics.Display w = null;
 		byte[] compressed_pixel = new byte[size];
 		data.copyToByteArray(compressed_pixel, 0, data.getPosition(), size);
@@ -1299,6 +1303,7 @@ public class Bitmap {
 	 */
 	public static int[] decompressInt(State state, int width, int height, int size, Packet data, int Bpp)
 			throws RdesktopException {
+		validateDecompression(width, height, size, data, Bpp);
 		byte[] compressed_pixel = new byte[size];
 		data.copyToByteArray(compressed_pixel, 0, data.getPosition(), size);
 		data.incrementPosition(size);
@@ -1759,5 +1764,29 @@ public class Bitmap {
 			input[location + 1] = (byte) ((value & 0xFF00) >> 8);
 		if (Bpp > 2)
 			input[location + 2] = (byte) ((value & 0xFF0000) >> 16);
+	}
+
+	/**
+	 * Validate dimensions and the compressed byte range before allocating an
+	 * output image. These values all come from the remote server, so checking
+	 * only at the call site is not sufficient.
+	 */
+	private static void validateDecompression(int width, int height, int size, Packet data, int Bpp)
+			throws RdesktopException {
+		if (width <= 0 || height <= 0) {
+			throw new RdesktopException("Invalid bitmap dimensions: " + width + "x" + height);
+		}
+		long pixels = (long) width * height;
+		if (pixels > MAX_DECOMPRESSED_PIXELS) {
+			throw new RdesktopException("Bitmap dimensions exceed safety limit: " + width + "x" + height);
+		}
+		if (Bpp < 1 || Bpp > 4) {
+			throw new RdesktopException("Invalid bitmap bytes-per-pixel: " + Bpp);
+		}
+		int remaining = data.getEnd() - data.getPosition();
+		if (size < 0 || size > remaining) {
+			throw new RdesktopException("Compressed bitmap length is invalid: size=" + size
+					+ ", remaining=" + remaining);
+		}
 	}
 }

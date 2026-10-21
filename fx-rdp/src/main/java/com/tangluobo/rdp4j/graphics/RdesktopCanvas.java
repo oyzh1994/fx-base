@@ -36,6 +36,8 @@ public class RdesktopCanvas {
     private static final int ROP2_XOR = 0x6;
     private static final int TEXT2_IMPLICIT_X = 0x20;
     private static final int TEXT2_VERTICAL = 0x04;
+    /** Cursor dimensions come from the server; large-pointer max is 384x384. */
+    private static final long MAX_CURSOR_PIXELS = 1024L * 1024;
     /**
      * 1-bpp pointer decode states: opaque black, opaque white, and the
      * transparent state the old indexed colour model expressed with its
@@ -100,6 +102,10 @@ public class RdesktopCanvas {
 
     public com.tangluobo.rdp4j.graphics.RdpCursor createCursor(int nXDst, int nYDst, int nWidth, int nHeight, byte[] andMask, byte[] xorMask, int cache_idx,
                                                                int xorBpp) {
+        if (nWidth <= 0 || nHeight <= 0 || (long) nWidth * nHeight > MAX_CURSOR_PIXELS) {
+            JulLog.warn("Invalid remote cursor dimensions: {}x{}", nWidth, nHeight);
+            return null;
+        }
         if (nWidth != lastLoggedCursorWidth || nHeight != lastLoggedCursorHeight
                 || xorBpp != lastLoggedCursorBpp) {
             JulLog.info("Remote cursor source: {}x{} @ {}bpp, hotspot={},{}",

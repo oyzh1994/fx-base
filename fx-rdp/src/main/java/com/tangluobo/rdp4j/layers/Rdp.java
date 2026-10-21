@@ -134,6 +134,8 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 	private static final int LARGE_POINTER_FLAG_384X384 = 0x0002;
 	private static final int LARGE_POINTER_MAX_REQUEST_SIZE_96X96 = 38_055;
 	private static final int LARGE_POINTER_MAX_REQUEST_SIZE_384X384 = 608_299;
+	/** Upper bound for one decoded bitmap update (4-byte pixels included; covers 8K). */
+	private static final long MAX_BITMAP_UPDATE_BYTES = 160L * 1024 * 1024;
 	// Control PDU types
 	private static final int RDP_CTL_COOPERATE = 4;
 	private static final int RDP_CTL_DETACH = 3;
@@ -335,9 +337,6 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 	private void processPacket(int[] type, Packet data) throws RdesktopException, IOException {
 		switch (type[0]) {
 		case (Rdp.RDP_PDU_DEMAND_ACTIVE):
-			// INPUT ready is raised from processDemandActive, so enable events just
-			// before entering it (not after it returns).
-			inputEnabled = true;
 			if (JulLog.isDebugEnabled())
 				JulLog.debug("Rdp.RDP_PDU_DEMAND_ACTIVE");
 			// get this after licence negotiation, just before the 1st
@@ -506,30 +505,63 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		int type;
 		int next;
 		if (encryption) {
-			s.incrementPosition(
-					shortform ? 6 : 7 /* XXX HACK */); /* signature */
+			if (s.getEnd() - s.getPosition() < 8) {
+				throw new RdesktopException("Encrypted RDP5 packet is shorter than its signature");
+			}
+			// FASTPATH_OUTPUT_ENCRYPTED always carries an 8-byte dataSignature
+			// (MS-RDPBCGR 2.2.9.1.2.1). The old 6/7-byte "short form" skip
+			// started RC4 at the wrong offset and parsed ciphertext as updates.
+			s.incrementPosition(8);
 			byte[] data = new byte[s.size() - s.getPosition()];
 			s.copyToByteArray(data, 0, s.getPosition(), data.length);
 			byte[] packet = secureLayer.decrypt(data);
+			if (packet == null || packet.length != data.length) {
+				throw new RdesktopException("Failed to decrypt RDP5 packet");
+			}
+			// The decrypted bytes must replace the ciphertext in the same
+			// Packet. The previous implementation threw the result away and
+			// continued parsing encrypted bytes.
+			s.copyFromByteArray(packet, 0, s.getPosition(), packet.length);
 		}
 		// printf("RDP5 data:\n");
 		// hexdump(s->p, s->end - s->p);
 		while (s.getPosition() < s.getEnd()) {
+			if (s.getEnd() - s.getPosition() < 3) {
+				throw new RdesktopException("Truncated RDP5 update header");
+			}
 			type = s.get8();
 			length = s.getLittleEndian16();
+			if (length < 0) {
+				length &= 0xffff;
+			}
 			/* next_packet = */next = s.getPosition() + length;
+			if (next < s.getPosition() || next > s.getEnd()) {
+				throw new RdesktopException("RDP5 update length exceeds packet: " + length);
+			}
 			if (JulLog.isDebugEnabled())
 				JulLog.debug("RDP5: type = " + type);
 			switch (type) {
 			case 0: /* orders */
+				if (next - s.getPosition() < 2) {
+					throw new RdesktopException("Truncated RDP5 orders update");
+				}
 				count = s.getLittleEndian16();
+				if (count < 0) {
+					count &= 0xffff;
+				}
 				orders.processOrders(s, next, count);
 				break;
 			case 1: /* bitmap update (???) */
+				if (next - s.getPosition() < 2) {
+					throw new RdesktopException("Truncated RDP5 bitmap update");
+				}
 				s.incrementPosition(2); /* part length */
 				processBitmapUpdates(s);
 				break;
 			case 2: /* palette */
+				if (next - s.getPosition() < 2) {
+					throw new RdesktopException("Truncated RDP5 palette update");
+				}
 				s.incrementPosition(2);
 				processPalette(s);
 				break;
@@ -747,19 +779,44 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		maxX = maxY = 0;
 		minX = state.getCanvas().getDisplay().getDisplayWidth();
 		minY = state.getCanvas().getDisplay().getDisplayHeight();
-		n_updates = data.getLittleEndian16();
+		if (data.getEnd() - data.getPosition() < 2) {
+			throw new RdesktopException("Bitmap update count is truncated");
+		}
+		n_updates = data.getLittleEndian16() & 0xffff;
 		for (int i = 0; i < n_updates; i++) {
-			left = data.getLittleEndian16();
-			top = data.getLittleEndian16();
-			right = data.getLittleEndian16();
-			bottom = data.getLittleEndian16();
-			width = data.getLittleEndian16();
-			height = data.getLittleEndian16();
-			bitsperpixel = data.getLittleEndian16();
-			compression = data.getLittleEndian16();
-			buffersize = data.getLittleEndian16();
+			if (data.getEnd() - data.getPosition() < 18) {
+				throw new RdesktopException("Bitmap update header is truncated");
+			}
+			left = data.getLittleEndian16() & 0xffff;
+			top = data.getLittleEndian16() & 0xffff;
+			right = data.getLittleEndian16() & 0xffff;
+			bottom = data.getLittleEndian16() & 0xffff;
+			width = data.getLittleEndian16() & 0xffff;
+			height = data.getLittleEndian16() & 0xffff;
+			bitsperpixel = data.getLittleEndian16() & 0xffff;
+			compression = data.getLittleEndian16() & 0xffff;
+			buffersize = data.getLittleEndian16() & 0xffff;
+			if (width <= 0 || height <= 0 || right < left || bottom < top) {
+				throw new RdesktopException("Invalid bitmap update geometry: "
+						+ width + "x" + height + ", rect=" + left + "," + top + "-" + right + "," + bottom);
+			}
+			if (bitsperpixel != 8 && bitsperpixel != 15 && bitsperpixel != 16
+					&& bitsperpixel != 24 && bitsperpixel != 32) {
+				throw new RdesktopException("Unsupported bitmap depth: " + bitsperpixel);
+			}
 			cx = right - left + 1;
 			cy = bottom - top + 1;
+			/* Server may limit bpp - this is how we find out */
+			if (state.getServerBpp() != bitsperpixel) {
+				JulLog.warn("Server limited colour depth to " + bitsperpixel + " bits");
+				state.setServerBpp(bitsperpixel);
+			}
+			int bytesPerPixel = state.getBytesPerPixel();
+			long pixelBytes = (long) width * height * bytesPerPixel;
+			if (pixelBytes > MAX_BITMAP_UPDATE_BYTES) {
+				throw new RdesktopException("Bitmap update is too large: " + width + "x" + height
+						+ " (" + pixelBytes + " bytes)");
+			}
 			if (minX > left)
 				minX = left;
 			if (minY > top)
@@ -768,20 +825,18 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 				maxX = right;
 			if (maxY < bottom)
 				maxY = bottom;
-			/* Server may limit bpp - this is how we find out */
-			if (state.getServerBpp() != bitsperpixel) {
-				JulLog.warn("Server limited colour depth to " + bitsperpixel + " bits");
-				state.setServerBpp(bitsperpixel);
-			}
 			if (compression == 0) {
 				// JulLog.info("compression == 0");
-				pixel = new byte[width * height * state.getBytesPerPixel()];
-				for (int y = 0; y < height; y++) {
-					data.copyToByteArray(pixel, (height - y - 1) * (width * state.getBytesPerPixel()), data.getPosition(),
-							width * state.getBytesPerPixel());
-					data.incrementPosition(width * state.getBytesPerPixel());
+				if (data.getEnd() - data.getPosition() < pixelBytes) {
+					throw new RdesktopException("Uncompressed bitmap data is truncated");
 				}
-				state.getCanvas().displayImage(Bitmap.convertImage(state, pixel, state.getBytesPerPixel()), width, height, left,
+				int rowBytes = width * bytesPerPixel;
+				pixel = new byte[(int) pixelBytes];
+				for (int y = 0; y < height; y++) {
+					data.copyToByteArray(pixel, (height - y - 1) * rowBytes, data.getPosition(), rowBytes);
+					data.incrementPosition(rowBytes);
+				}
+				state.getCanvas().displayImage(Bitmap.convertImage(state, pixel, bytesPerPixel), width, height, left,
 						top, cx, cy);
 				continue;
 			}
@@ -790,26 +845,33 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 				size = buffersize;
 			} else {
 				// JulLog.info("compression & 0x400 == 0");
+				if (data.getEnd() - data.getPosition() < 8) {
+					throw new RdesktopException("Compressed bitmap header is truncated");
+				}
 				data.incrementPosition(2); // pad
-				size = data.getLittleEndian16();
+				size = data.getLittleEndian16() & 0xffff;
 				data.incrementPosition(4); // line size, final size
 			}
-			if (state.getBytesPerPixel() == 1) {
-				pixel = Bitmap.decompress(width, height, size, data, state.getBytesPerPixel());
+			if (data.getEnd() - data.getPosition() < size) {
+				throw new RdesktopException("Compressed bitmap data is truncated: expected "
+						+ size + " bytes, remaining " + (data.getEnd() - data.getPosition()));
+			}
+			if (bytesPerPixel == 1) {
+				pixel = Bitmap.decompress(width, height, size, data, bytesPerPixel);
 				if (pixel != null)
-					state.getCanvas().displayImage(Bitmap.convertImage(state, pixel, state.getBytesPerPixel()), width, height, left,
+					state.getCanvas().displayImage(Bitmap.convertImage(state, pixel, bytesPerPixel), width, height, left,
 							top, cx, cy);
 				else
 					JulLog.warn("Could not decompress bitmap");
 			} else {
 				if (state.getOptions().getBitmapDecompressionStore() == Options.INTEGER_BITMAP_DECOMPRESSION) {
-					int[] pixeli = Bitmap.decompressInt(state, width, height, size, data, state.getBytesPerPixel());
+					int[] pixeli = Bitmap.decompressInt(state, width, height, size, data, bytesPerPixel);
 					if (pixeli != null)
 						state.getCanvas().displayImage(pixeli, width, height, left, top, cx, cy);
 					else
 						JulLog.warn("Could not decompress bitmap");
 				} else if (state.getOptions().getBitmapDecompressionStore() == Options.BUFFEREDIMAGE_BITMAP_DECOMPRESSION) {
-					IntArrayDisplay pix = Bitmap.decompressImg(state, width, height, size, data, state.getBytesPerPixel(), null);
+					IntArrayDisplay pix = Bitmap.decompressImg(state, width, height, size, data, bytesPerPixel, null);
 					if (pix != null)
 						state.getCanvas().displayImage(pix.getPixels(),
 								pix.getDisplayWidth(), pix.getDisplayHeight(), left, top,
@@ -817,7 +879,7 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 					else
 						JulLog.warn("Could not decompress bitmap");
 				} else {
-					state.getCanvas().displayCompressed(left, top, width, height, size, data, state.getBytesPerPixel(), null);
+					state.getCanvas().displayCompressed(left, top, width, height, size, data, bytesPerPixel, null);
 				}
 			}
 		}
@@ -871,9 +933,18 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		byte[] green = null;
 		byte[] blue = null;
 		int j = 0;
+		if (data.getEnd() - data.getPosition() < 6) {
+			JulLog.warn("Palette update header is truncated");
+			return;
+		}
 		data.incrementPosition(2); // pad
-		n_colors = data.getLittleEndian16(); // Number of Colors in Palette
+		n_colors = data.getLittleEndian16() & 0xffff; // Number of Colors in Palette
 		data.incrementPosition(2); // pad
+		if (n_colors > 256 || (long) n_colors * 3 > data.getEnd() - data.getPosition()) {
+			JulLog.warn("Invalid palette update: colors=" + n_colors
+					+ ", remaining=" + (data.getEnd() - data.getPosition()));
+			return;
+		}
 		palette = new byte[n_colors * 3];
 		red = new byte[n_colors];
 		green = new byte[n_colors];
@@ -1126,6 +1197,16 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		p = this.receive(type); // Receive TS_FONT_MAP_PDU (0x28)
 		if (JulLog.isDebugEnabled())
 			JulLog.debug("TS_FONT_MAP_PDU " + p);
+		/*
+		 * The finalization sequence is not complete until the server has sent
+		 * its Synchronize, Cooperate, Granted Control and Font Map PDUs. In
+		 * particular, GNOME Remote Desktop rejects a fast-path TS_SYNC_EVENT
+		 * while it is still in CONNECTION_STATE_FINALIZATION_SYNC and may
+		 * answer with ERRINFO_RPC_INITIATED_DISCONNECT (0x0001). Enable input
+		 * and notify the frontend only after those four PDUs have arrived.
+		 */
+		inputEnabled = true;
+		context.ready(ReadyType.INPUT);
 		JulLog.info("reset order state");
 		this.orders.resetOrderState();
 	}
@@ -1387,11 +1468,6 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 			JulLog.debug("confirm active");
 		// this.send(data, RDP_PDU_CONFIRM_ACTIVE);
 		secureLayer.send(data, sec_flags);
-		/*
-		 * MS-RDPCGR 1.3.1.1 - Once the client has sent the Confirm Active PDU,
-		 * it can start sending mouse and keyboard input to the server
-		 */
-		context.ready(ReadyType.INPUT);
 	}
 
 	private void sendControl(int action) throws RdesktopException, IOException {

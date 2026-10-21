@@ -303,6 +303,9 @@ public class ISO implements Layer<MCS> {
 					length = (length << 8) + s.get8();
 				}
 			}
+			if (length < 4) {
+				throw new RdesktopException("Invalid TPKT/fast-path length: " + length);
+			}
 			s = transport.receivePacket(s, length - 4);
 			if (s == null)
 				return null;

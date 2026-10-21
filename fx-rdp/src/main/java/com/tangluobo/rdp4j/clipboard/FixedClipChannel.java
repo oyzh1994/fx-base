@@ -143,6 +143,8 @@ public class FixedClipChannel extends ClipChannel {
      * 远程→本地下载分块大小
      */
     private static final long DOWNLOAD_CHUNK = 1024 * 1024;
+    /** 单次FILECONTENTS_RESPONSE允许发送的最大文件数据块。 */
+    private static final int MAX_FILE_CONTENTS_CHUNK = 1024 * 1024;
 
     private final com.tangluobo.rdp4j.clipboard.FixedUnicodeHandler unicodeHandler = new FixedUnicodeHandler();
 
@@ -293,9 +295,21 @@ public class FixedClipChannel extends ClipChannel {
     public void process(Packet packet) throws RdesktopException, IOException {
         sendCapsIfNeeded();
         lastPacketStart = packet.getPosition();
+        if (packet.getEnd() - lastPacketStart < 8) {
+            JulLog.warn("CLIPRDR消息头被截断");
+            return;
+        }
         int msgType = packet.getLittleEndian16();
         int msgFlags = packet.getLittleEndian16();
         int dataLen = packet.getLittleEndian32();
+        int available = packet.getEnd() - (lastPacketStart + 8);
+        if (dataLen < 0 || dataLen > available) {
+            // dataLen完全由服务端控制，必须在使用前与实际消息长度核对。
+            // 否则后续 dataLen-4、copyToByteArray 会产生超大分配或越界。
+            JulLog.warn("CLIPRDR消息长度非法: type=" + msgType + ", dataLen=" + dataLen
+                    + ", available=" + available);
+            return;
+        }
 
         if (msgType == MSG_FORMAT_ACK && (msgFlags & FLAG_MONITOR_READY) != 0) {
             // 服务器监视器就绪：发送初始格式通告（本地剪贴板格式告知远程）
@@ -694,7 +708,7 @@ public class FixedClipChannel extends ClipChannel {
      */
     private void sendFileContentsRange(int streamId, FlatLocalFile f, long offset, int cbRequested)
             throws IOException, RdesktopException {
-        if (f.dir || cbRequested <= 0) {
+        if (f.dir || cbRequested <= 0 || offset < 0) {
             // 目录或空请求：回0字节
             Packet empty = new Packet(8 + 4);
             empty.setLittleEndian16(MSG_FILECONTENTS_RESPONSE);
@@ -707,7 +721,10 @@ public class FixedClipChannel extends ClipChannel {
         }
         try (RandomAccessFile raf = new RandomAccessFile(f.file, "r")) {
             raf.seek(offset);
-            byte[] buf = new byte[cbRequested];
+            // 服务端可以请求接近4GB的数据。限制本地单次读取，既避免
+            // new byte[cbRequested]造成内存放大，也保证响应能正常分片发送。
+            int chunkSize = Math.min(cbRequested, MAX_FILE_CONTENTS_CHUNK);
+            byte[] buf = new byte[chunkSize];
             int n = raf.read(buf);
             if (n < 0) {
                 n = 0;

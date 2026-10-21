@@ -172,7 +172,10 @@ public class Packet {
 	 */
 	public int getBigEndian16() {
 		bb.order(ByteOrder.BIG_ENDIAN);
-		return bb.getShort();
+		// RDP uses this for unsigned 16-bit protocol fields (TPKT length, MCS
+		// user/channel IDs, bitmap buffer sizes). Returning a sign-extended
+		// short makes lengths >= 0x8000 negative.
+		return bb.getShort() & 0xffff;
 	}
 
 	/**
@@ -184,7 +187,7 @@ public class Packet {
 	 */
 	public int getBigEndian16(int where) {
 		bb.order(ByteOrder.BIG_ENDIAN);
-		return bb.getShort(where);
+		return bb.getShort(where) & 0xffff;
 	}
 
 	/**

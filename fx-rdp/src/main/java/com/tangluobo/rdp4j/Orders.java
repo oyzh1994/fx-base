@@ -32,6 +32,7 @@ import java.io.IOException;
 
 public class Orders {
 	private static final int BUFSIZE_MASK = 0x3FFF; /* or 0x1FFF? */
+	private static final int MAX_GLYPH_BYTES = 16 * 1024 * 1024;
 	private static final int FLAG_51_UNKNOWN = 0x0800;
 	/* RDP_BMPCACHE2_ORDER */
 	private static final int ID_MASK = 0x0007;
@@ -94,7 +95,16 @@ public class Orders {
 		int order_flags = 0, order_type = 0;
 		int size = 0, processed = 0;
 		boolean delta;
+		if (n_orders < 0) {
+			n_orders &= 0xffff;
+		}
+		if (next_packet < data.getPosition() || next_packet > data.getEnd()) {
+			throw new com.tangluobo.rdp4j.OrderException("Order packet length is invalid: " + next_packet);
+		}
 		while (processed < n_orders) {
+			if (data.getPosition() >= next_packet) {
+				throw new com.tangluobo.rdp4j.OrderException("Order count exceeds packet data");
+			}
 			order_flags = data.get8();
 			if ((order_flags & RDP_ORDER_STANDARD) == 0) {
 				throw new com.tangluobo.rdp4j.OrderException("Order parsing failed!");
@@ -450,8 +460,12 @@ public class Orders {
 		Bpp = ((flags & MODE_MASK) >> MODE_SHIFT) - 2;
 		Bpp = state.getBytesPerPixel();
 		if ((flags & PERSIST) != 0) {
+			if (data.getEnd() - data.getPosition() < 8) {
+				throw new com.tangluobo.rdp4j.RdesktopException("Bitmap cache2 persistence ID is truncated");
+			}
 			bitmap_id = new byte[8];
 			data.copyToByteArray(bitmap_id, 0, data.getPosition(), 8);
+			data.incrementPosition(8);
 		}
 		if ((flags & SQUARE) != 0) {
 			width = data.get8(); // in_uint8(s, width);
@@ -459,6 +473,10 @@ public class Orders {
 		} else {
 			width = data.get8(); // in_uint8(s, width);
 			height = data.get8(); // in_uint8(s, height);
+		}
+		if (width <= 0 || height <= 0 || Bpp < 1 || Bpp > 4) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Invalid bitmap cache2 geometry: "
+					+ width + "x" + height + ", Bpp=" + Bpp);
 		}
 		bufsize = data.getBigEndian16(); // in_uint16_be(s, bufsize);
 		bufsize &= BUFSIZE_MASK;
@@ -486,21 +504,18 @@ public class Orders {
 			}
 			bitmap = new Bitmap(bmpdataInt, width, height, 0, 0);
 		} else {
-			for (y = 0; y < height; y++)
-				data.copyToByteArray(bmpdata, y * (width * Bpp), (height - y - 1) * (width * Bpp), width * Bpp); // memcpy(&bmpdata[(height
-			// - y -
-			// 1) *
-			// (width
-			// *
-			// Bpp)],
-			// &data[y
-			// *
-			// (width
-			// *
-			// Bpp)],
-			// width
-			// *
-			// Bpp);
+			int rowBytes = width * Bpp;
+			long required = (long) rowBytes * height;
+			if (required > data.getEnd() - data.getPosition()) {
+				throw new com.tangluobo.rdp4j.RdesktopException("Raw bitmap cache2 data is truncated");
+			}
+			// 原实现把 (height-y-1)*rowBytes 当作 Packet 的绝对源偏移，
+			// 实际会从订单头/其他字段读取像素。这里按行顺序读取，并翻转
+			// 到RDP位图使用的自底向上布局。
+			for (y = 0; y < height; y++) {
+				data.copyToByteArray(bmpdata, (height - y - 1) * rowBytes, data.getPosition(), rowBytes);
+				data.incrementPosition(rowBytes);
+			}
 			bitmap = new Bitmap(Bitmap.convertImage(state, bmpdata, Bpp), width, height, 0, 0);
 		}
 		// bitmap = ui_create_bitmap(width, height, bmpdata);
@@ -589,7 +604,10 @@ public class Orders {
 	 */
 	private void processColorCache(com.tangluobo.rdp4j.Packet data) throws com.tangluobo.rdp4j.RdesktopException {
 		data.get8(); // cache_id
-		int n_colors = data.getLittleEndian16(); // Number of Colors in Palette
+		int n_colors = data.getLittleEndian16() & 0xffff; // Number of Colors in Palette
+		if (n_colors > 256 || (long) n_colors * 4 > data.getEnd() - data.getPosition()) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Invalid colour cache size: " + n_colors);
+		}
 		// The colour cache is never read back: indexed bitmaps get their palette
 		// from the RDP_DATA_PDU_POINTER/processPalette path instead. Keep consuming
 		// the payload so the packet position stays correct for later orders.
@@ -678,15 +696,28 @@ public class Orders {
 		int character = 0, offset = 0, baseline = 0, width = 0, height = 0;
 		int datasize = 0;
 		byte[] fontdata = null;
+		if (data.getEnd() - data.getPosition() < 2) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Font cache header is truncated");
+		}
 		font = data.get8();
 		nglyphs = data.get8();
 		for (int i = 0; i < nglyphs; i++) {
+			if (data.getEnd() - data.getPosition() < 10) {
+				throw new com.tangluobo.rdp4j.RdesktopException("Font glyph header is truncated");
+			}
 			character = data.getLittleEndian16();
 			offset = data.getLittleEndian16();
 			baseline = data.getLittleEndian16();
-			width = data.getLittleEndian16();
-			height = data.getLittleEndian16();
-			datasize = (height * ((width + 7) / 8) + 3) & ~3;
+			width = data.getLittleEndian16() & 0xffff;
+			height = data.getLittleEndian16() & 0xffff;
+			if (width <= 0 || height <= 0) {
+				throw new com.tangluobo.rdp4j.RdesktopException("Invalid glyph dimensions: " + width + "x" + height);
+			}
+			long calculatedSize = ((long) height * ((width + 7L) / 8) + 3) & ~3L;
+			if (calculatedSize > MAX_GLYPH_BYTES || calculatedSize > data.getEnd() - data.getPosition()) {
+				throw new com.tangluobo.rdp4j.RdesktopException("Glyph data is invalid: " + calculatedSize + " bytes");
+			}
+			datasize = (int) calculatedSize;
 			fontdata = new byte[datasize];
 			data.copyToByteArray(fontdata, 0, data.getPosition(), datasize);
 			data.incrementPosition(datasize);
@@ -932,10 +963,17 @@ public class Orders {
 		int type = 0;
 		int flags = 0;
 		int next_order = 0;
-		length = data.getLittleEndian16();
+		if (data.getEnd() - data.getPosition() < 5) {
+			throw new OrderException("Secondary order header is truncated");
+		}
+		length = data.getLittleEndian16() & 0xffff;
 		flags = data.getLittleEndian16();
 		type = data.get8();
-		next_order = data.getPosition() + length + 7;
+		long calculatedNext = (long) data.getPosition() + length + 7;
+		if (calculatedNext > data.getEnd()) {
+			throw new OrderException("Secondary order length exceeds packet: " + length);
+		}
+		next_order = (int) calculatedNext;
 		switch (type) {
 		case RDP_ORDER_RAW_BMPCACHE:
 			if (JulLog.isDebugEnabled())

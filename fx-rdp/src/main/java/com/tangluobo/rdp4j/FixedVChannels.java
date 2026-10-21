@@ -5,6 +5,8 @@ import com.tangluobo.rdp4j.rdp5.VChannel;
 import com.tangluobo.rdp4j.rdp5.VChannels;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -23,19 +25,25 @@ import java.util.logging.Logger;
  *
  * 本类覆盖channel_process，修复点：
  * 1. 分片缓冲null安全拼接（System.arraycopy手工合并）；
- * 2. 缓冲按MCS通道隔离，避免多通道并发分片消息互相污染；
- * 3. 收到CHANNEL_FLAG_FIRST分片时重置缓冲，防止丢包/乱序后拼入残留数据。
+ * 2. 每个MCS通道独立保存重组状态，允许不同虚拟通道的分片交错到达；
+ * 3. 收到CHANNEL_FLAG_FIRST分片时重置缓冲，防止丢包/乱序后拼入残留数据；
+ * 4. 拒绝无FIRST的孤立中间分片，并限制单条重组消息大小，避免远端触发OOM。
  */
 public class FixedVChannels extends VChannels {
 
     private static final Logger logger = Logger.getLogger(FixedVChannels.class.getName());
 
-    /** 分片重组缓冲（null表示无进行中的分片消息） */
-    private byte[] fragmentBuffer;
-    /** 当前缓冲所属的MCS通道ID（防多通道交叉污染） */
-    private int fragmentMcsId = -1;
+    /**
+     * 单条虚拟通道消息允许重组的最大长度。正常CLIPRDR文件内容块由客户端
+     * 主动按1MB请求，64MB远高于正常单条消息；设置上限用于阻止恶意或损坏
+     * 的服务器通过无限FIRST/中间分片把接收端堆内存耗尽。
+     */
+    private static final int MAX_REASSEMBLED_MESSAGE_BYTES = 64 * 1024 * 1024;
+
+    /** 每个MCS通道各自的分片重组缓冲，避免不同通道交错时互相覆盖。 */
+    private final Map<Integer, byte[]> fragmentBuffers = new HashMap<>();
     /** 各通道收到的数据包计数（诊断：确认音频通道是否有数据到达） */
-    private final java.util.Map<Integer, Integer> channelPacketCounts = new java.util.concurrent.ConcurrentHashMap<>();
+    private final Map<Integer, Integer> channelPacketCounts = new java.util.concurrent.ConcurrentHashMap<>();
 
     public FixedVChannels(State state) {
         super(state);
@@ -64,9 +72,19 @@ public class FixedVChannels extends VChannels {
                     mcsChannel, channel.name(), count, packet.getEnd() - packet.getPosition()));
         }
 
-        // 虚拟通道chunk头：length(4，忽略) + flags(4)
-        packet.getLittleEndian32();
+        // 虚拟通道chunk头：length(4) + flags(4)
+        if (packet.getEnd() - packet.getPosition() < 8) {
+            JulLog.warn("虚拟通道" + mcsChannel + "的chunk头被截断");
+            return;
+        }
+        int declaredLength = packet.getLittleEndian32();
         int flags = packet.getLittleEndian32();
+        long declaredUnsignedLength = Integer.toUnsignedLong(declaredLength);
+        if (declaredUnsignedLength > MAX_REASSEMBLED_MESSAGE_BYTES) {
+            fragmentBuffers.remove(mcsChannel);
+            JulLog.warn("虚拟通道" + mcsChannel + "声明了过大的消息: " + declaredUnsignedLength);
+            return;
+        }
         // 诊断：记录到达的通道数据，确认服务器是否在给rdpsnd通道推送数据
         logger.finest("channel_process: mcs=" + mcsChannel + " channel=" + channel.name()
                 + " flags=0x" + Integer.toHexString(flags) + " remain="
@@ -74,6 +92,7 @@ public class FixedVChannels extends VChannels {
 
         if ((flags & CHANNEL_FLAG_FIRST) != 0 && (flags & CHANNEL_FLAG_LAST) != 0) {
             // 单分片完整消息：直接处理（position已跳过chunk头）
+            fragmentBuffers.remove(mcsChannel);
             channel.process(packet);
             return;
         }
@@ -81,34 +100,39 @@ public class FixedVChannels extends VChannels {
         // 多分片消息：取出当前chunk数据（position到end）
         if ((flags & CHANNEL_FLAG_FIRST) != 0) {
             // 新消息的第一个分片：重置缓冲（防上次残留）
-            fragmentBuffer = null;
-            fragmentMcsId = -1;
+            fragmentBuffers.put(mcsChannel, new byte[0]);
+        } else if (!fragmentBuffers.containsKey(mcsChannel)) {
+            // 中间/最后分片必须依附于同通道的FIRST分片。旧实现会把这种
+            // 孤立分片当成新消息起点，随后把损坏数据交给上层解析。
+            JulLog.warn("虚拟通道" + mcsChannel + "收到无FIRST的孤立分片, flags=0x"
+                    + Integer.toHexString(flags));
+            return;
         }
         int avail = packet.getEnd() - packet.getPosition();
-        byte[] data = new byte[Math.max(avail, 0)];
+        byte[] data = new byte[avail];
         if (avail > 0) {
             packet.copyToByteArray(data, 0, packet.getPosition(), avail);
         }
 
-        // null安全拼接 + 通道隔离
-        if (fragmentBuffer == null || fragmentMcsId != mcsChannel) {
-            fragmentBuffer = data;
-            fragmentMcsId = mcsChannel;
-        } else {
-            byte[] merged = new byte[fragmentBuffer.length + data.length];
-            System.arraycopy(fragmentBuffer, 0, merged, 0, fragmentBuffer.length);
-            System.arraycopy(data, 0, merged, fragmentBuffer.length, data.length);
-            fragmentBuffer = merged;
+        byte[] fragmentBuffer = fragmentBuffers.get(mcsChannel);
+        long mergedLength = (long) fragmentBuffer.length + data.length;
+        if (mergedLength > MAX_REASSEMBLED_MESSAGE_BYTES) {
+            fragmentBuffers.remove(mcsChannel);
+            JulLog.warn("虚拟通道" + mcsChannel + "的重组消息超过上限: " + mergedLength);
+            return;
         }
+        byte[] merged = new byte[(int) mergedLength];
+        System.arraycopy(fragmentBuffer, 0, merged, 0, fragmentBuffer.length);
+        System.arraycopy(data, 0, merged, fragmentBuffer.length, data.length);
+        fragmentBuffers.put(mcsChannel, merged);
 
         if ((flags & CHANNEL_FLAG_LAST) != 0) {
             // 最后一个分片：重组完整消息并处理
             // Packet(int)构造后position=0，copyFromByteArray不推进position，
             // process()内从position 0读消息头，与单分片路径一致
-            Packet whole = new Packet(fragmentBuffer.length);
-            whole.copyFromByteArray(fragmentBuffer, 0, 0, fragmentBuffer.length);
-            fragmentBuffer = null;
-            fragmentMcsId = -1;
+            fragmentBuffers.remove(mcsChannel);
+            Packet whole = new Packet(merged.length);
+            whole.copyFromByteArray(merged, 0, 0, merged.length);
             channel.process(whole);
         }
     }

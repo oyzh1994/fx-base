@@ -43,7 +43,19 @@ public class RdpClient {
     private final AtomicLong firstFrameNotifiedAttempt = new AtomicLong();
     private final AtomicBoolean disconnectNotified = new AtomicBoolean();
     private volatile long currentAttemptId;
+    private volatile com.tangluobo.rdp4j.io.IO currentIo;
+    private volatile boolean connectCancelled;
     private final RdpFrontend frontend;
+
+    /**
+     * TLS handshake is occasionally reset by the server (observed on GNOME
+     * Remote Desktop after an aborted session). A reset is transient and must
+     * not be interpreted as "the server does not support TLS".
+     */
+    private static final int TLS_RETRY_LIMIT = Math.max(0,
+            Integer.getInteger("rdp.tls.retryLimit", 2));
+    private static final long TLS_RETRY_DELAY_MILLIS = Math.max(0L,
+            Long.getLong("rdp.tls.retryDelayMillis", 500L));
 
     /**
      * 嵌入式IContext实现，不创建独立窗口
@@ -180,6 +192,7 @@ public class RdpClient {
         if (connected) {
             throw new IllegalStateException("RDP客户端已连接，请先断开当前连接");
         }
+        connectCancelled = false;
         disconnectNotified.set(false);
         retireCurrentAttempt();
         this.mapClipboard = mapClipboard;
@@ -318,8 +331,7 @@ public class RdpClient {
         //        rdpThread = new Thread(() -> {
         try {
             JulLog.info("开始RDP连接: " + host + ":" + port + " useSsl=" + useSsl);
-            rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
-                    dcp, options.getCommand(), options.getDirectory());
+            connectLayer(new DefaultIO(InetAddress.getByName(host), port), dcp);
             // TLS/HYBRID仍会在Demand Active之前通过Basic Security Header
             // 发送服务器许可PDU。必须由Licence.process()在收到有效许可
             // 结果后更新licenceIssued，不能在connect()返回时提前跳过。
@@ -343,10 +355,22 @@ public class RdpClient {
             JulLog.error("RDP许可证错误: " + e.getMessage());
             notifyDisconnected("许可证错误: " + e.getMessage(), e);
         } catch (com.tangluobo.rdp4j.RdesktopException e) {
-            // SSL协商失败且当前使用SSL时，自动回退到STANDARD重试
-            if (useSsl && e.getMessage() != null && e.getMessage().contains("SSL negotiation failed")) {
-                JulLog.warn("SSL协商失败，尝试回退到Standard RDP Security（无TLS）重连...");
-                retryWithStandardSecurity(host, port, dcp);
+            if (useSsl && isTlsNegotiationFailure(e)) {
+                JulLog.warn("SSL协商失败，完整异常: " + describeException(e), e);
+                if (connectCancelled) {
+                    return;
+                }
+                // A reset/alert during the handshake is transient. STANDARD
+                // cannot satisfy servers that select HYBRID/NLA (for example
+                // gnome-remote-desktop); retry the negotiated security type
+                // with a brand-new socket instead.
+                if (state != null && state.getSecurityType() == com.tangluobo.rdp4j.SecurityType.HYBRID) {
+                    JulLog.warn("HYBRID TLS握手瞬态失败，使用全新连接重试HYBRID（不回退STANDARD）...");
+                    retryWithHybridSecurity(host, port, dcp);
+                } else {
+                    JulLog.warn("TLS握手瞬态失败，使用全新连接重试SSL...");
+                    retryWithSslSecurity(host, port, dcp);
+                }
                 return;
             }
             JulLog.error("RDP异常: " + e.getMessage(), e);
@@ -388,6 +412,7 @@ public class RdpClient {
             JulLog.error("RDP连接错误: " + e.getMessage(), e);
             notifyDisconnected("连接错误: " + e.getMessage(), e);
         } finally {
+            currentIo = null;
             connected = false;
         }
         //        }, "RDP-" + host);
@@ -537,12 +562,21 @@ public class RdpClient {
      * 断开RDP连接
      */
     public void disconnect() {
+        connectCancelled = true;
         shutdownSoundChannel();
-        if (!connected && (rdpLayer == null || !rdpLayer.isConnected()))
-            return;
         disconnectNotified.set(true);
         retireCurrentAttempt();
         connected = false;
+        // Closing the pending IO also interrupts a connect or TLS handshake
+        // that is still blocked before the transport is attached to Rdp.
+        com.tangluobo.rdp4j.io.IO io = currentIo;
+        if (io != null) {
+            try {
+                io.closeIO();
+            } catch (Exception e) {
+                JulLog.debug("关闭待建立连接失败: " + e.getMessage());
+            }
+        }
         try {
             if (rdpLayer != null && rdpLayer.isConnected()) {
                 rdpLayer.disconnect();
@@ -550,6 +584,53 @@ public class RdpClient {
             }
         } catch (Exception e) {
             JulLog.error("断开RDP连接时出错: " + e.getMessage());
+        }
+        currentIo = null;
+    }
+
+    /**
+     * Connects one transport attempt and tracks the pending IO so disconnect()
+     * can cancel a blocking TCP connect / TLS handshake.
+     */
+    private void connectLayer(com.tangluobo.rdp4j.io.IO io, CredentialProvider dcp) throws Exception {
+        if (connectCancelled) {
+            throw new com.tangluobo.rdp4j.RdesktopDisconnectException(
+                    com.tangluobo.rdp4j.RdesktopDisconnectException.exDiscReasonNoInfo,
+                    new java.io.IOException("RDP connection cancelled"));
+        }
+        currentIo = io;
+        try {
+            rdpLayer.connect(io, dcp, options.getCommand(), options.getDirectory());
+            if (connectCancelled) {
+                throw new com.tangluobo.rdp4j.RdesktopDisconnectException(
+                        com.tangluobo.rdp4j.RdesktopDisconnectException.exDiscReasonNoInfo,
+                        new java.io.IOException("RDP connection cancelled"));
+            }
+        } finally {
+            if (currentIo == io) {
+                currentIo = null;
+            }
+        }
+    }
+
+    private boolean isTlsNegotiationFailure(Throwable error) {
+        Throwable current = error;
+        for (int depth = 0; current != null && depth < 12; depth++) {
+            String message = current.getMessage();
+            if (message != null && message.contains("SSL negotiation failed")) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
+    }
+
+    private void sleepBeforeTlsRetry(String host, int retry) throws InterruptedException {
+        long delay = TLS_RETRY_DELAY_MILLIS * retry;
+        JulLog.warn("TLS握手失败，准备第" + retry + "次重试: " + host
+                + "，等待" + delay + "ms后使用全新连接");
+        if (delay > 0) {
+            Thread.sleep(delay);
         }
     }
 
@@ -603,8 +684,7 @@ public class RdpClient {
 
 
             JulLog.info("回退重连: " + host + ":" + port + " securityType=STANDARD");
-            rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
-                    dcp, options.getCommand(), options.getDirectory());
+            connectLayer(new DefaultIO(InetAddress.getByName(host), port), dcp);
             JulLog.info("Standard RDP Security连接成功，进入主循环");
             rdpLayer.mainLoop();
             JulLog.info("RDP主循环正常退出");
@@ -613,6 +693,12 @@ public class RdpClient {
             JulLog.info("RDP连接断开: " + e.getMessage());
             notifyDisconnected(describeDisconnect(e), e);
         } catch (Exception e) {
+            String message = e.getMessage();
+            if (message != null && message.contains("HYBRID_REQUIRED_BY_SERVER")) {
+                JulLog.warn("STANDARD被服务端拒绝（服务端强制NLA），重新使用HYBRID连接...");
+                retryWithHybridSecurity(host, port, dcp);
+                return;
+            }
             JulLog.error("Standard RDP Security重连也失败: " + e.getMessage(), e);
             notifyDisconnected("连接失败（SSL和Standard均不可用）: " + e.getMessage(), e);
         } finally {
@@ -625,6 +711,10 @@ public class RdpClient {
      * 重新创建所有RDP层对象，使用SSL作为优先安全类型。
      */
     private void retryWithSslSecurity(String host, int port, CredentialProvider dcp) {
+        retryWithSslSecurity(host, port, dcp, 0);
+    }
+
+    private void retryWithSslSecurity(String host, int port, CredentialProvider dcp, int tlsRetry) {
         try {
             // 断开之前的连接
             if (rdpLayer != null && rdpLayer.isConnected()) {
@@ -669,8 +759,7 @@ public class RdpClient {
 
 
             JulLog.info("回退重连: " + host + ":" + port + " securityType=SSL");
-            rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
-                    dcp, options.getCommand(), options.getDirectory());
+            connectLayer(new DefaultIO(InetAddress.getByName(host), port), dcp);
 
             JulLog.info("SSL/TLS连接成功，进入主循环");
             rdpLayer.mainLoop();
@@ -682,8 +771,18 @@ public class RdpClient {
         } catch (Exception e) {
             // SSL/TLS握手失败时，尝试使用HYBRID（CredSSP/NLA）重连
             // 很多Windows服务器要求NLA（网络级别认证），不支持纯TLS连接
-            String msg = e.getMessage();
-            if (msg != null && msg.contains("SSL negotiation failed")) {
+            if (isTlsNegotiationFailure(e) && !connectCancelled && tlsRetry < TLS_RETRY_LIMIT) {
+                try {
+                    sleepBeforeTlsRetry(host, tlsRetry + 1);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    notifyDisconnected("连接已取消", interrupted);
+                    return;
+                }
+                retryWithSslSecurity(host, port, dcp, tlsRetry + 1);
+                return;
+            }
+            if (isTlsNegotiationFailure(e)) {
                 JulLog.warn("SSL/TLS握手失败，尝试使用HYBRID（CredSSP/NLA）重连...");
                 retryWithHybridSecurity(host, port, dcp);
                 return;
@@ -712,6 +811,9 @@ public class RdpClient {
      */
     private void retryWithHybridSecurity(String host, int port, CredentialProvider dcp,
                                          com.tangluobo.rdp4j.RdpRedirectionException initialRedirection) {
+        if (connectCancelled) {
+            return;
+        }
         Exception rawNtlmFailure = null;
         int redirectCount = 0;
         String currentHost = host;
@@ -860,6 +962,37 @@ public class RdpClient {
      */
     private void connectHybridAttempt(String host, int port, CredentialProvider dcp,
                                       CredSspTokenMode tokenMode) throws Exception {
+        for (int retry = 0; retry <= TLS_RETRY_LIMIT; retry++) {
+            if (connectCancelled) {
+                throw new com.tangluobo.rdp4j.RdesktopDisconnectException(
+                        com.tangluobo.rdp4j.RdesktopDisconnectException.exDiscReasonNoInfo,
+                        new java.io.IOException("RDP connection cancelled"));
+            }
+            if (retry > 0) {
+                try {
+                    sleepBeforeTlsRetry(host, retry);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new com.tangluobo.rdp4j.RdesktopDisconnectException(
+                            com.tangluobo.rdp4j.RdesktopDisconnectException.exDiscReasonNoInfo,
+                            interrupted);
+                }
+            }
+            try {
+                connectHybridAttemptOnce(host, port, dcp, tokenMode);
+                return;
+            } catch (Exception e) {
+                if (connectCancelled || !isTlsNegotiationFailure(e) || retry >= TLS_RETRY_LIMIT) {
+                    throw e;
+                }
+                JulLog.warn("HYBRID TLS握手瞬态失败（第" + (retry + 1) + "次），"
+                        + "丢弃当前连接后重建: " + describeException(e));
+            }
+        }
+    }
+
+    private void connectHybridAttemptOnce(String host, int port, CredentialProvider dcp,
+                                          CredSspTokenMode tokenMode) throws Exception {
         if (rdpLayer != null) {
             try {
                 rdpLayer.disconnect();
@@ -897,8 +1030,7 @@ public class RdpClient {
 
         JulLog.info("回退重连: " + host + ":" + port
                 + " securityType=HYBRID (CredSSP/NLA), tokenFormat=" + tokenMode);
-        rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
-                dcp, options.getCommand(), options.getDirectory());
+        connectLayer(new DefaultIO(InetAddress.getByName(host), port), dcp);
     }
 
     /**
@@ -952,8 +1084,7 @@ public class RdpClient {
                 + (credentials.getDomain().isBlank()
                 ? credentials.getUsername()
                 : credentials.getDomain() + "\\" + credentials.getUsername()));
-        rdpLayer.connect(new DefaultIO(InetAddress.getByName(host), port),
-                redirectedIdentity, options.getCommand(), options.getDirectory());
+        connectLayer(new DefaultIO(InetAddress.getByName(host), port), redirectedIdentity);
     }
 
     /**
@@ -1031,9 +1162,10 @@ public class RdpClient {
     private String describeDisconnect(com.tangluobo.rdp4j.RdesktopDisconnectException error) {
         if (error.getReason() == com.tangluobo.rdp4j.RdesktopDisconnectException.exDiscReasonAPIInitiatedDisconnect) {
             return "服务端在NLA认证和RDP激活完成后主动终止桌面会话（错误码0x0001）；"
-                    + "本次RDP凭据已通过验证，与SSH账号/密码无关。若服务端为Ubuntu 22/GNOME，"
-                    + "请检查图形桌面是否已登录且未锁屏、是否已有远程会话，并查看图形桌面用户的"
-                    + "gnome-remote-desktop日志";
+                    + "本次RDP凭据已通过验证，与SSH账号/密码无关。若服务端为GNOME Remote Desktop，"
+                    + "这通常是本地图形会话已锁屏或已有会话，服务端返回 Session creation inhibited。"
+                    + "请在服务端解锁图形会话后重试（例如 loginctl unlock-session <会话ID>），并查看"
+                    + "gnome-remote-desktop日志确认";
         }
         if (error.getReason() == RdesktopDisconnectException.exDiscReasonNoInfo) {
             Throwable cause = error.getCause();

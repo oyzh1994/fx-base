@@ -9,23 +9,19 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
- * 修复javardp库ISO层的fast-path检测bug。
+ * Fast-Path接收补丁。
  * <p>
- * 根本原因：
- * ISO.receiveMessageex()中使用 (version & 3) == 0 来检测fast-path包，
- * 但RDP协议规定fast-path包的首字节bit 0 = 0（而非bit 0和bit 1都为0）。
- * 当fast-path包的加密标志位（bit 1）为1时，首字节 = 0x02，
- * (0x02 & 3) == 2 ≠ 0，fast-path包不被识别，被错误当作slow-path处理。
+ * Fast-Path action位于首字节最低两位，只有action=0才是Fast-Path输出；
+ * 最高两位是安全标志（0x80=ENCRYPTED，0x40=SECURE_CHECKSUM），不参与
+ * action判断。因此检测条件应保留为 (version & 0x03) == 0。
  * <p>
- * 修复方案：
- * 通过反射替换ISO实例为RdpIso子类，覆盖receive()方法。
- * RdpIso完全复制原始ISO.receiveMessageex()的逻辑，仅修正fast-path检测条件。
+ * RdpIso通过反射替换ISO实例，在保留上述检测条件的同时增加了：
+ * - TPKT/Fast-Path长度下限校验；
+ * - Fast-Path解析异常向上传播，避免流边界错位后继续消费数据。
  * <p>
  * 注意：
- * - 原始ISO.receiveMessageex()是private方法，无法覆盖，因此覆盖public的receive()
- * - 本实现完整复制了原始receiveMessageex() + receive()的逻辑，
- * 仅将fast-path检测从 (version & 3) == 0 修改为 (version & 1) == 0
- * - fast-path包不经过X.224/MCS/Secure层，直接由RDP层处理
+ * - 原始ISO.receiveMessageex()是private方法，因此覆盖public的receive()；
+ * - Fast-Path包不经过X.224/MCS/Secure层，直接由RDP层处理。
  */
 public class RdpIsoFix {
 
@@ -59,7 +55,7 @@ public class RdpIsoFix {
      * ISO子类，修复fast-path检测逻辑。
      * <p>
      * 完整复制原始ISO.receiveMessageex() + receive()逻辑，
-     * 仅修正fast-path检测条件：(version & 3) == 0 → (version & 1) == 0
+     * Fast-Path检测使用 (version & 0x03) == 0；最高两位不参与action判断。
      */
     public static class RdpIso extends ISO {
 
@@ -71,7 +67,7 @@ public class RdpIsoFix {
         }
 
         /**
-         * 覆盖receive()方法，完整复制原始ISO逻辑并修正fast-path检测。
+         * 覆盖receive()方法，完整复制原始ISO逻辑并增加Fast-Path边界校验。
          * <p>
          * 原始逻辑链：receive() → receiveMessage(type) → receiveMessageex(type, rdpver)
          * 本方法将三层调用合并为一个方法，仅修改fast-path检测条件。
@@ -118,6 +114,10 @@ public class RdpIsoFix {
                     }
                 }
 
+                if (length < 4) {
+                    throw new RdesktopException("Invalid TPKT/fast-path length: " + length);
+                }
+
                 // 读取剩余数据
                 s = transport.receivePacket(s, length - 4);
                 if (s == null)
@@ -150,8 +150,15 @@ public class RdpIsoFix {
                     try {
                         MCS mcs = getParent();
                         mcs.getParent().getParent().rdp5_process(s, encrypted, shortform);
-                    } catch (Exception e) {
+                    } catch (RdesktopException e) {
+                        // Do not swallow parse errors: continuing with a malformed
+                        // packet leaves the stream at an undefined boundary and can
+                        // silently corrupt all following updates.
                         JulLog.error("Fast-path处理失败: " + e.getMessage(), e);
+                        throw e;
+                    } catch (RuntimeException e) {
+                        JulLog.error("Fast-path处理失败: " + e.getMessage(), e);
+                        throw new RdesktopException("Fast-path处理失败: " + e.getMessage(), e);
                     }
                     // fast-path包已处理，继续接收下一个包
                     continue next_packet;
@@ -247,7 +254,7 @@ public class RdpIsoFix {
             // 7. 替换MCS中的isoLayer字段
             isoField.set(mcsLayer, rdpIso);
 
-            JulLog.info("已替换ISO为RdpIso（修复fast-path检测条件 (version&1)==0）");
+            JulLog.info("已替换ISO为RdpIso（Fast-Path action=(version&0x03)==0）");
             injected = true;
         } catch (NoSuchFieldException e) {
             injectError = "NoSuchField: " + e.getMessage();

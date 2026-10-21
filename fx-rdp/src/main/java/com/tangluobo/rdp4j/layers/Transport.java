@@ -26,6 +26,8 @@ import java.security.cert.X509Certificate;
 import java.util.LinkedList;
 
 public class Transport implements Layer<com.tangluobo.rdp4j.layers.ISO> {
+	/** Maximum size of one TPKT/fast-path PDU (length fields are 16-bit). */
+	public static final int MAX_PACKET_SIZE = 0xffff;
 	public static final String[] CIPHERS = { "SSL_RSA_WITH_RC4_128_MD5", "SSL_RSA_WITH_RC4_128_SHA",
 			"TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "TLS_DHE_DSS_WITH_AES_128_CBC_SHA", "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
 			"SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA", "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA", "SSL_RSA_WITH_DES_CBC_SHA",
@@ -107,6 +109,11 @@ public class Transport implements Layer<com.tangluobo.rdp4j.layers.ISO> {
 	public Packet receivePacket(Packet p, int length) throws IOException {
 		if (JulLog.isDebugEnabled())
 			JulLog.debug("receivePacket");
+		int existing = p == null ? 0 : p.getEnd();
+		if (length < 0 || (long) existing + length > MAX_PACKET_SIZE) {
+			throw new IOException("Invalid RDP packet length: " + length
+					+ " (already buffered: " + existing + ")");
+		}
 		Packet buffer = null;
 		byte[] packet = new byte[length];
 		try {

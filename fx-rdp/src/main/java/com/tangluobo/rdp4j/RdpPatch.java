@@ -85,6 +85,9 @@ public class RdpPatch extends Rdp {
         int next;
 
         if (encryption) {
+            if (s.getEnd() - s.getPosition() < 8) {
+                throw new RdesktopException("FASTPATH encrypted packet is shorter than its signature");
+            }
             // FASTPATH_OUTPUT_ENCRYPTED carries an 8-byte dataSignature before the
             // encrypted updates (MS-RDPBCGR 2.2.9.1.2). The previous 6/7-byte skip
             // started decryption mid-signature and corrupted every bitmap update.
@@ -92,9 +95,10 @@ public class RdpPatch extends Rdp {
             byte[] data = new byte[s.size() - s.getPosition()];
             s.copyToByteArray(data, 0, s.getPosition(), data.length);
             byte[] packet = secureLayer.decrypt(data);
-            if (packet != null) {
-                s.copyFromByteArray(packet, 0, s.getPosition(), packet.length);
+            if (packet == null || packet.length != data.length) {
+                throw new RdesktopException("FASTPATH decryption returned an invalid payload");
             }
+            s.copyFromByteArray(packet, 0, s.getPosition(), packet.length);
         }
 
         while (s.getPosition() < s.getEnd()) {
