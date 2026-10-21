@@ -44,11 +44,6 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
     protected int batchLimit = 50;
 
     /**
-     * 遇到错误时继续
-     */
-    protected boolean continueWithErrors = true;
-
-    /**
      * 构造数据库数据导入处理器
      *
      * @param name 名称
@@ -122,24 +117,6 @@ public abstract class DBDataImportHandler<D> extends DataImportHandler implement
             this.insertList = new ArrayList<>();
         }
         return this.insertList;
-    }
-
-    /**
-     * 是否遇到错误时继续
-     *
-     * @return 结果
-     */
-    public boolean isContinueWithErrors() {
-        return continueWithErrors;
-    }
-
-    /**
-     * 设置遇到错误时是否继续
-     *
-     * @param continueWithErrors 遇到错误时是否继续
-     */
-    public void setContinueWithErrors(boolean continueWithErrors) {
-        this.continueWithErrors = continueWithErrors;
     }
 
     /**

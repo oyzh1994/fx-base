@@ -36,11 +36,6 @@ public abstract class DBDataRunFileHandler<D> extends DataRunFileHandler impleme
     protected int batchLimit = 50;
 
     /**
-     * 遇到错误时继续
-     */
-    protected boolean continueWithErrors = true;
-
-    /**
      * 方言
      */
     protected DBDialect dialect;
@@ -140,24 +135,6 @@ public abstract class DBDataRunFileHandler<D> extends DataRunFileHandler impleme
      */
     public void setInsertLimit(int insertLimit) {
         this.insertLimit = insertLimit;
-    }
-
-    /**
-     * 是否继续错误集合。
-     *
-     * @return 继续错误集合
-     */
-    public boolean isContinueWithErrors() {
-        return continueWithErrors;
-    }
-
-    /**
-     * 设置继续错误集合。
-     *
-     * @param continueWithErrors 继续错误集合
-     */
-    public void setContinueWithErrors(boolean continueWithErrors) {
-        this.continueWithErrors = continueWithErrors;
     }
 
     /**

@@ -56,25 +56,12 @@ public abstract class DBDataTransportHandler<D> extends DataTransportHandler imp
      */
     protected int dataType;
 
-    /**
-     * 错误时继续
-     */
-    protected boolean continueWithErrors;
-
     public int getDataType() {
         return dataType;
     }
 
     public void setDataType(int dataType) {
         this.dataType = dataType;
-    }
-
-    public boolean isContinueWithErrors() {
-        return continueWithErrors;
-    }
-
-    public void setContinueWithErrors(boolean continueWithErrors) {
-        this.continueWithErrors = continueWithErrors;
     }
 
     @Override

@@ -91,6 +91,22 @@ public abstract class DBDataDumpHandler extends DataDumpHandler {
     public abstract void doDump() throws Exception;
 
     /**
+     * 处理转储异常
+     *
+     * @param ex 异常
+     * @throws Exception 中断或遇到错误不继续时抛出异常
+     */
+    protected void handleDumpError(Exception ex) throws Exception {
+        if (ex instanceof InterruptedException) {
+            throw ex;
+        }
+        if (!this.continueWithErrors) {
+            throw ex;
+        }
+        this.exception(ex);
+    }
+
+    /**
      * 写入头部
      */
     protected abstract void writeHeader() throws IOException;
@@ -259,4 +275,3 @@ public abstract class DBDataDumpHandler extends DataDumpHandler {
         this.dialect = dialect;
     }
 }
-

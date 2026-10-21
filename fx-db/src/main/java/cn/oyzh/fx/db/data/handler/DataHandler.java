@@ -28,6 +28,11 @@ public class DataHandler {
     private Consumer<Integer> processedHandler;
 
     /**
+     * 遇到错误时继续
+     */
+    protected boolean continueWithErrors = true;
+
+    /**
      * 设置中断
      *
      * @param interrupt 中断标志位
@@ -208,4 +213,21 @@ public class DataHandler {
         this.processedHandler = processedHandler;
     }
 
+    /**
+     * 是否遇到错误时继续
+     *
+     * @return 结果
+     */
+    public boolean isContinueWithErrors() {
+        return continueWithErrors;
+    }
+
+    /**
+     * 设置遇到错误时是否继续
+     *
+     * @param continueWithErrors 遇到错误时是否继续
+     */
+    public void setContinueWithErrors(boolean continueWithErrors) {
+        this.continueWithErrors = continueWithErrors;
+    }
 }
