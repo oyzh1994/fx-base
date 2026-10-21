@@ -433,14 +433,14 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         return this.getParent();
     }
 
-    /**
-     * 获取窗口
-     *
-     * @return 窗口
-     */
-    public Window window() {
-        return this.getTreeView().window();
-    }
+//    /**
+//     * 获取窗口
+//     *
+//     * @return 窗口
+//     */
+//    public Window getWindow() {
+//        return this.getTreeView().getWindow();
+//    }
 
     /**
      * 节点是否选中
@@ -458,8 +458,8 @@ public abstract class FXTreeItem<V extends FXTreeItemValue> extends TreeItem<V> 
         this.getTreeView().clearSelection();
     }
 
-    protected Window getWindow() {
-        return this.window();
+    public Window getWindow() {
+        return this.getTreeView().getWindow();
     }
 
     @Override

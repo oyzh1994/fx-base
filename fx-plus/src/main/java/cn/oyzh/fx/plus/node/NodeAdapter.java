@@ -443,7 +443,7 @@ public interface NodeAdapter extends EventTarget {
      * @return 舞台对象
      */
     default Stage stage() {
-        Window window = this.window();
+        Window window = this.getWindow();
         return window instanceof Stage ? (Stage) window : null;
     }
 
@@ -453,35 +453,35 @@ public interface NodeAdapter extends EventTarget {
      * @return 场景对象
      */
     default Scene scene() {
-        Window window = this.window();
+        Window window = this.getWindow();
         if (window != null) {
             return window.getScene();
         }
         return null;
     }
 
-    /**
-     * 获取节点的窗口
-     *
-     * @return 窗口对象
-     */
-    default Window window() {
-        if (this instanceof Node node) {
-            Scene scene = node.getScene();
-            if (scene != null) {
-                return scene.getWindow();
-            }
-        } else if (this instanceof Tab node) {
-            TabPane tabPane = node.getTabPane();
-            if (tabPane != null) {
-                Scene scene = tabPane.getScene();
-                if (scene != null) {
-                    return scene.getWindow();
-                }
-            }
-        }
-        return null;
-    }
+//    /**
+//     * 获取节点的窗口
+//     *
+//     * @return 窗口对象
+//     */
+//    default Window window() {
+//        if (this instanceof Node node) {
+//            Scene scene = node.getScene();
+//            if (scene != null) {
+//                return scene.getWindow();
+//            }
+//        } else if (this instanceof Tab node) {
+//            TabPane tabPane = node.getTabPane();
+//            if (tabPane != null) {
+//                Scene scene = tabPane.getScene();
+//                if (scene != null) {
+//                    return scene.getWindow();
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * 获取鼠标类型
