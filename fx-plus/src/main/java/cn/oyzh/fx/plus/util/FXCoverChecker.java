@@ -3,7 +3,10 @@ package cn.oyzh.fx.plus.util;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.ClassUtil;
 import cn.oyzh.common.util.CoverUtil;
+import cn.oyzh.fx.gui.tabs.ParentTabController;
 import cn.oyzh.fx.gui.tabs.RichTab;
+import cn.oyzh.fx.gui.tabs.RichTabController;
+import cn.oyzh.fx.plus.controls.tab.FXTab;
 import cn.oyzh.fx.plus.window.PopupAdapter;
 import cn.oyzh.fx.plus.window.PopupAttribute;
 import cn.oyzh.fx.plus.window.PopupManager;
@@ -76,10 +79,26 @@ public class FXCoverChecker {
     public void tabCheck() throws Exception {
         JulLog.info("tab check start");
         for (Class<?> aClass : this.getClasses()) {
-            if (RichTab.class.isAssignableFrom(aClass)) {
-                RichTab tab = (RichTab) ClassUtil.newInstance(aClass);
+            if (FXTab.class.isAssignableFrom(aClass)) {
+                FXTab tab = (FXTab) ClassUtil.newInstance(aClass);
                 if (tab == null) {
                     throw new RuntimeException("init tab:" + aClass + " fail");
+                }
+                if (tab instanceof RichTab richTab) {
+                    RichTabController controller = richTab.getProp("_controller");
+                    if (controller == null) {
+                        throw new RuntimeException("init tab:" + aClass + " fail, controller is null");
+                    }
+                    if (controller instanceof ParentTabController parentTabController) {
+                        List<?> subControllers = parentTabController.getSubControllers();
+                        if (subControllers != null) {
+                            for (Object subController : subControllers) {
+                                if (subController == null) {
+                                    throw new RuntimeException("init tab:" + aClass + " fail, subController is null");
+                                }
+                            }
+                        }
+                    }
                 }
                 JulLog.info(aClass + "=" + tab);
             }
