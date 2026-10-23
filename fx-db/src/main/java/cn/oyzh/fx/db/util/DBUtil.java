@@ -1,12 +1,12 @@
 package cn.oyzh.fx.db.util;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
 import cn.oyzh.fx.db.DBRecordData;
-import cn.oyzh.fx.db.sql.DBSqlParser;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.font.FontUtil;
 
@@ -82,7 +82,9 @@ public class DBUtil {
      * @param sql sql语句
      */
     public static void printSql(String sql) {
-        JulLog.info("\n" + sql);
+        if (!SystemUtil.isProd() && JulLog.isInfoEnabled()) {
+            JulLog.info("\n" + sql);
+        }
     }
 
     /**
@@ -459,31 +461,31 @@ public class DBUtil {
         return builder.toString();
     }
 
-//    /**
-//     * 是否查询全部字段
-//     *
-//     * @param sql sql
-//     * @return 结果
-//     */
-//    public static boolean isFullColumn(DBDialect dialect, String sql) {
-//        //        try {
-//        //            sql = removeComment(sql);
-//        //            DbType dbType = dialect.dbType();
-//        //            List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, dbType, SQLParserFeature.SkipComments);
-//        //            SQLStatement statement = sqlStatements.getFirst();
-//        //            SchemaStatVisitor visitor = new SchemaStatVisitor(dbType);
-//        //            statement.accept(visitor);
-//        //            Collection<TableStat.Column> columns = visitor.getColumns();
-//        //            if (CollectionUtil.isNotEmpty(columns)) {
-//        //                for (TableStat.Column column : columns) {
-//        //                    if (StringUtil.equals("*", column.getName())) {
-//        //                        return true;
-//        //                    }
-//        //                }
-//        //            }
-//        //        } catch (Exception ex) {
-//        //            ex.printStackTrace();
-//        //        }
-//        return DBSqlParser.getParser(sql, dialect).isFullColumn();
-//    }
+    //    /**
+    //     * 是否查询全部字段
+    //     *
+    //     * @param sql sql
+    //     * @return 结果
+    //     */
+    //    public static boolean isFullColumn(DBDialect dialect, String sql) {
+    //        //        try {
+    //        //            sql = removeComment(sql);
+    //        //            DbType dbType = dialect.dbType();
+    //        //            List<SQLStatement> sqlStatements = SQLUtils.parseStatements(sql, dbType, SQLParserFeature.SkipComments);
+    //        //            SQLStatement statement = sqlStatements.getFirst();
+    //        //            SchemaStatVisitor visitor = new SchemaStatVisitor(dbType);
+    //        //            statement.accept(visitor);
+    //        //            Collection<TableStat.Column> columns = visitor.getColumns();
+    //        //            if (CollectionUtil.isNotEmpty(columns)) {
+    //        //                for (TableStat.Column column : columns) {
+    //        //                    if (StringUtil.equals("*", column.getName())) {
+    //        //                        return true;
+    //        //                    }
+    //        //                }
+    //        //            }
+    //        //        } catch (Exception ex) {
+    //        //            ex.printStackTrace();
+    //        //        }
+    //        return DBSqlParser.getParser(sql, dialect).isFullColumn();
+    //    }
 }
