@@ -123,6 +123,56 @@ public class StageManager {
         return null;
     }
 
+
+    /**
+     * 获取舞台
+     *
+     * @param controllerClass controller类
+     * @param propKey         属性key
+     * @param prop            属性
+     * @return 舞台适配器
+     */
+    public static StageAdapter getStage(Class<?> controllerClass, String propKey, Object prop) {
+        for (StageAdapter adapter : listStage(controllerClass)) {
+            if (adapter.controllerClass() == controllerClass && adapter.getProp(propKey) == prop) {
+                return adapter;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 舞台前置
+     *
+     * @param controllerClass controller类
+     * @return 结果
+     */
+    public static boolean frontStage(Class<?> controllerClass) {
+        StageAdapter adapter = getStage(controllerClass);
+        if (adapter != null) {
+            adapter.toFront();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 舞台前置
+     *
+     * @param controllerClass controller类
+     * @param propKey         属性key
+     * @param prop            属性
+     * @return 结果
+     */
+    public static boolean frontStage(Class<?> controllerClass, String propKey, Object prop) {
+        StageAdapter adapter = getStage(controllerClass, propKey, prop);
+        if (adapter != null) {
+            adapter.toFront();
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 是否为舞台适配器
      *
@@ -179,7 +229,6 @@ public class StageManager {
      *
      * @param clazz 舞台类
      */
-    @Deprecated
     public static void showStage(Class<?> clazz) {
         showStage(clazz, (Window) null);
     }
@@ -246,9 +295,9 @@ public class StageManager {
      * @return StageAdapter
      */
     public static StageAdapter parseStage(Class<?> clazz, Window owner) {
-//        if (owner == null) {
-//            owner = getFrontWindow();
-//        }
+        //        if (owner == null) {
+        //            owner = getFrontWindow();
+        //        }
         StageAttribute attribute = clazz.getAnnotation(StageAttribute.class);
         if (attribute == null) {
             throw new RuntimeException("can not find annotation[" + StageAttribute.class.getSimpleName() + "] from class: " + clazz.getName());
