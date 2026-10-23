@@ -31,6 +31,9 @@ class ExposeOnMapTest {
 
     private static final int EXPOSE = 12;
 
+    /** Where an event's {@code window} field sits, in bytes. */
+    private static final int WINDOW = 4;
+
     /** ExposureMask, the event a toolkit draws itself from. */
     private static final int EXPOSURE_MASK = 1 << 15;
 
@@ -62,5 +65,60 @@ class ExposeOnMapTest {
         } finally {
             server.stop();
         }
+    }
+
+    /**
+     * Unmapping a parent leaves its mapped children mapped, and remapping the parent exposes them.
+     *
+     * <p>X11 has three map states rather than two: a child of an unmapped parent is
+     * {@code IsUnviewable}, not {@code IsUnmapped}, and stays mapped so that the parent's remap puts
+     * it back on screen. xcalc is the real client that depends on it: a resize unmaps and remaps its
+     * form, whose fifty-odd button windows are never mapped again by the client. Recursively unmapping
+     * the subtree here left every button unmapped after a stretch, so the calculator kept its display
+     * and lost the whole keypad (measured 2026-10-23).
+     */
+    @Test
+    void aParentRemapExposesAChildThatStayedMapped() throws Exception {
+        XServer server = new XServer(ServerOptions.parse(new String[]{"--display", ":" + DISPLAY,
+                "--backend", "headless", "--no-unix"}));
+        server.start();
+        try (RawXClient client = RawXClient.connect(DISPLAY)) {
+            client.socketTimeout(1000);
+            int parent = client.allocateId();
+            int child = client.allocateId();
+            client.createWindow(parent, client.root(), 0, 0, 200, 200);
+            client.createWindow(child, parent, 0, 0, 200, 200);
+            client.selectInput(child, EXPOSURE_MASK);
+            client.mapWindow(child);
+            client.mapWindow(parent);
+            client.flush();
+
+            assertNotNull(client.readEvent(EXPOSE), "the child draws itself when the parent first maps");
+
+            client.unmapWindow(parent);
+            client.flush();
+            client.mapWindow(parent);
+            client.flush();
+
+            byte[] expose = readExposeFor(client, child);
+            assertNotNull(expose,
+                    "the child stayed mapped, so remapping the parent owes it the whole of itself");
+            assertEquals(0, RawXClient.readShort(expose, 8));
+            assertEquals(0, RawXClient.readShort(expose, 10));
+            assertEquals(200, RawXClient.readShort(expose, 12));
+            assertEquals(200, RawXClient.readShort(expose, 14));
+        } finally {
+            server.stop();
+        }
+    }
+
+    /** The next Expose for {@code window}, or null when the server sends none before the timeout. */
+    private static byte[] readExposeFor(RawXClient client, int window) throws Exception {
+        for (byte[] event = client.readEvent(); event != null; event = client.readEvent()) {
+            if ((event[0] & 0x7F) == EXPOSE && RawXClient.readInt(event, WINDOW) == window) {
+                return event;
+            }
+        }
+        return null;
     }
 }

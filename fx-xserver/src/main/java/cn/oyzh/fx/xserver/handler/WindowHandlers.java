@@ -654,11 +654,13 @@ public final class WindowHandlers {
                             .fromConfigure(false)
                             .build());
         }
-        for (XWindow child : window.children()) {
-            if (child.isMapped()) {
-                unmapWindow(child, true);
-            }
-        }
+        // **Unmapping a window does not unmap its children.** They stay mapped and become
+        // unviewable, which is the distinction X11's three map states exist for: a remap of the
+        // parent puts them back on screen without the client mapping them again. xcalc relies on
+        // it - a resize unmaps and remaps its form, and its fifty-odd button windows are not touched
+        // - so unmapping the subtree here left every button unmapped after a stretch and the
+        // calculator blank below its display (measured 2026-10-23). Only UnmapSubwindows takes the
+        // children themselves out of the mapped state.
     }
 
     // ------------------------------------------------------------------
