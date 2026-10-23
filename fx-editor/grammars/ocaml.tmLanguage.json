@@ -1,0 +1,71 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "OCaml",
+  "scopeName": "source.ocaml",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#chars" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#constants" },
+    { "include": "#type-variables" },
+    { "include": "#types" },
+    { "include": "#functions" },
+    { "include": "#operators" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "begin": "\\(\\*",
+      "end": "\\*\\)",
+      "name": "comment.block.ocaml"
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.ocaml",
+      "patterns": [
+        { "match": "\\\\[\\\\\"'nrtb ]|\\\\[0-9]{3}|\\\\x[0-9A-Fa-f]{2}", "name": "constant.character.escape.ocaml" }
+      ]
+    },
+    "chars": {
+      "match": "'(?:\\\\.|[^\\\\'])'",
+      "name": "string.quoted.single.character.ocaml"
+    },
+    "numbers": {
+      "match": "\\b(?:0[xX][0-9A-Fa-f_]+|0[oO][0-7_]+|0[bB][01_]+|[0-9][0-9_]*(?:\\.[0-9_]*)?(?:[eE][+-]?[0-9]+)?)\\b",
+      "name": "constant.numeric.ocaml"
+    },
+    "keywords": {
+      "match": "\\b(let|rec|and|in|match|with|function|fun|if|then|else|begin|end|type|module|struct|sig|val|open|include|class|object|method|new|try|exception|raise|for|to|downto|do|done|while|mutable|private|virtual|inherit|constraint|lazy|assert|as|of|when|external|initializer)\\b",
+      "name": "keyword.control.ocaml"
+    },
+    "constants": {
+      "match": "\\b(true|false|None|Some|Ok|Error)\\b",
+      "name": "constant.language.ocaml"
+    },
+    "type-variables": {
+      "match": "'[a-z_][A-Za-z0-9_']*",
+      "name": "variable.other.type.ocaml"
+    },
+    "types": {
+      "match": "\\b[A-Z][A-Za-z0-9_']*\\b",
+      "name": "entity.name.type.ocaml"
+    },
+    "functions": {
+      "match": "\\b([a-z_][A-Za-z0-9_']*)(?=\\s*[=:])",
+      "captures": {
+        "1": { "name": "entity.name.function.ocaml" }
+      }
+    },
+    "operators": {
+      "match": "(?:->|<-|:=|::|;;|==|!=|<>|<=|>=|&&|\\|\\||\\|>|@@|\\+\\+|\\*\\*)|[-+*/=<>@^|&!~?:]+",
+      "name": "keyword.operator.ocaml"
+    },
+    "punctuation": {
+      "match": "[()\\[\\]{},;.]",
+      "name": "punctuation.ocaml"
+    }
+  }
+}

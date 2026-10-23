@@ -1,0 +1,75 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Nix",
+  "scopeName": "source.nix",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#indented-strings" },
+    { "include": "#strings" },
+    { "include": "#paths" },
+    { "include": "#keywords" },
+    { "include": "#builtins" },
+    { "include": "#constants" },
+    { "include": "#numbers" },
+    { "include": "#attr-names" },
+    { "include": "#operators" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "match": "#.*$", "name": "comment.line.number-sign.nix" },
+        { "begin": "/\\*", "end": "\\*/", "name": "comment.block.nix" }
+      ]
+    },
+    "indented-strings": {
+      "begin": "''",
+      "end": "''",
+      "name": "string.quoted.indented.nix",
+      "patterns": [
+        { "begin": "\\$\\{", "end": "\\}", "name": "meta.embedded.line.nix" }
+      ]
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.nix",
+      "patterns": [
+        { "match": "\\\\.", "name": "constant.character.escape.nix" },
+        { "begin": "\\$\\{", "end": "\\}", "name": "meta.embedded.line.nix" }
+      ]
+    },
+    "paths": {
+      "match": "(?:\\.{1,2}/|<[A-Za-z0-9._+-]+>)/?[A-Za-z0-9._+/-]*",
+      "name": "string.unquoted.path.nix"
+    },
+    "keywords": {
+      "match": "\\b(let|in|with|rec|inherit|if|then|else|assert|or)\\b",
+      "name": "keyword.control.nix"
+    },
+    "builtins": {
+      "match": "\\b(import|abort|baseNameOf|dirOf|fetchTarball|fetchGit|fetchurl|isNull|map|removeAttrs|throw|toString|builtins)\\b",
+      "name": "support.function.builtin.nix"
+    },
+    "constants": {
+      "match": "\\b(true|false|null)\\b",
+      "name": "constant.language.nix"
+    },
+    "numbers": {
+      "match": "\\b[0-9]+(?:\\.[0-9]+)?\\b",
+      "name": "constant.numeric.nix"
+    },
+    "attr-names": {
+      "match": "\\b[A-Za-z_][A-Za-z0-9_'-]*(?=\\s*=)",
+      "name": "variable.other.property.nix"
+    },
+    "operators": {
+      "match": "(?:==|!=|<=|>=|&&|\\|\\||->|\\+\\+|//)|[=<>+\\-*/!?@:]",
+      "name": "keyword.operator.nix"
+    },
+    "punctuation": {
+      "match": "[()\\[\\]{};,.]",
+      "name": "punctuation.nix"
+    }
+  }
+}

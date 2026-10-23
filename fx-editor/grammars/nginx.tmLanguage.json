@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Nginx",
+  "scopeName": "source.nginx",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#variables" },
+    { "include": "#keywords" },
+    { "include": "#numbers" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.nginx"
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.nginx",
+      "patterns": [
+        { "match": "\\\\.", "name": "constant.character.escape.nginx" }
+      ]
+    },
+    "variables": {
+      "match": "\\$\\{?[A-Za-z_][A-Za-z0-9_]*\\}?",
+      "name": "variable.other.nginx"
+    },
+    "keywords": {
+      "match": "\\b(events|http|server|location|upstream|stream|mail|if|map|geo|limit_except|limit_req_zone|limit_conn_zone|split_clients|types|include|listen|server_name|root|alias|index|try_files|error_page|return|rewrite|set|add_header|add_trailer|proxy_pass|proxy_set_header|proxy_redirect|proxy_buffering|proxy_cache|proxy_cache_path|fastcgi_pass|fastcgi_param|uwsgi_pass|scgi_pass|grpc_pass|ssl_certificate|ssl_certificate_key|ssl_protocols|ssl_ciphers|access_log|error_log|log_format|gzip|gzip_types|expires|client_max_body_size|keepalive_timeout|worker_processes|worker_connections|sendfile|tcp_nopush|tcp_nodelay|resolver|auth_basic|auth_basic_user_file|allow|deny|chunked_transfer_encoding)\\b",
+      "name": "keyword.control.nginx"
+    },
+    "numbers": {
+      "match": "\\b[0-9]+(?:\\.[0-9]+)?(?:[kKmMgGsSmMhHdD])?\\b",
+      "name": "constant.numeric.nginx"
+    },
+    "punctuation": {
+      "match": "[{};]",
+      "name": "punctuation.definition.nginx"
+    }
+  }
+}

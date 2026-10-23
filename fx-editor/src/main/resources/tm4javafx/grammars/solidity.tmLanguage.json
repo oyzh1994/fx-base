@@ -1,0 +1,63 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Solidity",
+  "scopeName": "source.solidity",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#builtins" },
+    { "include": "#functions" },
+    { "include": "#operators" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "match": "//.*$", "name": "comment.line.double-slash.solidity" },
+        { "begin": "/\\*", "end": "\\*/", "name": "comment.block.solidity" }
+      ]
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.solidity",
+      "patterns": [
+        { "match": "\\\\.", "name": "constant.character.escape.solidity" }
+      ]
+    },
+    "numbers": {
+      "match": "\\b(?:0[xX][0-9A-Fa-f_]+|0[bB][01_]+|[0-9][0-9_]*(?:\\.[0-9_]+)?(?:[eE][+-]?[0-9_]+)?)\\b",
+      "name": "constant.numeric.solidity"
+    },
+    "keywords": {
+      "match": "\\b(pragma|solidity|import|contract|interface|library|abstract|function|modifier|event|error|struct|enum|mapping|public|private|internal|external|pure|view|payable|memory|storage|calldata|returns|return|if|else|for|while|do|break|continue|throw|emit|new|delete|try|catch|assembly|unchecked|immutable|constant|override|virtual|constructor|fallback|receive|using|is|as|from|indexed|anonymous|transient)\\b",
+      "name": "keyword.control.solidity"
+    },
+    "types": {
+      "match": "\\b(?:address|bool|string|bytes[0-9]*|u?int[0-9]*|fixed[0-9]*x[0-9]*|u?fixed[0-9]*x[0-9]*|byte)\\b",
+      "name": "storage.type.solidity"
+    },
+    "builtins": {
+      "match": "\\b(?:msg|tx|block|abi|super|this|type)\\b",
+      "name": "support.variable.solidity"
+    },
+    "functions": {
+      "match": "\\b(function|modifier|event|error|constructor)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "keyword.control.solidity" },
+        "2": { "name": "entity.name.function.solidity" }
+      }
+    },
+    "operators": {
+      "match": "(?:=>|->|==|!=|<=|>=|&&|\\|\\||\\+\\+|--|\\+=|-=|\\*=|/=|%=|\\*\\*)|[-+*/%=<>!&|^~?:]",
+      "name": "keyword.operator.solidity"
+    },
+    "punctuation": {
+      "match": "[()\\[\\]{},;.]",
+      "name": "punctuation.solidity"
+    }
+  }
+}

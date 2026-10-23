@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "HTTP",
+  "scopeName": "source.http",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#request-line" },
+    { "include": "#status-line" },
+    { "include": "#headers" },
+    { "include": "#strings" },
+    { "include": "#numbers" }
+  ],
+  "repository": {
+    "comments": {
+      "match": "^\\s*(?:#{3,}|#|//).*$",
+      "name": "comment.line.http"
+    },
+    "request-line": {
+      "match": "^\\s*(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|CONNECT|TRACE)\\s+(\\S+)\\s+(HTTP/[0-9](?:\\.[0-9])?)",
+      "captures": {
+        "1": { "name": "keyword.control.http" },
+        "2": { "name": "string.unquoted.url.http" },
+        "3": { "name": "constant.language.version.http" }
+      }
+    },
+    "status-line": {
+      "match": "^\\s*(HTTP/[0-9](?:\\.[0-9])?)\\s+([1-5][0-9]{2})\\s*(.*)$",
+      "captures": {
+        "1": { "name": "constant.language.version.http" },
+        "2": { "name": "constant.numeric.status-code.http" },
+        "3": { "name": "string.unquoted.reason-phrase.http" }
+      }
+    },
+    "headers": {
+      "match": "^\\s*([!#$%&'*+\\-.^_`|~0-9A-Za-z]+)\\s*(:)\\s*(.*)$",
+      "captures": {
+        "1": { "name": "support.type.property-name.http" },
+        "2": { "name": "punctuation.separator.key-value.http" },
+        "3": { "name": "string.unquoted.header-value.http" }
+      }
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.http",
+      "patterns": [
+        { "match": "\\\\.", "name": "constant.character.escape.http" }
+      ]
+    },
+    "numbers": {
+      "match": "\\b[0-9]+\\b",
+      "name": "constant.numeric.http"
+    }
+  }
+}

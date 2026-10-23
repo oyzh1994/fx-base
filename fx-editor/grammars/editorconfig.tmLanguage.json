@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "EditorConfig",
+  "scopeName": "source.editorconfig",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#sections" },
+    { "include": "#properties" }
+  ],
+  "repository": {
+    "comments": {
+      "match": "^\\s*[#;].*$",
+      "name": "comment.line.editorconfig"
+    },
+    "sections": {
+      "match": "^\\s*(\\[)([^\\]]*)(\\])",
+      "captures": {
+        "1": { "name": "punctuation.definition.section.begin.editorconfig" },
+        "2": { "name": "entity.name.section.editorconfig" },
+        "3": { "name": "punctuation.definition.section.end.editorconfig" }
+      }
+    },
+    "properties": {
+      "match": "^\\s*([#;]?[_A-Za-z][-_A-Za-z0-9.]*)\\s*(=)\\s*(.*)$",
+      "captures": {
+        "1": { "name": "support.type.property-name.editorconfig" },
+        "2": { "name": "keyword.operator.assignment.editorconfig" },
+        "3": { "name": "string.unquoted.editorconfig" }
+      }
+    }
+  }
+}

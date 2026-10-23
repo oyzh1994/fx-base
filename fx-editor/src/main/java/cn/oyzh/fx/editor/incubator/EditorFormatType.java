@@ -127,8 +127,26 @@ public enum EditorFormatType {
     XAML("XAML", "xaml"),
     FXML("FXML", "fxml"),
     HOSTS("HOSTS", "hosts,host"),
-    PROFILE("PROFILE", "bashrc,profile,bash_profile,zshrc,env"),
+    PROFILE("PROFILE", "bashrc,profile,bash_profile,zshrc"),
     SSHD_CONFIG("SSHD CONFIG", "sshd_config"),
+    // 常用语言/配置补充
+    GRAPHQL("GRAPHQL", "graphql,gql"),
+    NGINX("NGINX", "nginx"),
+    EDITORCONFIG("EDITORCONFIG", "editorconfig"),
+    DOTENV("DOTENV", "env,dotenv"),
+    HTTP("HTTP", "http,rest"),
+    HASKELL("HASKELL", "hs,lhs"),
+    ELIXIR("ELIXIR", "ex,exs"),
+    OCAML("OCAML", "ml,mli"),
+    SOLIDITY("SOLIDITY", "sol"),
+    ZIG("ZIG", "zig"),
+    NIX("NIX", "nix"),
+    TCL("TCL", "tcl"),
+    FORTRAN("FORTRAN", "f,f77,f90,f95,f03,f08,for"),
+    PASCAL("PASCAL", "pas,pp,dpr"),
+    STARLARK("STARLARK", "bzl,bazel,starlark,sky,star"),
+    WAT("WEBASSEMBLY TEXT", "wat,wast"),
+    REGEXP("REGEXP", "regexp,regex"),
     ;
 
     /**
