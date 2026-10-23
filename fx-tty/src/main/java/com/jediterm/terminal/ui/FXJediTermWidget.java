@@ -5,7 +5,10 @@ import cn.oyzh.common.object.Destroyable;
 import cn.oyzh.fx.plus.controls.pane.FXStackPane;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import cn.oyzh.fx.tty.TtyBufferedArrayDataStream;
 import cn.oyzh.fx.tty.TtyKeyListener;
+import cn.oyzh.fx.tty.TtyRepaintGate;
+import cn.oyzh.fx.tty.TtyTerminalUtil;
 import com.jediterm.core.typeahead.TerminalTypeAheadManager;
 import com.jediterm.core.typeahead.TypeAheadTerminalModel;
 import com.jediterm.terminal.ProcessTtyConnector;
@@ -73,6 +76,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     private final List<TerminalWidgetListener> myListeners = new CopyOnWriteArrayList<>();
     private final Object myExecutorServiceManagerLock = new Object();
     private volatile TerminalExecutorServiceManager myExecutorServiceManager;
+    private final TtyRepaintGate myRepaintGate = new TtyRepaintGate();
 
     public FXJediTermWidget(@NotNull SettingsProvider settingsProvider) {
         this(80, 24, settingsProvider);
@@ -91,6 +95,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
         myTextProcessing.setTerminalTextBuffer(terminalTextBuffer);
 
         myTerminalPanel = createTerminalPanel(mySettingsProvider, styleState, terminalTextBuffer);
+        myTerminalPanel.setRepaintGate(myRepaintGate);
         myTerminal = createTerminal(myTerminalPanel, terminalTextBuffer, styleState);
 
         myTypeAheadTerminalModel = new JediTermTypeAheadModel(myTerminal, terminalTextBuffer, settingsProvider);
@@ -201,8 +206,12 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     protected TerminalStarter createTerminalStarter(@NotNull JediTerminal terminal, @NotNull TtyConnector connector) {
+        if (!TtyTerminalUtil.isFirstScreenBufferEnabled()) {
+            return new TerminalStarter(terminal, connector,
+                    new TtyBasedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged), myTypeAheadManager, getExecutorServiceManager());
+        }
         return new TerminalStarter(terminal, connector,
-                new TtyBasedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged), myTypeAheadManager, getExecutorServiceManager());
+                new TtyBufferedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged, myRepaintGate), myTypeAheadManager, getExecutorServiceManager());
     }
 
     @Override

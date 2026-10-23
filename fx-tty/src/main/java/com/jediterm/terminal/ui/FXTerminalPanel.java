@@ -13,6 +13,7 @@ import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.tty.TtyFontMetrics;
 import cn.oyzh.fx.tty.TtyKeyListener;
+import cn.oyzh.fx.tty.TtyRepaintGate;
 import cn.oyzh.fx.tty.TtyScrollBarUtils;
 import cn.oyzh.fx.tty.TtyTermSettingsProvider;
 import cn.oyzh.fx.tty.TtyTerminalCanvas;
@@ -202,6 +203,11 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     private String myInputMethodUncommittedChars;
 
     private Timeline myRepaintTimer;
+
+    /**
+     * 重绘开关
+     */
+    private @Nullable TtyRepaintGate repaintGate;
     private final AtomicInteger scrollDy = new AtomicInteger(0);
     private final AtomicBoolean myHistoryBufferLineCountChanged = new AtomicBoolean(false);
     private final AtomicBoolean needRepaint = new AtomicBoolean(true);
@@ -261,6 +267,19 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     public void repaint() {
         needRepaint.set(true);
+    }
+
+    /**
+     * 设置重绘开关
+     *
+     * @param repaintGate 重绘开关
+     */
+    public void setRepaintGate(@Nullable TtyRepaintGate repaintGate) {
+        this.repaintGate = repaintGate;
+    }
+
+    private boolean isRepaintPaused() {
+        return this.repaintGate != null && this.repaintGate.isPaused();
     }
 
     private void doRepaint() {
@@ -576,7 +595,9 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     private void handleHyperlinks(Node component) {
         try {
             Point2D a = myLastMousePosition != null ? myLastMousePosition : component.localToScreen(0, 0);
-            handleHyperlinks(a);
+            if (a != null) {
+                handleHyperlinks(a);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             JulLog.error("handleHyperlinks error", ex);
@@ -746,7 +767,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
                 terminalPanel.myCursor.changeStateIfNeeded();
                 terminalPanel.myTextBlinkingTracker.updateState(terminalPanel.mySettingsProvider, terminalPanel);
                 terminalPanel.updateScrolling(false);
-                if (terminalPanel.needRepaint.getAndSet(false)) {
+                if (terminalPanel.needRepaint.get() && !terminalPanel.isRepaintPaused()) {
+                    terminalPanel.needRepaint.set(false);
                     try {
                         terminalPanel.doRepaint();
                     } catch (Exception ex) {
@@ -834,11 +856,17 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     private @NotNull Cell panelPointToCell(@NotNull Point2D p) {
-        int xDiff = (int) p.getX() - getInsetX();
-        int x = Math.min(xDiff / (int) myCharSize.getWidth(), getColumnCount() - 1);
-        x = Math.max(0, x);
-        int y = Math.min((int) p.getY() / (int) myCharSize.getHeight(), getRowCount() - 1) + myClientScrollOrigin;
-        return new Cell(y, x);
+        try {
+            int xDiff = (int) p.getX() - getInsetX();
+            int x = Math.min(xDiff / (int) myCharSize.getWidth(), getColumnCount() - 1);
+            x = Math.max(0, x);
+            int y = Math.min((int) p.getY() / (int) myCharSize.getHeight(), getRowCount() - 1) + myClientScrollOrigin;
+            return new Cell(y, x);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JulLog.error("panelPointToCell error", ex);
+        }
+        return new Cell(0, 0);
     }
 
     private void copySelection(@Nullable com.jediterm.core.compatibility.Point selectionStart,

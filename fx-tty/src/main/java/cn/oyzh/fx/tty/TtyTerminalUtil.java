@@ -15,6 +15,23 @@ import javafx.scene.input.KeyEvent;
 public class TtyTerminalUtil {
 
     /**
+     * 首屏缓冲优化开关，默认关闭。
+     */
+    private static final String FIRST_SCREEN_BUFFER_ENABLED = "fx-tty.firstScreenBuffer";
+
+    /**
+     * 是否启用首屏缓冲优化。
+     * <p>
+     * 启用后使用更大的终端读取缓冲，并在解析读取块期间暂停重绘，避免首屏内容分阶段显示；
+     * 默认关闭以保持原始首屏响应速度。
+     *
+     * @return 是否启用
+     */
+    public static boolean isFirstScreenBufferEnabled() {
+        return Boolean.getBoolean(FIRST_SCREEN_BUFFER_ENABLED);
+    }
+
+    /**
      * 获取退格码
      *
      * @param backspaceType 退格类型
