@@ -1,8 +1,35 @@
 package cn.oyzh.fx.editor.incubator;
 
+import cn.oyzh.common.json.JSONUtil;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.gui.text.field.HighlightTextField;
+import cn.oyzh.fx.plus.theme.ThemeManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
+import cn.oyzh.fx.plus.theme.ThemeUtil;
+import com.alibaba.fastjson2.JSONObject;
+import javafx.scene.paint.Color;
+
+import java.io.InputStream;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 /**
  * 编辑器工具类
@@ -189,5 +216,325 @@ public class EditorUtil {
                 field.isMatchCase(),
                 field.isWholeWord(),
                 field.isRegex());
+    }
+
+    /**
+     * 主题资源目录
+     */
+    private static final String THEME_DIR = "/tm4javafx/themes/";
+
+    /**
+     * 主题资源目录（jar内路径）
+     */
+    private static final String THEME_DIR_IN_JAR = "tm4javafx/themes/";
+
+    /**
+     * 暗色兜底主题
+     */
+    private static final String FALLBACK_DARK_THEME = "dark-plus.json";
+
+    /**
+     * 亮色兜底主题
+     */
+    private static final String FALLBACK_LIGHT_THEME = "light-plus.json";
+
+    /**
+     * 主题资源解析缓存
+     */
+    private static final Map<String, String> THEME_RESOURCE_CACHE = new ConcurrentHashMap<>();
+
+    /**
+     * 主题候选列表
+     */
+    private static volatile List<ThemeCandidate> themeCandidates;
+
+    /**
+     * 解析编辑器主题资源。
+     * <p>
+     * 根据主题的明暗模式严格筛选候选主题，再按前景色、背景色、强调色的相似度选择最接近的主题。
+     *
+     * @param style 主题风格
+     * @return 主题资源路径
+     */
+    public static String resolveThemeResource(ThemeStyle style) {
+        if (style == null) {
+            boolean darkMode = ThemeManager.isDarkMode();
+            return THEME_DIR + (darkMode ? FALLBACK_DARK_THEME : FALLBACK_LIGHT_THEME);
+        }
+        boolean darkMode = style.isDarkMode();
+        String cacheKey = style.getName() + "#" + darkMode;
+        String cached = THEME_RESOURCE_CACHE.get(cacheKey);
+        if (cached != null) {
+            return cached;
+        }
+        ThemeCandidate best = null;
+        double bestScore = Double.NEGATIVE_INFINITY;
+        for (ThemeCandidate candidate : themeCandidates()) {
+            // 严格区分暗色模式和亮色模式，禁止跨模式匹配
+            if (candidate.dark() != darkMode) {
+                continue;
+            }
+            double score = similarity(style, candidate);
+            if (score > bestScore) {
+                bestScore = score;
+                best = candidate;
+            }
+        }
+        String resource = THEME_DIR + (best == null
+                ? (darkMode ? FALLBACK_DARK_THEME : FALLBACK_LIGHT_THEME)
+                : best.resource());
+        THEME_RESOURCE_CACHE.put(cacheKey, resource);
+        return resource;
+    }
+
+    /**
+     * 计算主题与候选主题的相似度
+     *
+     * @param style     主题风格
+     * @param candidate 候选主题
+     * @return 相似度，越大越接近
+     */
+    private static double similarity(ThemeStyle style, ThemeCandidate candidate) {
+        double score = 0;
+        double weight = 0;
+        // 背景色权重最高，编辑器主体观感主要由背景色决定
+        double background = ThemeUtil.calcCorr(style.getBackgroundColor(), candidate.background());
+        if (background >= 0) {
+            score += background * 6;
+            weight += 6;
+        }
+        double foreground = ThemeUtil.calcCorr(style.getForegroundColor(), candidate.foreground());
+        if (foreground >= 0) {
+            score += foreground * 3;
+            weight += 3;
+        }
+        double accent = ThemeUtil.calcCorr(style.getAccentColor(), candidate.accent());
+        if (accent >= 0) {
+            score += accent;
+            weight += 1;
+        }
+        if (weight == 0) {
+            return -1;
+        }
+        // 名称相似度用于同色系主题之间的微调
+        return score / weight + nameSimilarity(style.getName(), candidate.name()) * 0.08;
+    }
+
+    /**
+     * 计算名称相似度
+     *
+     * @param name1 名称1
+     * @param name2 名称2
+     * @return 相似度
+     */
+    private static double nameSimilarity(String name1, String name2) {
+        Set<String> tokens1 = nameTokens(name1);
+        Set<String> tokens2 = nameTokens(name2);
+        if (tokens1.isEmpty() || tokens2.isEmpty()) {
+            return 0;
+        }
+        int common = 0;
+        for (String token : tokens1) {
+            if (tokens2.contains(token)) {
+                common++;
+            }
+        }
+        return common / (double) Math.min(tokens1.size(), tokens2.size());
+    }
+
+    /**
+     * 提取名称中的有效词元
+     *
+     * @param name 名称
+     * @return 词元集合
+     */
+    private static Set<String> nameTokens(String name) {
+        Set<String> tokens = new HashSet<>();
+        if (StringUtil.isBlank(name)) {
+            return tokens;
+        }
+        for (String token : name.toLowerCase(Locale.ROOT).split("[^a-z0-9]+")) {
+            if (!token.isEmpty() && !"dark".equals(token) && !"light".equals(token) && !"theme".equals(token)) {
+                tokens.add(token);
+            }
+        }
+        return tokens;
+    }
+
+    /**
+     * 获取主题候选列表
+     *
+     * @return 主题候选列表
+     */
+    private static List<ThemeCandidate> themeCandidates() {
+        List<ThemeCandidate> candidates = themeCandidates;
+        if (candidates == null) {
+            synchronized (EditorUtil.class) {
+                candidates = themeCandidates;
+                if (candidates == null) {
+                    candidates = loadThemeCandidates();
+                    themeCandidates = candidates;
+                }
+            }
+        }
+        return candidates;
+    }
+
+    /**
+     * 加载主题候选列表
+     *
+     * @return 主题候选列表
+     */
+    private static List<ThemeCandidate> loadThemeCandidates() {
+        List<ThemeCandidate> candidates = new ArrayList<>();
+        for (String file : listThemeFiles()) {
+            try (InputStream stream = EditorUtil.class.getResourceAsStream(THEME_DIR + file)) {
+                if (stream == null) {
+                    continue;
+                }
+                String text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+                var json = JSONUtil.parseObject(text);
+                String type = json.getString("type");
+                boolean dark = "dark".equalsIgnoreCase(type);
+                if (!dark && !"light".equalsIgnoreCase(type)) {
+                    continue;
+                }
+                var colors = json.getJSONObject("colors");
+                if (colors == null) {
+                    continue;
+                }
+                Color background = parseThemeColor(colors.getString("editor.background"));
+                if (background == null) {
+                    continue;
+                }
+                Color foreground = firstThemeColor(colors, "editor.foreground", "foreground", "terminal.foreground");
+                Color accent = firstThemeColor(colors,
+                        "activityBarBadge.background",
+                        "textLink.foreground",
+                        "button.background",
+                        "editorCursor.foreground",
+                        "focusBorder",
+                        "statusBarItem.remoteBackground");
+                candidates.add(new ThemeCandidate(file, json.getString("name"), dark, background, foreground, accent));
+            } catch (Exception ex) {
+                JulLog.warn("load theme candidate failed: " + file, ex);
+            }
+        }
+        return candidates;
+    }
+
+    /**
+     * 获取主题文件列表，同时兼容目录和jar两种运行方式
+     *
+     * @return 主题文件列表
+     */
+    private static List<String> listThemeFiles() {
+        List<String> files = new ArrayList<>();
+        try {
+            URL directory = EditorUtil.class.getResource(THEME_DIR);
+            // 打包为jar时目录entry可能不存在，用兜底主题文件反推jar
+            URL sample = EditorUtil.class.getResource(THEME_DIR + FALLBACK_DARK_THEME);
+            URL url = directory != null ? directory : sample;
+            if (url == null) {
+                return files;
+            }
+            if ("file".equals(url.getProtocol()) && directory != null) {
+                try (Stream<Path> stream = Files.list(Paths.get(directory.toURI()))) {
+                    stream.filter(Files::isRegularFile)
+                            .map(path -> path.getFileName().toString())
+                            .filter(name -> name.endsWith(".json"))
+                            .forEach(files::add);
+                }
+            } else if ("jar".equals(url.getProtocol())) {
+                JarURLConnection connection = (JarURLConnection) url.openConnection();
+                try (JarFile jarFile = connection.getJarFile()) {
+                    Enumeration<JarEntry> entries = jarFile.entries();
+                    while (entries.hasMoreElements()) {
+                        String entry = entries.nextElement().getName();
+                        if (entry.startsWith(THEME_DIR_IN_JAR)
+                                && entry.endsWith(".json")
+                                && entry.indexOf('/', THEME_DIR_IN_JAR.length()) < 0) {
+                            files.add(entry.substring(THEME_DIR_IN_JAR.length()));
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            JulLog.warn("list theme files failed", ex);
+        }
+        Collections.sort(files);
+        return files;
+    }
+
+    /**
+     * 获取第一个可解析的颜色
+     *
+     * @param colors 颜色配置
+     * @param keys   键
+     * @return 颜色
+     */
+    private static Color firstThemeColor(JSONObject colors, String... keys) {
+        for (String key : keys) {
+            Color color = parseThemeColor(colors.getString(key));
+            if (color != null) {
+                return color;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 解析主题颜色，忽略透明通道
+     *
+     * @param value 颜色值
+     * @return 颜色
+     */
+    private static Color parseThemeColor(String value) {
+        if (StringUtil.isBlank(value)) {
+            return null;
+        }
+        String color = value.trim();
+        if (!color.startsWith("#")) {
+            try {
+                return Color.web(color);
+            } catch (Exception ex) {
+                return null;
+            }
+        }
+        String digits = color.substring(1);
+        // #rgb / #rgba 展开为 #rrggbb
+        if (digits.length() == 3 || digits.length() == 4) {
+            StringBuilder expanded = new StringBuilder();
+            for (int i = 0; i < digits.length(); i++) {
+                expanded.append(digits.charAt(i)).append(digits.charAt(i));
+            }
+            digits = expanded.toString();
+        }
+        // 忽略 alpha 通道
+        if (digits.length() == 8) {
+            digits = digits.substring(0, 6);
+        }
+        if (digits.length() != 6) {
+            return null;
+        }
+        try {
+            return Color.web("#" + digits);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 主题候选
+     *
+     * @param resource   资源名称
+     * @param name       主题名称
+     * @param dark       是否暗色主题
+     * @param background 背景色
+     * @param foreground 前景色
+     * @param accent     强调色
+     */
+    private record ThemeCandidate(String resource, String name, boolean dark, Color background, Color foreground,
+                                  Color accent) {
     }
 }

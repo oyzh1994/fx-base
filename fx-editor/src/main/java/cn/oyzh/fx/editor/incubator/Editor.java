@@ -23,7 +23,6 @@ import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.theme.ThemeManager;
 import cn.oyzh.fx.plus.theme.ThemeStyle;
-import cn.oyzh.fx.plus.theme.Themes;
 import cn.oyzh.fx.plus.util.ClipboardUtil;
 import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
@@ -1198,46 +1197,8 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     @Override
     public void changeTheme(ThemeStyle style) {
         try {
-            String path;
-            if (style.isDarkMode()) {
-                if (style == Themes.DRACULA) {
-                    path = "/tm4javafx/themes/dracula.json";
-                } else if (style == Themes.NORD_DARK) {
-                    path = "/tm4javafx/themes/github-dark.json";
-                } else if (style == Themes.PRIMER_DARK) {
-                    path = "/tm4javafx/themes/min-dark.json";
-                } else if (style == Themes.CUPERTINO_DARK) {
-                    path = "/tm4javafx/themes/dark-plus.json";
-                } else if (style == Themes.CYBERPUNK_DARK) {
-                    path = "/tm4javafx/themes/one-dark-pro.json";
-                } else if (style == Themes.INTELLIJ_DARK) {
-                    path = "/tm4javafx/themes/slack-dark.json";
-                } else if (style == Themes.ANIME_WARM_DARK) {
-                    path = "/tm4javafx/themes/everforest-dark.json";
-                } else if (style == Themes.VSCODE_DARK) {
-                    path = "/tm4javafx/themes/github-dark-default.json";
-                } else {
-                    path = "/tm4javafx/themes/vitesse-dark.json";
-                }
-            } else {
-                if (style == Themes.NORD_LIGHT) {
-                    path = "/tm4javafx/themes/github-light.json";
-                } else if (style == Themes.PRIMER_LIGHT) {
-                    path = "/tm4javafx/themes/min-light.json";
-                } else if (style == Themes.CUPERTINO_LIGHT) {
-                    path = "/tm4javafx/themes/light-plus.json";
-                } else if (style == Themes.CYBERPUNK_LIGHT) {
-                    path = "/tm4javafx/themes/one-light.json";
-                } else if (style == Themes.INTELLIJ_LIGHT) {
-                    path = "/tm4javafx/themes/slack-ochin.json";
-                } else if (style == Themes.ANIME_WARM_LIGHT) {
-                    path = "/tm4javafx/themes/everforest-light.json";
-                } else if (style == Themes.VSCODE_LIGHT) {
-                    path = "/tm4javafx/themes/github-light-default.json";
-                } else {
-                    path = "/tm4javafx/themes/vitesse-light.json";
-                }
-            }
+            // 根据主题的明暗模式和颜色相似度解析最接近的编辑器主题
+            String path = EditorUtil.resolveThemeResource(style);
             // 设置主题
             this.styleProvider.setTheme(IThemeSource.fromResource(Editor.class, path));
             // 应用颜色
