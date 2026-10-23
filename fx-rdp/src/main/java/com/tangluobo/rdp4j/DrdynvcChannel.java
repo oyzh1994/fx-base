@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -451,6 +452,9 @@ final class DrdynvcChannel extends VChannel {
                 break;
             case RDPGFX_CMDID_START_FRAME:
                 requirePdu(length, 16, "START_FRAME");
+                for (GfxSurface surface : surfaces.values()) {
+                    surface.beginFrame();
+                }
                 break;
             case RDPGFX_CMDID_WIRE_TO_SURFACE_1:
                 processWireToSurface1(pdu, offset, length);
@@ -673,14 +677,23 @@ final class DrdynvcChannel extends VChannel {
         }
         GfxSurface surface = surface(surfaceId);
         byte[] bitmapData = Arrays.copyOfRange(pdu, offset + 21, offset + 21 + (int) bitmapLength);
+        List<RfxProgressiveDecoder.Region> regions = surface.progressiveDecoder.decode(bitmapData);
         int tileCount = 0;
-        for (RfxProgressiveDecoder.Region region : surface.progressiveDecoder.decode(bitmapData)) {
+        // A later region can reuse tiles decoded for an earlier one, so update
+        // the frame tile cache before copying any region rectangles.
+        for (RfxProgressiveDecoder.Region region : regions) {
             for (RfxProgressiveDecoder.Tile tile : region.tiles()) {
-                surface.writeTile(tile);
+                surface.updateProgressiveTile(tile);
                 tileCount++;
             }
         }
-        if (tileCount > 0) {
+        boolean changed = false;
+        for (RfxProgressiveDecoder.Region region : regions) {
+            for (RfxProgressiveDecoder.Rectangle rect : region.rectangles()) {
+                changed |= surface.writeProgressiveRectangle(rect);
+            }
+        }
+        if (changed) {
             dirtySurfaces.add(surfaceId);
             logger.fine("rdpgfx: 解码Progressive图块=" + tileCount + ", surface=" + surfaceId
                     + ", elapsedMs=" + ((System.nanoTime() - decodeStarted) / 1_000_000));
@@ -857,6 +870,7 @@ final class DrdynvcChannel extends VChannel {
         final int height;
         final int[] pixels;
         final RfxProgressiveDecoder progressiveDecoder = new RfxProgressiveDecoder();
+        final Map<Long, int[]> progressiveTiles = new HashMap<>();
         int outputX;
         int outputY;
         boolean mapped;
@@ -873,15 +887,56 @@ final class DrdynvcChannel extends VChannel {
             clearDirtyRegion();
         }
 
-        void writeTile(RfxProgressiveDecoder.Tile tile) {
-            int copyWidth = Math.min(64, width - tile.x);
-            int copyHeight = Math.min(64, height - tile.y);
-            if (copyWidth <= 0 || copyHeight <= 0) return;
-            for (int row = 0; row < copyHeight; row++) {
-                System.arraycopy(tile.argb, row * 64, pixels,
-                        (tile.y + row) * width + tile.x, copyWidth);
+        void beginFrame() {
+            progressiveTiles.clear();
+        }
+
+        void updateProgressiveTile(RfxProgressiveDecoder.Tile tile) {
+            progressiveTiles.put(tileKey(tile.x / 64, tile.y / 64), tile.argb);
+        }
+
+        boolean writeProgressiveRectangle(RfxProgressiveDecoder.Rectangle rectangle) {
+            int left = Math.max(0, Math.min(width, rectangle.x));
+            int top = Math.max(0, Math.min(height, rectangle.y));
+            int right = (int) Math.max(0, Math.min((long) width,
+                    (long) rectangle.x + rectangle.width));
+            int bottom = (int) Math.max(0, Math.min((long) height,
+                    (long) rectangle.y + rectangle.height));
+            if (right <= left || bottom <= top) return false;
+
+            // RFX_PROGRESSIVE_REGION rectangles are authoritative. Tiles are
+            // always 64x64, so copy only their intersection with the rectangle.
+            boolean changed = false;
+            int firstTileX = left / 64;
+            int lastTileX = (right - 1) / 64;
+            int firstTileY = top / 64;
+            int lastTileY = (bottom - 1) / 64;
+            for (int tileY = firstTileY; tileY <= lastTileY; tileY++) {
+                int tileTop = tileY * 64;
+                int copyTop = Math.max(top, tileTop);
+                int copyBottom = Math.min(bottom, tileTop + 64);
+                for (int tileX = firstTileX; tileX <= lastTileX; tileX++) {
+                    int[] tile = progressiveTiles.get(tileKey(tileX, tileY));
+                    if (tile == null) continue;
+                    int tileLeft = tileX * 64;
+                    int copyLeft = Math.max(left, tileLeft);
+                    int copyRight = Math.min(right, tileLeft + 64);
+                    int copyWidth = copyRight - copyLeft;
+                    int sourceX = copyLeft - tileLeft;
+                    int sourceY = copyTop - tileTop;
+                    for (int row = 0; row < copyBottom - copyTop; row++) {
+                        System.arraycopy(tile, (sourceY + row) * 64 + sourceX,
+                                pixels, (copyTop + row) * width + copyLeft, copyWidth);
+                    }
+                    markDirty(copyLeft, copyTop, copyWidth, copyBottom - copyTop);
+                    changed = true;
+                }
             }
-            markDirty(tile.x, tile.y, copyWidth, copyHeight);
+            return changed;
+        }
+
+        private static long tileKey(int tileX, int tileY) {
+            return ((long) tileY << 32) | (tileX & 0xFFFFFFFFL);
         }
 
         void requireRectangle(int left, int top, int right, int bottom, String operation)

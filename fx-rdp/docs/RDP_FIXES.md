@@ -2,7 +2,7 @@
 
 本文记录 `fx-rdp` 模块中已经定位并修复的 RDP 兼容性问题，包含问题现象、定位过程、根因、修改内容、验证方式和回归注意事项。
 
-记录日期：2026-10-21
+记录日期：2026-10-21 至 2026-10-23
 
 验证客户端：`easyshell` 的 `RdpTest1`，使用 Java 27、JavaFX 27。
 
@@ -489,6 +489,45 @@ loginctl unlock-session <会话ID>
 
 如需长期避免自动锁屏，应由主机使用者决定是否关闭 GNOME 自动锁屏；客户端不会尝试绕过服务端的会话保护。
 
+## 11. Progressive 图块越界写回导致拖动窗口留下残影
+
+### 问题现象
+
+Windows 远程桌面上打开 IntelliJ IDEA 的设置窗口后，拖动窗口会在设置窗口内部留下旧编辑器文字或旧窗口边界的残影。残影在拖动过程中出现，停止拖动后仍然保留，直到相关区域被重新绘制。
+
+该问题在 RDPGFX 的 Progressive Codec 更新中出现，和 ClearCodec 的清除路径无关。抓取客户端内部 framebuffer 也能看到残影，因此不是 JavaFX 显示层的重复绘制问题。
+
+### 根因
+
+Progressive Codec 的图块固定为 64x64，但服务端下发的 `RFX_PROGRESSIVE_REGION.rects` 更新矩形可能小于一个图块。旧实现直接复制整个图块，导致图块中位于更新矩形之外的像素也被写回图面。
+
+拖动窗口时，服务端会组合发送尺寸不一的更新矩形。越界复制的旧图块像素会覆盖当前图面，随后还可能被 `SURFACE_TO_CACHE` 采样并通过 `CACHE_TO_SURFACE` 扩散，形成明显的旧文字和窗口边界残影。
+
+MS-RDPEGFX 规定更新矩形是图块写回的有效范围，FreeRDP 的 `update_tiles()` 也会将图块数据和区域矩形求交后再复制。
+
+### 修复内容
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/DrdynvcChannel.java`
+
+- `START_FRAME` 时清空当前帧的 Progressive 图块缓存。
+- 先收集本轮 `WIRE_TO_SURFACE_2` 解码出的所有图块，再按 `RFX_PROGRESSIVE_REGION.rects` 写回。
+- 写回时只复制图块与更新矩形的交集，不再复制整个 64x64 图块。
+- 脏区域按实际复制的交集标记，避免把未更新的图块像素提交给显示层。
+- 同一帧内后出现的 region 可以复用前面已解码的图块。
+
+### 验证结果
+
+- `fx-rdp` 编译通过。
+- 连接 `192.168.22.157:3389`，在 IDEA 设置窗口已打开的情况下连续进行上下、左右、快速和斜向拖动。
+- 拖动后设置窗口内部不再出现旧编辑器文字、旧按钮或旧窗口边界残影。
+- 初始桌面、设置窗口内容和拖动后的窗口位置均正常。
+
+### 回归注意事项
+
+- Progressive 图块本身不限制写入范围，图块数据和 region rectangle 必须求交后再写回。
+- 不能在收到图块时立即把整个 64x64 图块覆盖到图面。
+- 同一 `START_FRAME` / `END_FRAME` 范围内的图块缓存必须在帧开始时隔离，避免跨帧复用已经失效的图块。
+
 ## 审查结论
 
 本次共修复了 8 类高置信度协议问题，重点集中在：
@@ -516,6 +555,7 @@ loginctl unlock-session <会话ID>
 | Bitmap Cache2 偏移错误 | `Orders.java` | 未压缩行数据从当前 position 读取、PERSIST 字段正确跳过 |
 | TLS 瞬态失败错误降级 | `RdpClient.java`、`io/DefaultIO.java` | HYBRID 原位重试、连接超时、连接中可取消、关闭后禁止隐式重连 |
 | finalization 期间提前发送输入 | `layers/Rdp.java` | INPUT ready 推迟到服务端四步 finalization 完成之后 |
+| Progressive 图块越界写回 | `DrdynvcChannel.java` | 按 region rectangle 裁剪 64x64 图块，修复拖动窗口残影 |
 
 ## 验证命令
 
