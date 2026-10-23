@@ -249,6 +249,15 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     }
 
     /**
+     * 重新构建当前文本的样式并刷新视图。
+     *
+     * @param model 文本模型
+     */
+    public void refreshText(CodeTextModel model) {
+        this.handleChange(model, TextPos.ZERO, model.getDocumentEnd(), 0, 0, 0);
+    }
+
+    /**
      * 高亮颜色
      */
     private volatile Color highlightColor = Editor.DEFAULT_HIGHLIGHT_COLOR;

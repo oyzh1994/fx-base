@@ -57,6 +57,7 @@ import javafx.scene.text.FontWeight;
 import jfx.incubator.scene.control.richtext.CodeArea;
 import jfx.incubator.scene.control.richtext.SelectionSegment;
 import jfx.incubator.scene.control.richtext.TextPos;
+import jfx.incubator.scene.control.richtext.model.CodeTextModel;
 import jfx.incubator.scene.control.richtext.model.StyledTextModel;
 import tm4java.grammar.IGrammarSource;
 import tm4java.theme.IThemeSource;
@@ -327,7 +328,11 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 刷新文本
      */
     protected void refreshText() {
-        this.text(this.getText());
+        FXUtil.runWait(() -> {
+            if (this.getModel() instanceof CodeTextModel model) {
+                this.syntaxDecorator.refreshText(model);
+            }
+        });
     }
 
     /**
