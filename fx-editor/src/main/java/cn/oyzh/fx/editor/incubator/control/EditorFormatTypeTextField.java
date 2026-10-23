@@ -26,8 +26,7 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
     /**
      * 当前选中的格式
      */
-    private final ObjectProperty<EditorFormatType> selectedFormat = new SimpleObjectProperty<>(EditorFormatType.RAW);
-
+    private ObjectProperty<EditorFormatType> selectedFormat;
     /**
      * 选中变更监听器
      */
@@ -163,8 +162,8 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
         });
         // 初始候选项
         this.setItemList(new ArrayList<>(List.of(EditorFormatType.values())));
-        super.initNode();
         // 选中变更
+        this.selectedFormat = new SimpleObjectProperty<>(EditorFormatType.RAW);
         super.selectedItemChanged(formatType -> {
             if (formatType == null) {
                 return;
@@ -188,6 +187,7 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
             initial = values[index];
         }
         this.selectItem(initial);
+        super.initNode();
     }
 
     @Override
