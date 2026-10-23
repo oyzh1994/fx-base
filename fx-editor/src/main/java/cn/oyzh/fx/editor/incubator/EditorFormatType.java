@@ -2,6 +2,9 @@ package cn.oyzh.fx.editor.incubator;
 
 import cn.oyzh.common.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 编辑器格式类型
  *
@@ -9,144 +12,137 @@ import cn.oyzh.common.util.StringUtil;
  * @since 2024-05-17
  */
 public enum EditorFormatType {
-    // 原始格式
+    // 常用文本与数据
     RAW("RAW", ""),
-    // 常见文件
     JSON("JSON", "json"),
+    PROTO("Protocol Buffers", "proto"),
+    YAML("YAML", "yaml,yml"),
     XML("XML", "xml,admx,adml,artdef,resx,pom,svg,ps1xml,filters,kuip"),
     HTML("HTML", "html,htm,ftl"),
-    YAML("YAML", "yaml,yml"),
+    MARKDOWN("MARKDOWN", "md"),
     CSS("CSS", "css"),
+    SQL("SQL", "sql"),
     PROPERTIES("PROPERTIES", "properties"),
     SHELLSCRIPT("SHELL", "sh"),
     BAT("BAT", "bat"),
-    LOG("LOG", "log"),
-    SQL("SQL", "sql"),
-    DOCKERFILE("DOCKERFILE", "dockerfile"),
-    MAKEFILE("MAKEFILE", "makefile"),
-    MARKDOWN("MARKDOWN", "md"),
-    CONF("CONFIG", "conf,cfg,config,fsc"),
-    PROTO("Protocol Buffers", "proto"),
+    INI("INI", "ini,repositories"),
     TOML("TOML", "toml"),
+    CSV("CSV", "csv,tsv"),
     JSONC("JSON with Comments", "jsonc"),
     JSONL("JSON Lines", "jsonl"),
-    CMAKE("CMAKE", "cmake"),
-    // 语言
-    C("C", "c,h,frag"),
-    //C_H("C header files", "h"),
-    CPP("C++", "cpp,hpp,hxx"),
-    //CPP_H("C++ header files", "hpp,hxx"),
-    JAVASCRIPT("JAVASCRIPT", "js"),
-    JAVASCRIPTREACT("JAVASCRIPT (with React support)", "jsx"),
-    PYTHON("PYTHON", "py"),
-    JAVA("JAVA", "java"),
-    CSHARP("C#", "cs"),
-    CUDA_CPP("CUDA C++", "cu,cuh"),
-    RUST("RUST", "rs"),
-    RUBY("RUBY", "rb"),
-    GO("GO", "go"),
-    TYPESCRIPT("TYPESCRIPT", "ts"),
-    TYPESCRIPTREACT("TYPESCRIPT (with React support)", "tsx"),
-    PHP("PHP", "php"),
-    LUA("LUA", "lua"),
-    DART("DART", "dart"),
-    PERL("PERL", "pl"),
-    GROOVY("GROOVY", "groovy"),
-    COFFEESCRIPT("COFFEESCRIPT", "coffee"),
-    HANDLEBARS("HANDLEBARS", "hbs"),
-    JSP("JSP", "jsp,tag,jspf"),
-    KOTLIN("KOTLIN", "kt,kts", "xml"),
-    R("R", "r"),
-    SWIFT("SWIFT", "swift"),
-    OBJECTIVE_C("OBJECTIVE C", "m"),
-    OBJECTIVE_CPP("OBJECTIVE CPP", "mm"),
-    FSHARP("FSHARP", "fs"),
-    SCALA("SCALA", "scala,sbt"),
-    JULIA("JULIA", "julia"),
-    CLOJURE("CLOJURE", "clj"),
-    ERLANG("ERLANG", "erl,escript,hrl,xrl,yrl", "xml"),
-    ASM("ASM", "asm,s,inc"),
-    CPP_EMBEDDED_LATEX("CPP EMBEDDED LATEX", "cpp"),
-    // 配置文件
-    CSV("CSV", "csv,tsv"),
-    INI("INI", "ini,repositories"),
-    INF("INF", "inf,ks"),
-    VB("VB", "vb"),
-    XSL("XSL", "xsl"),
-    LESS("LESS", "less"),
-    POWERSHELL("POWERSHELL", "ps1"),
-    IGNORE("IGNORE", "ignore,gitignore"),
-    LATEX("LATEX", "ltx"),
-    SCSS("SCSS", "scss"),
-    PUG("PUG", "pug"),
-    TEX("TEX", "tex"),
-    VIML("VIML", "vim,vimrc,gvimrc,nvimrc,_vimrc,vmb,ideavimrc"),
-    GIT_COMMIT("GIT COMMIT", ""),
-    GIT_REBASE("GIT REBASE", "git-rebase-todo"),
-    BIBTEX("BIBTEX", "bib"),
     DIFF("DIFF", "diff"),
-    KCONFIG("KCONFIG", "kconfig"),
-    GRADLE("GRADLE", "gradle"),
-    //SVG("SVG", "svg"),
-    // 无示例
-    TERRAFORM("TERRAFORM", "tf,tfvars"),
-    HCL("HCL", "hcl"),
-    HLSL("HLSL", "hlsl"),
-    SAS("SAS", "sas,sas7bdat"),
-    // 无示例
-    TWIG("TWIG", "twig", "xml"),
-    RAKU("RAKU", "pl6"),
-    RAZOR("RAZOR", "razor"),
-    RESTRUCTUREDTEXT("RESTRUCTUREDTEXT", "rst"),
-    SEARCH_RESULT("SEARCH RESULT", "code-search"),
-    SHADERLAB("SHADERLAB", "shader"),
-    MARKDOWN_MATH("MARKDOWN MATH", "md"),
-    MARKDOWN_MATH_BLOCK("MARKDOWN MATH BLOCK", "md"),
-    MARKDOWN_MATH_INLINE("MARKDOWN MATH INLINE", "md"),
-    MARKDOWN_LATEX_COMBINED("MARKDOWN LATEX COMBINED", "md"),
-    MARKDOWN_MATH_CODE_BLOCK("MARKDOWN MATH CODE BLOCK", "md"),
-    // 无示例
-    JIKESPG("JIKESPG", "g"),
-    // 无示例
-    SNIPPETS("SNIPPETS", "snippet,snippets"),
-    SOURCE_SASSDOC("SOURCE SASSDOC", ""),
-    SOURCE_C_PLATFORM("SOURCE C PLATFORM", ""),
-    SOURCE_REGEXP_PYTHON("SOURCE REGEXP PYTHON", ""),
-    DOCUMENTATION_INJECTION_TS("DOCUMENTATION INJECTION TS", ""),
-    DOCUMENTATION_INJECTION_JS("DOCUMENTATION INJECTION JS", ""),
-    TEXT_HTML_BASIC("TEXT HTML BASIC", ""),
-    MDX("MDX", ""),
-    MDX_MARKDOWN("MDX MARKDOWN", ""),
-    ASCIIDOCTOR("ASCIIDOCTOR", "adoc,asciidoc,ad,asc"),
-    ACCESS("ACCESS", "access"),
-    ASCX("ASCX", "ascx"),
-    AWK("AWK", "awk,gawk,mawk"),
-    // 无示例
-    BICEP("BICEP", "bicep", "xml"),
-    NSIS_SCRIPT("NSIS SCRIPT", "nsh,nsi"),
-    XAML("XAML", "xaml"),
-    FXML("FXML", "fxml"),
+    LOG("LOG", "log"),
+    CONF("CONFIG", "conf,cfg,config,fsc"),
+    DOTENV("DOTENV", "env,dotenv"),
+    EDITORCONFIG("EDITORCONFIG", "editorconfig"),
+    HTTP("HTTP", "http,rest"),
+    GRAPHQL("GRAPHQL", "graphql,gql"),
+    REGEXP("REGEXP", "regexp,regex"),
     HOSTS("HOSTS", "hosts,host"),
     PROFILE("PROFILE", "bashrc,profile,bash_profile,zshrc"),
     SSHD_CONFIG("SSHD CONFIG", "sshd_config"),
-    // 常用语言/配置补充
-    GRAPHQL("GRAPHQL", "graphql,gql"),
-    NGINX("NGINX", "nginx"),
-    EDITORCONFIG("EDITORCONFIG", "editorconfig"),
-    DOTENV("DOTENV", "env,dotenv"),
-    HTTP("HTTP", "http,rest"),
+    // 编程语言（按常见度）
+    JAVASCRIPT("JAVASCRIPT", "js"),
+    TYPESCRIPT("TYPESCRIPT", "ts"),
+    JAVASCRIPTREACT("JAVASCRIPT (with React support)", "jsx"),
+    TYPESCRIPTREACT("TYPESCRIPT (with React support)", "tsx"),
+    JAVA("JAVA", "java"),
+    PYTHON("PYTHON", "py"),
+    C("C", "c,h,frag"),
+    CPP("C++", "cpp,hpp,hxx"),
+    CSHARP("C#", "cs"),
+    GO("GO", "go"),
+    RUST("RUST", "rs"),
+    PHP("PHP", "php"),
+    RUBY("RUBY", "rb"),
+    KOTLIN("KOTLIN", "kt,kts", "xml"),
+    SWIFT("SWIFT", "swift"),
+    SCALA("SCALA", "scala,sbt"),
+    GROOVY("GROOVY", "groovy"),
+    DART("DART", "dart"),
+    LUA("LUA", "lua"),
+    PERL("PERL", "pl"),
+    R("R", "r"),
+    JULIA("JULIA", "julia"),
+    OBJECTIVE_C("OBJECTIVE C", "m"),
+    OBJECTIVE_CPP("OBJECTIVE CPP", "mm"),
+    FSHARP("FSHARP", "fs"),
+    VB("VB", "vb"),
+    CUDA_CPP("CUDA C++", "cu,cuh"),
+    ASM("ASM", "asm,s,inc"),
     HASKELL("HASKELL", "hs,lhs"),
     ELIXIR("ELIXIR", "ex,exs"),
+    ERLANG("ERLANG", "erl,escript,hrl,xrl,yrl", "xml"),
     OCAML("OCAML", "ml,mli"),
+    CLOJURE("CLOJURE", "clj"),
     SOLIDITY("SOLIDITY", "sol"),
     ZIG("ZIG", "zig"),
     NIX("NIX", "nix"),
     TCL("TCL", "tcl"),
     FORTRAN("FORTRAN", "f,f77,f90,f95,f03,f08,for"),
     PASCAL("PASCAL", "pas,pp,dpr"),
-    STARLARK("STARLARK", "bzl,bazel,starlark,sky,star"),
+    COFFEESCRIPT("COFFEESCRIPT", "coffee"),
+    RAKU("RAKU", "pl6"),
+    SAS("SAS", "sas,sas7bdat"),
+    HLSL("HLSL", "hlsl"),
+    SHADERLAB("SHADERLAB", "shader"),
+    JIKESPG("JIKESPG", "g"),
     WAT("WEBASSEMBLY TEXT", "wat,wast"),
-    REGEXP("REGEXP", "regexp,regex"),
+    AWK("AWK", "awk,gawk,mawk"),
+    ACCESS("ACCESS", "access"),
+    VIML("VIML", "vim,vimrc,gvimrc,nvimrc,_vimrc,vmb,ideavimrc"),
+    POWERSHELL("POWERSHELL", "ps1"),
+    // Web、模板与标记
+    SCSS("SCSS", "scss"),
+    LESS("LESS", "less"),
+    PUG("PUG", "pug"),
+    HANDLEBARS("HANDLEBARS", "hbs"),
+    TWIG("TWIG", "twig", "xml"),
+    RAZOR("RAZOR", "razor"),
+    JSP("JSP", "jsp,tag,jspf"),
+    ASCX("ASCX", "ascx"),
+    XSL("XSL", "xsl"),
+    XAML("XAML", "xaml"),
+    FXML("FXML", "fxml"),
+    MDX("MDX", ""),
+    MDX_MARKDOWN("MDX MARKDOWN", ""),
+    MARKDOWN_MATH("MARKDOWN MATH", "md"),
+    MARKDOWN_MATH_BLOCK("MARKDOWN MATH BLOCK", "md"),
+    MARKDOWN_MATH_INLINE("MARKDOWN MATH INLINE", "md"),
+    MARKDOWN_MATH_CODE_BLOCK("MARKDOWN MATH CODE BLOCK", "md"),
+    MARKDOWN_LATEX_COMBINED("MARKDOWN LATEX COMBINED", "md"),
+    TEXT_HTML_BASIC("TEXT HTML BASIC", ""),
+    // 文档与排版
+    LATEX("LATEX", "ltx"),
+    TEX("TEX", "tex"),
+    BIBTEX("BIBTEX", "bib"),
+    RESTRUCTUREDTEXT("RESTRUCTUREDTEXT", "rst"),
+    ASCIIDOCTOR("ASCIIDOCTOR", "adoc,asciidoc,ad,asc"),
+    // 构建、配置与运维
+    DOCKERFILE("DOCKERFILE", "dockerfile"),
+    MAKEFILE("MAKEFILE", "makefile"),
+    CMAKE("CMAKE", "cmake"),
+    GRADLE("GRADLE", "gradle"),
+    BICEP("BICEP", "bicep", "xml"),
+    STARLARK("STARLARK", "bzl,bazel,starlark,sky,star"),
+    TERRAFORM("TERRAFORM", "tf,tfvars"),
+    HCL("HCL", "hcl"),
+    KCONFIG("KCONFIG", "kconfig"),
+    INF("INF", "inf,ks"),
+    NGINX("NGINX", "nginx"),
+    NSIS_SCRIPT("NSIS SCRIPT", "nsh,nsi"),
+    GIT_COMMIT("GIT COMMIT", ""),
+    GIT_REBASE("GIT REBASE", "git-rebase-todo"),
+    IGNORE("IGNORE", "ignore,gitignore"),
+    SNIPPETS("SNIPPETS", "snippet,snippets"),
+    SEARCH_RESULT("SEARCH RESULT", "code-search"),
+    // 内部语法与注入
+    SOURCE_SASSDOC("SOURCE SASSDOC", ""),
+    SOURCE_C_PLATFORM("SOURCE C PLATFORM", ""),
+    SOURCE_REGEXP_PYTHON("SOURCE REGEXP PYTHON", ""),
+    DOCUMENTATION_INJECTION_TS("DOCUMENTATION INJECTION TS", ""),
+    DOCUMENTATION_INJECTION_JS("DOCUMENTATION INJECTION JS", ""),
+    CPP_EMBEDDED_LATEX("CPP EMBEDDED LATEX", "cpp"),
     ;
 
     /**
@@ -256,6 +252,26 @@ public enum EditorFormatType {
         this.name = name;
         this.extension = extension;
         this.textMateType = textMateType;
+    }
+
+    /**
+     * 按关键字过滤格式，支持名称、枚举名和扩展名。
+     *
+     * @param keyword 关键字
+     * @return 过滤结果
+     */
+    public static List<EditorFormatType> filter(String keyword) {
+        String text = keyword == null ? "" : keyword.trim();
+        List<EditorFormatType> formats = new ArrayList<>();
+        for (EditorFormatType formatType : values()) {
+            if (text.isEmpty()
+                    || StringUtil.containsIgnoreCase(formatType.getName(), text)
+                    || StringUtil.containsIgnoreCase(formatType.name(), text)
+                    || StringUtil.containsIgnoreCase(formatType.getExtension(), text)) {
+                formats.add(formatType);
+            }
+        }
+        return formats;
     }
 
     /**

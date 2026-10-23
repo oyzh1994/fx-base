@@ -1,6 +1,7 @@
 package cn.oyzh.fx.editor.incubator;
 
 
+import cn.oyzh.fx.editor.incubator.control.EditorFormatTypeTextField;
 import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.i18n.I18nSelectAdapter;
 import cn.oyzh.fx.plus.node.NodeManager;
@@ -15,7 +16,9 @@ import java.util.Locale;
  *
  * @author oyzh
  * @since 2024-12-13
+ * @deprecated 格式较多时不便查找，请使用支持输入过滤的 {@link EditorFormatTypeTextField}
  */
+@Deprecated
 public class EditorFormatTypeComboBox extends FXComboBox<EditorFormatType> implements I18nSelectAdapter<EditorFormatType> {
 
     {
