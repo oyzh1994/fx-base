@@ -1,10 +1,12 @@
 package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.DownLatch;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
 import cn.oyzh.common.util.ResourceUtil;
+import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.FXConst;
 import com.sun.javafx.tk.TKPulseListener;
 import com.sun.javafx.tk.Toolkit;
@@ -586,68 +588,124 @@ public class FXUtil {
     //        }
     //    }
 
-//    private static final String[] msLibNames = {
-//            "api-ms-win-core-console-l1-1-0",
-//            "api-ms-win-core-console-l1-2-0",
-//            "api-ms-win-core-datetime-l1-1-0",
-//            "api-ms-win-core-debug-l1-1-0",
-//            "api-ms-win-core-errorhandling-l1-1-0",
-//            "api-ms-win-core-file-l1-1-0",
-//            "api-ms-win-core-file-l1-2-0",
-//            "api-ms-win-core-file-l2-1-0",
-//            "api-ms-win-core-handle-l1-1-0",
-//            "api-ms-win-core-heap-l1-1-0",
-//            "api-ms-win-core-interlocked-l1-1-0",
-//            "api-ms-win-core-libraryloader-l1-1-0",
-//            "api-ms-win-core-localization-l1-2-0",
-//            "api-ms-win-core-memory-l1-1-0",
-//            "api-ms-win-core-namedpipe-l1-1-0",
-//            "api-ms-win-core-processenvironment-l1-1-0",
-//            "api-ms-win-core-processthreads-l1-1-0",
-//            "api-ms-win-core-processthreads-l1-1-1",
-//            "api-ms-win-core-profile-l1-1-0",
-//            "api-ms-win-core-rtlsupport-l1-1-0",
-//            "api-ms-win-core-string-l1-1-0",
-//            "api-ms-win-core-synch-l1-1-0",
-//            "api-ms-win-core-synch-l1-2-0",
-//            "api-ms-win-core-sysinfo-l1-1-0",
-//            "api-ms-win-core-timezone-l1-1-0",
-//            "api-ms-win-core-util-l1-1-0",
-//            "api-ms-win-crt-conio-l1-1-0",
-//            "api-ms-win-crt-convert-l1-1-0",
-//            "api-ms-win-crt-environment-l1-1-0",
-//            "api-ms-win-crt-filesystem-l1-1-0",
-//            "api-ms-win-crt-heap-l1-1-0",
-//            "api-ms-win-crt-locale-l1-1-0",
-//            "api-ms-win-crt-math-l1-1-0",
-//            "api-ms-win-crt-multibyte-l1-1-0",
-//            "api-ms-win-crt-private-l1-1-0",
-//            "api-ms-win-crt-process-l1-1-0",
-//            "api-ms-win-crt-runtime-l1-1-0",
-//            "api-ms-win-crt-stdio-l1-1-0",
-//            "api-ms-win-crt-string-l1-1-0",
-//            "api-ms-win-crt-time-l1-1-0",
-//            "api-ms-win-crt-utility-l1-1-0",
-//            "ucrtbase",
-//
-//            // Finally load VS 2017 DLLs in the following order
-//            "vcruntime140",
-//            "vcruntime140_1",
-//            "msvcp140",
-//            "msvcp140_1",
-//            "msvcp140_2"
-//    };
-//
-//    /**
-//     * 获取微软库名称
-//     *
-//     * @return 结果
-//     */
-//    public static List<String> msLibNames() {
-//        List<String> list = new ArrayList<>();
-//        for (String s : msLibNames) {
-//            list.add(s + ".dll");
-//        }
-//        return list;
-//    }
+    //    private static final String[] msLibNames = {
+    //            "api-ms-win-core-console-l1-1-0",
+    //            "api-ms-win-core-console-l1-2-0",
+    //            "api-ms-win-core-datetime-l1-1-0",
+    //            "api-ms-win-core-debug-l1-1-0",
+    //            "api-ms-win-core-errorhandling-l1-1-0",
+    //            "api-ms-win-core-file-l1-1-0",
+    //            "api-ms-win-core-file-l1-2-0",
+    //            "api-ms-win-core-file-l2-1-0",
+    //            "api-ms-win-core-handle-l1-1-0",
+    //            "api-ms-win-core-heap-l1-1-0",
+    //            "api-ms-win-core-interlocked-l1-1-0",
+    //            "api-ms-win-core-libraryloader-l1-1-0",
+    //            "api-ms-win-core-localization-l1-2-0",
+    //            "api-ms-win-core-memory-l1-1-0",
+    //            "api-ms-win-core-namedpipe-l1-1-0",
+    //            "api-ms-win-core-processenvironment-l1-1-0",
+    //            "api-ms-win-core-processthreads-l1-1-0",
+    //            "api-ms-win-core-processthreads-l1-1-1",
+    //            "api-ms-win-core-profile-l1-1-0",
+    //            "api-ms-win-core-rtlsupport-l1-1-0",
+    //            "api-ms-win-core-string-l1-1-0",
+    //            "api-ms-win-core-synch-l1-1-0",
+    //            "api-ms-win-core-synch-l1-2-0",
+    //            "api-ms-win-core-sysinfo-l1-1-0",
+    //            "api-ms-win-core-timezone-l1-1-0",
+    //            "api-ms-win-core-util-l1-1-0",
+    //            "api-ms-win-crt-conio-l1-1-0",
+    //            "api-ms-win-crt-convert-l1-1-0",
+    //            "api-ms-win-crt-environment-l1-1-0",
+    //            "api-ms-win-crt-filesystem-l1-1-0",
+    //            "api-ms-win-crt-heap-l1-1-0",
+    //            "api-ms-win-crt-locale-l1-1-0",
+    //            "api-ms-win-crt-math-l1-1-0",
+    //            "api-ms-win-crt-multibyte-l1-1-0",
+    //            "api-ms-win-crt-private-l1-1-0",
+    //            "api-ms-win-crt-process-l1-1-0",
+    //            "api-ms-win-crt-runtime-l1-1-0",
+    //            "api-ms-win-crt-stdio-l1-1-0",
+    //            "api-ms-win-crt-string-l1-1-0",
+    //            "api-ms-win-crt-time-l1-1-0",
+    //            "api-ms-win-crt-utility-l1-1-0",
+    //            "ucrtbase",
+    //
+    //            // Finally load VS 2017 DLLs in the following order
+    //            "vcruntime140",
+    //            "vcruntime140_1",
+    //            "msvcp140",
+    //            "msvcp140_1",
+    //            "msvcp140_2"
+    //    };
+    //
+    //    /**
+    //     * 获取微软库名称
+    //     *
+    //     * @return 结果
+    //     */
+    //    public static List<String> msLibNames() {
+    //        List<String> list = new ArrayList<>();
+    //        for (String s : msLibNames) {
+    //            list.add(s + ".dll");
+    //        }
+    //        return list;
+    //    }
+
+    /**
+     * 预处理prism
+     */
+    public static void prepareOrder(int mode) {
+        String order = System.getProperty("prism.order");
+        // 平衡模式
+        if (mode == 1) {
+            if (OSUtil.isMacOS()) {
+                order = "es2,mtl,sw";
+            } else if (OSUtil.isLinux()) {
+                order = "es2,sw";
+            } else if (OSUtil.isWindows()) {
+                order = "d3d,sw";
+            }
+        } else if (mode == 2) {// 兼容模式
+            if (OSUtil.isMacOS()) {
+                order = "sw,es2,mtl";
+            } else if (OSUtil.isLinux()) {
+                order = "sw,es2";
+            } else if (OSUtil.isWindows()) {
+                order = "sw,d3d";
+            }
+        } else {// 性能模式
+            if (OSUtil.isMacOS()) {
+                order = "mtl,es2,sw";
+            } else if (OSUtil.isLinux()) {
+                order = "es2,sw";
+            } else if (OSUtil.isWindows()) {
+                order = "d3d,sw";
+            }
+        }
+        System.setProperty("prism.order", order);
+        if (JulLog.isInfoEnabled()) {
+            JulLog.info("prism.order={}", order);
+        }
+    }
+
+    /**
+     * 预处理prism
+     */
+    public static void preparePrism() {
+        String order = System.getProperty("prism.order");
+        if (OSUtil.isMacOS()) {
+            // 修复macos程序崩溃
+            if (StringUtil.startWithIgnoreCase(order, "mtl")) {
+                System.setProperty("prism.forceUploadingPainter", "true");
+            }
+        } else if (OSUtil.isWindows()) {
+            // 修复windows内存泄露
+            if (StringUtil.startWithIgnoreCase(order, "d3d")) {
+                System.setProperty("quantum.multithreaded", "false");
+                System.setProperty("prism.forceUploadingPainter", "true");
+            }
+        }
+    }
 }
