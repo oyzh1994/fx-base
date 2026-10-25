@@ -34,10 +34,10 @@ public class StageMask extends Stage implements StageAdapter {
      */
     private Runnable callback;
 
-//    /**
-//     * 异步回调
-//     */
-//    private final Future<?> future;
+    //    /**
+    //     * 异步回调
+    //     */
+    //    private final Future<?> future;
 
     /**
      * x坐标变化监听
@@ -93,6 +93,13 @@ public class StageMask extends Stage implements StageAdapter {
             target.yProperty().addListener(this.yFunc);
             target.widthProperty().addListener(this.wFunc);
             target.heightProperty().addListener(this.hFunc);
+
+            // 放置焦点被抢走
+            target.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (BooleanUtil.isTrue(newValue) && this.isShowing()) {
+                    this.front();
+                }
+            });
         }
 
         // 动画
@@ -115,13 +122,6 @@ public class StageMask extends Stage implements StageAdapter {
         scene.setFill(Color.TRANSPARENT);
         this.setScene(scene);
 
-//        // 取消操作
-//        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-//            if (event.getCode() == KeyCode.ESCAPE) {
-//                this.cancel();
-//            }
-//        });
-
         // 监听显示属性
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (BooleanUtil.isTrue(newValue)) {
@@ -130,21 +130,8 @@ public class StageMask extends Stage implements StageAdapter {
                 this.onWindowClosed();
             }
         });
-
-//        // 执行业务
-//        this.future = TaskManager.startAsync(this::doCallback);
-
         ObjectWatcherManager.watch(this);
     }
-
-//    /**
-//     * 取消
-//     */
-//    public void cancel() {
-//        if (this.future != null) {
-//            ExecutorUtil.cancel(this.future);
-//        }
-//    }
 
     /**
      * 执行回调

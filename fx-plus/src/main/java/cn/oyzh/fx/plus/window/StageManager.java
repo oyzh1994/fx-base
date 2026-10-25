@@ -150,7 +150,7 @@ public class StageManager {
     public static boolean frontStage(Class<?> controllerClass) {
         StageAdapter adapter = getStage(controllerClass);
         if (adapter != null) {
-            adapter.toFront();
+            adapter.front();
             return true;
         }
         return false;
@@ -167,7 +167,7 @@ public class StageManager {
     public static boolean frontStage(Class<?> controllerClass, String propKey, Object prop) {
         StageAdapter adapter = getStage(controllerClass, propKey, prop);
         if (adapter != null) {
-            adapter.toFront();
+            adapter.front();
             return true;
         }
         return false;

@@ -532,7 +532,7 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
     /**
      * 舞台前置
      */
-    default void toFront() {
+    default void front() {
         FXUtil.runLater(() -> {
             this.stage().setIconified(false);
             this.stage().setAlwaysOnTop(true);
