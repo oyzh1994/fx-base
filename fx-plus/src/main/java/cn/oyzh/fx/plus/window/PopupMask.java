@@ -80,7 +80,7 @@ public class PopupMask extends Popup implements PopupAdapter {
         StackPane maskPane = new StackPane();
         // 设置透明度
         maskPane.setOpacity(0.3);
-        maskPane.setFocusTraversable(false);
+        maskPane.setFocusTraversable(true);
         // 半透明黑色背景‌
         maskPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
@@ -113,7 +113,7 @@ public class PopupMask extends Popup implements PopupAdapter {
 
         // 动画
         ProgressIndicator indicator = new ProgressIndicator();
-        indicator.setFocusTraversable(false);
+        indicator.setFocusTraversable(true);
         Color color = ThemeManager.currentForegroundColor();
         String colorHex = FXColorUtil.getColorHex(color);
         indicator.setStyle("-fx-progress-color: " + colorHex);
@@ -123,7 +123,7 @@ public class PopupMask extends Popup implements PopupAdapter {
         // 居中显示‌
         StackPane.setAlignment(indicator, Pos.CENTER);
         maskPane.toFront();
-        maskPane.setMouseTransparent(false);
+//        maskPane.setMouseTransparent(false);
         // 设置内容
         this.content(maskPane);
         // 场景透明
