@@ -60,6 +60,11 @@ public class StageMask extends Stage implements StageAdapter {
     private ChangeListener<? super Number> hFunc;
 
     /**
+     * 焦点变化监听
+     */
+    private ChangeListener<? super Boolean> focusedFunc;
+
+    /**
      * 构造舞台遮罩
      *
      * @param target   目标窗口
@@ -94,12 +99,13 @@ public class StageMask extends Stage implements StageAdapter {
             target.widthProperty().addListener(this.wFunc);
             target.heightProperty().addListener(this.hFunc);
 
-            // 放置焦点被抢走
-            target.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            // 防止焦点被抢走
+            this.focusedFunc = (observable, oldValue, newValue) -> {
                 if (BooleanUtil.isTrue(newValue) && this.isShowing()) {
                     this.front();
                 }
-            });
+            };
+            target.focusedProperty().addListener(this.focusedFunc);
         }
 
         // 动画
@@ -155,11 +161,13 @@ public class StageMask extends Stage implements StageAdapter {
             this.target.yProperty().removeListener(this.yFunc);
             this.target.widthProperty().removeListener(this.wFunc);
             this.target.heightProperty().removeListener(this.hFunc);
+            this.target.focusedProperty().removeListener(this.focusedFunc);
             this.target.requestFocus();
             this.xFunc = null;
             this.yFunc = null;
             this.wFunc = null;
             this.hFunc = null;
+            this.focusedFunc = null;
         }
         StageAdapter.super.onWindowClosed();
     }

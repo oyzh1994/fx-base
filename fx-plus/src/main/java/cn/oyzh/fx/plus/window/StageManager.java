@@ -423,7 +423,8 @@ public class StageManager {
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 显示遮罩
             Window finalWindow = window;
-            StageMask.showMask(window, () -> {
+            // 显示遮罩
+            PopupMask.showMask(window, () -> {
                 try {
                     if (callback != null) {
                         callback.run();
@@ -448,8 +449,7 @@ public class StageManager {
      */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask) {
-                //            if (window instanceof StageMask || window instanceof PopupMask) {
+            if (window instanceof StageMask || window instanceof PopupMask) {
                 continue;
             }
             if (window.isShowing() && window.isFocused()) {
