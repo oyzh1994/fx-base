@@ -423,8 +423,8 @@ public class StageManager {
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 显示遮罩
             Window finalWindow = window;
-            // 显示遮罩
-            PopupMask.showMask(window, () -> {
+            // 回调函数
+            Runnable maskCallback = () -> {
                 try {
                     if (callback != null) {
                         callback.run();
@@ -436,7 +436,14 @@ public class StageManager {
                     // 移除标志位
                     PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
                 }
-            });
+            };
+            // PopupWindow在Windows/Linux下会覆盖同owner的Stage弹窗，macOS无此问题
+            //            if (OSUtil.isMacOS()) {
+            // 显示遮罩
+            PopupMask.showMask(window, maskCallback);
+            //            } else {
+            //                StageMask.showMask(window, maskCallback);
+            //            }
         } else {// 直接执行
             callback.run();
         }
@@ -449,8 +456,10 @@ public class StageManager {
      */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask || window instanceof PopupMask) {
-                continue;
+            if (OSUtil.isMacOS()) {
+                if (window instanceof StageMask || window instanceof PopupMask) {
+                    continue;
+                }
             }
             if (window.isShowing() && window.isFocused()) {
                 return window;
