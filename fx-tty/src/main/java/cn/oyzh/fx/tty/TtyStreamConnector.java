@@ -7,8 +7,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.Charset;
 
 /**
@@ -27,12 +27,12 @@ public abstract class TtyStreamConnector implements TtyTerminalSizeable, TtyStre
     /**
      * 读取器
      */
-    protected InputStreamReader reader;
+    protected Reader reader;
 
     /**
      * 写入器
      */
-    protected OutputStreamWriter writer;
+    protected Writer writer;
 
     /**
      * 使用系统默认字符集构造连接器。
