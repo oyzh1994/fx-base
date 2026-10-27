@@ -35,7 +35,7 @@ public class FontManager {
     /**
      * 默认字体名称
      */
-    public static String defaultFontName = defaultFont.getName();
+    public static String defaultFontFamily = defaultFont.getFamily();
 
     /**
      * 字体缓存

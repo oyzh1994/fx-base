@@ -888,7 +888,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 默认字体名称
      */
     public static String defaultFontFamily() {
-        return FontManager.defaultFontName;
+        return FontManager.defaultFontFamily;
     }
 
     /**
@@ -942,7 +942,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 默认编辑器字体名称
      */
     public static String defaultEditorFontFamily() {
-        return FontManager.defaultFontName;
+        return FontManager.defaultFontFamily;
     }
 
     /**
