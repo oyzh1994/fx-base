@@ -2436,11 +2436,10 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
      * For details read http://docs.oracle.com/javase/7/docs/technotes/guides/imf/api-tutorial.html
      */
     protected void processInputMethodEvent(InputMethodEvent e) {
-        if (e.getCommitted() == null) {
-            return;
-        }
-
         String committedText = e.getCommitted();
+        if (committedText == null) {
+            committedText = "";
+        }
         if (!committedText.isEmpty()) {
             myInputMethodUncommittedChars = null;
             StringBuilder sb = new StringBuilder();
