@@ -189,6 +189,18 @@ public class RdpClient {
     public void connect(String host, int port, String username, String password,
                         String domain, int width, int height, int bpp, boolean useSsl,
                         boolean mapClipboard, boolean enableSound) {
+        connect(host, port, username, password, domain, width, height, bpp, useSsl,
+                mapClipboard, enableSound, true);
+    }
+
+    /**
+     * 连接到RDP服务器（异步，连接就绪后通过onConnected回调通知）。
+     *
+     * @param enableWallpaper 是否启用远程桌面壁纸
+     */
+    public void connect(String host, int port, String username, String password,
+                        String domain, int width, int height, int bpp, boolean useSsl,
+                        boolean mapClipboard, boolean enableSound, boolean enableWallpaper) {
         if (connected) {
             throw new IllegalStateException("RDP客户端已连接，请先断开当前连接");
         }
@@ -211,6 +223,10 @@ public class RdpClient {
         options.setBitmapCaching(true);
         options.setMapClipboard(mapClipboard);
         options.setLowLatency(true);
+        if (!enableWallpaper) {
+            options.setRdp5PerformanceFlags(options.getRdp5PerformanceFlags()
+                    | Rdp.PERF_DISABLE_WALLPAPER);
+        }
 
         // 绝不能在正常会话中打开：每个屏幕/音频包都会同步写完整十六进制。
         options.setDebugHexdump(false);

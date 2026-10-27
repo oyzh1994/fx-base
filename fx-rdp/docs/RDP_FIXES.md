@@ -744,6 +744,78 @@ TLS 1.2 + RDPGFX 首帧路径保持正常，新增旧版 TLS 兼容逻辑没有�
 - 回归旧版 Windows 主机时，至少要验证 `onConnected`、`first frame`、保持期不断开和首帧画面，不能仅以 TCP/TLS 握手成功或 `ready` 回调作为通过标准。
 - 缓存刷子目前只实现了 BMF_1BPP 8x8。若后续主机出现 `Unsupported cached brush`，需要按 MS-RDPEGDI 补充 8/16/24/32bpp 的压缩与非压缩刷子格式。
 
+## 13. 远程桌面壁纸不显示（PERF_DISABLE_WALLPAPER）
+
+### 问题现象
+
+连接 `192.168.22.155:3389` 后，桌面图标和任务栏正常显示，但桌面背景始终为纯黑色。同一主机使用 Windows App（Microsoft Remote Desktop）连接时，Windows 配置的壁纸正常显示。
+
+### 定位过程
+
+壁纸显示不是 RDP 能力协商的结果，而是客户端在 Client Info PDU 的
+`TS_INFO_PACKET.performanceFlags` 字段中向服务端声明的一组性能选项。相关标志定义在
+MS-RDPBCGR `TS_PERF_FLAGS`：
+
+- `PERF_DISABLE_WALLPAPER = 0x00000001`：要求服务端不绘制桌面壁纸。
+- `PERF_DISABLE_THEMING = 0x00000008`：要求服务端禁用视觉主题。
+- `PERF_DISABLE_MENU_ANIMATIONS = 0x00000004`：禁用菜单动画。
+- `PERF_DISABLE_CURSOR_SHADOW = 0x00000020`：禁用光标阴影。
+- `PERF_DISABLE_CURSORSETTINGS = 0x00000040`：禁用光标设置变化。
+
+`Options` 原先的默认性能标志包含 `PERF_DISABLE_WALLPAPER`，最终由
+`layers/Rdp.java` 在 `sendLogonInfo()` 中写入 Client Info PDU。因此即使服务端用户已经配置壁纸，Windows 也会按客户端要求把桌面背景绘制为纯色。
+
+使用无头客户端对 `.155` 抓取首帧进行 A/B 对比：
+
+- `enableWallpaper=false` 时 `performanceFlags=0x6d`，首帧桌面背景为纯黑色。
+- `enableWallpaper=true` 时 `performanceFlags=0x6c`，首帧桌面壁纸正常显示。
+
+### 修改内容
+
+壁纸改为 RDP 连接的可选项，默认开启。开关不新增 `ShellConnect` 字段，统一存放在
+`ShellConnect.extras` 的 `enableWallpaper` 键中；旧连接没有该键时按 `true` 处理。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/Options.java`
+
+- 从默认 `rdp5PerformanceFlags` 中移除 `PERF_DISABLE_WALLPAPER`。
+- 保留原有的光标阴影、光标设置、菜单动画和主题性能标志，避免扩大本次修改范围。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/RdpClient.java`
+
+- 保留原有 `connect(...)` 重载，默认启用壁纸，避免破坏现有调用方。
+- 新增带 `enableWallpaper` 参数的 `connect(...)` 重载；值为 `false` 时把
+  `PERF_DISABLE_WALLPAPER` 加回本次连接的性能标志。
+
+文件：`easyshell/.../controller/connect/rdp/ShellAddRDPConnectController.java`、
+`ShellUpdateRDPConnectController.java`
+
+- 新增/编辑/测试连接三个入口都读写 `extras.enableWallpaper`。
+- 编辑已有连接时通过 `ShellRDPUtil.isWallpaperEnabled()` 读取，未配置时显示为开启。
+
+文件：`easyshell/src/main/resources/fxml/connect/rdp/shellAddRDPConnect.fxml`、
+`shellUpdateRDPConnect.fxml`
+
+- 在“选项”区域增加“启用背景”复选框，默认选中。
+
+文件：`easyshell/.../rdp/ShellRDPClient.java`、`ShellRDPUtil.java`
+
+- 内置客户端把 `extras.enableWallpaper` 传给 `RdpClient.connect(...)`。
+- 系统 RDP 客户端生成 `.rdp` 文件时写入 `disable wallpaper:i:0|1`，使 Windows App/mstsc 路径与内置客户端保持一致。
+
+### 验证结果
+
+- `192.168.22.155`：`enableWallpaper=true` 首帧显示壁纸；`false` 首帧恢复纯黑背景，开关行为符合预期。
+- `.rdp` 文件：默认和显式 `true` 生成 `disable wallpaper:i:0`；显式 `false` 生成 `disable wallpaper:i:1`。
+- `fx-rdp` 安装及 `easyshell` `test-compile` 通过。
+- `192.168.3.32`：`ready=1/1`，首帧正常，旧版 Windows 7 路径未回退。
+- `192.168.3.50`：`ready=1/1`，首帧正常，现代 TLS 路径未回退。
+
+### 回归注意事项
+
+- Windows 服务端组策略仍可通过“不显示桌面背景”等策略强制禁用壁纸；该策略优先级高于客户端性能标志，客户端无法覆盖。
+- 新连接默认写入 `enableWallpaper=true`；历史连接未保存该键时也按开启处理，用户关闭后会随 `extras` 持久化。
+- 关闭壁纸可减少首帧位图缓存数据量；开启后回归旧版主机时需同时检查 `connected callback`、`first frame` 和保持期不断开。
+
 ## 审查结论
 
 本次共修复了 8 类高置信度协议问题，重点集中在：
@@ -777,6 +849,7 @@ TLS 1.2 + RDPGFX 首帧路径保持正常，新增旧版 TLS 兼容逻辑没有�
 | 32bpp 行间差分重复累加 | `graphics/Bitmap.java` | 保留差分值 `color`，写入时单独叠加上一行像素 |
 | MemBlt 复制忽略源偏移 | `graphics/RasterOp.java` | ROP COPY 使用 `srcx/srcy/srcwidth` 计算源数据偏移 |
 | Cache Brush 未实现 | `Orders.java`、`graphics/RdesktopCanvas.java` | 解析二级订单 7，支持 8x8 单色缓存刷子的 PatBlt 绘制 |
+| 远程桌面壁纸可配置 | `Options.java`、`RdpClient.java`、`ShellRDPUtil.java`、RDP 连接控制器和 FXML | extras `enableWallpaper` 控制，默认开启；内置与外部 `.rdp` 链路均生效 |
 
 ## 验证命令
 
