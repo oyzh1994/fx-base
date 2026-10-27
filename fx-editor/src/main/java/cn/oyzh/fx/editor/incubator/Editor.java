@@ -283,7 +283,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.setOnContextMenuRequested(e -> {
             List<? extends MenuItem> items = this.getMenuItems();
             if (CollectionUtil.isNotEmpty(items)) {
-                this.showContextMenu(items, e.getScreenX() , e.getScreenY());
+                this.showContextMenu(items, e.getScreenX(), e.getScreenY());
             } else {
                 this.clearContextMenu();
             }
@@ -1384,12 +1384,12 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
 
         // 撤销
         MenuItem undo = MenuItemManager.getMenuItem(I18nHelper.undo(), this::undo);
-        undo.setDisable(!this.isUndoable());
+        undo.setDisable(!this.isUndoable() || !this.isEditable() || this.isDisable());
         items.add(undo);
 
         // 重做
         MenuItem redo = MenuItemManager.getMenuItem(I18nHelper.redo(), this::redo);
-        redo.setDisable(!this.isUndoable());
+        redo.setDisable(!this.isRedoable() || !this.isEditable() || this.isDisable());
         items.add(redo);
 
         items.add(MenuItemManager.getSeparatorMenuItem());
@@ -1689,7 +1689,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         if (closeChar == null) {
             return;
         }
-//        e.consume();
+        //        e.consume();
 
         SelectionSegment segment = this.getSelection();
         if (segment != null && !segment.isCollapsed()) {

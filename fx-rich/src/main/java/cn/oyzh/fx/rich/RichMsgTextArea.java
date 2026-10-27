@@ -28,7 +28,15 @@ public class RichMsgTextArea extends Editor {
     /**
      * 单行内容最大长度，避免性能问题
      */
-    public static int LINE_MAX_LENGTH = 5 * 1024;
+    private int lineMaxLength = 5 * 1024;
+
+    public void setLineMaxLength(int lineMaxLength) {
+        this.lineMaxLength = lineMaxLength;
+    }
+
+    public int getLineMaxLength() {
+        return lineMaxLength;
+    }
 
     /**
      * 最大行数
@@ -102,9 +110,8 @@ public class RichMsgTextArea extends Editor {
             StringBuilder builder = new StringBuilder();
             for (String line : lines) {
                 if (line != null) {
-                    if (line.length() > LINE_MAX_LENGTH) {
+                    if (line.length() > this.getLineMaxLength())
                         line = I18nHelper.contentTooLarge();
-                    }
                     builder.append(line);
                     if (!line.endsWith(this.lineEndingText())) {
                         builder.append(LineEnding.system().getText());
@@ -118,7 +125,7 @@ public class RichMsgTextArea extends Editor {
     @Override
     public void appendLine(String s) {
         if (s != null) {
-            if (s.length() > LINE_MAX_LENGTH) {
+            if (s.length() > this.getLineMaxLength()) {
                 s = I18nHelper.contentTooLarge();
             }
             if (s.endsWith(this.lineEndingText())) {
