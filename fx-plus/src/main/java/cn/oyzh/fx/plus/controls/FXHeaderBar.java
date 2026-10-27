@@ -74,7 +74,8 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         this.setCenter(label);
         // linux要额外配置
         if (OSUtil.isLinux()) {
-            HeaderBar.setDragType(label, HeaderDragType.TRANSPARENT);
+            label.setMouseTransparent(false);
+            HeaderBar.setDragType(label, HeaderDragType.DRAGGABLE);
             this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 if (event.getClickCount() == 2) {
                     Stage stage = this.stage();
