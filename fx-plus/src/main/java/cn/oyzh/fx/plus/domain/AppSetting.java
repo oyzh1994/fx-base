@@ -4,10 +4,10 @@ import cn.oyzh.common.object.ObjectCopier;
 import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.font.FontConfig;
+import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.opacity.OpacityConfig;
 import cn.oyzh.fx.plus.theme.ThemeConfig;
 import cn.oyzh.store.jdbc.Column;
-import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.io.Serializable;
@@ -888,7 +888,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 默认字体名称
      */
     public static String defaultFontFamily() {
-        return Font.getDefault().getFamily();
+        return FontManager.defaultFontName;
     }
 
     /**
@@ -942,7 +942,7 @@ public class AppSetting implements Serializable, ObjectCopier<Object> {
      * @return 默认编辑器字体名称
      */
     public static String defaultEditorFontFamily() {
-        return Font.getDefault().getFamily();
+        return FontManager.defaultFontName;
     }
 
     /**

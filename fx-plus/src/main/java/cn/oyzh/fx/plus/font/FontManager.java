@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.font;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
 import cn.oyzh.fx.plus.window.StageManager;
@@ -29,7 +30,12 @@ public class FontManager {
     /**
      * 默认字体
      */
-    public static Font defaultFont = Font.getDefault();
+    public static Font defaultFont = getDefaultFont();
+
+    /**
+     * 默认字体名称
+     */
+    public static String defaultFontName = defaultFont.getName();
 
     /**
      * 字体缓存
@@ -40,6 +46,28 @@ public class FontManager {
      * 当前字体
      */
     private static Font currentFont;
+
+    /**
+     * 获取默认字体
+     *
+     * @return 结果
+     */
+    private static Font getDefaultFont() {
+        try {
+            if (OSUtil.isLinux()) {
+                List<String> fontCandidates = List.of("Ubuntu", "Noto Sans CJK SC", "WenQuanYi Micro Hei", "DejaVu Sans");
+                List<String> families = Font.getFamilies();
+                for (String family : fontCandidates) {
+                    if (families.contains(family)) {
+                        return Font.font(family);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return Font.getDefault();
+    }
 
     /**
      * 获取当前字体
