@@ -1,5 +1,6 @@
 package cn.oyzh.fx.editor.incubator.control;
 
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.editor.incubator.EditorFormatType;
 import cn.oyzh.fx.gui.skin.SelectTextFiledSkin;
@@ -36,11 +37,6 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
      * 初始化前的待选中格式
      */
     private EditorFormatType pendingFormat;
-
-    /**
-     * 初始化下标
-     */
-    private int initIndex;
 
     /**
      * 是否已初始化
@@ -136,15 +132,6 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
         return this.getFormat();
     }
 
-    /**
-     * 设置初始化下标
-     *
-     * @param initIndex 下标
-     */
-    public void setInitIndex(int initIndex) {
-        this.initIndex = initIndex;
-    }
-
     @Override
     public void initNode() {
         this.setTipText(I18nHelper.format());
@@ -183,7 +170,7 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
         EditorFormatType initial = this.pendingFormat;
         if (initial == null) {
             EditorFormatType[] values = EditorFormatType.values();
-            int index = Math.max(0, Math.min(this.initIndex, values.length - 1));
+            int index = Math.max(0, Math.min(this.getInitIndex(), values.length - 1));
             initial = values[index];
         }
         this.selectItem(initial);
@@ -203,5 +190,25 @@ public class EditorFormatTypeTextField extends SelectTextFiled<EditorFormatType>
             this.skin().showPopup();
         }
         return true;
+    }
+
+    /**
+     * 获取初始索引
+     *
+     * @return 初始索引
+     */
+    public int getInitIndex() {
+        Object _initIndex = this.getProp("_initIndex");
+        return _initIndex instanceof Integer ? (int) _initIndex : -1;
+    }
+
+    /**
+     * 设置初始索引
+     *
+     * @param initIndex 初始索引
+     */
+    public void setInitIndex(int initIndex) {
+        this.select(CollectionUtil.get(this.getItemList(), initIndex));
+        this.setProp("_initIndex", initIndex);
     }
 }
