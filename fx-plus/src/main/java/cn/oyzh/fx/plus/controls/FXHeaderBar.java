@@ -67,17 +67,15 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
      */
     private void setTitleLabel(FXLabel label) {
         label.setPadding(TITLE_PADDING);
-        if (!OSUtil.isLinux()) {
-            label.setMouseTransparent(true);
-        }
+        label.setMouseTransparent(true);
         double w = ScreenUtil.getAllWidth();
         label.setPrefWidth(w);
         label.setFontWeight(FontWeight.BOLD);
         this.setCenter(label);
         // linux要额外配置
         if (OSUtil.isLinux()) {
-            HeaderBar.setDragType(label, HeaderDragType.TRANSPARENT_SUBTREE);
-            label.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            HeaderBar.setDragType(label, HeaderDragType.TRANSPARENT);
+            this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 if (event.getClickCount() == 2) {
                     Stage stage = this.stage();
                     stage.setMaximized(!stage.isMaximized());
