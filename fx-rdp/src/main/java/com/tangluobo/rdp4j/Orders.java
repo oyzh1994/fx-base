@@ -41,9 +41,11 @@ public class Orders {
 	private static final int MIX_TRANSPARENT = 0;
 	private static final int MODE_MASK = 0x0038;
 	private static final int MODE_SHIFT = 3;
+	private static final int NO_BITMAP_COMPRESSION_HDR = 0x0400;
 	private static final int PERSIST = 0x0100;
 	private static final int RDP_ORDER_BMPCACHE = 2;
 	private static final int RDP_ORDER_BMPCACHE2 = 5;
+	private static final int RDP_ORDER_BRUSHCACHE = 7;
 	private static final int RDP_ORDER_BOUNDS = 0x04;
 	private static final int RDP_ORDER_CHANGE = 0x08;
 	private static final int RDP_ORDER_COLCACHE = 1;
@@ -540,7 +542,7 @@ public class Orders {
 	 * @param data Packet containing compressed bitmap
 	 * @throws com.tangluobo.rdp4j.RdesktopException
 	 */
-	private void processBitmapCache(com.tangluobo.rdp4j.Packet data) throws com.tangluobo.rdp4j.RdesktopException {
+	private void processBitmapCache(com.tangluobo.rdp4j.Packet data, int flags) throws com.tangluobo.rdp4j.RdesktopException {
 		int bufsize, pad2, row_size, final_size, size;
 		int pad1;
 		bufsize = pad2 = row_size = final_size = size = 0;
@@ -557,29 +559,43 @@ public class Orders {
 		 * data.getLittleEndian16(); data.incrementPosition(4); // row_size,
 		 * final_size
 		 */
-		if (state.isRDP5()) {
+		if ((flags & NO_BITMAP_COMPRESSION_HDR) != 0) {
+			// The server explicitly says that the 8-byte bitmapComprHdr is
+			// absent. Some old Windows 7 RDP servers use this form even
+			// though the session negotiated RDP 5. Reading the header here
+			// consumes the first 8 bytes of the compressed bitmap and makes
+			// bitmap_decompress walk past the output buffer.
+			size = bufsize;
+		} else {
+			if (bufsize < 8) {
+				throw new com.tangluobo.rdp4j.RdesktopException(
+						"Bitmap cache length is smaller than its compression header: " + bufsize);
+			}
 			/* Begin compressedBitmapData */
 			pad2 = data.getLittleEndian16(); // in_uint16_le(s, pad2); /* pad
 			// */
-			size = data.getLittleEndian16(); // in_uint16_le(s, size);
+			data.getLittleEndian16(); // in_uint16_le(s, size); must equal bitmapLength - 8
 			row_size = data.getLittleEndian16(); // in_uint16_le(s,
 			// row_size);
 			final_size = data.getLittleEndian16(); // in_uint16_le(s,
 			// final_size);
-		} else {
-			data.incrementPosition(2); // pad
-			size = data.getLittleEndian16();
-			row_size = data.getLittleEndian16(); // in_uint16_le(s,
-			// row_size);
-			final_size = data.getLittleEndian16(); // in_uint16_le(s,
-			// final_size);
-			// this is what's in rdesktop, but doesn't seem to work
-			// size = bufsize;
+			// bitmapLength includes bitmapComprHdr (MS-RDPEGDI 2.2.2.2.1.2.1.2).
+			// Strip the header before handing the stream to bitmap_decompress.
+			size = bufsize - 8;
 		}
-		// JulLog.info("BMPCACHE(cx=" + width + ",cy=" + height + ",id=" +
-		// cache_id + ",idx=" + cache_idx + ",bpp=" + bpp + ",size=" + size +
-		// ",pad1=" + pad1 + ",bufsize=" + bufsize + ",pad2=" + pad2 + ",rs=" +
-		// row_size + ",fs=" + final_size + ")");
+		int remaining = data.getEnd() - data.getPosition();
+		if (width <= 0 || height <= 0 || Bpp < 1 || Bpp > 4
+				|| size <= 0 || size > remaining) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Invalid bitmap cache data: "
+					+ width + "x" + height + ", Bpp=" + Bpp + ", flags=0x"
+					+ Integer.toHexString(flags) + ", size=" + size
+					+ ", bufsize=" + bufsize + ", remaining=" + remaining);
+		}
+		if (JulLog.isDebugEnabled())
+			JulLog.debug("BMPCACHE(cx=" + width + ",cy=" + height + ",id=" +
+					cache_id + ",idx=" + cache_idx + ",bpp=" + bpp + ",size=" + size +
+					",pad1=" + pad1 + ",bufsize=" + bufsize + ",pad2=" + pad2 + ",rs=" +
+					row_size + ",fs=" + final_size + ",flags=0x" + Integer.toHexString(flags) + ")");
 		if (Bpp == 1) {
 			byte[] pixel = Bitmap.decompress(width, height, size, data, Bpp);
 			if (pixel != null)
@@ -614,6 +630,33 @@ public class Orders {
 		byte[] palette = new byte[n_colors * 4];
 		data.copyToByteArray(palette, 0, data.getPosition(), palette.length);
 		data.incrementPosition(palette.length);
+	}
+
+	/**
+	 * Cache an 8x8 monochrome brush sent by a Cache Brush secondary order.
+	 * The brush data is stored bottom row first; the BrushHatch field of a
+	 * later PatBlt order contains the cache index.
+	 */
+	private void processBrushCache(com.tangluobo.rdp4j.Packet data) throws com.tangluobo.rdp4j.RdesktopException {
+		if (data.getEnd() - data.getPosition() < 6) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Brush cache header is truncated");
+		}
+		int cacheEntry = data.get8();
+		int format = data.get8();
+		int width = data.get8();
+		int height = data.get8();
+		data.get8(); // Style is reserved by MS-RDPEGDI 2.2.2.2.1.2.7.
+		int length = data.get8();
+		if (cacheEntry >= 64 || width <= 0 || height <= 0
+				|| length > data.getEnd() - data.getPosition()) {
+			throw new com.tangluobo.rdp4j.RdesktopException("Invalid brush cache entry: entry="
+					+ cacheEntry + ", format=" + format + ", size=" + width + "x" + height
+					+ ", bytes=" + length);
+		}
+		byte[] brushData = new byte[length];
+		data.copyToByteArray(brushData, 0, data.getPosition(), length);
+		data.incrementPosition(length);
+		state.getCanvas().cacheBrush(cacheEntry, format, width, height, brushData);
 	}
 
 	/**
@@ -988,7 +1031,7 @@ public class Orders {
 		case RDP_ORDER_BMPCACHE:
 			if (JulLog.isDebugEnabled())
 				JulLog.debug("Bitmapcache Order");
-			this.processBitmapCache(data);
+			this.processBitmapCache(data, flags);
 			break;
 		case RDP_ORDER_FONTCACHE:
 			if (JulLog.isDebugEnabled())
@@ -1008,6 +1051,9 @@ public class Orders {
 			} catch (IOException e) {
 				throw new com.tangluobo.rdp4j.RdesktopException(e.getMessage());
 			} /* compressed */
+			break;
+		case RDP_ORDER_BRUSHCACHE:
+			this.processBrushCache(data);
 			break;
 		default:
 			JulLog.warn("Unimplemented 2ry Order type " + type);

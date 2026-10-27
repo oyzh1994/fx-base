@@ -36,9 +36,9 @@ import java.util.logging.Logger;
  * 而Windows RDP服务器不支持TLS 1.3，直接重置连接（Connection Reset）。
  * 
  * 修复方案（分层防御）：
- * 1. 创建RdpTransport子类覆盖negotiateSSL()，显式设置TLS 1.2协议
+ * 1. 创建RdpTransport子类覆盖negotiateSSL()，优先TLS 1.2并兼容旧服务器TLS 1.0
  * 2. 原地修改Transport.CIPHERS为现代TLS 1.2密码套件（排除TLS 1.3套件）
- * 3. 设置jdk.tls.client.protocols系统属性和Security属性限制TLS 1.2
+ * 3. 设置jdk.tls.client.protocols系统属性，排除TLS 1.3
  * 4. 设置JVM默认SSLContext使用宽松TrustManager
  */
 public class RdpTlsFix {
@@ -95,7 +95,25 @@ public class RdpTlsFix {
     };
 
     /**
-     * Transport子类，覆盖negotiateSSL()强制使用TLS 1.2。
+     * Bouncy Castle's default TLS 1.2 client intentionally omits static RSA
+     * key-exchange suites. Older Windows RDP servers (for example the tested
+     * 192.168.3.32 host) only offer TLS 1.0 with
+     * TLS_RSA_WITH_AES_128_CBC_SHA, so they return handshake_failure(40)
+     * when only the default suites are advertised. Keep the modern suites in
+     * front and append these only as a compatibility fallback.
+     */
+    private static final int[] LEGACY_RSA_CIPHER_SUITES = {
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA,
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_AES_256_CBC_SHA,
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_AES_128_CBC_SHA256,
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_AES_256_CBC_SHA256,
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_AES_128_GCM_SHA256,
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_AES_256_GCM_SHA384,
+            org.bouncycastle.tls.CipherSuite.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
+    };
+
+    /**
+     * Transport子类，覆盖negotiateSSL()优先使用TLS 1.2，并兼容旧版TLS 1.0服务器。
      * 
      * Transport.negotiateSSL()的关键缺陷是只调用setEnabledCipherSuites()
      * 而不调用setEnabledProtocols()，导致SSLSocket默认尝试TLS 1.3协商。
@@ -317,6 +335,31 @@ public class RdpTlsFix {
             // 创建TlsClient，配置协议版本（TLS 1.0/1.1/1.2，排除TLS 1.3）
             org.bouncycastle.tls.DefaultTlsClient tlsClient = new org.bouncycastle.tls.DefaultTlsClient(crypto) {
                 @Override
+                public void notifySecureRenegotiation(boolean secure) throws IOException {
+                    if (!secure) {
+                        // Bouncy Castle 1.86 rejects servers that do not
+                        // implement RFC 5746 by throwing handshake_failure.
+                        // The tested Windows RDP server (192.168.3.32) is an
+                        // old TLS 1.0 endpoint without renegotiation_info.
+                        // RDP does not renegotiate its TLS channel, so allowing
+                        // this legacy peer preserves compatibility without
+                        // enabling an actual renegotiation path.
+                        JulLog.warn("TLS服务器不支持RFC 5746安全重协商，按旧版RDP兼容模式继续");
+                    }
+                }
+
+                @Override
+                protected int[] getSupportedCipherSuites() {
+                    int[] modern = super.getSupportedCipherSuites();
+                    int[] legacy = org.bouncycastle.tls.TlsUtils.getSupportedCipherSuites(
+                            getCrypto(), LEGACY_RSA_CIPHER_SUITES);
+                    int[] combined = Arrays.copyOf(modern, modern.length + legacy.length);
+                    System.arraycopy(legacy, 0, combined, modern.length, legacy.length);
+                    JulLog.info("BC TLS密码套件: 现代=" + modern.length + ", 旧版RSA兼容=" + legacy.length);
+                    return combined;
+                }
+
+                @Override
                 public org.bouncycastle.tls.ProtocolVersion[] getProtocolVersions() {
                     return new org.bouncycastle.tls.ProtocolVersion[]{
                             org.bouncycastle.tls.ProtocolVersion.TLSv12,
@@ -364,6 +407,7 @@ public class RdpTlsFix {
             JulLog.info("Starting Bouncy Castle TLS handshake...");
             protocol.connect(tlsClient);
             JulLog.info("Bouncy Castle TLS handshake completed");
+            disableLegacyAppDataSplitting(protocol);
 
             // 包装Bouncy Castle的流为IO对象
             final InputStream bcIn = protocol.getInputStream();
@@ -382,6 +426,27 @@ public class RdpTlsFix {
                 }
                 @Override public String getAddress() { return hostname != null ? hostname : "unknown"; }
             };
+        }
+
+        /**
+         * TLS 1.0's BEAST workaround writes a 1-byte record (or an empty
+         * first record) before the first application record. The tested
+         * Windows 7 Schannel RDP server treats that split CredSSP packet as
+         * invalid and closes the connection with internal_error(80).
+         * Bouncy Castle does not expose a public switch for this private
+         * field, so use its documented field name and fall back cleanly if a
+         * future version changes it.
+         */
+        private void disableLegacyAppDataSplitting(org.bouncycastle.tls.TlsClientProtocol protocol) {
+            try {
+                Field field = org.bouncycastle.tls.TlsProtocol.class
+                        .getDeclaredField("appDataSplitEnabled");
+                field.setAccessible(true);
+                field.setBoolean(protocol, false);
+                JulLog.info("已禁用旧版TLS的1/n-1应用数据分片");
+            } catch (Exception e) {
+                JulLog.warn("无法禁用旧版TLS应用数据分片: " + e.getMessage());
+            }
         }
 
         /**
@@ -458,8 +523,8 @@ public class RdpTlsFix {
      * 通过反射替换ISO对象中的transport字段为RdpTransport实例。
      *
      * 这是最核心的修复：RdpTransport覆盖了negotiateSSL()方法，
-     * 使用SSLContext.getInstance("TLSv1.2")并显式设置setEnabledProtocols，
-     * 确保SSL握手只使用TLS 1.2协议，避免Windows RDP服务器的Connection Reset。
+     * 使用Bouncy Castle并按TLS 1.2、1.1、1.0顺序协商，避免Windows RDP服务器的
+     * Connection Reset，同时兼容只支持TLS 1.0的旧版Windows 7主机。
      * 同时设置SNI（Server Name Indication），避免Windows Server 2012 R2+
      * 因缺少SNI扩展而重置TLS连接。
      *
@@ -494,16 +559,16 @@ public class RdpTlsFix {
             RdpTransport rdpTransport = new RdpTransport(state, (ISO) isoLayer, hostname);
             transportField.set(isoLayer, rdpTransport);
 
-            JulLog.info("已替换Transport为RdpTransport（强制TLS 1.2协议, SNI=" + hostname + "）");
+            JulLog.info("已替换Transport为RdpTransport（TLS 1.2→1.0兼容, SNI=" + hostname + "）");
         } catch (NoSuchFieldException e) {
             JulLog.error( "反射替换Transport失败（字段不存在）: " + e.getMessage()
-                    + "，将依赖系统属性限制TLS 1.2");
+                    + "，将依赖系统属性协商TLS版本");
         } catch (IllegalAccessException e) {
             JulLog.error( "反射替换Transport失败（访问被拒）: " + e.getMessage()
-                    + "，将依赖系统属性限制TLS 1.2");
+                    + "，将依赖系统属性协商TLS版本");
         } catch (Exception e) {
             JulLog.error( "反射替换Transport失败: " + e.getMessage()
-                    + "，将依赖系统属性限制TLS 1.2");
+                    + "，将依赖系统属性协商TLS版本");
         }
     }
 

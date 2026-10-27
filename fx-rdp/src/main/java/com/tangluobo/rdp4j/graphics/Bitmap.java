@@ -1307,6 +1307,8 @@ public class Bitmap {
 		byte[] compressed_pixel = new byte[size];
 		data.copyToByteArray(compressed_pixel, 0, data.getPosition(), size);
 		data.incrementPosition(size);
+		if (Bpp == 4)
+			return decompress32(compressed_pixel, width, height, size);
 		int previous = -1, line = 0;
 		int input = 0, output = 0, end = size;
 		int opcode = 0, count = 0, offset = 0, x = width;
@@ -1671,6 +1673,98 @@ public class Bitmap {
 	}
 
 	/**
+	 * Decode the 32-bit bitmap-cache stream. Unlike 8/16/24-bit cache data,
+	 * the 32-bit form starts with a 0x10 marker and then stores four
+	 * independently RLE-compressed colour planes. This is the layout used by
+	 * legacy Windows servers for Bitmap Cache orders (see rdesktop's
+	 * bitmap_decompress4 / process_plane).
+	 */
+	private static int[] decompress32(byte[] compressed, int width, int height, int size)
+			throws RdesktopException {
+		if (size < 1 || (compressed[0] & 0xff) != 0x10) {
+			throw new RdesktopException("Invalid 32-bit compressed bitmap header");
+		}
+		byte[] bgra = new byte[width * height * 4];
+		int input = 1;
+		for (int channel = 3; channel >= 0; channel--) {
+			int consumed = processPlane(compressed, input, size - input, width, height, bgra, channel);
+			if (consumed < 0) {
+				throw new RdesktopException("Truncated 32-bit compressed bitmap plane");
+			}
+			input += consumed;
+		}
+		if (input != size) {
+			throw new RdesktopException("32-bit compressed bitmap has " + (size - input)
+					+ " trailing bytes");
+		}
+		int[] pixel = new int[width * height];
+		for (int i = 0; i < pixel.length; i++) {
+			int offset = i * 4;
+			pixel[i] = ((bgra[offset + 3] & 0xff) << 24)
+					| ((bgra[offset + 2] & 0xff) << 16)
+					| ((bgra[offset + 1] & 0xff) << 8)
+					| (bgra[offset] & 0xff);
+		}
+		return pixel;
+	}
+
+	/**
+	 * Decode one colour plane of a 32-bit bitmap cache stream.
+	 *
+	 * @return number of compressed bytes consumed, or -1 when truncated
+	 */
+	private static int processPlane(byte[] input, int start, int available, int width, int height,
+			byte[] output, int channel) {
+		int limit = start + available;
+		int inputPos = start;
+		int lastLine = -1;
+		int rowStride = width * 4;
+		for (int y = 0; y < height; y++) {
+			int line = (height - y - 1) * rowStride;
+			int color = 0;
+			int x = 0;
+			while (x < width) {
+				if (inputPos >= limit)
+					return -1;
+				int code = input[inputPos++] & 0xff;
+				int replen = code & 0x0f;
+				int collen = (code >> 4) & 0x0f;
+				int revcode = (replen << 4) | collen;
+				if (revcode >= 16 && revcode <= 47) {
+					replen = revcode;
+					collen = 0;
+				}
+				while (x < width && collen > 0) {
+					if (inputPos >= limit)
+						return -1;
+					int value = input[inputPos++] & 0xff;
+					if (lastLine >= 0) {
+						int delta = (value & 1) != 0 ? -((value >> 1) + 1) : (value >> 1);
+						color = delta;
+						int pixel = ((output[lastLine + x * 4 + channel] & 0xff) + color) & 0xff;
+						output[line + x * 4 + channel] = (byte) pixel;
+					} else {
+						color = value;
+						output[line + x * 4 + channel] = (byte) color;
+					}
+					x++;
+					collen--;
+				}
+				while (x < width && replen > 0) {
+					int pixel = lastLine >= 0
+							? ((output[lastLine + x * 4 + channel] & 0xff) + color) & 0xff
+							: color;
+					output[line + x * 4 + channel] = (byte) pixel;
+					x++;
+					replen--;
+				}
+			}
+			lastLine = line;
+		}
+		return inputPos - start;
+	}
+
+	/**
 	 * Convert byte array representing a bitmap into integer array of pixels
 	 * 
 	 * @param state state
@@ -1687,6 +1781,9 @@ public class Bitmap {
 				out[i] = ((bitmap[i * Bpp + 1] & 0xFF) << 8) | (bitmap[i * Bpp] & 0xFF);
 			else if (Bpp == 3)
 				out[i] = ((bitmap[i * Bpp + 2] & 0xFF) << 16) | ((bitmap[i * Bpp + 1] & 0xFF) << 8) | (bitmap[i * Bpp] & 0xFF);
+			else if (Bpp == 4)
+				out[i] = ((bitmap[i * Bpp + 3] & 0xFF) << 24) | ((bitmap[i * Bpp + 2] & 0xFF) << 16)
+						| ((bitmap[i * Bpp + 1] & 0xFF) << 8) | (bitmap[i * Bpp] & 0xFF);
 			out[i] = Bitmap.convertTo24(state, out[i]);
 		}
 		return out;

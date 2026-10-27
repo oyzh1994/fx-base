@@ -2,7 +2,7 @@
 
 本文记录 `fx-rdp` 模块中已经定位并修复的 RDP 兼容性问题，包含问题现象、定位过程、根因、修改内容、验证方式和回归注意事项。
 
-记录日期：2026-10-21 至 2026-10-23
+记录日期：2026-10-21 至 2026-10-27
 
 验证客户端：`easyshell` 的 `RdpTest1`，使用 Java 27、JavaFX 27。
 
@@ -528,6 +528,222 @@ MS-RDPEGFX 规定更新矩形是图块写回的有效范围，FreeRDP 的 `updat
 - 不能在收到图块时立即把整个 64x64 图块覆盖到图面。
 - 同一 `START_FRAME` / `END_FRAME` 范围内的图块缓存必须在帧开始时隔离，避免跨帧复用已经失效的图块。
 
+## 12. Windows 7 旧版 RDP 主机连接失败（TLS 1.0 + 32bpp 位图缓存）
+
+### 问题现象
+
+两台 RDP 主机的连接结果不一致：
+
+- `192.168.3.50:3389`，用户名 `ssh`，连接正常。
+- `192.168.3.32:3389`，用户名 `oyzh`，连接失败。
+
+两台主机均使用 RDP 协议和默认端口 `3389`。`.32` 先后暴露出三个不同的失败阶段：
+
+1. TLS 协商阶段返回 `handshake_failure(40)`。
+2. TLS 握手完成后，CredSSP 首个应用数据包返回 `internal_error(80)`。
+3. CredSSP 和 RDP Demand Active 完成后，收到位图缓存订单时抛出：
+
+```text
+RdesktopException: Decompressing bitmap failed! Height = 0
+    at com.tangluobo.rdp4j.graphics.Bitmap.decompressInt(Bitmap.java:1399)
+    at com.tangluobo.rdp4j.Orders.processBitmapCache(Orders.java:591)
+```
+
+第三个异常发生在 `onConnected` 回调之后。因此只判断“是否已连接”会漏掉该问题，必须确认桌面首帧到达并保持一段时间不中断。
+
+### 环境与协议对比
+
+| 项目 | `192.168.3.32` | `192.168.3.50` |
+| --- | --- | --- |
+| 操作系统 | Windows 7 Build 7600 | Windows 11 / Server 2025 Build 26100 |
+| NLA | `UserAuthentication=1`，强制 NLA | 支持现代 TLS/NLA |
+| RDP 安全层 | `SecurityLayer=1` | 正常 TLS 1.2 |
+| TLS 版本 | TLS 1.0 | TLS 1.2 |
+| 密码套件 | `TLS_RSA_WITH_AES_128_CBC_SHA` | GCM 等现代套件 |
+| 证书 | SHA-1，CN=`oyzh-PC` | 现代证书链 |
+
+使用 Impacket 的 `rdp_check` 和 SMB 登录分别验证两台主机，均返回 `Access Granted`，说明账号密码、CredSSP 服务端和网络链路正常。问题位于客户端兼容性，不是凭据错误。
+
+### 定位过程
+
+#### 1. STANDARD 回退不可行
+
+尝试关闭 SSL 并使用 STANDARD RDP Security，服务端明确返回：
+
+```text
+HYBRID_REQUIRED_BY_SERVER
+```
+
+该主机只接受 Enhanced RDP Security + CredSSP，不能通过降级到 STANDARD 绕过 TLS 问题。
+
+#### 2. Bouncy Castle 默认不提供静态 RSA 套件
+
+Bouncy Castle 1.86 的默认 TLS 客户端出于安全考虑，不包含只使用静态 RSA 密钥交换的旧套件。`.32` 的 Windows 7 Schannel 只提供：
+
+```text
+TLS 1.0
+TLS_RSA_WITH_AES_128_CBC_SHA
+```
+
+客户端只声明默认套件时，服务端直接返回 `handshake_failure(40)`。
+
+#### 3. 旧服务端不支持 RFC 5746
+
+`.32` 的 TLS 1.0 端点没有发送 `renegotiation_info` 扩展。Bouncy Castle 默认把“不支持安全重协商”视为致命错误，因此握手仍然失败。RDP 连接建立后不会对该 TLS 通道执行重协商，可以仅对这类旧服务端放宽该检查。
+
+#### 4. BEAST 1/n-1 分片被旧版 Schannel 拒绝
+
+TLS 握手完成后，CredSSP 的 Negotiate 首包仍收到 `internal_error(80)`。原因是 Bouncy Castle 对 TLS 1.0 默认启用 BEAST 缓解措施：在首个应用数据记录前写入 1 字节分片（1/n-1）。Windows 7 的旧版 Schannel 无法处理该分片，把 CredSSP 首包判定为损坏数据。
+
+RDP 的 CredSSP 消息是带 BER 长度的完整消息，不能拆成两个 TLS 应用数据记录。关闭 Bouncy Castle 的旧版应用数据分片后，`.32` 成功完成 TLS、CredSSP 和 RDP Demand Active，并触发 `onConnected`。
+
+#### 5. 32bpp 位图缓存不是普通 RLE
+
+完成连接后，`.32` 首帧阶段仍然断开。抓取实际 Bitmap Cache 订单字段：
+
+```text
+flags=0x0
+width=16
+height=1
+bpp=32
+bitmapLength=13
+bitmapComprHdr: pad2=0, size=5, rowSize=64, finalSize=64
+payload=10 01 01 01 01
+```
+
+`finalSize=64` 与 `16 * 1 * 4` 一致，说明这是一张 16x1、32bpp 的位图。旧实现把 `Bpp=4` 交给 8/16/24bpp 使用的普通 RLE 解码器，解码器把最后一个 `0x01` 当成新的扫描行，导致 `height` 减到 0 后继续输出并抛出异常。
+
+对照 rdesktop 的 `bitmap_decompress4` / `process_plane` 和 FreeRDP 的 32bpp 解码逻辑，32bpp 位图缓存使用完全不同的格式：
+
+- 第一个字节必须是 `0x10`。
+- 后续数据按 B、G、R、A 四个颜色平面分别进行 RLE 解码。
+- 每个平面按自底向上的扫描行输出。
+- 每个像素的 4 个通道最终组合为 `0xAARRGGBB`。
+
+`payload=10 01 01 01 01` 正好表示：`0x10` 标记之后，四个平面各用 `0x01` 编码一整行，不是五个像素或五个 RLE 订单。
+
+#### 6. 32bpp 行间差分被重复累加
+
+补齐四平面解码后，`onConnected`、`first frame` 和保持期均正常，但首帧背景仍是 64x64 瓦片式彩色噪声。逐行对照 rdesktop 的 `process_plane` 后确认：非首行解码时，`color` 必须始终保存本次差分值；写入像素时应单独计算 `上一行像素 + color`。旧实现把计算结果写回 `color`，后续 `replen` 又在此基础上再加一次上一行像素，导致复杂位图的颜色快速漂移。
+
+修正后，首帧噪声基本消失，命令提示符和窗口内容恢复正常。
+
+#### 7. ROP COPY 忽略源图偏移
+
+修正差分后仍有大面积黑白横向条纹。通过 SMB 获取 `.32` 本机截图作为参考，确认远端窗口背景实际为纯白，问题只在客户端绘制。
+
+追踪 Bitmap Cache 后确认全部背景订单都是 32bpp，且用 rdesktop 参考解码器对同一份压缩数据解码，结果与 Java 实现逐像素一致，因此排除位图解码问题。继续检查 `RasterOp.ropCopy` 时发现：从缓存位图复制子区域时，代码固定使用 `offset=0, scanWidth=cx`，完全忽略 `srcx`、`srcy` 和源图行宽。服务端下发的 MemBlt 经常只复制缓存位图中的一小块，忽略源偏移后会把错误区域当成窗口背景，形成横向条纹。
+
+改为 `offset = srcy * srcwidth + srcx`、`scanWidth = srcwidth` 后，窗口背景与远端截图一致。
+
+#### 8. Cache Brush 二级订单未实现
+
+背景恢复后，命令提示符右侧滚动条仍显示为蓝绿色，而不是远端的浅灰棋盘纹理，日志同时反复出现：
+
+```text
+Unimplemented 2ry Order type 7
+Unsupported brush style 129
+```
+
+对照 MS-RDPEGDI 2.2.2.2.1.2.7 和 PatBlt 定义确认：
+
+- 二级订单 `0x07` 是 Cache Brush，缓存项为 8x8、1bpp、行序自底向上的刷子位图。
+- PatBlt 的 `BrushStyle=0x81` 中，`0x80` 表示使用缓存刷子，低半字节 `0x1` 表示 BMF_1BPP。
+- 缓存索引不在 `BrushStyle`，而在 `BrushHatch`，对应本实现 `Brush.pattern[0]`。
+
+`.32` 实际下发的是缓存索引 `0`，图案 `aa 55 aa 55 aa 55 aa 55`，前景 `0xf0f0f0`、背景 `0xffffff`。实现订单解析和缓存刷子绘制后，滚动条纹理恢复，上述两条告警消失。
+
+### 修复内容
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/RdpTlsFix.java`
+
+- 在默认现代密码套件之后追加旧版静态 RSA 兼容套件，并保持现代套件优先级更高。
+- 对没有 RFC 5746 `renegotiation_info` 的旧 TLS 服务端仅记录告警，不中断握手。
+- TLS 握手完成后禁用 Bouncy Castle 的旧版应用数据 1/n-1 分片，避免 Windows 7 Schannel 拒绝 CredSSP 首包。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/Orders.java`
+
+- Bitmap Cache 解析接收 secondary order 的 `extraFlags`。
+- 支持 `NO_BITMAP_COMPRESSION_HDR (0x0400)`：该标志存在时不再错误读取 8 字节 `bitmapComprHdr`。
+- 存在压缩头时，从 `bitmapLength` 中扣除 8 字节头长度，并校验压缩数据不超过订单剩余长度。
+- 增加宽高、Bpp、压缩长度的订单级校验，异常信息包含 flags 和长度字段，便于后续定位。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/graphics/Bitmap.java`
+
+- `Bpp == 4` 时不再进入 8/16/24bpp 普通 RLE 路径，改为调用新增的 32bpp 四平面解码器。
+- 新增 `decompress32` 和 `processPlane`，实现 `0x10` 标记、四通道平面 RLE、行间差分和自底向上写回。
+- 非首行差分值只用于计算当前像素，不能覆盖 `color` 后再次累加上一行像素。
+- 对平面截断、重复颜色长度和尾部多余字节做边界校验。
+- `convertImage` 补充 4 字节像素的 `0xAARRGGBB` 组合，覆盖未压缩 32bpp 位图路径。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/graphics/RasterOp.java`
+
+- ROP COPY 从源位图取子区域时使用 `srcx/srcy/srcwidth` 计算偏移和行宽，修复 MemBlt 复制错误区域导致的背景串图。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/graphics/RdesktopCanvas.java`
+
+- 新增 Brush Cache 存储和绘制。PatBlt 看到 `TS_CACHED_BRUSH (0x80)` 时，按 `BrushHatch` 索引取 8x8 单色刷子。
+- 当前实现覆盖旧版 Windows 主机使用的 BMF_1BPP 刷子；其他色深刷子会记录告警并跳过，避免越界访问。
+
+文件：`fx-rdp/src/test/java/cn/oyzh/fx/rdp/test/rdp4j/RdpConnectDiagnostics.java`
+
+- 增加 `-Drdp.useSsl=false` 诊断开关，便于复现 STANDARD 回退行为；默认仍为 `true`。
+
+### 验证结果
+
+编译：
+
+```bash
+mvn -q -pl fx-rdp -am test-compile -DskipTests
+```
+
+`.32` 连续回归：
+
+```bash
+java -Drdp.host=192.168.3.32 -Drdp.port=3389 \
+  -Drdp.username=oyzh -Drdp.password='***' \
+  -Drdp.attempts=3 -Drdp.holdMillis=3000 -Drdp.gapMillis=500 \
+  -Drdp.connectTimeoutMillis=20000 -cp "$CP" \
+  cn.oyzh.fx.rdp.test.rdp4j.RdpConnectDiagnostics
+```
+
+结果：
+
+```text
+ready=3/3
+```
+
+三轮均依次出现 `connected callback` 和 `first frame`，并在 3000ms 保持期内没有异常断开。位图缓存订单中的 64x64、64x40、64x36 等 32bpp 平面数据均解码成功，Brush Cache 和 PatBlt 路径不再出现未实现或刷子缺失告警。
+
+除 `ready` 和首帧回调外，还抓取 `.32` 首帧做像素检查：命令提示符、控制面板背景和滚动条均正常，没有瓦片噪声或横向条纹。另通过 SMB 获取 `.32` 本机截图作为参考，客户端首帧背景与其一致。
+
+`.50` 现代 TLS 回归：
+
+```bash
+java -Drdp.host=192.168.3.50 -Drdp.port=3389 \
+  -Drdp.username=ssh -Drdp.password='***' \
+  -Drdp.attempts=1 -Drdp.holdMillis=3000 \
+  -Drdp.connectTimeoutMillis=20000 -cp "$CP" \
+  cn.oyzh.fx.rdp.test.rdp4j.RdpConnectDiagnostics
+```
+
+结果：
+
+```text
+ready=1/1
+```
+
+TLS 1.2 + RDPGFX 首帧路径保持正常，新增旧版 TLS 兼容逻辑没有影响现代主机。
+
+### 回归注意事项
+
+- 强制 NLA 的旧服务器不能通过 STANDARD 回退连接，仍应保留 `HYBRID_REQUIRED_BY_SERVER` 诊断。
+- 32bpp Bitmap Cache 必须走四平面解码器；8/16/24bpp 才使用普通 RLE 解码器，不能混用。
+- `NO_BITMAP_COMPRESSION_HDR` 存在时，压缩数据从当前位置直接开始，不能再读取 8 字节头。
+- 禁用 Bouncy Castle 应用数据分片依赖其私有字段 `appDataSplitEnabled`。升级 Bouncy Castle 后需要重新验证 `.32`；如果字段改名，日志会输出“无法禁用旧版TLS应用数据分片”，应优先检查该兼容路径。
+- 回归旧版 Windows 主机时，至少要验证 `onConnected`、`first frame`、保持期不断开和首帧画面，不能仅以 TCP/TLS 握手成功或 `ready` 回调作为通过标准。
+- 缓存刷子目前只实现了 BMF_1BPP 8x8。若后续主机出现 `Unsupported cached brush`，需要按 MS-RDPEGDI 补充 8/16/24/32bpp 的压缩与非压缩刷子格式。
+
 ## 审查结论
 
 本次共修复了 8 类高置信度协议问题，重点集中在：
@@ -556,6 +772,11 @@ MS-RDPEGFX 规定更新矩形是图块写回的有效范围，FreeRDP 的 `updat
 | TLS 瞬态失败错误降级 | `RdpClient.java`、`io/DefaultIO.java` | HYBRID 原位重试、连接超时、连接中可取消、关闭后禁止隐式重连 |
 | finalization 期间提前发送输入 | `layers/Rdp.java` | INPUT ready 推迟到服务端四步 finalization 完成之后 |
 | Progressive 图块越界写回 | `DrdynvcChannel.java` | 按 region rectangle 裁剪 64x64 图块，修复拖动窗口残影 |
+| 旧版 Windows TLS 1.0/NLA 握手失败 | `RdpTlsFix.java` | 追加静态 RSA 套件、兼容无 RFC 5746 服务端、关闭 1/n-1 分片 |
+| 32bpp Bitmap Cache 解码越界 | `Orders.java`、`graphics/Bitmap.java` | 支持无压缩头标志，按 32bpp 四平面格式解码并补边界校验 |
+| 32bpp 行间差分重复累加 | `graphics/Bitmap.java` | 保留差分值 `color`，写入时单独叠加上一行像素 |
+| MemBlt 复制忽略源偏移 | `graphics/RasterOp.java` | ROP COPY 使用 `srcx/srcy/srcwidth` 计算源数据偏移 |
+| Cache Brush 未实现 | `Orders.java`、`graphics/RdesktopCanvas.java` | 解析二级订单 7，支持 8x8 单色缓存刷子的 PatBlt 绘制 |
 
 ## 验证命令
 

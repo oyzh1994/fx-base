@@ -36,6 +36,7 @@ public final class RdpConnectDiagnostics {
     private static final long GAP_MILLIS = Long.getLong("rdp.gapMillis", 1_000L);
     private static final long CONNECT_TIMEOUT_MILLIS = Long.getLong("rdp.connectTimeoutMillis", 30_000L);
     private static final boolean SIMULATE_INPUT = Boolean.getBoolean("rdp.simulateInput");
+    private static final boolean USE_SSL = Boolean.parseBoolean(System.getProperty("rdp.useSsl", "true"));
 
     private RdpConnectDiagnostics() {
     }
@@ -44,6 +45,7 @@ public final class RdpConnectDiagnostics {
         System.out.println("RDP diagnostics: " + HOST + ":" + PORT
                 + ", attempts=" + ATTEMPTS
                 + ", simulateInput=" + SIMULATE_INPUT
+                + ", useSsl=" + USE_SSL
                 + ", hold=" + HOLD_MILLIS + "ms, gap=" + GAP_MILLIS + "ms");
         List<String> failures = new ArrayList<>();
         int readyCount = 0;
@@ -94,7 +96,7 @@ public final class RdpConnectDiagnostics {
 
         Thread worker = Thread.ofVirtual().name("rdp-diag-" + attempt).start(() ->
                 client.connect(HOST, PORT, USERNAME, PASSWORD, null,
-                        1024, 768, 32, true, false, false));
+                        1024, 768, 32, USE_SSL, false, false));
 
         boolean ready = readyLatch.await(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
         if (ready) {

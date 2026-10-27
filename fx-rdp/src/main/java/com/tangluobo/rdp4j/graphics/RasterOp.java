@@ -213,7 +213,8 @@ public class RasterOp {
 			int[] region = biDst.getRGB(srcx, srcy, cx, cy, null, 0, cx);
 			biDst.setRGBNoConversion(x, y, cx, cy, region, 0, cx);
 		} else {
-			biDst.setRGB(x, y, cx, cy, src, 0, cx);
+			int offset = srcy * srcwidth + srcx;
+			biDst.setRGB(x, y, cx, cy, src, offset, srcwidth);
 		}
 	}
 

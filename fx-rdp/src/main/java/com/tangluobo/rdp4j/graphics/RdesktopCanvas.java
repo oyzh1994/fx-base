@@ -60,6 +60,7 @@ public class RdesktopCanvas {
     private int left = 0;
     private int right = 0;
     private RasterOp rop = null;
+    private final byte[][] cachedBrushPatterns = new byte[64][];
     private State state;
     // protected int[] backstore_int = null;
     // Clip region
@@ -951,9 +952,27 @@ public class RdesktopCanvas {
         if (y < this.top)
             y = this.top;
         cy = clipbottom - y + 1;
+        byte[] pattern = brush.getPattern();
+        int style = brush.getStyle();
+        if ((style & 0x80) != 0) {
+            int cacheIndex = pattern[0] & 0xff;
+            if (cacheIndex >= cachedBrushPatterns.length) {
+                JulLog.warn("Invalid cached brush index " + cacheIndex + " for style 0x"
+                        + Integer.toHexString(style));
+                return;
+            }
+            byte[] cachedPattern = cachedBrushPatterns[cacheIndex];
+            if (cachedPattern == null) {
+                JulLog.warn("Missing cached brush " + cacheIndex + " for style 0x"
+                        + Integer.toHexString(style));
+                return;
+            }
+            pattern = cachedPattern;
+            style = 3;
+        }
         int i;
         int[] src = null;
-        switch (brush.getStyle()) {
+        switch (style) {
             case 0: // solid
                 // make efficient version of rop later with int fgcolor and boolean
                 // usearray set to false for single colour
@@ -972,7 +991,6 @@ public class RdesktopCanvas {
             case 3: // pattern
                 int brushx = brush.getXOrigin();
                 int brushy = brush.getYOrigin();
-                byte[] pattern = brush.getPattern();
                 byte[] ipattern = pattern;
                 /*
                  * // not sure if this inversion is needed byte[] ipattern = new
@@ -996,6 +1014,27 @@ public class RdesktopCanvas {
             default:
                 JulLog.warn("Unsupported brush style " + brush.getStyle());
         }
+    }
+
+    /**
+     * Store a brush received in a Cache Brush secondary order. Legacy RDP
+     * servers use the monochrome 8x8 form for window backgrounds and
+     * scrollbars; other formats are not needed by the supported drawing paths.
+     */
+    public void cacheBrush(int cacheIndex, int format, int width, int height, byte[] data) {
+        if (cacheIndex < 0 || cacheIndex >= cachedBrushPatterns.length) {
+            JulLog.warn("Ignoring brush cache entry " + cacheIndex);
+            return;
+        }
+        if (format != 1 || width != 8 || height != 8 || data.length < 8) {
+            cachedBrushPatterns[cacheIndex] = null;
+            JulLog.warn("Unsupported cached brush: format=" + format + ", size="
+                    + width + "x" + height + ", bytes=" + data.length);
+            return;
+        }
+        byte[] pattern = new byte[8];
+        System.arraycopy(data, 0, pattern, 0, pattern.length);
+        cachedBrushPatterns[cacheIndex] = pattern;
     }
 
     /**
