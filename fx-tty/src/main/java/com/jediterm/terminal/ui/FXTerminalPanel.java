@@ -1370,29 +1370,29 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     public void addTerminalMouseListener(final TerminalMouseListener listener) {
-        this.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+        this.canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
             com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
             listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
 
         });
 
-        this.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+        this.canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
             com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
             listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
         });
 
-        this.addEventFilter(ScrollEvent.SCROLL, e -> {
+        this.canvas.addEventFilter(ScrollEvent.SCROLL, e -> {
             com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
             if(listener.onMouseEvent(p.x, p.y, new FXMouseWheelEvent(e), createMouseEventProcessingSettings(null))) e.consume();
             if (mySettingsProvider.enableMouseReporting() && isRemoteMouseAction(e)) updateSelection(null);
         });
 
-        this.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
+        this.canvas.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
             com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
             listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
         });
 
-        this.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
+        this.canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, e -> {
             com.jediterm.core.compatibility.Point p = panelToCharCoords(createPoint(e));
             listener.onMouseEvent(p.x, p.y, new FXMouseEvent(e), createMouseEventProcessingSettings(e));
         });
