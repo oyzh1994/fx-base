@@ -24,11 +24,14 @@ import com.jediterm.terminal.model.JediTermDebouncerImpl;
 import com.jediterm.terminal.model.JediTermTypeAheadModel;
 import com.jediterm.terminal.model.JediTerminal;
 import com.jediterm.terminal.model.StyleState;
+import com.jediterm.terminal.model.TerminalModelListener;
 import com.jediterm.terminal.model.TerminalTextBuffer;
 import com.jediterm.terminal.model.hyperlinks.AsyncHyperlinkFilter;
 import com.jediterm.terminal.model.hyperlinks.HyperlinkFilter;
 import com.jediterm.terminal.model.hyperlinks.TextProcessing;
 import com.jediterm.terminal.ui.settings.SettingsProvider;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -39,6 +42,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +52,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -64,6 +69,15 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     private final JediTermTypeAheadModel myTypeAheadTerminalModel;
     private final TerminalTypeAheadManager myTypeAheadManager;
     private FXJediTermSearchComponent myFindComponent;
+    private PauseTransition myFindRefreshDelay;
+    private final TerminalModelListener myFindModelListener = this::scheduleFindResultUpdate;
+    private final AtomicBoolean myFindActive = new AtomicBoolean();
+    private final AtomicBoolean myFindResultDirty = new AtomicBoolean();
+    private final AtomicBoolean myFindRefreshScheduled = new AtomicBoolean();
+    private String myFindText = "";
+    private volatile boolean myFindTextPresent;
+    private boolean myFindIgnoreCase = true;
+    private boolean myFindModelListenerInstalled;
     @SuppressWarnings("removal")
     private final FXPreConnectHandler myPreConnectHandler;
     private TtyConnector myTtyConnector;
@@ -297,6 +311,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
 
     @Override
     public void close() {
+        disposeFindResultUpdates();
         try {
             stopRunningSession();
         } catch (Exception ex) {
@@ -345,6 +360,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     private void showFindText() {
         if (myFindComponent == null) {
             myFindComponent = createSearchComponent();
+            installFindResultUpdates();
 
             final Pane component = myFindComponent.getComponentFX();
             this.addChild(component);
@@ -361,6 +377,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
 
                 @Override
                 public void hideSearchComponent() {
+                    disposeFindResultUpdates();
                     component.getChildren().clear();
                     removeChild(component);
                     myFindComponent = null;
@@ -412,7 +429,82 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
     }
 
     private void findText(String text, boolean ignoreCase) {
-        SubstringFinder.FindResult results = TerminalSearchUtil.searchInTerminalTextBuffer(getTerminalTextBuffer(), text, ignoreCase);
+        myFindText = text;
+        myFindTextPresent = !text.isEmpty();
+        myFindIgnoreCase = ignoreCase;
+        myFindResultDirty.set(false);
+        if (myFindRefreshDelay != null) {
+            myFindRefreshDelay.stop();
+        }
+        updateFindResult();
+    }
+
+    private void installFindResultUpdates() {
+        myFindActive.set(true);
+        if (myFindRefreshDelay == null) {
+            myFindRefreshDelay = new PauseTransition(Duration.millis(100));
+            myFindRefreshDelay.setOnFinished(event -> {
+                if (myFindActive.get() && myFindResultDirty.get()) {
+                    updateFindResult();
+                }
+            });
+        }
+        if (!myFindModelListenerInstalled) {
+            getTerminalTextBuffer().addModelListener(myFindModelListener);
+            myFindModelListenerInstalled = true;
+        }
+    }
+
+    private void disposeFindResultUpdates() {
+        myFindActive.set(false);
+        myFindResultDirty.set(false);
+        myFindRefreshScheduled.set(false);
+        if (myFindRefreshDelay != null && Platform.isFxApplicationThread()) {
+            myFindRefreshDelay.stop();
+        }
+        if (myFindModelListenerInstalled) {
+            getTerminalTextBuffer().removeModelListener(myFindModelListener);
+            myFindModelListenerInstalled = false;
+        }
+        myFindText = "";
+        myFindTextPresent = false;
+    }
+
+    private void scheduleFindResultUpdate() {
+        if (!myFindActive.get() || !myFindTextPresent) {
+            return;
+        }
+        myFindResultDirty.set(true);
+        if (!myFindRefreshScheduled.compareAndSet(false, true)) {
+            return;
+        }
+        Platform.runLater(() -> {
+            myFindRefreshScheduled.set(false);
+            if (myFindActive.get() && myFindResultDirty.get() && myFindRefreshDelay != null) {
+                myFindRefreshDelay.playFromStart();
+            }
+        });
+    }
+
+    private void updateFindResult() {
+        if (!myFindActive.get() || myFindComponent == null) {
+            myFindResultDirty.set(false);
+            return;
+        }
+        SubstringFinder.FindResult results = null;
+        if (!myFindText.isEmpty()) {
+            TerminalTextBuffer textBuffer = getTerminalTextBuffer();
+            if (!textBuffer.tryLock()) {
+                scheduleFindResultUpdate();
+                return;
+            }
+            try {
+                results = TerminalSearchUtil.searchInTerminalTextBuffer(textBuffer, myFindText, myFindIgnoreCase);
+            } finally {
+                textBuffer.unlock();
+            }
+        }
+        myFindResultDirty.set(false);
         myTerminalPanel.setFindResult(results);
         myFindComponent.onResultUpdated(results);
         myScrollBar.requestLayout();
@@ -523,6 +615,7 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
 
     @Override
     public void destroy() {
+        disposeFindResultUpdates();
         this.myTerminalPanel.destroy();
         this.myTerminal.disconnected();
         this.myListeners.clear();

@@ -1,8 +1,8 @@
-# fx-tty UI 回滚与实现边界记录
+# fx-tty UI 修复与实现边界记录
 
-- 日期：2026-10-27
+- 日期：2026-10-27，搜索修复更新：2026-10-28
 - 范围：`fx-tty` 的 JavaFX 终端 UI
-- 结论：撤销上一轮对 `FXTerminalPanel` 和 `FXJediTermWidget` 的结构性改动，恢复原有稳定实现
+- 结论：撤销上一轮结构性改动后，仅保留已确认的输入法、鼠标事件域和搜索修复
 
 ## 回滚原因
 
@@ -41,13 +41,27 @@ JavaFX `Timeline` 在 FX 线程回调，`doRepaint()` 直接写入持久化 `Gra
 - 修复：将 5 个事件过滤器从 `this` 移到终端组件 `this.canvas`，事件处理、坐标转换和远端 mouse reporting 逻辑均不变。
 - 边界：不修改滚动条自身的本地滚动处理，不修改菜单、搜索、输入法和生命周期代码。
 
+### 搜索状态失效与清屏刷新
+
+- 文件：`src/main/java/com/jediterm/terminal/ui/FXJediTermWidget.java`、
+  `src/main/java/com/jediterm/terminal/ui/FXTerminalPanel.java`
+- 问题：搜索完成后只保存一次 `FindResult`。终端执行 `clear` 并输出 `top` 后，旧结果仍引用清屏前的行坐标和
+  `CharBuffer`，因此向下查找会跳到旧内容，当前内容也无法命中高亮。
+- 上游对齐：`TerminalPanel.setFindResult()` 只保存结果并重绘，不自动修改选区；上下查找只执行一次选区更新和滚动。
+  本地实现已恢复相同语义，并移除重复的选区/滚动设置。
+- 刷新修复：搜索框打开且查询非空时监听 `TerminalTextBuffer` 的模型变化；使用 100ms 去抖，在 JavaFX 线程上
+  重新执行 `TerminalSearchUtil.searchInTerminalTextBuffer()`。刷新时使用 `tryLock()`，避免阻塞终端解析线程。
+- 生命周期：关闭或隐藏搜索、关闭终端、销毁组件时移除模型监听并取消待执行刷新，重新打开搜索可正常重建监听。
+- 边界：保留 JavaFX 所需的 `myScrollBar.requestLayout()`；本次不处理滚动条上的命中标记，只修复终端文本高亮、
+  查找数量和上下查找坐标。
+
 ## 已回滚内容
 
 以下改动已全部撤销，恢复仓库原有实现：
 
 - `FXTerminalPanel.init()` 的事件注册、监听器字段和右键菜单改造。
 - 查找结果滚动条覆盖画布及 `paintFindResultScrollBarTrack()`。
-- `setFindResult()`、`selectPrevOrNextFindResultItem()` 的行为调整。
+- 上一轮对 `setFindResult()`、`selectPrevOrNextFindResultItem()` 的结构性重写已回滚；本轮搜索修复见上文。
 - `addTerminalMouseListener()` 从面板改挂 Canvas。
 - `scrollArea()` 的 JavaFX 线程切换改造。
 - `createPopupMenu()` 的每次新建菜单改造。
@@ -77,9 +91,11 @@ mvn -pl fx-tty -Dtest='!TtyZModemSshIntegrationTest' test
 - `mvn -pl fx-tty -DskipTests package`：`BUILD SUCCESS`。
 - `mvn -pl fx-tty -Dtest='!TtyZModemSshIntegrationTest' test`：`Tests run: 13, Failures: 0, Errors: 0`。
 - JavaFX 右键冒烟：在同一个终端上连续请求右键 3 次，窗口数保持 `baseline + 1`，只有 1 个右键菜单，没有叠加。
+- JavaFX 搜索清屏冒烟：旧内容命中 `6` 项，清屏写入新内容后自动刷新为 `1` 项，高亮区间 `1` 个，向下查找命中新内容。
 - JavaFX 搜索冒烟：搜索框保持打开时修改终端内容和查询词，查找结果数量同步更新。
+- JavaFX 搜索生命周期冒烟：关闭搜索后状态清空，重新打开后搜索正常。
 - JavaFX 鼠标事件域冒烟：滚动条按压/滚轮进入终端监听 `0` 次，Canvas 按压/滚轮进入 `2` 次。
-- 生产代码差异仅保留输入法 null 安全和终端鼠标监听事件作用域修复；`FXJediTermWidget` 与仓库基线一致。
+- 生产代码差异仅保留输入法 null 安全、终端鼠标监听事件作用域和搜索刷新修复；其他 UI 逻辑保持仓库基线。
 
 ## 人工复测重点
 

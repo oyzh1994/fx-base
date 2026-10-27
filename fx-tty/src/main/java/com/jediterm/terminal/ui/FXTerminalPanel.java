@@ -694,10 +694,6 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     public void setFindResult(@Nullable SubstringFinder.FindResult findResult) {
         myFindResult = findResult;
         repaint();
-        // TODO: 选中内容，解决选区可能异常问题
-        if (myFindResult != null && !myFindResult.getItems().isEmpty()) {
-            selectFindResultItem(myFindResult.selectedItem());
-        }
     }
 
     public SubstringFinder.FindResult getFindResult() {
@@ -715,17 +711,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     protected @Nullable SubstringFinder.FindResult selectPrevOrNextFindResultItem(boolean next) {
         if (myFindResult != null && !myFindResult.getItems().isEmpty()) {
             SubstringFinder.FindResult.FindItem item = next ? myFindResult.nextFindItem() : myFindResult.prevFindItem();
-            TerminalSelection selection = new TerminalSelection(new com.jediterm.core.compatibility.Point(item.getStart().x, item.getStart().y - myTerminalTextBuffer.getHistoryLinesCount()),
-                    new com.jediterm.core.compatibility.Point(item.getEnd().x, item.getEnd().y - myTerminalTextBuffer.getHistoryLinesCount()));
-            updateSelection(selection);
-            if (mySelection.get().getStart().y < getTerminalTextBuffer().getHeight() / 2) {
-                this.scrollBar.setValue(mySelection.get().getStart().y - getTerminalTextBuffer().getHeight() / 2);
-            }
-            else {
-                this.scrollBar.setValue(scrollBar.getMin());
-            }
-            // TODO: 设置选中结果，解决选区可能异常问题
-            this.selectFindResultItem(item);
+            selectFindResultItem(item);
             repaint();
             return myFindResult;
         }
