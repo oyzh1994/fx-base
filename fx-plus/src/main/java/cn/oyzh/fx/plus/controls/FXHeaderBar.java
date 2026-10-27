@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HeaderBar;
+import javafx.scene.layout.HeaderDragType;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
@@ -52,11 +53,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
      */
     private FXLabel getTitleLabel() {
         return (FXLabel) this.getCenter();
-//        FXPane pane = (FXPane) this.getCenter();
-//        if (pane == null || pane.isChildEmpty()) {
-//            return null;
-//        }
-//        return (FXLabel) pane.getFirstChild();
     }
 
     /**
@@ -70,11 +66,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
      * @param label 标题组件
      */
     private void setTitleLabel(FXLabel label) {
-//        label.setLayoutX(20);
-//        label.setLayoutY(7);
-//        FXLabel pane = (FXLabel) this.getCenter();
-//        if (pane == null) {
-//            pane = new FXLabel();
         label.setPadding(TITLE_PADDING);
         if (!OSUtil.isLinux()) {
             label.setMouseTransparent(true);
@@ -82,9 +73,17 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         double w = ScreenUtil.getAllWidth();
         label.setPrefWidth(w);
         label.setFontWeight(FontWeight.BOLD);
-//        }
-//        pane.setChild(label);
         this.setCenter(label);
+        // linux要额外配置
+        if (OSUtil.isLinux()) {
+            HeaderBar.setDragType(label, HeaderDragType.TRANSPARENT_SUBTREE);
+            label.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                if (event.getClickCount() == 2) {
+                    Stage stage = this.stage();
+                    stage.setMaximized(!stage.isMaximized());
+                }
+            });
+        }
     }
 
     /**
@@ -96,11 +95,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         FXLabel label = this.getTitleLabel();
         if (label == null) {
             label = new FXLabel();
-//             label.setPadding(new Insets(7, 0, 0, 20));
-//            double w = ScreenUtil.getAllWidth();
-//            label.setPrefWidth(w);
-//            label.setMouseTransparent(true);
-//            label.setFontWeight(FontWeight.BOLD);
             this.setTitleLabel(label);
         }
         return label;
@@ -147,119 +141,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         label.text(title);
     }
 
-    // /**
-    //  * 初始化中间组件
-    //  */
-    // private void initCenter() {
-    //     FXPane pane = (FXPane) this.getCenter();
-    //     if (pane == null) {
-    //         pane = new FXPane();
-    //         pane.setMouseTransparent(true);
-    //         pane.setMinWidth(20);
-    //         this.setCenter(pane);
-    //     }
-    // }
-
-    // @Override
-    // public void initNode() {
-    //     NodeAdapter.super.initNode();
-    //     this.initCenter();
-    // }
-
-    // /**
-    //  * 原始x
-    //  */
-    // private Double originalX;
-    //
-    // /**
-    //  * 原始y
-    //  */
-    // private Double originalY;
-    //
-    // public void setOriginalX(double originalX) {
-    //     this.originalX = originalX;
-    // }
-    //
-    // public Double getOriginalX() {
-    //     return this.originalX;
-    // }
-    //
-    // public void setOriginalY(double originalY) {
-    //     this.originalY = originalY;
-    // }
-    //
-    // public Double getOriginalY() {
-    //     return this.originalY;
-    // }
-    //
-    // /**
-    //  * 记录位置
-    //  */
-    // public void doRecordLocation() {
-    //     // 记录原始位置
-    //     double[] originalPosition = MouseUtil.getMousePosition();
-    //     this.setOriginalX(originalPosition[0]);
-    //     this.setOriginalY(originalPosition[1]);
-    // }
-    //
-    // /**
-    //  * 清除位置
-    //  */
-    // public void doClearLocation() {
-    //     if (this.originalX != null) {
-    //         this.originalX = null;
-    //     }
-    //     if (this.originalY != null) {
-    //         this.originalY = null;
-    //     }
-    // }
-    //
-    // /**
-    //  * 更新位置
-    //  */
-    // public void doUpdateLocation() {
-    //     try {
-    //         Double originalX = this.getOriginalX();
-    //         Double originalY = this.getOriginalY();
-    //         if (originalX == null || originalY == null) {
-    //             return;
-    //         }
-    //         Window window = this.window();
-    //         double[] position = MouseUtil.getMousePosition();
-    //         double mouseX = position[0];
-    //         double mouseY = position[1];
-    //         double nodeX = window.getX();
-    //         double nodeY = window.getY();
-    //         // 更新x位置
-    //         // 计算x差值，不等于0时则更新组件x位置，并更新x值
-    //         double x1 = mouseX - this.getOriginalX();
-    //         if (x1 != 0) {
-    //             window.setX(nodeX + x1);
-    //             this.setOriginalX(mouseX);
-    //         }
-    //         // 更新y位置
-    //         // 计算y差值，不等于0时则更新组件x位置，并更新y值
-    //         double y1 = mouseY - originalY;
-    //         if (y1 != 0) {
-    //             window.setY(nodeY + y1);
-    //             this.setOriginalY(mouseY);
-    //         }
-    //     } catch (Exception ex) {
-    //         ex.printStackTrace();
-    //     }
-    // }
-    //
-    // /**
-    //  * 检查边界
-    //  *
-    //  * @return 结果
-    //  */
-    // public boolean checkBounds(MouseEvent event) {
-    //     Bounds bounds = this.getBoundsInLocal();
-    //     // 仅判断y是否在区间内
-    //     return bounds.contains(0, event.getY());
-    // }
-
     @Override
     public void changeTheme(ThemeStyle style) {
         Stage stage = this.stage();
@@ -289,14 +170,6 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         this.setMinHeight(30);
         this.setPrefHeight(30);
         this.setId("headerBar");
-        if (OSUtil.isLinux()) {
-            this.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                if (event.getClickCount() == 2) {
-                    Stage stage = this.stage();
-                    stage.setMaximized(!stage.isMaximized());
-                }
-            });
-        }
         NodeAdapter.super.initNode();
     }
 }
