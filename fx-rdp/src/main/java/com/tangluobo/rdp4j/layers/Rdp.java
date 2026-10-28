@@ -1557,13 +1557,13 @@ public class Rdp implements com.tangluobo.rdp4j.layers.Layer<com.tangluobo.rdp4j
 		 * information in a padding field..
 		 */
 		data.setLittleEndian16(0); /* Compression types */
-		data.setLittleEndian16(state.isRDP5() ? 0x0004
-				: 0); /* Extra Flags - long credentials supported */
+		data.setLittleEndian16(state.isRDP5() ? 0x0005
+				: 0x0001); /* Extra Flags - long credentials and fast-path output supported */
 		data.setLittleEndian16(0); /* Update capability */
 		data.setLittleEndian16(0); /* Remote unshare capability */
 		data.setLittleEndian16(0); /* Compression level */
-		data.set8(0); /* Refresh Rect support */
-		data.set8(0); /* Suppress output support */
+		data.set8(1); /* Refresh Rect support */
+		data.set8(1); /* Suppress output support */
 	}
 
 	private void sendInputCaps(Packet data) {

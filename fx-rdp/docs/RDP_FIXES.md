@@ -816,6 +816,67 @@ MS-RDPBCGR `TS_PERF_FLAGS`：
 - 新连接默认写入 `enableWallpaper=true`；历史连接未保存该键时也按开启处理，用户关闭后会随 `extras` 持久化。
 - 关闭壁纸可减少首帧位图缓存数据量；开启后回归旧版主机时需同时检查 `connected callback`、`first frame` 和保持期不断开。
 
+## 14. RDP 文件复制损坏 EXE/MSI
+
+### 问题现象
+
+从 macOS 通过 RDP 剪贴板复制 `EasyShell_v1.2.3_windows_arm64_release.exe` 或 `.msi` 到 Windows 后，文件大小不变，但 SHA256 与本地不一致；通过 SSH 复制同一文件则完整。小文件和随机数据有时完全正常，因此问题容易表现成“只有安装包异常”。
+
+### 定位过程
+
+1. 对 exe 尾部切片做最小复现，发现切片即使改名成 `.bin` 仍会在相同数据位置损坏，排除了文件扩展名、Windows Installer 和安装器执行的影响。
+2. 逐字节比较后，损坏不是整块丢失，而是少量 24 字节结构中的字段被改写，例如：
+
+   ```text
+   extraFlags 0x0056 -> 0x0057
+   extraFlags 0x003c -> 0x003d
+   0x002f -> 0x0101
+   0x0021 -> 0x0101
+   ```
+
+3. EasyShell 日志显示每次复制时都会出现：
+
+   ```text
+   [CAPS-FIX] General Caps at offset ...
+   ```
+
+   命中位置随文件内容变化，说明 `RdpTlsFix` 在发送文件数据时误改数据。
+4. `RdpTlsFix$RdpTransport.sendPacket()` 原先会在所有大于 150 字节的发送包中搜索 `01 00 18 00`（General Capability Set 的 type/length），然后直接把该位置后的字段当成 Confirm Active 能力集修改。文件数据中只要出现这 4 个字节，就会被误判并改写。
+
+### 根因
+
+能力兼容补丁放在了错误的协议层。它没有区分 Confirm Active PDU 与普通文件内容，而是对整包做字节模式搜索；CLIPRDR 文件数据进入 Transport 后同样会经过这条路径，因此二进制文件中的 `01 00 18 00` 会触发写入。
+
+### 修复内容
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/RdpTlsFix.java`
+
+- 删除 `sendPacket()` 中对任意发送包的能力集扫描和改写；Transport 层只负责发送原始字节。
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/layers/Rdp.java`
+
+- 在构造 Confirm Active 的 `sendGeneralCaps()` 时直接设置正确的 General Capability Set：
+  - RDP5：`extraFlags = 0x0005`（保留 long credentials，并声明 `FASTPATH_OUTPUT_SUPPORTED`）。
+  - 非 RDP5：`extraFlags = 0x0001`。
+  - `refreshRectSupport = 1`、`suppressOutputSupport = 1`。
+
+这样兼容行为只作用于真正的能力集，不再接触 CLIPRDR 或其他虚拟通道数据。
+
+### 验证结果
+
+- `fx-rdp` Maven 编译通过。
+- 120 字节最小样本、全字节模式文件、全部字节对文件、1.39MB exe 尾部切片经 RDP 复制后 SHA256 均与本地一致。
+- 完整 `EasyShell_v1.2.3_windows_arm64_release.exe` 经 RDP 复制后 SHA256 为 `f0b97434ccc55fd8d7ff8a82d1c8aba61a212abb77e0231e102b012a05b9ba5e`，与本地一致。
+- 完整 `EasyShell_v1.2.3_windows_arm64_release.msi` 经 RDP 复制后 SHA256 为 `76625aaf2f2e3054368af8df1e9fc1e7cfe4e350041b3bab958a0b5a0b12c9c5`，与本地一致。
+- MSI 静默安装返回 `0`，注册表显示 EasyShell `1.2.3`。
+- 卸载 MSI 后，EXE 静默安装返回 `0`，`C:\Program Files\EasyShell\EasyShell.exe` 存在。
+
+### 回归注意事项
+
+- 不应在任何负责发送原始数据的层（Transport、ISO、MCS、虚拟通道）扫描并修改业务负载。
+- RDP 能力集必须在其结构化构造位置修改；不能依赖对整包进行固定字节序列搜索。
+- 文件传输回归必须同时覆盖随机数据、含能力集字节模式的数据、exe/msi 完整文件和安装流程，不能只检查文件大小。
+
 ## 审查结论
 
 本次共修复了 8 类高置信度协议问题，重点集中在：
@@ -850,6 +911,7 @@ MS-RDPBCGR `TS_PERF_FLAGS`：
 | MemBlt 复制忽略源偏移 | `graphics/RasterOp.java` | ROP COPY 使用 `srcx/srcy/srcwidth` 计算源数据偏移 |
 | Cache Brush 未实现 | `Orders.java`、`graphics/RdesktopCanvas.java` | 解析二级订单 7，支持 8x8 单色缓存刷子的 PatBlt 绘制 |
 | 远程桌面壁纸可配置 | `Options.java`、`RdpClient.java`、`ShellRDPUtil.java`、RDP 连接控制器和 FXML | extras `enableWallpaper` 控制，默认开启；内置与外部 `.rdp` 链路均生效 |
+| RDP 文件复制损坏 EXE/MSI | `RdpTlsFix.java`、`layers/Rdp.java` | 删除 Transport 整包能力扫描，改为在 Confirm Active 构造时设置 General Caps |
 
 ## 验证命令
 

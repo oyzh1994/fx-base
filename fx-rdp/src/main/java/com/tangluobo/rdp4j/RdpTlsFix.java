@@ -155,51 +155,6 @@ public class RdpTlsFix {
             }
             buffer.setPosition(savePos);
 
-            // 修改 ConfirmActive PDU 中的 General Capability Set。
-            // 部分 Windows 服务器在未声明该能力时不会回退发送 slow-path 位图，
-            // 因此保留 fast-path 输出支持，并由 RdpIsoFix 正确处理低位安全标志。
-            try {
-                byte[] packet = new byte[buffer.getEnd()];
-                buffer.copyToByteArray(packet, 0, 0, packet.length);
-                // 只在大包(>150字节，ConfirmActive通常200+字节)中搜索和修改
-                if (packet.length > 150) {
-                    boolean modified = false;
-                    boolean isConfirmActive = false;
-                    for (int i = 7; i < packet.length - 24; i++) {
-                        if (packet[i] == 0x01 && packet[i+1] == 0x00 &&
-                            packet[i+2] == 0x18 && packet[i+3] == 0x00) {
-                            isConfirmActive = true;
-                            int generalCompressionTypes = (packet[i+12] & 0xff) | ((packet[i+13] & 0xff) << 8);
-                            // General Capability Set: extraFlags is at offset 14, not 12.
-                            // Offset 12 is generalCompressionTypes. Writing fast-path bits there
-                            // accidentally advertised bulk compression that javardp cannot decode.
-                            int oldFlags = (packet[i+14] & 0xff) | ((packet[i+15] & 0xff) << 8);
-                            int newFlags = oldFlags | 0x0001; // FASTPATH_OUTPUT_SUPPORTED
-                            int oldRefresh = packet[i+22] & 0xff;
-                            int oldSuppress = packet[i+23] & 0xff;
-                            packet[i+14] = (byte)(newFlags & 0xff);
-                            packet[i+15] = (byte)((newFlags >> 8) & 0xff);
-                            packet[i+22] = 1; // refreshRectSupport = 1
-                            packet[i+23] = 1; // suppressOutputSupport = 1
-                            modified = true;
-                            JulLog.info(String.format("[CAPS-FIX] General Caps at offset %d: "
-                                    + "generalCompressionTypes=0x%04x, extraFlags 0x%04x→0x%04x, "
-                                    + "refreshRect %d→1, suppressOutput %d→1",
-                                    i, generalCompressionTypes, oldFlags, newFlags, oldRefresh, oldSuppress));
-                            break;
-                        }
-                    }
-                    if (modified) {
-                        buffer.setPosition(0);
-                        buffer.copyFromByteArray(packet, 0, 0, packet.length);
-                        buffer.setPosition(savePos);
-                    }
-
-                }
-            } catch (Exception e) {
-                JulLog.warn("[CAPS-FIX] 修改capabilities失败: " + e.getMessage());
-            }
-
             super.sendPacket(buffer);
            JulLog.trace("[SEND #" + count + "] flushed");
         }
