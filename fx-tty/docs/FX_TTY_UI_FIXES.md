@@ -74,15 +74,30 @@ JavaFX `Timeline` 在 FX 线程回调，`doRepaint()` 直接写入持久化 `Gra
 - 刷新修复：搜索框打开且查询非空时监听 `TerminalTextBuffer` 的模型变化；使用 100ms 去抖，在 JavaFX 线程上
   重新执行 `TerminalSearchUtil.searchInTerminalTextBuffer()`。刷新时使用 `tryLock()`，避免阻塞终端解析线程。
 - 生命周期：关闭或隐藏搜索、关闭终端、销毁组件时移除模型监听并取消待执行刷新，重新打开搜索可正常重建监听。
-- 边界：保留 JavaFX 所需的 `myScrollBar.requestLayout()`；本次不处理滚动条上的命中标记，只修复终端文本高亮、
-  查找数量和上下查找坐标。
+- 边界：保留 JavaFX 所需的 `myScrollBar.requestLayout()`；滚动条命中标记由独立覆盖层实现，见下一节。
+
+### 搜索滚动条命中标记
+
+- 文件：`src/main/java/com/jediterm/terminal/ui/FXTerminalPanel.java`
+- 上游对照：Swing `FindResultScrollBarUI.paintTrack()` 使用
+  `where = trackHeight * item.start.y / modelHeight` 计算标记位置，使用
+  `Math.max(2, trackHeight / modelHeight)` 计算标记高度，并以 `getFoundPatternColor().getBackground()`
+  经终端调色板转换后的颜色绘制。
+- JavaFX 实现：在 `FXTerminalPanel` 中增加一个 `Canvas` 覆盖层，覆盖层 `managed=false`、
+  `mouseTransparent=true`，作为滚动条兄弟节点放在画布和滚动条之后。`layoutChildren()` 每次布局后把覆盖层
+  对齐到滚动条的父坐标、尺寸，并重绘标记，不修改 `ScrollBar` 的 skin、thumb、事件和滚动值。
+- 刷新链路：`setFindResult()`、滚动条宽高变化、`min/max` 变化、主题切换、终端缩放和 `dispose()` 都会触发
+  覆盖层重绘或清理；覆盖层透明度跟随滚动条透明度，因此在主题变暗、滚动条半透明时仍保持一致。
+- 边界：标记绘制在覆盖层上，不参与终端 Canvas 的文本绘制和搜索算法；JavaFX 没有 Swing 的
+  `BasicScrollBarUI#paintTrack`，因此使用覆盖层而不是替换 ScrollBar skin。覆盖层不接收鼠标事件，不影响拖动滑块、
+  右键菜单和终端 mouse reporting。
 
 ## 已回滚内容（右键菜单除外）
 
 以下历史改动仍保持撤销状态；右键菜单已按本节新增设计重新实现：
 
 - 上一轮 `FXTerminalPanel.init()` 的结构性事件重构；本轮只重新实现右键鼠标/键盘分流，不复用该重构的其他部分。
-- 查找结果滚动条覆盖画布及 `paintFindResultScrollBarTrack()`。
+- 上一轮“把命中标记直接画到终端 Canvas 上”的方案已回滚；本轮改为独立滚动条覆盖层，不改变终端文本绘制。
 - 上一轮对 `setFindResult()`、`selectPrevOrNextFindResultItem()` 的结构性重写已回滚；本轮搜索修复见上文。
 - `scrollArea()` 的 JavaFX 线程切换改造。
 - `FXJediTermWidget.findText()` 中 `myScrollBar.requestLayout()` 的删除。
@@ -97,8 +112,8 @@ JavaFX `Timeline` 在 FX 线程回调，`doRepaint()` 直接写入持久化 `Gra
 - 鼠标右键和键盘上下文菜单必须分流：鼠标事件已在 `MOUSE_CLICKED` 处理，`ContextMenuEvent` 只负责清理与
   键盘触发，否则同一次右键会产生两份菜单。
 - `myScrollBar.requestLayout()` 是 JavaFX 搜索刷新链路的一部分，不是 Swing 中可删除的冗余调用。
-- JavaFX `ScrollBar` 没有 Swing `BasicScrollBarUI#paintTrack` 的直接对应物；后续如需查找标记，应单独验证菜单、
-  输入、布局和搜索刷新，不应顺带重构事件或生命周期代码。
+- JavaFX `ScrollBar` 没有 Swing `BasicScrollBarUI#paintTrack` 的直接对应物；当前命中标记使用独立 Canvas
+  覆盖层，后续修改应单独验证菜单、输入、布局和搜索刷新，不应顺带重构事件或生命周期代码。
 - JavaFX 的 Canvas 事件过滤器、ContextMenuEvent、输入法事件和线程模型与 Swing 不同，不能按 Swing 方法行逐行替换。
 
 ## 验证命令
@@ -123,7 +138,12 @@ mvn -pl fx-tty -Dtest='!TtyZModemSshIntegrationTest' test
 - JavaFX 搜索冒烟：搜索框保持打开时修改终端内容和查询词，查找结果数量同步更新。
 - JavaFX 搜索生命周期冒烟：关闭搜索后状态清空，重新打开后搜索正常。
 - JavaFX 鼠标事件域冒烟：滚动条按压/滚轮进入终端监听 `0` 次，Canvas 按压/滚轮进入 `2` 次。
-- 生产代码差异仅保留输入法 null 安全、终端鼠标监听事件作用域、搜索刷新修复和右键菜单生命周期修复；
+- JavaFX 滚动条标记冒烟：200 行内容搜索 `needle` 命中 10 项，覆盖层 700px 高时生成 30 行像素标记；追加输出后
+  标记自动刷新为 33 行；清屏并输出 3 行 `top` 后只保留 3 项对应标记；窗口缩放后标记位置重新计算；清空搜索后
+  覆盖层像素全部清除。
+- JavaFX 滚动条主题/交互冒烟：覆盖层透明度跟随滚动条；真实右键连续 3 次窗口数保持 `baseline + 1`；标记覆盖层
+  `mouseTransparent=true`，不拦截滚动条操作。
+- 生产代码差异保留输入法 null 安全、终端鼠标监听事件作用域、搜索刷新修复、滚动条命中标记和右键菜单生命周期修复；
   其他 UI 逻辑保持仓库基线。
 
 ## 人工复测重点
@@ -132,3 +152,13 @@ mvn -pl fx-tty -Dtest='!TtyZModemSshIntegrationTest' test
 2. 搜索 `a`，清屏后输入 `top`，确认匹配结果随终端内容变化刷新。
 3. 验证普通输入、中文输入法组合输入和 SSH 首次密码输入。
 4. 验证终端鼠标选择、滚轮、右键、搜索导航和关闭终端标签。
+
+## 人工复测：滚动条命中标记
+
+1. 连接任意可用终端，执行 `seq 1 200` 或输出足够多的行，让滚动条出现历史区。
+2. 打开搜索，输入 `1` 或 `needle` 等能命中多行的内容，确认右侧滚动条上出现与命中数量对应的色块标记。
+3. 保持搜索框打开，执行 `clear`，再执行 `top` 或输出几行新内容，确认旧标记消失、只显示当前内容的命中标记，
+   且上下查找仍能定位当前内容。
+4. 拖动窗口改变高度，确认标记随滚动条重新定位。
+5. 关闭搜索或清空搜索词，确认滚动条标记全部消失。
+6. 在滚动条上拖动滑块、滚轮滚动并右键终端，确认操作正常，不被标记层拦截。

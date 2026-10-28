@@ -81,6 +81,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ScrollBar;
@@ -218,6 +219,11 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     private SubstringFinder.FindResult myFindResult;
 
+    /**
+     * 查找结果在滚动条上的命中标记覆盖层，不参与布局且不接收鼠标事件。
+     */
+    private final Canvas myFindResultScrollBar = new Canvas();
+
     private LinkInfo myHoveredHyperlink = null;
 
     private Cursor myCursorType = Cursor.DEFAULT;
@@ -239,6 +245,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         myTermSize = new TermSize(terminalTextBuffer.getWidth(), terminalTextBuffer.getHeight());
         myMaxFPS = mySettingsProvider.maxRefreshRate();
         myCopyPasteHandler = createCopyPasteHandler();
+        this.myFindResultScrollBar.setManaged(false);
+        this.myFindResultScrollBar.setMouseTransparent(true);
 
         updateScrolling(true);
 
@@ -284,6 +292,12 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     private void doRepaint() {
         this.paintComponent(this.canvas.getGraphicsContext2D());
+    }
+
+    @Override
+    protected void layoutChildren() {
+        super.layoutChildren();
+        this.layoutFindResultScrollBar();
     }
 
     protected void reinitFontAndResize() {
@@ -336,8 +350,15 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         this.canvas.prefHeightProperty().bind(this.heightProperty().subtract(2));
         this.canvas.prefWidthProperty().bind(this.widthProperty().subtract(this.scrollBar.widthProperty()));
         HBox.setHgrow(this.canvas, Priority.ALWAYS);
-        this.setChild(this.canvas, scrollBar);
+        this.setChild(this.canvas, scrollBar, this.myFindResultScrollBar);
         scrollBar.setOrientation(Orientation.VERTICAL);
+        this.myFindResultScrollBar.setOpacity(scrollBar.getOpacity());
+        scrollBar.opacityProperty().addListener((observable, oldValue, newValue) ->
+                this.myFindResultScrollBar.setOpacity(newValue.doubleValue()));
+        scrollBar.widthProperty().addListener(observable -> this.updateFindResultScrollBar());
+        scrollBar.heightProperty().addListener(observable -> this.updateFindResultScrollBar());
+        scrollBar.minProperty().addListener(observable -> this.updateFindResultScrollBar());
+        scrollBar.maxProperty().addListener(observable -> this.updateFindResultScrollBar());
 
         this.canvas.addEventFilter(MouseEvent.MOUSE_MOVED, (e) -> {
             myLastMousePosition = createPoint(e);
@@ -690,11 +711,84 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
     public void setFindResult(@Nullable SubstringFinder.FindResult findResult) {
         myFindResult = findResult;
+        this.updateFindResultScrollBar();
         repaint();
     }
 
     public SubstringFinder.FindResult getFindResult() {
         return myFindResult;
+    }
+
+    /**
+     * 将命中标记覆盖层对齐到滚动条，并按照当前查找结果重绘。
+     */
+    private void layoutFindResultScrollBar() {
+        if (this.scrollBar == null) {
+            return;
+        }
+        Bounds bounds = this.scrollBar.getBoundsInParent();
+        double width = bounds.getWidth();
+        double height = bounds.getHeight();
+        if (width <= 0 || height <= 0) {
+            this.clearFindResultScrollBar();
+            return;
+        }
+        if (this.myFindResultScrollBar.getLayoutX() != bounds.getMinX()) {
+            this.myFindResultScrollBar.setLayoutX(bounds.getMinX());
+        }
+        if (this.myFindResultScrollBar.getLayoutY() != bounds.getMinY()) {
+            this.myFindResultScrollBar.setLayoutY(bounds.getMinY());
+        }
+        if (this.myFindResultScrollBar.getWidth() != width) {
+            this.myFindResultScrollBar.setWidth(width);
+        }
+        if (this.myFindResultScrollBar.getHeight() != height) {
+            this.myFindResultScrollBar.setHeight(height);
+        }
+        this.paintFindResultScrollBar();
+    }
+
+    private void updateFindResultScrollBar() {
+        if (Platform.isFxApplicationThread()) {
+            this.layoutFindResultScrollBar();
+        } else {
+            Platform.runLater(this::layoutFindResultScrollBar);
+        }
+    }
+
+    private void clearFindResultScrollBar() {
+        this.myFindResultScrollBar.getGraphicsContext2D().clearRect(0, 0,
+                this.myFindResultScrollBar.getWidth(), this.myFindResultScrollBar.getHeight());
+    }
+
+    /**
+     * 按照 Swing FindResultScrollBarUI 的算法绘制命中标记。
+     */
+    private void paintFindResultScrollBar() {
+        this.clearFindResultScrollBar();
+        if (this.scrollBar == null || this.myFindResult == null || this.myFindResult.getItems().isEmpty()) {
+            return;
+        }
+        int modelHeight = (int) (this.scrollBar.getMax() - this.scrollBar.getMin());
+        int trackHeight = (int) this.myFindResultScrollBar.getHeight();
+        double trackWidth = this.myFindResultScrollBar.getWidth();
+        if (modelHeight <= 0 || trackHeight <= 0 || trackWidth <= 0) {
+            return;
+        }
+        int anchorHeight = Math.max(2, trackHeight / modelHeight);
+        TextStyle foundPatternColor = this.mySettingsProvider.getFoundPatternColor();
+        com.jediterm.core.Color color = foundPatternColor.getBackground() != null
+                ? this.toBackground(foundPatternColor.getBackground()) : this.getWindowBackground();
+        Color markerColor = FXTransformers.toFxColor(color);
+        if (markerColor == null) {
+            return;
+        }
+        GraphicsContext gfx = this.myFindResultScrollBar.getGraphicsContext2D();
+        gfx.setFill(markerColor);
+        for (SubstringFinder.FindResult.FindItem item : this.myFindResult.getItems()) {
+            int where = trackHeight * item.getStart().y / modelHeight;
+            gfx.fillRect(0, where, trackWidth, anchorHeight);
+        }
     }
 
     public @Nullable SubstringFinder.FindResult selectPrevFindResultItem() {
@@ -2527,6 +2621,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         myRepaintTimer.stop();
         this.myBoldFont = null;
         this.myFindResult = null;
+        this.updateFindResultScrollBar();
         this.myItalicFont = null;
         this.myNormalFont = null;
         this.mySelection.set(null);
@@ -2593,6 +2688,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     @Override
     public void changeTheme(ThemeStyle style) {
         super.changeTheme(style);
+        this.updateFindResultScrollBar();
         // 执行重绘
         this.repaint();
     }
