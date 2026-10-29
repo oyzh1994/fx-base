@@ -439,8 +439,8 @@ public class StageManager {
                     PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
                 }
             };
-            // 应用模态弹窗通过 resolveDialogOwner 以遮罩为 owner，避免被 PopupWindow 覆盖
-            PopupMask.showMask(window, maskCallback);
+            // 显示遮罩
+            StageMask.showMask(window, maskCallback);
         } else {// 直接执行
             callback.run();
         }
@@ -467,7 +467,7 @@ public class StageManager {
     }
 
     /**
-     * 获取模态弹窗使用的父窗口。存在遮罩时统一处理弹窗与遮罩的层级关系。
+     * 获取模态弹窗使用的父窗口。存在遮罩时使用遮罩作为父窗口，确保弹窗位于遮罩之上。
      *
      * @return 弹窗父窗口
      */
@@ -477,20 +477,14 @@ public class StageManager {
     }
 
     /**
-     * 获取模态弹窗使用的父窗口。存在遮罩时统一处理弹窗与遮罩的层级关系。
-     * Linux 下 Popup 会始终置顶，因此保持原父窗口并由遮罩在失焦时临时收起。
+     * 获取模态弹窗使用的父窗口。存在遮罩时使用遮罩作为父窗口，确保弹窗位于遮罩之上。
      *
      * @param owner 原始父窗口
      * @return 弹窗父窗口
      */
     public static Window resolveDialogOwner(Window owner) {
-        // Linux 下 Popup 是 override-redirect 窗口，会始终压在普通 Stage 之上。
-        // 此时保持原 owner，并让 PopupMask 在目标窗口失焦时临时收起。
         if (owner == null) {
             return null;
-        }
-        if (OSUtil.isLinux()) {
-            return owner;
         }
         for (Window window : Window.getWindows()) {
             if (!window.isShowing()) {
@@ -498,8 +492,6 @@ public class StageManager {
             }
             Window target = null;
             if (window instanceof StageMask mask) {
-                target = mask.targetWindow();
-            } else if (window instanceof PopupMask mask) {
                 target = mask.targetWindow();
             }
             if (target != null && matchesOwner(target, owner)) {

@@ -20,13 +20,13 @@ import javafx.stage.Window;
 
 /**
  * 弹窗遮罩
- * 窗口层级由 {@link StageManager#resolveDialogOwner(Window)} 统一处理。
- * Linux 下遮罩会在目标窗口失焦时临时收起，避免 override-redirect 的 Popup 压住普通 Stage 弹窗。
+ * 已废弃：PopupWindow 在 Linux 下会始终置顶，二次弹窗等场景无法保证层级，请使用 {@link StageMask}。
  * 注意：PopupWindow 本身不能获得焦点，无法可靠拦截键盘输入，需要拦截键盘时应使用 {@link StageMask}。
  *
  * @author oyzh
  * @since 2025-03-12
  */
+@Deprecated
 public class PopupMask extends Popup implements PopupAdapter {
 
     /**
