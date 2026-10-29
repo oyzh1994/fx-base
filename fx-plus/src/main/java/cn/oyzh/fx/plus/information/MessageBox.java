@@ -11,6 +11,7 @@ import cn.oyzh.fx.plus.util.ControlUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import cn.oyzh.fx.plus.window.StageAdapter;
+import cn.oyzh.fx.plus.window.StageMask;
 import cn.oyzh.fx.plus.window.StageManager;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.geometry.Insets;
@@ -135,14 +136,14 @@ public class MessageBox {
                 FXButton button2 = new FXButton(I18nHelper.cancel());
                 AlertStage stage = new AlertStage(Alert.AlertType.CONFIRMATION, finalContent, List.of(button1, button2));
                 stage.title(title);
-                stage.initOwner(owner);
+                stage.initOwner(StageMask.dialogOwner(owner));
                 result.set(button1.equals(stage.getResult()));
             } else {
                 ButtonType button1 = new ButtonType(I18nHelper.ok());
                 ButtonType button2 = new ButtonType(I18nHelper.cancel());
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, finalContent, button1, button2);
                 alert.setTitle(title);
-                alert.initOwner(owner);
+                alert.initOwner(StageMask.dialogOwner(owner));
                 alert.setHeaderText(headerText);
                 //            // 监听回车，触发按钮
                 //            Scene scene = alert.getDialogPane().getScene();
@@ -345,14 +346,14 @@ public class MessageBox {
                     //                if (FXUtil.isEnablePreview()) {
                     AlertStage stage = new AlertStage(type, content);
                     stage.title(title);
-                    stage.initOwner(owner);
+                    stage.initOwner(StageMask.dialogOwner(owner));
                     stage.showAndWait();
                 } else {
                     Alert alert = new Alert(type);
                     alert.setTitle(title);
                     alert.setHeaderText(header);
                     alert.setContentText(content);
-                    alert.initOwner(owner);
+                    alert.initOwner(StageMask.dialogOwner(owner));
                     alert.showAndWait();
                 }
             });
@@ -453,14 +454,14 @@ public class MessageBox {
             if (enableNewStyle) {
                 //            if (FXUtil.isEnablePreview()) {
                 InputStage stage = new InputStage(finalInitText);
-                stage.initOwner(owner);
+                stage.initOwner(StageMask.dialogOwner(owner));
                 stage.title(finalTitle);
                 ref.set(stage.getResult());
             } else {
                 TextInputDialog dialog = new TextInputDialog(finalInitText);
                 dialog.setTitle(finalTitle);
                 dialog.setGraphic(null);
-                dialog.initOwner(owner);
+                dialog.initOwner(StageMask.dialogOwner(owner));
                 dialog.setHeaderText(null);
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(ref::set);

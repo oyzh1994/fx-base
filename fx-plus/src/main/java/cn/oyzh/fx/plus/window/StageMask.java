@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -188,5 +189,46 @@ public class StageMask extends Stage implements StageAdapter {
             StageMask mask = new StageMask(window, callback);
             mask.show();
         });
+    }
+
+    /**
+     * 获取弹窗使用的父窗口。存在遮罩时使用遮罩作为父窗口，确保弹窗位于遮罩之上。
+     *
+     * @param owner 原始父窗口
+     * @return 弹窗父窗口
+     */
+    public static Window dialogOwner(Window owner) {
+        if (owner == null) {
+            return null;
+        }
+        for (Window window : Window.getWindows()) {
+            if (window instanceof StageMask mask && mask.isShowing() && mask.matchesOwner(owner)) {
+                return mask;
+            }
+        }
+        return owner;
+    }
+
+    /**
+     * 判断窗口是否属于当前遮罩的目标窗口链
+     *
+     * @param window 窗口
+     * @return 结果
+     */
+    private boolean matchesOwner(Window window) {
+        Window current = window;
+        while (current != null) {
+            if (current == this.target) {
+                return true;
+            }
+            if (current instanceof Stage stage) {
+                current = stage.getOwner();
+            } else if (current instanceof PopupWindow popup) {
+                current = popup.getOwnerWindow();
+            } else {
+                current = null;
+            }
+        }
+        return false;
     }
 }
