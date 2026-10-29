@@ -18,12 +18,13 @@ import javafx.stage.Window;
 
 /**
  * 弹窗遮罩
- * TODO: 在windows和linux上无法正常工作，废弃
+ * PopupWindow 会覆盖同 owner 的普通 Stage，因此应用模态弹窗必须通过
+ * {@link StageManager#resolveDialogOwner(Window)} 以遮罩为 owner。
+ * 注意：PopupWindow 本身不能获得焦点，无法可靠拦截键盘输入，需要拦截键盘时应使用 {@link StageMask}。
  *
  * @author oyzh
  * @since 2025-03-12
  */
-@Deprecated
 public class PopupMask extends Popup implements PopupAdapter {
 
     /**
@@ -65,6 +66,15 @@ public class PopupMask extends Popup implements PopupAdapter {
      * 是否正在刷新弹窗
      */
     private boolean refreshing;
+
+    /**
+     * 获取遮罩的目标窗口
+     *
+     * @return 目标窗口
+     */
+    Window targetWindow() {
+        return this.target;
+    }
 
     /**
      * 构造弹窗遮罩

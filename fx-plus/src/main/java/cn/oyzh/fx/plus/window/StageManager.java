@@ -5,6 +5,7 @@ import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.plus.util.PropertiesUtil;
 import javafx.application.Platform;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -312,9 +313,10 @@ public class StageManager {
         }
         // 创建舞台
         if (stage == null) {
-            Window finalOwner = owner;
+            Window stageOwner = owner;
             AtomicReference<StageAdapter> ref = new AtomicReference<>();
             FXUtil.runWait(() -> {
+                Window finalOwner = stageOwner == null ? null : resolveDialogOwner(stageOwner);
                 // 主舞台
                 if (attribute.usePrimary()) {
                     StageAdapter stage1 = new PrimaryStage(primaryStage, attribute, finalOwner);
@@ -437,13 +439,8 @@ public class StageManager {
                     PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
                 }
             };
-            // PopupWindow在Windows/Linux下会覆盖同owner的Stage弹窗，macOS无此问题
-            //            if (OSUtil.isMacOS()) {
-            //                PopupMask.showMask(window, maskCallback);
-            //            } else {
-            // 显示遮罩
-            StageMask.showMask(window, maskCallback);
-            //            }
+            // 应用模态弹窗通过 resolveDialogOwner 以遮罩为 owner，避免被 PopupWindow 覆盖
+            PopupMask.showMask(window, maskCallback);
         } else {// 直接执行
             callback.run();
         }
@@ -467,6 +464,67 @@ public class StageManager {
             return primaryStage;
         }
         return null;
+    }
+
+    /**
+     * 获取模态弹窗使用的父窗口。存在遮罩时使用遮罩作为父窗口，确保弹窗位于遮罩之上。
+     *
+     * @return 弹窗父窗口
+     */
+    public static Window resolveDialogOwner() {
+        Window owner = getFrontWindow();
+        return resolveDialogOwner(owner == null ? getPrimaryStage() : owner);
+    }
+
+    /**
+     * 获取模态弹窗使用的父窗口。存在遮罩时使用遮罩作为父窗口，确保弹窗位于遮罩之上。
+     *
+     * @param owner 原始父窗口
+     * @return 弹窗父窗口
+     */
+    public static Window resolveDialogOwner(Window owner) {
+        if (owner == null) {
+            return null;
+        }
+        for (Window window : Window.getWindows()) {
+            if (!window.isShowing()) {
+                continue;
+            }
+            Window target = null;
+            if (window instanceof StageMask mask) {
+                target = mask.targetWindow();
+            } else if (window instanceof PopupMask mask) {
+                target = mask.targetWindow();
+            }
+            if (target != null && matchesOwner(target, owner)) {
+                return window;
+            }
+        }
+        return owner;
+    }
+
+    /**
+     * 判断窗口是否属于目标窗口链
+     *
+     * @param target 目标窗口
+     * @param window 窗口
+     * @return 结果
+     */
+    private static boolean matchesOwner(Window target, Window window) {
+        Window current = window;
+        while (current != null) {
+            if (current == target) {
+                return true;
+            }
+            if (current instanceof Stage stage) {
+                current = stage.getOwner();
+            } else if (current instanceof PopupWindow popup) {
+                current = popup.getOwnerWindow();
+            } else {
+                current = null;
+            }
+        }
+        return false;
     }
 
     // /**
