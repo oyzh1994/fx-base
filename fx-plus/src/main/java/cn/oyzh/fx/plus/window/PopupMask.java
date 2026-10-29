@@ -1,6 +1,7 @@
 package cn.oyzh.fx.plus.window;
 
 import cn.oyzh.common.object.ObjectWatcherManager;
+import cn.oyzh.common.system.OSUtil;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.BooleanUtil;
 import cn.oyzh.fx.plus.theme.ThemeManager;
@@ -14,12 +15,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.PopupWindow;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 /**
  * 弹窗遮罩
- * PopupWindow 会覆盖同 owner 的普通 Stage，因此应用模态弹窗必须通过
- * {@link StageManager#resolveDialogOwner(Window)} 以遮罩为 owner。
+ * 窗口层级由 {@link StageManager#resolveDialogOwner(Window)} 统一处理。
+ * Linux 下遮罩会在目标窗口失焦时临时收起，避免 override-redirect 的 Popup 压住普通 Stage 弹窗。
  * 注意：PopupWindow 本身不能获得焦点，无法可靠拦截键盘输入，需要拦截键盘时应使用 {@link StageMask}。
  *
  * @author oyzh
@@ -63,9 +65,29 @@ public class PopupMask extends Popup implements PopupAdapter {
     private ChangeListener<? super Boolean> focusedFunc;
 
     /**
+     * 最小化状态变化监听
+     */
+    private ChangeListener<? super Boolean> iconifiedFunc;
+
+    /**
+     * 目标窗口显示状态变化监听
+     */
+    private ChangeListener<? super Boolean> showingFunc;
+
+    /**
      * 是否正在刷新弹窗
      */
     private boolean refreshing;
+
+    /**
+     * 是否临时隐藏（目标窗口最小化、失焦或打开原生弹窗）
+     */
+    private boolean suspended;
+
+    /**
+     * 是否已经完成清理
+     */
+    private boolean closed;
 
     /**
      * 获取遮罩的目标窗口
@@ -116,11 +138,40 @@ public class PopupMask extends Popup implements PopupAdapter {
 
             // 防止焦点被抢走
             this.focusedFunc = (observable, oldValue, newValue) -> {
-                if (BooleanUtil.isTrue(newValue) && this.isShowing()) {
-                    this.front();
+                if (BooleanUtil.isTrue(newValue)) {
+                    if (this.suspended) {
+                        this.resume();
+                    } else if (this.isShowing()) {
+                        this.front();
+                    }
+                } else if (OSUtil.isLinux() && this.target != null && this.target.isShowing()) {
+                    // 目标窗口失去焦点通常意味着打开了模态弹窗或切换了应用。
+                    // 临时收起遮罩，避免 Linux 上 Popup 始终压在模态弹窗之上。
+                    this.suspend();
                 }
             };
             target.focusedProperty().addListener(this.focusedFunc);
+
+            // 遮罩临时收起时 PopupWindow 会移除自身的 owner 监听，这里补一个独立监听
+            // 保证目标窗口在此时关闭仍能完成清理。
+            this.showingFunc = (observable, oldValue, newValue) -> {
+                if (!BooleanUtil.isTrue(newValue) && !this.refreshing) {
+                    this.onWindowClosed();
+                }
+            };
+            target.showingProperty().addListener(this.showingFunc);
+
+            // 目标窗口最小化时隐藏遮罩，恢复时重新显示
+            if (target instanceof Stage stage) {
+                this.iconifiedFunc = (observable, oldValue, newValue) -> {
+                    if (BooleanUtil.isTrue(newValue)) {
+                        this.suspend();
+                    } else {
+                        this.resume();
+                    }
+                };
+                stage.iconifiedProperty().addListener(this.iconifiedFunc);
+            }
         }
 
         // 动画
@@ -145,10 +196,10 @@ public class PopupMask extends Popup implements PopupAdapter {
         // 监听显示属性
         this.showingProperty().addListener((observable, oldValue, newValue) -> {
             if (BooleanUtil.isTrue(newValue)) {
-                if (!this.refreshing) {
+                if (!this.refreshing && !this.suspended) {
                     TaskManager.startAsync(this::doCallback);
                 }
-            } else if (!this.refreshing) {
+            } else if (!this.refreshing && !this.suspended) {
                 this.onWindowClosed();
             }
         });
@@ -168,10 +219,17 @@ public class PopupMask extends Popup implements PopupAdapter {
      * 弹窗前置
      */
     protected void front() {
-        if (this.target == null || !this.isShowing() || this.refreshing) {
+        if (this.target == null || !this.isShowing() || this.refreshing || this.suspended) {
+            return;
+        }
+        if (this.target instanceof Stage stage && stage.isIconified()) {
             return;
         }
         FXUtil.runLater(() -> {
+            if (this.target == null || this.closed || this.suspended
+                    || !this.target.isShowing() || !this.target.isFocused()) {
+                return;
+            }
             // PopupWindow没有toFront，重新显示以刷新原生窗口层级
             this.refreshing = true;
             try {
@@ -184,21 +242,65 @@ public class PopupMask extends Popup implements PopupAdapter {
     }
 
     /**
+     * 临时隐藏遮罩
+     */
+    protected void suspend() {
+        if (!this.isShowing() || this.suspended) {
+            return;
+        }
+        this.suspended = true;
+        this.hide();
+    }
+
+    /**
+     * 恢复临时隐藏的遮罩
+     */
+    protected void resume() {
+        if (!this.suspended || this.target == null || !this.target.isShowing()) {
+            return;
+        }
+        if (this.target instanceof Stage stage && stage.isIconified()) {
+            return;
+        }
+        if (!this.target.isFocused()) {
+            return;
+        }
+        this.suspended = false;
+        this.refreshing = true;
+        try {
+            this.showPopup(this.target, this.target.getX(), this.target.getY());
+        } finally {
+            this.refreshing = false;
+        }
+    }
+
+    /**
      * 执行回调
      */
     protected void doCallback() {
-        // 执行回调
-        if (this.callback != null) {
-            this.callback.run();
+        try {
+            // 执行回调
+            if (this.callback != null) {
+                this.callback.run();
+            }
+        } finally {
+            // 回调完成时必须完成清理，包括目标窗口已经最小化或关闭的情况
+            FXUtil.runWait(() -> {
+                this.suspended = false;
+                this.hide();
+                this.onWindowClosed();
+            });
+            this.target = null;
+            this.callback = null;
         }
-        // 关闭当前窗口
-        FXUtil.runWait(this::hide);
-        this.target = null;
-        this.callback = null;
     }
 
     @Override
     public void onWindowClosed() {
+        if (this.closed) {
+            return;
+        }
+        this.closed = true;
         // 处理属性
         if (this.target != null) {
             this.target.xProperty().removeListener(this.xFunc);
@@ -206,14 +308,21 @@ public class PopupMask extends Popup implements PopupAdapter {
             this.target.widthProperty().removeListener(this.wFunc);
             this.target.heightProperty().removeListener(this.hFunc);
             this.target.focusedProperty().removeListener(this.focusedFunc);
-            this.target.requestFocus();
+            this.target.showingProperty().removeListener(this.showingFunc);
+            if (this.target instanceof Stage stage) {
+                stage.iconifiedProperty().removeListener(this.iconifiedFunc);
+            }
             this.xFunc = null;
             this.yFunc = null;
             this.wFunc = null;
             this.hFunc = null;
             this.focusedFunc = null;
+            this.iconifiedFunc = null;
+            this.showingFunc = null;
         }
         PopupAdapter.super.onWindowClosed();
+        this.target = null;
+        this.callback = null;
     }
 
     @Override
