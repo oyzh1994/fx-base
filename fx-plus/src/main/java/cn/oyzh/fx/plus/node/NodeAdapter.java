@@ -219,6 +219,17 @@ public interface NodeAdapter extends EventTarget {
      *
      * @param nodes 子节点列表
      */
+    default void addChild(Node... nodes) {
+        if (nodes != null) {
+            this.addChild(List.of(nodes));
+        }
+    }
+
+    /**
+     * 添加子节点
+     *
+     * @param nodes 子节点列表
+     */
     default void addChild(List<? extends Node> nodes) {
         if (nodes != null) {
             if (this instanceof Pane pane) {
