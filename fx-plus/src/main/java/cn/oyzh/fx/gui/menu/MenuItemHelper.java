@@ -61,6 +61,7 @@ import cn.oyzh.fx.gui.svg.glyph.database.RunFileSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.RunSqlFileSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.database.ViewSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.file.FileSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.llm.RestoreSVGGlyph;
 import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
 import cn.oyzh.fx.plus.menu.FXMenuItem;
 import cn.oyzh.fx.plus.menu.MenuItemManager;
@@ -294,6 +295,16 @@ public class MenuItemHelper {
      */
     public static FXMenuItem refreshData(Runnable action) {
         return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.refreshData(), new RefreshSVGGlyph(), action);
+    }
+
+    /**
+     * 恢复
+     *
+     * @param action 执行动作
+     * @return 菜单项
+     */
+    public static FXMenuItem restore(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.restore(), new RestoreSVGGlyph(), action);
     }
 
     /**
