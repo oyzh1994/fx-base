@@ -1,5 +1,6 @@
 package cn.oyzh.fx.gui.skin;
 
+import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.fx.gui.svg.glyph.SelectSVGGlyph;
 import cn.oyzh.fx.plus.controls.list.FXListView;
 import cn.oyzh.fx.plus.controls.pane.FXScrollPane;
@@ -420,7 +421,7 @@ public class SelectTextFiledSkin<T> extends ActionTextFieldSkin {
      * @return 结果
      */
     public boolean isItemEmpty() {
-        return this.getItemList().isEmpty();
+        return CollectionUtil.isEmpty(this.getItemList());
     }
 
     /**
