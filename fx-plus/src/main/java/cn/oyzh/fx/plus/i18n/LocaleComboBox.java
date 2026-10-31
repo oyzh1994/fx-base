@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.controls.combo.FXComboBox;
 import cn.oyzh.fx.plus.converter.SimpleStringConverter;
 import cn.oyzh.i18n.I18nLocales;
 import cn.oyzh.i18n.I18nManager;
+import cn.oyzh.i18n.I18nResourceBundle;
 import cn.oyzh.i18n.I18nUtil;
 
 import java.util.Locale;

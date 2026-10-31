@@ -47,11 +47,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- 自定义类库，通用 -->
-        <dependency>
-            <groupId>io.github.oyzh1994</groupId>
-            <artifactId>base-common</artifactId>
-        </dependency>
+        <!-- &lt;!&ndash; 自定义类库，通用 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>io.github.oyzh1994</groupId> -->
+        <!--     <artifactId>base-common</artifactId> -->
+        <!-- </dependency> -->
 
         <!-- 自定义类库，事件 -->
         <dependency>

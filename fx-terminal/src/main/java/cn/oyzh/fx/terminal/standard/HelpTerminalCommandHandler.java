@@ -2,7 +2,7 @@ package cn.oyzh.fx.terminal.standard;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.util.TextUtil;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
+import cn.oyzh.i18n.I18nResourceBundle;
 import cn.oyzh.fx.terminal.Terminal;
 import cn.oyzh.fx.terminal.command.BaseTerminalCommandHandler;
 import cn.oyzh.fx.terminal.command.TerminalCommand;

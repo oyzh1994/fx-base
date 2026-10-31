@@ -1,7 +1,7 @@
 package cn.oyzh.fx.gui.toggle;
 
 import cn.oyzh.fx.plus.controls.toggle.FXToggleSwitch;
-import cn.oyzh.fx.plus.i18n.I18nResourceBundle;
+import cn.oyzh.i18n.I18nResourceBundle;
 
 /**
  * 启用切换开关
