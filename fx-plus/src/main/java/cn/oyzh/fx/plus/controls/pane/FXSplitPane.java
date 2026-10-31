@@ -40,6 +40,14 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         super.layoutChildren();
         for (Node child : this.getChildren()) {
             if (child.getClass().getName().endsWith("Content") && child instanceof Region region) {
+                //Region content = (Region) ReflectUtil.invoke(child, "getContent");
+                //if (content != null && !content.isManaged()) {
+                //    Method method = ReflectUtil.getMethod(child.getClass(), "setAvailable", false, false, double.class);
+                //    ReflectUtil.invoke(child, method, 0D);
+                //    region.setManaged(false);
+                //    region.resize(0, 0);
+                //    continue;
+                //}
                 if (this.getOrientation() == Orientation.VERTICAL) {
                     region.resize(this.getWidth(), region.getHeight());
                 } else {
@@ -82,6 +90,38 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
     }
 
     /**
+     * 获取第二个分割条位置
+     *
+     * @return 第二个分割条位置，未记录时返回 null
+     */
+    public Double getPosition1() {
+        return this.getProp("position_1");
+    }
+
+    /**
+     * 获取第二个分割条位置，未记录时返回默认值
+     *
+     * @param defaultVal 默认值
+     * @return 第一个分割条位置
+     */
+    public double getPosition1(double defaultVal) {
+        Double v1 = this.getPosition1();
+        return v1 == null ? defaultVal : v1;
+    }
+
+    /**
+     * 记录第二个分割条位置
+     */
+    public void recordPosition1() {
+        double[] positions = this.getDividerPositions();
+        if (positions != null && positions.length >= 2) {
+            this.setProp("position_1", positions[1]);
+        } else {
+            this.removeProp("position_1");
+        }
+    }
+
+    /**
      * 是否显示分割条
      */
     private boolean showDivider = true;
@@ -110,6 +150,65 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
         return showDivider;
     }
 
+    /**
+     * 是否显示分割条0
+     */
+    private Boolean showDivider0;
+
+    /**
+     * 设置是否显示分割条0
+     *
+     * @param showDivider0 是否显示
+     */
+    public void setShowDivider0(Boolean showDivider0) {
+        this.showDivider0 = showDivider0;
+        if (showDivider0 == null) {
+            return;
+        }
+        for (Node child : this.getChildren()) {
+            if (child.getClass().getName().endsWith("ContentDivider")) {
+                child.setManaged(showDivider0);
+                child.setVisible(showDivider0);
+                break;
+            }
+        }
+    }
+
+    public boolean isShowDivider0() {
+        return this.showDivider0 != null && this.showDivider0;
+    }
+
+    /**
+     * 是否显示分割条1
+     */
+    private Boolean showDivider1;
+
+    /**
+     * 设置是否显示分割条1
+     *
+     * @param showDivider1 是否显示
+     */
+    public void setShowDivider1(Boolean showDivider1) {
+        this.showDivider1 = showDivider1;
+        if (showDivider1 == null) {
+            return;
+        }
+        int index = 0;
+        for (Node child : this.getChildren()) {
+            if (child.getClass().getName().endsWith("ContentDivider")) {
+                if (index++ == 1) {
+                    child.setManaged(showDivider1);
+                    child.setVisible(showDivider1);
+                    break;
+                }
+            }
+        }
+    }
+
+    public boolean isShowDivider1() {
+        return this.showDivider1 != null && this.showDivider1;
+    }
+
     @Override
     public void initNode() {
         this.getItems().addListener((ListChangeListener<Node>) c -> {
@@ -121,13 +220,23 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
             }
         });
         this.getChildren().addListener((ListChangeListener<Node>) c -> {
-            if (c.next()) {
-                List<? extends Node> subs = c.getAddedSubList();
-                for (Node node : subs) {
-                    if (node.getClass().getName().endsWith("ContentDivider")) {
-                        node.setManaged(this.showDivider);
-                        node.setVisible(this.showDivider);
-                    }
+            //if (c.next()) {
+            //    List<? extends Node> subs = c.getAddedSubList();
+            //    for (Node node : subs) {
+            //        if (node.getClass().getName().endsWith("ContentDivider")) {
+            //            node.setManaged(this.showDivider);
+            //            node.setVisible(this.showDivider);
+            //        }
+            //    }
+            //}
+            if (this.showDivider0 == null && this.showDivider1 == null) {
+                this.setShowDivider(this.showDivider);
+            } else {
+                if (this.showDivider0 != null) {
+                    this.setShowDivider0(this.showDivider0);
+                }
+                if (this.showDivider1 != null) {
+                    this.setShowDivider1(this.showDivider1);
                 }
             }
         });

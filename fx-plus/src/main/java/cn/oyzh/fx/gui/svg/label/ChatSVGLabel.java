@@ -1,0 +1,37 @@
+package cn.oyzh.fx.gui.svg.label;
+
+import cn.oyzh.fx.gui.svg.glyph.llm.ChatSVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGLabel;
+import cn.oyzh.i18n.I18nHelper;
+
+/**
+ * 关于标签
+ *
+ * @author oyzh
+ * @since 2024-04-10
+ */
+public class ChatSVGLabel extends SVGLabel {
+
+    /**
+     * 构造关于标签
+     */
+    public ChatSVGLabel() {
+        this.setGraphic(new ChatSVGGlyph());
+    }
+
+    /**
+     * 构造关于标签
+     *
+     * @param size 图标尺寸
+     */
+    public ChatSVGLabel(String size) {
+        this();
+        this.setSizeStr(size);
+    }
+
+    @Override
+    public void initNode() {
+        this.setText(I18nHelper.chat());
+        super.initNode();
+    }
+}

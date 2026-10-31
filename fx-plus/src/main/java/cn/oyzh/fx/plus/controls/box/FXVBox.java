@@ -38,6 +38,10 @@ public class FXVBox extends VBox implements FlexAdapter, NodeGroup, ThemeAdapter
         super(children);
     }
 
+    public FXVBox(double spacing) {
+        super(spacing);
+    }
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
