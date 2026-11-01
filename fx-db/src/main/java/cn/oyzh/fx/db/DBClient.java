@@ -1,5 +1,9 @@
 package cn.oyzh.fx.db;
 
+import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.db.sql.DBSqlParser;
+
+import java.sql.Connection;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
@@ -120,6 +124,72 @@ public interface DBClient {
      * @return 产品信息
      */
     String selectProduct();
+
+    /**
+     * Execute SQL and return raw JDBC result sets.
+     *
+     * @param name schema/databse name
+     * @param sql  SQL statement
+     * @return raw result sets
+     * @throws Exception execution error
+     */
+   default DBRawQueryResults executeSqlRaw(String name, String sql) throws Exception {
+        DBRawQueryResults results = new DBRawQueryResults();
+        Connection connection;
+        try {
+            this.printSql(sql);
+            List<String> sqlList = DBSqlParser.getParser(sql, this.dialect()).parseSql();
+            if (StringUtil.isNotBlank(name)) {
+                connection = this.getConnManager().connection(name);
+            } else {
+                connection = this.getConnManager().connection();
+            }
+            connection.setAutoCommit(false);
+            for (String execSql : sqlList) {
+                Statement statement = connection.createStatement();
+                try {
+                    boolean hasResult = statement.execute(execSql);
+                    while (true) {
+                        if (hasResult) {
+                            results.add(statement, statement.getResultSet());
+                        }
+                        if (!statement.getMoreResults(Statement.KEEP_CURRENT_RESULT) && statement.getUpdateCount() == -1) {
+                            break;
+                        }
+                        hasResult = statement.getResultSet() != null;
+                    }
+                } catch (Exception ex) {
+                    try {
+                        statement.close();
+                    } catch (Exception ignored) {
+                    }
+                    throw ex;
+                }
+            }
+            return results;
+        } catch (Exception ex) {
+            results.close();
+            throw ex;
+        }
+    }
+
+    /**
+     * 打印sql
+     *
+     * @param sql sql
+     */
+    void printSql(String sql);
+
+    /**
+     * Execute SQL and return raw JDBC result sets.
+     *
+     * @param sql SQL statement
+     * @return raw result sets
+     * @throws Exception execution error
+     */
+    default DBRawQueryResults executeSqlRaw(String sql) throws Exception {
+        return this.executeSqlRaw(null, sql);
+    }
 
     /**
      * 批量插入SQL
