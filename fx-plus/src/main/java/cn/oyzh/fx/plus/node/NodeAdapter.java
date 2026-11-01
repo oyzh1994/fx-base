@@ -537,7 +537,6 @@ public interface NodeAdapter extends EventTarget {
     default void focusNode() {
         if (this instanceof Node node) {
             FXUtil.runWait(() -> {
-                //                this.scene().setFocusOwner(node, true);
                 try {
                     ReflectUtil.invoke(this.scene(), "setFocusOwner", node, true);
                 } catch (Exception ex) {

@@ -168,7 +168,7 @@ public class TerminalManager {
     /**
      * 寻找帮助命令处理器
      *
-     * @param name                终端名称
+     * @param name 终端名称
      * @return 处理器
      */
     public static <T extends TerminalCommandHandler<?, ?>> T findHelpTerminalHandler(String name) {
@@ -205,7 +205,11 @@ public class TerminalManager {
                         if (!list1.isEmpty()) {
                             return list1.getFirst();
                         }
-
+                        // 寻找模板的命令
+                        list1 = list.stream().filter(s -> s.commandSubName().matches("<[^>]+>")).toList();
+                        if (!list1.isEmpty()) {
+                            return list1.getFirst();
+                        }
                         // 寻找最接近的命令
                         double corr = 1.0;
                         TerminalCommandHandler<?, ?> terminalCommandHandler = null;
