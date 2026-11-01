@@ -156,8 +156,10 @@ public class FXFileChooser {
         } else {
             fileChooser.setInitialDirectory(FXChooser.HOME_DIR);
         }
-        for (FileExtensionFilter filter : filters) {
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(filter.getDesc(), filter.getExtensions()));
+        if (this.filters != null) {
+            for (FileExtensionFilter filter : this.filters) {
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(filter.getDesc(), filter.getExtensions()));
+            }
         }
         return fileChooser;
     }
