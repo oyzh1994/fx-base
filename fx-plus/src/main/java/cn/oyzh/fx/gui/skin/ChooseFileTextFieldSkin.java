@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import cn.oyzh.fx.plus.chooser.FXChooser;
 import cn.oyzh.fx.plus.chooser.FileChooserHelper;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -109,7 +110,7 @@ public class ChooseFileTextFieldSkin extends ChooseTextFieldSkin {
             this.filters = new ArrayList<>();
             this.filters.add(FXChooser.allExtensionFilter());
         }
-        File file1 = FileChooserHelper.choose(I18nHelper.chooseFile(), this.filters);
+        File file1 = FileChooserHelper.choose(I18nHelper.chooseFile(), this.filters, FXUtil.getWindow(this.getSkinnable()));
         if (file1 != null) {
             this.file = file1;
             if (this.onSelectedFile == null) {

@@ -28,7 +28,9 @@ import javafx.stage.Screen;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -707,5 +709,21 @@ public class FXUtil {
                 System.setProperty("prism.forceUploadingPainter", "true");
             }
         }
+    }
+
+    /**
+     * 获取窗口
+     *
+     * @param node 节点
+     * @return 结果
+     */
+    public static Window getWindow(Node node) {
+        if (node == null) {
+            return null;
+        }
+        if (node.getScene() == null) {
+            return null;
+        }
+        return node.getScene().getWindow();
     }
 }

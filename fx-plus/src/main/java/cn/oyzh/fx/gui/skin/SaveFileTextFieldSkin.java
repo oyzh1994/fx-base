@@ -5,6 +5,7 @@ import cn.oyzh.fx.plus.chooser.FXChooser;
 import cn.oyzh.fx.plus.chooser.FileChooserHelper;
 import cn.oyzh.fx.plus.chooser.FileExtensionFilter;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nHelper;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -94,7 +95,7 @@ public class SaveFileTextFieldSkin extends ActionTextFieldSkin {
         if (this.extension == null) {
             this.extension = FXChooser.allExtensionFilter();
         }
-        File file1 = FileChooserHelper.save(I18nHelper.chooseFile(), this.initFileName, this.extension);
+        File file1 = FileChooserHelper.save(I18nHelper.chooseFile(), this.initFileName, this.extension, FXUtil.getWindow(this.getSkinnable()));
         if (file1 != null) {
             if (this.onFileSelected != null) {
                 this.onFileSelected.accept(file1);

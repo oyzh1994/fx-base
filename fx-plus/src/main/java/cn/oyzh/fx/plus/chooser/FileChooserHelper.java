@@ -26,6 +26,7 @@ public class FileChooserHelper {
      * @param extension    扩展名
      * @return 文件
      */
+    @Deprecated
     public static File save(String title, String initFileName, String desc, String extension) {
         return save(title, initFileName, List.of(new FileExtensionFilter(desc, extension)), new Stage());
     }
@@ -38,6 +39,7 @@ public class FileChooserHelper {
      * @param filter       过滤器
      * @return 文件
      */
+    @Deprecated
     public static File save(String title, String initFileName, FileExtensionFilter filter) {
         AtomicReference<File> reference = new AtomicReference<>();
         FXUtil.runWait(() -> {
@@ -55,6 +57,7 @@ public class FileChooserHelper {
      * @param filters      过滤器
      * @return 文件
      */
+    @Deprecated
     public static File save(String title, String initFileName, FileExtensionFilter... filters) {
         AtomicReference<File> reference = new AtomicReference<>();
         FXUtil.runWait(() -> {
@@ -62,6 +65,19 @@ public class FileChooserHelper {
             reference.set(file);
         });
         return reference.get();
+    }
+
+    /**
+     * 保存文件
+     *
+     * @param title        标题
+     * @param initFileName 初始文件名称
+     * @param filter       过滤器
+     * @param owner        父窗口
+     * @return 文件
+     */
+    public static File save(String title, String initFileName, FileExtensionFilter filter, Window owner) {
+        return save(title, initFileName, List.of(filter), owner);
     }
 
     /**
@@ -89,6 +105,7 @@ public class FileChooserHelper {
      * @param extension 扩展名
      * @return 文件
      */
+    @Deprecated
     public static File choose(String title, String desc, String extension) {
         return choose(title, List.of(new FileExtensionFilter(desc, extension)), new Stage());
     }
@@ -100,6 +117,7 @@ public class FileChooserHelper {
      * @param filter 过滤器
      * @return 文件
      */
+    @Deprecated
     public static File choose(String title, FileExtensionFilter filter) {
         return choose(title, List.of(filter), StageManager.getFrontWindow());
     }
@@ -111,6 +129,7 @@ public class FileChooserHelper {
      * @param filters 过滤器
      * @return 文件
      */
+    @Deprecated
     public static File choose(String title, FileExtensionFilter... filters) {
         return choose(title, List.of(filters), StageManager.getFrontWindow());
     }
@@ -122,8 +141,32 @@ public class FileChooserHelper {
      * @param filters 过滤器
      * @return 文件
      */
+    @Deprecated
     public static File choose(String title, List<FileExtensionFilter> filters) {
         return choose(title, filters, StageManager.getFrontWindow());
+    }
+
+    /**
+     * 选择文件
+     *
+     * @param title 标题
+     * @param owner 父窗口
+     * @return 文件
+     */
+    public static File choose(String title, Window owner) {
+        return choose(title, List.of(), owner);
+    }
+
+    /**
+     * 选择文件
+     *
+     * @param title  标题
+     * @param filter 过滤器
+     * @param owner  父窗口
+     * @return 文件
+     */
+    public static File choose(String title, FileExtensionFilter filter, Window owner) {
+        return choose(title, List.of(filter), owner);
     }
 
     /**
@@ -148,6 +191,7 @@ public class FileChooserHelper {
      * @param filters 过滤器
      * @return 文件
      */
+    @Deprecated
     public static List<File> chooseMultiple(String title, FileExtensionFilter... filters) {
         return chooseMultiple(title, List.of(filters), null);
     }
