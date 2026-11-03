@@ -264,6 +264,11 @@ public class DBUtil {
             //            if (!name.endsWith("\"")) {
             //                builder.append("\"");
             //            }
+        } else if (dialect == DBDialect.SQLITE) {
+            if (name.startsWith("\"") && name.endsWith("\"") && name.length() > 1) {
+                return name;
+            }
+            builder.append("\"").append(name.replace("\"", "\"\"")).append("\"");
         }
         return builder.toString();
     }
@@ -291,7 +296,10 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL
+                || dialect == DBDialect.MARIADB
+                || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
                 String v1 = DBDataUtil.escapeQuotes(v.toString(), dialect);
                 if (v1.isEmpty()) {
@@ -327,7 +335,10 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL
+                || dialect == DBDialect.MARIADB
+                || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
                 String v1 = v.toString();
                 if (v1.isEmpty()) {

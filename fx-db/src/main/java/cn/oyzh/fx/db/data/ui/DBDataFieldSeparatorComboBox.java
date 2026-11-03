@@ -19,11 +19,7 @@ public class DBDataFieldSeparatorComboBox extends FXComboBox<String> {
         super.initNode();
     }
 
-    /**
-     * 获取当前选中项对应的字段分隔符
-     *
-     * @return 字段分隔符
-     */
+    @Override
     public String value() {
         int itemIndex = this.getSelectedIndex();
         if (itemIndex == 0) {

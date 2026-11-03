@@ -12,6 +12,7 @@ import java.util.List;
  * @since 2026-09-01
  */
 public enum DBDialect {
+    SQLITE,
     MYSQL,
     MARIADB,
     MONGODB,

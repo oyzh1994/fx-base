@@ -23,7 +23,10 @@ public class DBDataUtil {
      * @return 转义后的内容
      */
     public static String escapeQuotes(String str, DBDialect dialect) {
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB || dialect == DBDialect.DAMENG) {
+        if (dialect == DBDialect.MYSQL
+                || dialect == DBDialect.MARIADB
+                || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.SQLITE) {
             boolean f1 = str.startsWith("'") && str.endsWith("'");
             if (f1) {
                 str = str.substring(1, str.length() - 1);
