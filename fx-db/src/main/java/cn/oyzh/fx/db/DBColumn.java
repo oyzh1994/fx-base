@@ -53,7 +53,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportSize() {
-        return false;
+        return DBColumnFieldManager.supportSize(this.getDialect(), this.getType());
     }
 
     /**
@@ -62,7 +62,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportGeometry() {
-        return false;
+        return DBColumnFieldManager.supportGeometry(this.getDialect(), this.getType());
     }
 
     /**
@@ -71,7 +71,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportCharset() {
-        return false;
+        return DBColumnFieldManager.supportCharset(this.getDialect(), this.getType());
     }
 
     /**
@@ -80,7 +80,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportUnsigned() {
-        return false;
+        return DBColumnFieldManager.supportUnsigned(this.getDialect(), this.getType());
     }
 
     /**
@@ -89,7 +89,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportDigits() {
-        return false;
+        return DBColumnFieldManager.supportDigits(this.getDialect(), this.getType());
     }
 
     /**
@@ -98,7 +98,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportInteger() {
-        return false;
+        return DBColumnFieldManager.supportInteger(this.getDialect(), this.getType());
     }
 
     /**
@@ -107,7 +107,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportBigInteger() {
-        return false;
+        return DBColumnFieldManager.supportBigInteger(this.getDialect(), this.getType());
     }
 
     /**
@@ -116,6 +116,15 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportAutoIncrement() {
+        return DBColumnFieldManager.supportAutoIncrement(this.getDialect(), this.getType());
+    }
+
+    /**
+     * 是否生成的字段
+     *
+     * @return 结果
+     */
+    default boolean isGenerated() {
         return false;
     }
 
@@ -125,7 +134,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportDefaultValue() {
-        return false;
+        return DBColumnFieldManager.supportDefaultValue(this.getDialect(), this.getType());
     }
 
     /**
@@ -134,7 +143,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportTimestamp() {
-        return false;
+        return DBColumnFieldManager.supportTimestamp(this.getDialect(), this.getType());
     }
 
     /**
@@ -143,7 +152,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportValue() {
-        return false;
+        return DBColumnFieldManager.supportValue(this.getDialect(), this.getType());
     }
 
     /**
@@ -152,7 +161,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportText() {
-        return false;
+        return DBColumnFieldManager.supportText(this.getDialect(), this.getType());
     }
 
     /**
@@ -161,7 +170,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportZeroFill() {
-        return false;
+        return DBColumnFieldManager.supportZeroFill(this.getDialect(), this.getType());
     }
 
     /**
@@ -170,7 +179,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportBit() {
-        return false;
+        return DBColumnFieldManager.supportBit(this.getDialect(), this.getType());
     }
 
     /**
@@ -179,7 +188,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportJson() {
-        return false;
+        return DBColumnFieldManager.supportJson(this.getDialect(), this.getType());
     }
 
     /**
@@ -188,7 +197,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportJsonArray() {
-        return false;
+        return DBColumnFieldManager.supportJsonArray(this.getDialect(), this.getType());
     }
 
     /**
@@ -197,7 +206,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportKeySize() {
-        return false;
+        return DBColumnFieldManager.supportKeySize(this.getDialect(), this.getType());
     }
 
     /**
@@ -206,7 +215,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportString() {
-        return false;
+        return DBColumnFieldManager.supportString(this.getDialect(), this.getType());
     }
 
     /**
@@ -215,8 +224,33 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportBoolean() {
-        return false;
+        return DBColumnFieldManager.supportBoolean(this.getDialect(), this.getType());
     }
+
+    /**
+     * 是否支持二进制
+     *
+     * @return 结果
+     */
+    default boolean supportBinary() {
+        return DBColumnFieldManager.supportBinary(this.getDialect(), this.getType());
+    }
+
+    /**
+     * 是否支持枚举
+     *
+     * @return 结果
+     */
+    default boolean supportEnum() {
+        return DBColumnFieldManager.supportEnum(this.getDialect(), this.getType());
+    }
+
+    /**
+     * 获取方言
+     *
+     * @return 结果
+     */
+    DBDialect getDialect();
 
     /**
      * 是否主键
@@ -234,24 +268,6 @@ public interface DBColumn extends DBName {
      */
     default void setPrimaryKey(boolean primaryKey) {
 
-    }
-
-    /**
-     * 是否支持二进制
-     *
-     * @return 结果
-     */
-    default boolean supportBinary() {
-        return false;
-    }
-
-    /**
-     * 是否支持枚举
-     *
-     * @return 结果
-     */
-    default boolean supportEnum() {
-        return false;
     }
 
     /**
