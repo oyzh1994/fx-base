@@ -116,7 +116,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportAutoIncrement() {
-        return DBColumnFieldManager.supportAutoIncrement(this.getDialect(), this.getType());
+        return !this.isGenerated() && DBColumnFieldManager.supportAutoIncrement(this.getDialect(), this.getType());
     }
 
     /**
@@ -134,7 +134,7 @@ public interface DBColumn extends DBName {
      * @return 结果
      */
     default boolean supportDefaultValue() {
-        return DBColumnFieldManager.supportDefaultValue(this.getDialect(), this.getType());
+        return !this.isGenerated() && DBColumnFieldManager.supportDefaultValue(this.getDialect(), this.getType());
     }
 
     /**
