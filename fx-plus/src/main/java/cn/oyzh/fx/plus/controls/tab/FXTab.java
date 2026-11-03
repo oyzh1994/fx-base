@@ -14,6 +14,7 @@ import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
 import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -80,6 +81,9 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      * @return tab列表
      */
     public ObservableList<Tab> tabs() {
+        if (this.getTabPane() == null) {
+            return FXCollections.emptyObservableList();
+        }
         return this.getTabPane().getTabs();
     }
 

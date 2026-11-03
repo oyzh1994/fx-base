@@ -119,6 +119,14 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
         FlexAdapter.super.initNode();
     }
 
+    public void value(T value) {
+        FXUtil.runWait(() -> super.setValue(value));
+    }
+
+    public T value() {
+        return super.getValue();
+    }
+
     @Override
     public void resize(double width, double height) {
         double[] size = this.computeSize(width, height);
@@ -130,7 +138,7 @@ public class FXComboBox<T> extends ComboBox<T> implements FlexAdapter, NodeGroup
     public void setTipText(String tipText) {
         TipAdapter.super.setTipText(tipText);
         if (this.getPromptText() == null || this.getPromptText().isEmpty()) {
-            this.setPromptText(tipText);
+            FXUtil.runWait(() -> this.setPromptText(tipText));
         }
     }
 
