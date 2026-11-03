@@ -30,14 +30,14 @@ public interface DBForeignKey extends DBName {
      *
      * @return 外键字段列表
      */
-    Set<String> getColumns();
+    List<String> getColumns();
 
     /**
      * 设置外键字段列表
      *
      * @param columns 外键字段列表
      */
-    void setColumns(Set<String> columns);
+    void setColumns(List<String> columns);
 
     /**
      * 添加外键字段列表
@@ -46,7 +46,7 @@ public interface DBForeignKey extends DBName {
      */
     default void addColumn(String column) {
         if (this.getColumns() == null) {
-            this.setColumns(new HashSet<>());
+            this.setColumns(new ArrayList<>());
         }
         this.getColumns().add(column);
     }
@@ -84,14 +84,14 @@ public interface DBForeignKey extends DBName {
      *
      * @return 引用字段列表
      */
-    Set<String> getReferencedColumns();
+    List<String> getReferencedColumns();
 
     /**
      * 设置引用字段列表
      *
      * @param referencedColumns 引用字段列表
      */
-    void setReferencedColumns(Set<String> referencedColumns);
+    void setReferencedColumns(List<String> referencedColumns);
 
     /**
      * 添加引用字段
@@ -100,7 +100,7 @@ public interface DBForeignKey extends DBName {
      */
     default void addReferencedColumn(String columnName) {
         if (this.getReferencedColumns() == null) {
-            this.setReferencedColumns(new HashSet<>());
+            this.setReferencedColumns(new ArrayList<>());
         }
         this.getReferencedColumns().add(columnName);
     }
