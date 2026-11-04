@@ -7,6 +7,8 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.editor.incubator.Editor;
 import cn.oyzh.fx.plus.keyboard.KeyboardUtil;
+import cn.oyzh.fx.plus.menu.MenuItemManager;
+import cn.oyzh.fx.plus.util.ClipboardUtil;
 import cn.oyzh.fx.terminal.command.TerminalCommand;
 import cn.oyzh.fx.terminal.command.TerminalCommandHandler;
 import cn.oyzh.fx.terminal.complete.TerminalCompleteHandler;
@@ -16,6 +18,7 @@ import cn.oyzh.fx.terminal.histroy.TerminalHistoryHandler;
 import cn.oyzh.fx.terminal.key.TerminalKeyHandler;
 import cn.oyzh.fx.terminal.mouse.TerminalMouseHandler;
 import cn.oyzh.fx.terminal.util.TerminalManager;
+import cn.oyzh.i18n.I18nHelper;
 import javafx.beans.InvalidationListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.MenuItem;
@@ -26,8 +29,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -579,7 +582,33 @@ public abstract class TerminalPane extends Editor implements Terminal {
 
     @Override
     public List<? extends MenuItem> getMenuItems() {
-        return Collections.emptyList();
+        List<MenuItem> items = new ArrayList<>();
+
+        // 复制
+        MenuItem copy = MenuItemManager.getMenuItem(I18nHelper.copy(), this::copy);
+        copy.setDisable(!this.isSelectedText() || this.isDisable());
+        items.add(copy);
+
+        // 粘贴
+        MenuItem paste = MenuItemManager.getMenuItem(I18nHelper.paste(), this::pasteContent);
+        paste.setDisable(!this.isEditable() || this.isDisable() || !ClipboardUtil.hasString());
+        items.add(paste);
+
+        items.add(MenuItemManager.getSeparatorMenuItem());
+
+        // 全选
+        MenuItem selectAll = MenuItemManager.getMenuItem(I18nHelper.selectAll(), this::selectAll);
+        selectAll.setDisable(this.isDisable());
+        items.add(selectAll);
+
+        items.add(MenuItemManager.getSeparatorMenuItem());
+
+        // 清除
+        MenuItem clear = MenuItemManager.getMenuItem(I18nHelper.clear(), this::clearAll);
+        clear.setDisable(this.isDisable());
+        items.add(clear);
+
+        return items;
     }
 
     //@Override
@@ -642,11 +671,6 @@ public abstract class TerminalPane extends Editor implements Terminal {
     @Override
     public void clearAll() {
         this.clear();
-        this.output("");
+        this.outputPrompt();
     }
-
-//    @Override
-//    public void initNode() {
-//        super.initNode();
-//    }
 }
