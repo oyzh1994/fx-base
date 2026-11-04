@@ -195,41 +195,76 @@ public class TerminalManager {
     public static TerminalCommandHandler<?, ?> findHandler(String name, String input) {
         try {
             if (input != null) {
-                Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
                 String[] words = TerminalUtil.split(input);
-                List<TerminalCommandHandler<?, ?>> list = handlers.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
-                if (!list.isEmpty()) {
-                    if (words.length >= 2) {
-                        // 寻找完全匹配的命令
-                        List<TerminalCommandHandler<?, ?>> list1 = list.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
-                        if (!list1.isEmpty()) {
-                            return list1.getFirst();
-                        }
-                        // 寻找模板的命令
-                        list1 = list.stream().filter(s -> s.commandSubName().matches("<[^>]+>")).toList();
-                        if (!list1.isEmpty()) {
-                            return list1.getFirst();
-                        }
-                        // 寻找最接近的命令
-                        double corr = 1.0;
-                        TerminalCommandHandler<?, ?> terminalCommandHandler = null;
-                        for (TerminalCommandHandler<?, ?> handler : list) {
-                            double corr1 = TextUtil.clacCorr(handler.commandSubName(), words[1]);
-                            if (corr1 > corr) {
-                                corr = corr1;
-                                terminalCommandHandler = handler;
-                            }
-                        }
-                        if (terminalCommandHandler != null) {
-                            return terminalCommandHandler;
-                        }
-                    }
-//                    return list.getFirst();
+                TerminalCommandHandler<?, ?> handler = findHandler(name, words);
+                if (handler != null) {
+                    return handler;
+                }
+                // 兼容help;、clear;这类以分号结尾的终端内置命令
+                String content = input.trim();
+                if (content.endsWith(";")) {
+                    return findHandler(name, TerminalUtil.split(content.substring(0, content.length() - 1)));
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             JulLog.warn("findHandler error input:{}", input, ex);
+        }
+        return null;
+    }
+
+    /**
+     * 获取命令处理器
+     *
+     * @param name  终端名称
+     * @param words 输入词组
+     * @return 命令处理器
+     */
+    private static TerminalCommandHandler<?, ?> findHandler(String name, String[] words) {
+        if (words == null || words.length == 0 || StringUtil.isBlank(words[0])) {
+            return null;
+        }
+        Collection<TerminalCommandHandler<?, ?>> handlers = listHandler(name);
+        List<TerminalCommandHandler<?, ?>> list = handlers.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandName(), words[0])).toList();
+        if (!list.isEmpty()) {
+            if (words.length >= 2) {
+                // 寻找完全匹配的命令
+                List<TerminalCommandHandler<?, ?>> list1 = list.stream().filter(s -> StringUtil.equalsIgnoreCase(s.commandSubName(), words[1])).toList();
+                if (!list1.isEmpty()) {
+                    return list1.getFirst();
+                }
+                // 寻找模板的命令
+                list1 = list.stream().filter(s -> StringUtil.isNotBlank(s.commandSubName())
+                        && s.commandSubName().matches(".*<[^>]+>.*")).toList();
+                if (!list1.isEmpty()) {
+                    return list1.getFirst();
+                }
+                // 寻找最接近的命令
+                double corr = 1.0;
+                TerminalCommandHandler<?, ?> terminalCommandHandler = null;
+                for (TerminalCommandHandler<?, ?> handler : list) {
+                    if (StringUtil.isBlank(handler.commandSubName())) {
+                        continue;
+                    }
+                    double corr1 = TextUtil.clacCorr(handler.commandSubName(), words[1]);
+                    if (corr1 > corr) {
+                        corr = corr1;
+                        terminalCommandHandler = handler;
+                    }
+                }
+                if (terminalCommandHandler != null) {
+                    return terminalCommandHandler;
+                }
+            }
+            if (words.length == 1) {
+                return list.getFirst();
+            }
+            // 无子命令名的处理器允许携带参数，例如clear -his
+            List<TerminalCommandHandler<?, ?>> plainHandlers = list.stream()
+                    .filter(s -> StringUtil.isBlank(s.commandSubName())).toList();
+            if (!plainHandlers.isEmpty()) {
+                return plainHandlers.getFirst();
+            }
         }
         return null;
     }
