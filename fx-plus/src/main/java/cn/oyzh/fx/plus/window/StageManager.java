@@ -251,8 +251,8 @@ public class StageManager {
      * @param owner 父窗口
      */
     public static void showStage(Class<?> clazz, Window owner) {
-        StageAdapter wrapper = parseStage(clazz, owner);
-        wrapper.display();
+        StageAdapter adapter = parseStage(clazz, owner);
+        adapter.display();
     }
 
     //    /**
