@@ -122,6 +122,38 @@ public class FXSplitPane extends SplitPane implements FlexAdapter, NodeAdapter, 
     }
 
     /**
+     * 获取第三个分割条位置
+     *
+     * @return 第三个分割条位置，未记录时返回 null
+     */
+    public Double getPosition2() {
+        return this.getProp("position_2");
+    }
+
+    /**
+     * 获取第三个分割条位置，未记录时返回默认值
+     *
+     * @param defaultVal 默认值
+     * @return 第一个分割条位置
+     */
+    public double getPosition2(double defaultVal) {
+        Double v1 = this.getPosition2();
+        return v1 == null ? defaultVal : v1;
+    }
+
+    /**
+     * 记录第三个分割条位置
+     */
+    public void recordPosition2() {
+        double[] positions = this.getDividerPositions();
+        if (positions != null && positions.length >= 3) {
+            this.setProp("position_2", positions[2]);
+        } else {
+            this.removeProp("position_2");
+        }
+    }
+
+    /**
      * 是否显示分割条
      */
     private boolean showDivider = true;
