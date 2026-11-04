@@ -4,12 +4,19 @@ import cn.oyzh.fx.plus.theme.ThemeManager;
 import com.sun.jfx.incubator.scene.control.richtext.CaretInfo;
 import com.sun.jfx.incubator.scene.control.richtext.RichTextAreaSkinHelper;
 import com.sun.jfx.incubator.scene.control.richtext.VFlow;
+import com.sun.jfx.incubator.scene.control.richtext.util.RichUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Font;
+import jfx.incubator.scene.control.richtext.CodeArea;
+import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
+import jfx.incubator.scene.control.richtext.skin.CellContext;
 import jfx.incubator.scene.control.richtext.skin.CodeAreaSkin;
+
+import java.util.Locale;
 
 /**
  * 编辑器皮肤
@@ -244,6 +251,25 @@ public class EditorSkin extends CodeAreaSkin {
         }
         Path caretPath = this.getSelectionHighlight();
         return caretPath == null ? null : (Color) caretPath.getStroke();
+    }
+
+    @Override
+    public void applyStyles(CellContext context, StyleAttributeMap attrs, boolean forParagraph) {
+        super.applyStyles(context, attrs, forParagraph);
+        if (forParagraph) {
+            Font font = ((CodeArea) this.getSkinnable()).getFont();
+            if (font != null) {
+                // CodeAreaSkin 使用字体完整名称作为字体族，Menlo Regular 会被回退为 System 比例字体
+                String family = RichUtils.toCssFont(font.getFamily());
+                if (family != null && !RichUtils.isLogicalFont(family)) {
+                    String name = RichUtils.toCssFont(font.getName());
+                    String lowerCaseName = name == null ? "" : name.toLowerCase(Locale.ENGLISH);
+                    context.addStyle("-fx-font-family:'" + family + "';");
+                    context.addStyle("-fx-font-style:" + RichUtils.guessFontStyle(lowerCaseName) + ";");
+                    context.addStyle("-fx-font-weight:" + RichUtils.guessFontWeight(lowerCaseName) + ";");
+                }
+            }
+        }
     }
 
     @Override
