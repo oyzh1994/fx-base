@@ -52,8 +52,8 @@
     -color-danger-8: #ad1457;
     -color-danger-9: #880e4f;
     -color-fg-default: #1a2332;
-    -color-fg-muted: #5a6a7a;
-    -color-fg-subtle: #7e94a8;
+    -color-fg-muted: #4a5d6e;
+    -color-fg-subtle: #5f7386;
     -color-fg-emphasis: #ffffff;
     -color-bg-default: #f5f7fa;
     -color-bg-overlay: #f5f7fa;
@@ -67,20 +67,20 @@
     -color-neutral-emphasis: #607585;
     -color-neutral-muted: rgba(96, 117, 133, 0.2);
     -color-neutral-subtle: rgba(220, 228, 236, 0.5);
-    -color-accent-fg: #0097a7;
-    -color-accent-emphasis: #00acc1;
+    -color-accent-fg: #006978;
+    -color-accent-emphasis: #00838f;
     -color-accent-muted: rgba(0, 172, 193, 0.4);
     -color-accent-subtle: #e0f7fa;
-    -color-warning-fg: #e65100;
+    -color-warning-fg: #a83a00;
     -color-warning-emphasis: #ff8f00;
     -color-warning-muted: rgba(255, 143, 0, 0.4);
     -color-warning-subtle: #fff8e1;
     -color-success-fg: #2e7d32;
-    -color-success-emphasis: #4caf50;
+    -color-success-emphasis: #2e7d32;
     -color-success-muted: rgba(76, 175, 80, 0.4);
     -color-success-subtle: #e8f5e9;
     -color-danger-fg: #c2185b;
-    -color-danger-emphasis: #e91e63;
+    -color-danger-emphasis: #d81b60;
     -color-danger-muted: rgba(233, 30, 99, 0.4);
     -color-danger-subtle: #fce4ec;
     -color-chart-1: #00acc1;
@@ -5245,4 +5245,18 @@ Text {
 }
 .date-picker-popup > .calendar-grid > .selected {
     -fx-background-color: -color-accent-emphasis;
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

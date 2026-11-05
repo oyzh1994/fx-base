@@ -71,16 +71,16 @@
     -color-accent-emphasis: #2870b8;
     -color-accent-muted: rgba(40, 112, 184, 0.3);
     -color-accent-subtle: #e0ecf8;
-    -color-warning-fg: #887818;
+    -color-warning-fg: #7d6f12;
     -color-warning-emphasis: #a89028;
     -color-warning-muted: rgba(168, 144, 40, 0.3);
     -color-warning-subtle: #f8f0e0;
     -color-success-fg: #207040;
-    -color-success-emphasis: #308850;
+    -color-success-emphasis: #207040;
     -color-success-muted: rgba(48, 136, 80, 0.3);
     -color-success-subtle: #e0f0e8;
     -color-danger-fg: #a84040;
-    -color-danger-emphasis: #c85858;
+    -color-danger-emphasis: #a84040;
     -color-danger-muted: rgba(200, 88, 88, 0.3);
     -color-danger-subtle: #f8e8e8;
     -color-chart-1: #2870b8;
@@ -5059,11 +5059,11 @@ Text {
     -fx-background-insets: 0, 1px;
     -fx-border-radius: 3px;
     -fx-border-width: 1px;
-    -fx-background-color: -color-bg-default, -color-bg-default;
+    -fx-background-color: -color-border-default, -color-bg-default;
 }
 .text-input:focused {
     -fx-border-color: -color-accent-fg;
-    -fx-background-color: -color-bg-default, -color-bg-default;
+    -fx-background-color: -color-accent-fg, -color-bg-default;
 }
 
 /* --- Cards: subtle professional panel --- */
@@ -5234,4 +5234,18 @@ Text {
 }
 .date-picker-popup > .calendar-grid > .selected {
     -fx-background-color: -color-accent-emphasis;
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

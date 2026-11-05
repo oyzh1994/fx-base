@@ -52,8 +52,8 @@
     -color-danger-8: #602020;
     -color-danger-9: #401818;
     -color-fg-default: #382c20;
-    -color-fg-muted: #907054;
-    -color-fg-subtle: #b08c6c;
+    -color-fg-muted: #705840;
+    -color-fg-subtle: #86694f;
     -color-fg-emphasis: #ffffff;
     -color-bg-default: #fef8f4;
     -color-bg-overlay: #fef8f4;
@@ -67,20 +67,20 @@
     -color-neutral-emphasis: #907054;
     -color-neutral-muted: rgba(144, 112, 84, 0.18);
     -color-neutral-subtle: rgba(248, 220, 200, 0.5);
-    -color-accent-fg: #d87830;
-    -color-accent-emphasis: #d87830;
+    -color-accent-fg: #884818;
+    -color-accent-emphasis: #b06020;
     -color-accent-muted: rgba(216, 120, 48, 0.3);
     -color-accent-subtle: #fff0e8;
-    -color-warning-fg: #b08818;
+    -color-warning-fg: #887010;
     -color-warning-emphasis: #d8a020;
     -color-warning-muted: rgba(216, 160, 32, 0.3);
     -color-warning-subtle: #fff8e0;
-    -color-success-fg: #488828;
-    -color-success-emphasis: #60a038;
+    -color-success-fg: #387020;
+    -color-success-emphasis: #387020;
     -color-success-muted: rgba(96, 160, 56, 0.3);
     -color-success-subtle: #f0f8e8;
     -color-danger-fg: #b04848;
-    -color-danger-emphasis: #d86060;
+    -color-danger-emphasis: #b04848;
     -color-danger-muted: rgba(216, 96, 96, 0.3);
     -color-danger-subtle: #fff0f0;
     -color-chart-1: #f09048;
@@ -5253,4 +5253,18 @@ Text {
 }
 .date-picker-popup > .calendar-grid > .selected {
     -fx-background-color: rgba(216, 120, 48, 0.5);
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

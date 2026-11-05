@@ -53,7 +53,7 @@
     -color-danger-9: #4c0015;
     -color-fg-default: #e0e8f0;
     -color-fg-muted: #8899aa;
-    -color-fg-subtle: #607080;
+    -color-fg-subtle: #7f8fa6;
     -color-fg-emphasis: #ffffff;
     -color-bg-default: #0a0e17;
     -color-bg-overlay: #0a0e17;
@@ -68,7 +68,7 @@
     -color-neutral-muted: rgba(96, 109, 128, 0.4);
     -color-neutral-subtle: rgba(96, 109, 128, 0.1);
     -color-accent-fg: #00e5ff;
-    -color-accent-emphasis: #00adb5;
+    -color-accent-emphasis: #007a82;
     -color-accent-muted: rgba(0, 229, 255, 0.4);
     -color-accent-subtle: rgba(0, 229, 255, 0.12);
     -color-warning-fg: #ffd666;
@@ -76,7 +76,7 @@
     -color-warning-muted: rgba(255, 214, 102, 0.4);
     -color-warning-subtle: rgba(255, 214, 102, 0.12);
     -color-success-fg: #3dff50;
-    -color-success-emphasis: #00c214;
+    -color-success-emphasis: #00850e;
     -color-success-muted: rgba(61, 255, 80, 0.4);
     -color-success-subtle: rgba(61, 255, 80, 0.12);
     -color-danger-fg: #ff5d88;
@@ -5263,4 +5263,18 @@ Text {
 .date-picker-popup > .calendar-grid > .selected {
     -fx-background-color: -color-accent-emphasis;
     -fx-effect: dropshadow(three-pass-box, -color-accent-fg, 3px, 0.5, 0, 0);
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

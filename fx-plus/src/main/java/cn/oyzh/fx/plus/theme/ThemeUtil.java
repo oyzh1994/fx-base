@@ -95,7 +95,9 @@ public class ThemeUtil {
         StringBuilder content = new StringBuilder();
         for (String s : lines) {
             s = s.trim();
-            if (s.startsWith("-color-fg-default:")) {
+            if (s.startsWith("@import")) {
+                content.append(resolveCssImport(s, url));
+            } else if (s.startsWith("-color-fg-default:")) {
                 content.append("-color-fg-default:").append(fgColor).append(";");
             } else if (s.startsWith("-color-bg-default:")) {
                 content.append("-color-bg-default:").append(bgColor).append(";");
@@ -114,6 +116,30 @@ public class ThemeUtil {
         //            path = path.replace("\\", "/");
         //        }
         return path.toString();
+    }
+
+    /**
+     * 将样式文件中的相对导入路径解析为绝对路径
+     * 主题文件被复制到临时目录后，相对导入会失效，因此需要在写入前完成解析
+     *
+     * @param line    导入语句
+     * @param baseUrl 当前样式文件地址
+     * @return 解析后的导入语句
+     */
+    private static String resolveCssImport(String line, URL baseUrl) {
+        int start = line.indexOf('"');
+        int end = start < 0 ? -1 : line.indexOf('"', start + 1);
+        if (end < 0) {
+            return line;
+        }
+        try {
+            String path = line.substring(start + 1, end);
+            URL importUrl = new URL(baseUrl, path);
+            return line.substring(0, start + 1) + importUrl.toExternalForm() + line.substring(end);
+        } catch (Exception ex) {
+            JulLog.warn("resolve css import failed:{}", line, ex);
+            return line;
+        }
     }
 
     /**

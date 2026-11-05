@@ -13,6 +13,7 @@ public class ThemeUtilTest {
         assertInverse(Themes.CUPERTINO_LIGHT, Themes.CUPERTINO_DARK);
         assertInverse(Themes.INTELLIJ_LIGHT, Themes.INTELLIJ_DARK);
         assertInverse(Themes.VSCODE_LIGHT, Themes.VSCODE_DARK);
+        assertInverse(Themes.AURORA_LIGHT, Themes.AURORA_DARK);
         assertInverse(Themes.CYBERPUNK_LIGHT, Themes.CYBERPUNK_DARK);
         assertInverse(Themes.LIQUID_GLASS_LIGHT, Themes.LIQUID_GLASS_DARK);
         assertInverse(Themes.ANIME_WARM_LIGHT, Themes.ANIME_WARM_DARK);

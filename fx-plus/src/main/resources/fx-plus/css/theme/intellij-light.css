@@ -52,8 +52,8 @@
     -color-danger-8: #660018;
     -color-danger-9: #4c0014;
     -color-fg-default: #2b313a;
-    -color-fg-muted: #6e7781;
-    -color-fg-subtle: #8c959f;
+    -color-fg-muted: #5b6570;
+    -color-fg-subtle: #6e7781;
     -color-fg-emphasis: #ffffff;
     -color-bg-default: #ffffff;
     -color-bg-overlay: #ffffff;
@@ -67,8 +67,8 @@
     -color-neutral-emphasis: #6e7781;
     -color-neutral-muted: rgba(176, 184, 193, 0.2);
     -color-neutral-subtle: rgba(234, 238, 242, 0.5);
-    -color-accent-fg: #3489e3;
-    -color-accent-emphasis: #3489e3;
+    -color-accent-fg: #2476d0;
+    -color-accent-emphasis: #2476d0;
     -color-accent-muted: rgba(116, 175, 237, 0.4);
     -color-accent-subtle: #d4e8fc;
     -color-warning-fg: #9a6700;
@@ -76,7 +76,7 @@
     -color-warning-muted: rgba(212, 167, 44, 0.4);
     -color-warning-subtle: #fff8c5;
     -color-success-fg: #1a7f37;
-    -color-success-emphasis: #2da44e;
+    -color-success-emphasis: #1a7f37;
     -color-success-muted: rgba(74, 194, 107, 0.4);
     -color-success-subtle: #dafbe1;
     -color-danger-fg: #cf222e;
@@ -5014,4 +5014,18 @@ Text {
     -fx-padding: 8px 12px 8px 12px;
     -fx-opacity: 0.93;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 6px, 0.3, 0, 2);
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

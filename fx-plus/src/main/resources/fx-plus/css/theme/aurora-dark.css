@@ -1,0 +1,234 @@
+@import url("vscode-dark.css");
+
+/*
+ * Aurora Dark
+ * A calm, low-glare workspace palette inspired by VS Code, GitHub and IntelliJ.
+ * The base theme provides component structure; this file only refines the
+ * visual language so future upstream component updates stay inherited.
+ */
+.root {
+    -color-dark: #05080c;
+    -color-light: #eaf2ff;
+
+    -color-base-0: #eaf2ff;
+    -color-base-1: #cbd8e8;
+    -color-base-2: #a8b8cc;
+    -color-base-3: #8496ab;
+    -color-base-4: #66798f;
+    -color-base-5: #4b5e74;
+    -color-base-6: #35475c;
+    -color-base-7: #26374a;
+    -color-base-8: #1a2838;
+    -color-base-9: #111c29;
+
+    -color-accent-0: #d9ecff;
+    -color-accent-1: #b8dcff;
+    -color-accent-2: #91c7ff;
+    -color-accent-3: #6fb2ff;
+    -color-accent-4: #4f9cf7;
+    -color-accent-5: #3484e5;
+    -color-accent-6: #296bc0;
+    -color-accent-7: #205497;
+    -color-accent-8: #183e70;
+    -color-accent-9: #10294a;
+
+    -color-success-0: #d6f8ed;
+    -color-success-1: #a9efd9;
+    -color-success-2: #78e2c2;
+    -color-success-3: #4fd3ab;
+    -color-success-4: #34bd94;
+    -color-success-5: #2aa27e;
+    -color-success-6: #228366;
+    -color-success-7: #1a664f;
+    -color-success-8: #124a3a;
+    -color-success-9: #0b2f25;
+
+    -color-warning-0: #fff2d8;
+    -color-warning-1: #ffe1a8;
+    -color-warning-2: #ffcd74;
+    -color-warning-3: #ffb84a;
+    -color-warning-4: #f2a126;
+    -color-warning-5: #d58612;
+    -color-warning-6: #b06a0a;
+    -color-warning-7: #895106;
+    -color-warning-8: #633a03;
+    -color-warning-9: #422600;
+
+    -color-danger-0: #ffe2e8;
+    -color-danger-1: #ffbac7;
+    -color-danger-2: #ff91a4;
+    -color-danger-3: #ff6882;
+    -color-danger-4: #ef4763;
+    -color-danger-5: #d2314d;
+    -color-danger-6: #ae253d;
+    -color-danger-7: #891a2e;
+    -color-danger-8: #64111f;
+    -color-danger-9: #420a13;
+
+    -color-fg-default: #dce6f2;
+    -color-fg-muted: #a8b8cc;
+    -color-fg-subtle: #8496ab;
+    -color-fg-emphasis: #ffffff;
+
+    -color-bg-default: #0f1620;
+    -color-bg-overlay: #182230;
+    -color-bg-subtle: #141d29;
+    -color-bg-inset: #0a1017;
+    -color-border-default: #263547;
+    -color-border-muted: #1c2938;
+    -color-border-subtle: rgba(135, 175, 225, 0.10);
+    -color-shadow-default: rgba(0, 0, 0, 0.55);
+
+    -color-neutral-emphasis-plus: #a8b8cc;
+    -color-neutral-emphasis: #66798f;
+    -color-neutral-muted: rgba(102, 121, 143, 0.32);
+    -color-neutral-subtle: rgba(102, 121, 143, 0.09);
+
+    -color-accent-fg: #7fbfff;
+    -color-accent-emphasis: #296bc0;
+    -color-accent-muted: rgba(111, 178, 255, 0.30);
+    -color-accent-subtle: rgba(111, 178, 255, 0.11);
+
+    -color-warning-fg: #ffc96b;
+    -color-warning-emphasis: #d58612;
+    -color-warning-muted: rgba(255, 184, 74, 0.30);
+    -color-warning-subtle: rgba(255, 184, 74, 0.10);
+
+    -color-success-fg: #5dddb7;
+    -color-success-emphasis: #228366;
+    -color-success-muted: rgba(79, 211, 171, 0.30);
+    -color-success-subtle: rgba(79, 211, 171, 0.10);
+
+    -color-danger-fg: #ff8095;
+    -color-danger-emphasis: #d2314d;
+    -color-danger-muted: rgba(255, 104, 130, 0.30);
+    -color-danger-subtle: rgba(255, 104, 130, 0.10);
+
+    -color-chart-1: #6fb2ff;
+    -color-chart-2: #5dddb7;
+    -color-chart-3: #b69cff;
+    -color-chart-4: #ffc96b;
+    -color-chart-5: #ff8095;
+    -color-chart-6: #5fd4e8;
+    -color-chart-7: #9be37a;
+    -color-chart-8: #8a9bb0;
+    -color-chart-1-alpha70: rgba(111, 178, 255, 0.7);
+    -color-chart-2-alpha70: rgba(93, 221, 183, 0.7);
+    -color-chart-3-alpha70: rgba(182, 156, 255, 0.7);
+    -color-chart-4-alpha70: rgba(255, 201, 107, 0.7);
+    -color-chart-5-alpha70: rgba(255, 128, 149, 0.7);
+    -color-chart-6-alpha70: rgba(95, 212, 232, 0.7);
+    -color-chart-7-alpha70: rgba(155, 227, 122, 0.7);
+    -color-chart-8-alpha70: rgba(138, 155, 176, 0.7);
+    -color-chart-1-alpha20: rgba(111, 178, 255, 0.2);
+    -color-chart-2-alpha20: rgba(93, 221, 183, 0.2);
+    -color-chart-3-alpha20: rgba(182, 156, 255, 0.2);
+    -color-chart-4-alpha20: rgba(255, 201, 107, 0.2);
+    -color-chart-5-alpha20: rgba(255, 128, 149, 0.2);
+    -color-chart-6-alpha20: rgba(95, 212, 232, 0.2);
+    -color-chart-7-alpha20: rgba(155, 227, 122, 0.2);
+    -color-chart-8-alpha20: rgba(138, 155, 176, 0.2);
+
+    -aurora-selection: #1b304c;
+    -aurora-header-bg: linear-gradient(to right, #0b1119 0%, #0f1823 58%, #111c29 100%);
+}
+
+#headerBar {
+    -fx-background-color: -aurora-header-bg;
+    -fx-border-color: transparent transparent -color-border-subtle transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.button {
+    -fx-background-radius: 7px, 6px;
+}
+
+.text-input,
+.combo-box-base,
+.choice-box {
+    -fx-background-radius: 7px, 6px;
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+    -color-cell-bg-selected: -aurora-selection;
+    -color-cell-bg-selected-focused: -aurora-selection;
+    -color-cell-fg-selected: -color-fg-default;
+    -color-cell-fg-selected-focused: -color-fg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
+}
+
+.table-view > .column-header-background {
+    -fx-background-color: -color-bg-subtle;
+}
+
+.table-view > .column-header-background .column-header {
+    -fx-border-color: -color-border-muted;
+    -fx-border-width: 0 1 1 0;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: -color-base-6;
+    -fx-background-radius: 10em;
+}
+
+.scroll-bar > .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.context-menu,
+.tooltip,
+.card > .container,
+.message.tile-base > .container {
+    -fx-background-radius: 8px, 7px;
+    -fx-border-radius: 8px, 7px;
+}
+
+.context-menu {
+    -fx-padding: 6px;
+}
+
+.menu-item {
+    -fx-background-radius: 6px;
+}
+
+.menu-item:focused {
+    -fx-background-color: -color-accent-emphasis, -color-accent-emphasis;
+}
+
+.menu-item:focused > .label,
+.menu-item:focused .font-icon,
+.menu-item:focused .ikonli-font-icon,
+.menu-item:focused > .right-container > .arrow {
+    -fx-text-fill: -color-fg-emphasis;
+    -fx-icon-color: -color-fg-emphasis;
+    -fx-fill: -color-fg-emphasis;
+    -fx-background-color: -color-fg-emphasis;
+}
+
+.tooltip {
+    -fx-background-color: -color-border-default, -color-bg-overlay;
+    -fx-padding: 7px 10px 7px 10px;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: -color-border-subtle;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: -color-border-muted, -color-bg-subtle;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-padding: 0.38em 0.9em 0.38em 0.9em;
+}

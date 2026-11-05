@@ -52,8 +52,8 @@
     -color-danger-8: #660404;
     -color-danger-9: #4c0000;
     -color-fg-default: #bbbbbb;
-    -color-fg-muted: #8c8c8c;
-    -color-fg-subtle: #6e6e6e;
+    -color-fg-muted: #aaaaaa;
+    -color-fg-subtle: #969696;
     -color-fg-emphasis: #ffffff;
     -color-bg-default: #2b2b2b;
     -color-bg-overlay: #3c3c3c;
@@ -76,7 +76,7 @@
     -color-warning-muted: rgba(200, 130, 24, 0.4);
     -color-warning-subtle: rgba(200, 130, 24, 0.15);
     -color-success-fg: #59b859;
-    -color-success-emphasis: #399439;
+    -color-success-emphasis: #218021;
     -color-success-muted: rgba(57, 148, 57, 0.4);
     -color-success-subtle: rgba(57, 148, 57, 0.15);
     -color-danger-fg: #f5b8b8;
@@ -5014,4 +5014,18 @@ Text {
     -fx-padding: 8px 12px 8px 12px;
     -fx-opacity: 0.93;
     -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.6, 0, 2);
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

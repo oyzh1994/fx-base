@@ -2,6 +2,8 @@ package cn.oyzh.fx.plus.theme;
 
 import cn.oyzh.fx.plus.theme.custom.AnimeWarmDarkTheme;
 import cn.oyzh.fx.plus.theme.custom.AnimeWarmLightTheme;
+import cn.oyzh.fx.plus.theme.custom.AuroraDarkTheme;
+import cn.oyzh.fx.plus.theme.custom.AuroraLightTheme;
 import cn.oyzh.fx.plus.theme.custom.BusinessDarkTheme;
 import cn.oyzh.fx.plus.theme.custom.BusinessLightTheme;
 import cn.oyzh.fx.plus.theme.original.CupertinoDarkTheme;
@@ -122,6 +124,16 @@ public class Themes {
      * VS Code 亮色主题
      */
     public static final VSCodeLightTheme VSCODE_LIGHT = new VSCodeLightTheme();
+
+    /**
+     * Aurora 暗色主题
+     */
+    public static final AuroraDarkTheme AURORA_DARK = new AuroraDarkTheme();
+
+    /**
+     * Aurora 亮色主题
+     */
+    public static final AuroraLightTheme AURORA_LIGHT = new AuroraLightTheme();
 
     /**
      * 赛博朋克暗色主题
@@ -315,7 +327,7 @@ public class Themes {
      * @return 内置主题列表
      */
     public static List<ThemeStyle> themes() {
-        List<ThemeStyle> themes = new ArrayList<>(44);
+        List<ThemeStyle> themes = new ArrayList<>(46);
         themes.add(PRIMER_LIGHT);
         themes.add(PRIMER_DARK);
         themes.add(NORD_LIGHT);
@@ -327,6 +339,8 @@ public class Themes {
         themes.add(INTELLIJ_DARK);
         themes.add(VSCODE_LIGHT);
         themes.add(VSCODE_DARK);
+        themes.add(AURORA_LIGHT);
+        themes.add(AURORA_DARK);
         themes.add(CYBERPUNK_LIGHT);
         themes.add(CYBERPUNK_DARK);
         themes.add(LIQUID_GLASS_LIGHT);
@@ -399,6 +413,8 @@ public class Themes {
             case "INTELLIJ DARK", "INTELLIJ_DARK" -> INTELLIJ_DARK;
             case "VS CODE LIGHT", "VSCODE_LIGHT", "VS_CODE_LIGHT" -> VSCODE_LIGHT;
             case "VS CODE DARK", "VSCODE_DARK", "VS_CODE_DARK" -> VSCODE_DARK;
+            case "AURORA LIGHT", "AURORA_LIGHT" -> AURORA_LIGHT;
+            case "AURORA DARK", "AURORA_DARK" -> AURORA_DARK;
             case "CYBERPUNK LIGHT", "CYBERPUNK_LIGHT" -> CYBERPUNK_LIGHT;
             case "CYBERPUNK DARK", "CYBERPUNK_DARK" -> CYBERPUNK_DARK;
             case "LIQUID GLASS LIGHT", "LIQUID_GLASS_LIGHT" -> LIQUID_GLASS_LIGHT;

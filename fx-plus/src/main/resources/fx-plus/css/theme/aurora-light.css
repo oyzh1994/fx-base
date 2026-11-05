@@ -1,0 +1,233 @@
+@import url("vscode-light.css");
+
+/*
+ * Aurora Light
+ * A crisp daylight counterpart with the same geometry and interaction states
+ * as Aurora Dark. Optimised for long sessions in bright environments.
+ */
+.root {
+    -color-dark: #0b1220;
+    -color-light: #ffffff;
+
+    -color-base-0: #f7f9fc;
+    -color-base-1: #e8edf3;
+    -color-base-2: #d5dde6;
+    -color-base-3: #bac5d2;
+    -color-base-4: #97a6b8;
+    -color-base-5: #788aa1;
+    -color-base-6: #5c6e86;
+    -color-base-7: #40516a;
+    -color-base-8: #273449;
+    -color-base-9: #0f172a;
+
+    -color-accent-0: #eaf4ff;
+    -color-accent-1: #c2e0fd;
+    -color-accent-2: #96c9fa;
+    -color-accent-3: #6cb2f6;
+    -color-accent-4: #4c9ff2;
+    -color-accent-5: #348fec;
+    -color-accent-6: #247edb;
+    -color-accent-7: #1c69bd;
+    -color-accent-8: #15549c;
+    -color-accent-9: #0f3f78;
+
+    -color-success-0: #effaf6;
+    -color-success-1: #d1f3e9;
+    -color-success-2: #a6e6d2;
+    -color-success-3: #78d8bc;
+    -color-success-4: #4cc7a6;
+    -color-success-5: #2db590;
+    -color-success-6: #209879;
+    -color-success-7: #177b63;
+    -color-success-8: #10614e;
+    -color-success-9: #0b4a3b;
+
+    -color-warning-0: #fff7e6;
+    -color-warning-1: #fce9be;
+    -color-warning-2: #f8d58c;
+    -color-warning-3: #f4c15e;
+    -color-warning-4: #edab2e;
+    -color-warning-5: #db930a;
+    -color-warning-6: #bf7a00;
+    -color-warning-7: #9c6200;
+    -color-warning-8: #7a4c00;
+    -color-warning-9: #5b3800;
+
+    -color-danger-0: #fef0f3;
+    -color-danger-1: #fbd5db;
+    -color-danger-2: #f6b2be;
+    -color-danger-3: #f18d9d;
+    -color-danger-4: #eb687d;
+    -color-danger-5: #e04761;
+    -color-danger-6: #cc304b;
+    -color-danger-7: #ac243a;
+    -color-danger-8: #8a1a2c;
+    -color-danger-9: #6b1220;
+
+    -color-fg-default: #1f2937;
+    -color-fg-muted: #526176;
+    -color-fg-subtle: #61728a;
+    -color-fg-emphasis: #ffffff;
+
+    -color-bg-default: #f7f9fc;
+    -color-bg-overlay: #ffffff;
+    -color-bg-subtle: #eef2f7;
+    -color-bg-inset: #e9eef5;
+    -color-border-default: #d8e0ea;
+    -color-border-muted: #e6ebf2;
+    -color-border-subtle: rgba(31, 41, 55, 0.08);
+    -color-shadow-default: rgba(15, 23, 42, 0.12);
+
+    -color-neutral-emphasis-plus: #40516a;
+    -color-neutral-emphasis: #64748b;
+    -color-neutral-muted: rgba(100, 116, 139, 0.20);
+    -color-neutral-subtle: rgba(100, 116, 139, 0.08);
+
+    -color-accent-fg: #1c69bd;
+    -color-accent-emphasis: #1c69bd;
+    -color-accent-muted: rgba(36, 126, 219, 0.24);
+    -color-accent-subtle: #eaf4ff;
+
+    -color-warning-fg: #9c6200;
+    -color-warning-emphasis: #9c6200;
+    -color-warning-muted: rgba(191, 122, 0, 0.24);
+    -color-warning-subtle: #fff7e6;
+
+    -color-success-fg: #177b63;
+    -color-success-emphasis: #177b63;
+    -color-success-muted: rgba(32, 152, 121, 0.24);
+    -color-success-subtle: #effaf6;
+
+    -color-danger-fg: #cc304b;
+    -color-danger-emphasis: #cc304b;
+    -color-danger-muted: rgba(204, 48, 75, 0.24);
+    -color-danger-subtle: #fef0f3;
+
+    -color-chart-1: #247edb;
+    -color-chart-2: #2db590;
+    -color-chart-3: #7b61d1;
+    -color-chart-4: #db930a;
+    -color-chart-5: #e04761;
+    -color-chart-6: #1aa8c2;
+    -color-chart-7: #5d9e3f;
+    -color-chart-8: #64748b;
+    -color-chart-1-alpha70: rgba(36, 126, 219, 0.7);
+    -color-chart-2-alpha70: rgba(45, 181, 144, 0.7);
+    -color-chart-3-alpha70: rgba(123, 97, 209, 0.7);
+    -color-chart-4-alpha70: rgba(219, 147, 10, 0.7);
+    -color-chart-5-alpha70: rgba(224, 71, 97, 0.7);
+    -color-chart-6-alpha70: rgba(26, 168, 194, 0.7);
+    -color-chart-7-alpha70: rgba(93, 158, 63, 0.7);
+    -color-chart-8-alpha70: rgba(100, 116, 139, 0.7);
+    -color-chart-1-alpha20: rgba(36, 126, 219, 0.2);
+    -color-chart-2-alpha20: rgba(45, 181, 144, 0.2);
+    -color-chart-3-alpha20: rgba(123, 97, 209, 0.2);
+    -color-chart-4-alpha20: rgba(219, 147, 10, 0.2);
+    -color-chart-5-alpha20: rgba(224, 71, 97, 0.2);
+    -color-chart-6-alpha20: rgba(26, 168, 194, 0.2);
+    -color-chart-7-alpha20: rgba(93, 158, 63, 0.2);
+    -color-chart-8-alpha20: rgba(100, 116, 139, 0.2);
+
+    -aurora-selection: #e3effd;
+    -aurora-header-bg: linear-gradient(to right, #fbfcfe 0%, #f4f7fb 58%, #eef3f9 100%);
+}
+
+#headerBar {
+    -fx-background-color: -aurora-header-bg;
+    -fx-border-color: transparent transparent -color-border-subtle transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.button {
+    -fx-background-radius: 7px, 6px;
+}
+
+.text-input,
+.combo-box-base,
+.choice-box {
+    -fx-background-radius: 7px, 6px;
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+    -color-cell-bg-selected: -aurora-selection;
+    -color-cell-bg-selected-focused: -aurora-selection;
+    -color-cell-fg-selected: -color-fg-default;
+    -color-cell-fg-selected-focused: -color-fg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
+}
+
+.table-view > .column-header-background {
+    -fx-background-color: -color-bg-subtle;
+}
+
+.table-view > .column-header-background .column-header {
+    -fx-border-color: -color-border-muted;
+    -fx-border-width: 0 1 1 0;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: -color-base-6;
+    -fx-background-radius: 10em;
+}
+
+.scroll-bar > .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.context-menu,
+.tooltip,
+.card > .container,
+.message.tile-base > .container {
+    -fx-background-radius: 8px, 7px;
+    -fx-border-radius: 8px, 7px;
+}
+
+.context-menu {
+    -fx-padding: 6px;
+}
+
+.menu-item {
+    -fx-background-radius: 6px;
+}
+
+.menu-item:focused {
+    -fx-background-color: -color-accent-emphasis, -color-accent-emphasis;
+}
+
+.menu-item:focused > .label,
+.menu-item:focused .font-icon,
+.menu-item:focused .ikonli-font-icon,
+.menu-item:focused > .right-container > .arrow {
+    -fx-text-fill: -color-fg-emphasis;
+    -fx-icon-color: -color-fg-emphasis;
+    -fx-fill: -color-fg-emphasis;
+    -fx-background-color: -color-fg-emphasis;
+}
+
+.tooltip {
+    -fx-background-color: -color-border-default, -color-bg-overlay;
+    -fx-padding: 7px 10px 7px 10px;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: -color-border-subtle;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: -color-border-muted, -color-bg-subtle;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-padding: 0.38em 0.9em 0.38em 0.9em;
+}

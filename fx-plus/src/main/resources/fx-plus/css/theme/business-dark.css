@@ -52,8 +52,8 @@
     -color-danger-8: #480808;
     -color-danger-9: #300000;
     -color-fg-default: #dce2e8;
-    -color-fg-muted: #8090a0;
-    -color-fg-subtle: #607080;
+    -color-fg-muted: #a8b4c0;
+    -color-fg-subtle: #8894a0;
     -color-fg-emphasis: #ffffff;
     -color-bg-default: #121a24;
     -color-bg-overlay: #121a24;
@@ -79,7 +79,7 @@
     -color-success-emphasis: #286838;
     -color-success-muted: rgba(72, 152, 96, 0.3);
     -color-success-subtle: rgba(72, 152, 96, 0.08);
-    -color-danger-fg: #c05050;
+    -color-danger-fg: #d07878;
     -color-danger-emphasis: #a83838;
     -color-danger-muted: rgba(192, 80, 80, 0.3);
     -color-danger-subtle: rgba(192, 80, 80, 0.08);
@@ -5234,4 +5234,18 @@ Text {
 }
 .date-picker-popup > .calendar-grid > .selected {
     -fx-background-color: -color-accent-emphasis;
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }

@@ -52,8 +52,8 @@
     -color-danger-8: #601818;
     -color-danger-9: #401010;
     -color-fg-default: #f0d8cc;
-    -color-fg-muted: #a08070;
-    -color-fg-subtle: #806858;
+    -color-fg-muted: #c09888;
+    -color-fg-subtle: #a87868;
     -color-fg-emphasis: #fff5f0;
     -color-bg-default: #1c100c;
     -color-bg-overlay: #1c100c;
@@ -68,7 +68,7 @@
     -color-neutral-muted: rgba(136, 96, 80, 0.35);
     -color-neutral-subtle: rgba(136, 96, 80, 0.08);
     -color-accent-fg: #ff8848;
-    -color-accent-emphasis: #d85820;
+    -color-accent-emphasis: #b04818;
     -color-accent-muted: rgba(255, 136, 72, 0.35);
     -color-accent-subtle: rgba(255, 136, 72, 0.1);
     -color-warning-fg: #ffc040;
@@ -76,11 +76,11 @@
     -color-warning-muted: rgba(255, 192, 64, 0.35);
     -color-warning-subtle: rgba(255, 192, 64, 0.1);
     -color-success-fg: #90d070;
-    -color-success-emphasis: #50a838;
+    -color-success-emphasis: #307820;
     -color-success-muted: rgba(144, 208, 112, 0.35);
     -color-success-subtle: rgba(144, 208, 112, 0.1);
     -color-danger-fg: #ff8080;
-    -color-danger-emphasis: #d84848;
+    -color-danger-emphasis: #b03838;
     -color-danger-muted: rgba(255, 128, 128, 0.35);
     -color-danger-subtle: rgba(255, 128, 128, 0.1);
     -color-chart-1: #ff8848;
@@ -5255,4 +5255,18 @@ Text {
 }
 .date-picker-popup > .calendar-grid > .selected {
     -fx-background-color: rgba(216, 88, 32, 0.6);
+}
+
+.tree-view,
+.list-view,
+.table-view,
+.tree-table-view {
+    -fx-background-color: -color-bg-default;
+}
+
+.tree-view > .virtual-flow > .clipped-container > .sheet,
+.list-view > .virtual-flow > .clipped-container > .sheet,
+.table-view > .virtual-flow > .clipped-container > .sheet,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet {
+    -fx-background-color: -color-bg-default;
 }
