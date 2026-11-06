@@ -28,9 +28,7 @@ import javafx.stage.Screen;
 import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -725,5 +723,16 @@ public class FXUtil {
             return null;
         }
         return node.getScene().getWindow();
+    }
+
+    /**
+     * 打开地址
+     *
+     * @param url 地址
+     */
+    public static void open(String url) {
+        if (url != null && FXConst.getHostServices() != null) {
+            FXConst.getHostServices().showDocument(url);
+        }
     }
 }

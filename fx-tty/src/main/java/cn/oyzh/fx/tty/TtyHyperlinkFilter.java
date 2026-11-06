@@ -16,6 +16,7 @@
 package cn.oyzh.fx.tty;
 
 import cn.oyzh.fx.plus.FXConst;
+import cn.oyzh.fx.plus.util.FXUtil;
 import com.jediterm.terminal.model.hyperlinks.HyperlinkFilter;
 import com.jediterm.terminal.model.hyperlinks.LinkInfo;
 import com.jediterm.terminal.model.hyperlinks.LinkResult;
@@ -79,7 +80,7 @@ public class TtyHyperlinkFilter implements HyperlinkFilter {
      */
     private void openUrl(@NotNull String url) {
         try {
-            FXConst.getHostServices().showDocument(url);
+            FXUtil.open(url);
         } catch (Exception e) {
             //pass
         }

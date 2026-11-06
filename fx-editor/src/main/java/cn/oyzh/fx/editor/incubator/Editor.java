@@ -47,6 +47,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -74,6 +76,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 编辑器
@@ -116,6 +121,35 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     public static final Color DEFAULT_SELECTION_DARK_COLOR = Color.rgb(33, 66, 131);
 
     /**
+     * 超链接常见顶级域名
+     */
+    private static final String HYPERLINK_TLDS = "com|cn|net|org|io|dev|app|cloud|ai|co|me|info|xyz|top|site|tech|online|store|edu|gov|mil|int|us|uk|de|jp|fr|ru|in|au|ca|hk|tw|sg|kr|eu|nl|se|ch|it|es|br|mx";
+
+    /**
+     * 默认超链接匹配模式。
+     * <p>
+     * 支持带协议的链接、www 开头、邮箱以及不带协议的常见域名。
+     */
+    private static final String HYPERLINK_URL_CHARS = "A-Za-z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%";
+
+    public static final Pattern DEFAULT_HYPERLINK_PATTERN = Pattern.compile("(?i)\\b("
+            + "(?:(?:https?|ftps?|file|mailto|ssh|git|smb|ws|wss|telnet|redis|jdbc):(?://)?[" + HYPERLINK_URL_CHARS + "]+)"
+            + "|(?:www\\.[" + HYPERLINK_URL_CHARS + "]+)"
+            + "|(?:[\\w.+-]+@[\\w-]+(?:\\.[\\w-]+)+)"
+            + "|(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+(?:" + HYPERLINK_TLDS + ")(?::\\d{1,5})?(?:/[" + HYPERLINK_URL_CHARS + "]*)?)"
+            + ")");
+
+    /**
+     * 超链接尾部需要剔除的标点
+     */
+    private static final String HYPERLINK_TRAILING_CHARS = ".,;:!?)]}>\"'`*~-，。；：！？）】」》";
+
+    /**
+     * 参与超链接检测的段落下限长度，过长的行跳过检测以避免影响性能
+     */
+    private static final int HYPERLINK_MAX_PARAGRAPH_LENGTH = 200_000;
+
+    /**
      * 成对符号映射 (开始 → 结束)
      */
     private static final Map<String, String> PAIR_MAP = Map.of(
@@ -152,6 +186,36 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 默认边距
      */
     private static final Insets DEFAULT_PADDING = new Insets(5);
+
+    /**
+     * 超链接处理器，用于替换默认的打开方式
+     */
+    private ObjectProperty<Consumer<String>> hyperlinkHandler;
+
+    /**
+     * 超链接匹配模式
+     */
+    private Pattern hyperlinkPattern = DEFAULT_HYPERLINK_PATTERN;
+
+    /**
+     * 右键菜单处的超链接
+     */
+    private String contextHyperlink;
+
+    /**
+     * 超链接缓存所在段落
+     */
+    private int hyperlinkCacheParagraph = -1;
+
+    /**
+     * 当前段落的超链接缓存
+     */
+    private List<Hyperlink> hyperlinkCache = List.of();
+
+    /**
+     * 模型监听是否已安装
+     */
+    private boolean hyperlinkListenerInstalled;
 
     /**
      * 格式类型监听器
@@ -281,6 +345,9 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.highlightMacthCaseProperty().addListener(this.highlightMacthCaseListener);
         // 右键菜单事件
         this.setOnContextMenuRequested(e -> {
+            // 仅在打开菜单时解析右键位置的超链接，避免影响正常输入的性能
+            Hyperlink hyperlink = this.findHyperlinkAt(e.getScreenX(), e.getScreenY());
+            this.contextHyperlink = hyperlink == null ? null : hyperlink.url();
             List<? extends MenuItem> items = this.getMenuItems();
             if (CollectionUtil.isNotEmpty(items)) {
                 this.showContextMenu(items, e.getScreenX(), e.getScreenY());
@@ -288,6 +355,15 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
                 this.clearContextMenu();
             }
         });
+        // 超链接交互：Ctrl/Command + 左键打开，双击选中（悬停不改变光标）
+        this.addEventFilter(MouseEvent.MOUSE_PRESSED, this::onHyperlinkMousePressed);
+        // 双击的默认“按词选中”发生在 MOUSE_CLICKED 阶段，需要在这里重新选中链接
+        this.addEventFilter(MouseEvent.MOUSE_CLICKED, this::onHyperlinkMouseClicked);
+        // 文本变化后超链接缓存失效
+        if (!this.hyperlinkListenerInstalled) {
+            this.hyperlinkListenerInstalled = true;
+            this.getModel().addListener(e -> this.invalidateHyperlinkCache());
+        }
         // 自动补全成对符号
         this.addEventFilter(KeyEvent.KEY_TYPED, this::onAutoPair);
         this.addEventFilter(KeyEvent.KEY_PRESSED, this::onAutoPairBackspace);
@@ -1393,6 +1469,8 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     @Override
     public List<? extends MenuItem> getMenuItems() {
         List<MenuItem> items = new ArrayList<>();
+        // 超链接打开
+        this.addHyperlinkMenuItems(items);
         // 是否选中内容
         boolean selectedText = this.isSelectedText();
 
@@ -1684,6 +1762,393 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     public int lineEndingLength() {
         return this.lineEndingText().length();
+    }
+
+    // ====== 超链接 ======
+
+    /**
+     * 获取超链接处理器属性。
+     * <p>
+     * 设置后，Ctrl/Command + 左键点击或右键菜单打开超链接时会回调该处理器，
+     * 未设置时使用系统默认浏览器打开。
+     *
+     * @return 超链接处理器属性
+     */
+    public ObjectProperty<Consumer<String>> hyperlinkHandlerProperty() {
+        if (this.hyperlinkHandler == null) {
+            this.hyperlinkHandler = new SimpleObjectProperty<>();
+        }
+        return this.hyperlinkHandler;
+    }
+
+    /**
+     * 获取超链接处理器
+     *
+     * @return 超链接处理器
+     */
+    public Consumer<String> getHyperlinkHandler() {
+        return this.hyperlinkHandler == null ? null : this.hyperlinkHandler.get();
+    }
+
+    /**
+     * 设置超链接处理器
+     *
+     * @param hyperlinkHandler 超链接处理器
+     */
+    public void setHyperlinkHandler(Consumer<String> hyperlinkHandler) {
+        this.hyperlinkHandlerProperty().set(hyperlinkHandler);
+    }
+
+    /**
+     * 获取超链接匹配模式
+     *
+     * @return 超链接匹配模式
+     */
+    public Pattern getHyperlinkPattern() {
+        return this.hyperlinkPattern;
+    }
+
+    /**
+     * 设置超链接匹配模式
+     *
+     * @param hyperlinkPattern 超链接匹配模式，为空时使用默认模式
+     */
+    public void setHyperlinkPattern(Pattern hyperlinkPattern) {
+        this.hyperlinkPattern = hyperlinkPattern == null ? DEFAULT_HYPERLINK_PATTERN : hyperlinkPattern;
+    }
+
+    /**
+     * 获取指定偏移处的超链接。
+     * <p>
+     * 说明：该方法会从文档开头逐段定位偏移所在段，适合低频调用；鼠标交互内部使用文本位置定位，不会有大文档遍历开销。
+     *
+     * @param offset 文本偏移
+     * @return 超链接
+     */
+    public Optional<String> getHyperlinkAt(int offset) {
+        Hyperlink hyperlink = this.findHyperlinkAtOffset(offset);
+        return hyperlink == null ? Optional.empty() : Optional.of(hyperlink.url());
+    }
+
+    /**
+     * 获取指定偏移处超链接的选中范围。
+     *
+     * @param offset 文本偏移
+     * @return 超链接范围
+     */
+    public Optional<IndexRange> getHyperlinkRangeAt(int offset) {
+        Hyperlink hyperlink = this.findHyperlinkAtOffset(offset);
+        if (hyperlink == null) {
+            return Optional.empty();
+        }
+        int paragraphStart = this.getOffsetByPos(TextPos.ofLeading(hyperlink.paragraph(), 0));
+        return Optional.of(new IndexRange(paragraphStart + hyperlink.startOffset(),
+                paragraphStart + hyperlink.endOffset()));
+    }
+
+    /**
+     * 添加打开超链接的右键菜单项（仅当右键位置存在超链接时添加）。
+     *
+     * @param items 菜单项列表
+     */
+    protected final void addHyperlinkMenuItems(List<MenuItem> items) {
+        String link = this.contextHyperlink;
+        this.contextHyperlink = null;
+        if (StringUtil.isBlank(link)) {
+            return;
+        }
+        items.add(MenuItemManager.getMenuItem(I18nHelper.openAsUrl(), () -> this.openHyperlink(link)));
+        items.add(MenuItemManager.getSeparatorMenuItem());
+    }
+
+    /**
+     * 打开超链接。
+     * <p>
+     * 优先使用 {@link #setHyperlinkHandler(Consumer)} 绑定的处理器，
+     * 未绑定时在后台线程使用系统默认浏览器打开。
+     *
+     * @param url 超链接
+     */
+    public void openHyperlink(String url) {
+        if (StringUtil.isBlank(url)) {
+            return;
+        }
+        Consumer<String> handler = this.getHyperlinkHandler();
+        if (handler != null) {
+            handler.accept(url);
+            return;
+        }
+        ThreadUtil.start(() -> this.defaultOpenHyperlink(url));
+    }
+
+    /**
+     * 使用系统默认方式打开超链接
+     *
+     * @param url 超链接
+     */
+    private void defaultOpenHyperlink(String url) {
+        try {
+            String target = url;
+            // 补全缺省协议
+            if (!target.matches("(?i)^[a-z][a-z0-9+.-]*:.*")) {
+                if (target.indexOf('@') > 0 && target.indexOf('/') < 0) {
+                    target = "mailto:" + target;
+                } else {
+                    target = "https://" + target;
+                }
+            }
+            FXUtil.open(target);
+        } catch (Exception ex) {
+            JulLog.warn("open hyperlink failed: " + url, ex);
+        }
+    }
+
+    /**
+     * 处理超链接点击：Ctrl/Command + 左键打开，双击选中
+     *
+     * @param event 鼠标事件
+     */
+    private void onHyperlinkMousePressed(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY) {
+            return;
+        }
+        int clickCount = event.getClickCount();
+        boolean open = clickCount == 1 && (event.isControlDown() || event.isMetaDown());
+        // 连续快速双击相邻链接时系统可能累加为 3、4 次点击，这里统一按双击处理
+        boolean select = clickCount >= 2;
+        if (!open && !select) {
+            return;
+        }
+        TextPos pos = this.getTextPosition(event.getScreenX(), event.getScreenY());
+        Hyperlink hyperlink = select ? this.findHyperlinkForDoubleClick(pos) : this.findHyperlink(pos);
+        if (hyperlink == null) {
+            return;
+        }
+        event.consume();
+        if (select) {
+            this.requestFocus();
+            this.select(hyperlink.start(), hyperlink.end());
+        } else {
+            this.openHyperlink(hyperlink.url());
+        }
+    }
+
+    /**
+     * 处理双击：默认的按词选中会在 MOUSE_CLICKED 阶段覆盖之前的选区，
+     * 这里重新选中超链接并消费事件，避免选中链接的一部分（如 160x60、-）。
+     *
+     * @param event 鼠标事件
+     */
+    private void onHyperlinkMouseClicked(MouseEvent event) {
+        if (event.getButton() != MouseButton.PRIMARY || event.getClickCount() < 2) {
+            return;
+        }
+        TextPos pos = this.getTextPosition(event.getScreenX(), event.getScreenY());
+        Hyperlink hyperlink = this.findHyperlinkForDoubleClick(pos);
+        if (hyperlink == null) {
+            return;
+        }
+        event.consume();
+        this.select(hyperlink.start(), hyperlink.end());
+    }
+
+    /**
+     * 双击时查找超链接：允许点击位置落在链接尾部的标点/空白上（如链接后面的 “- ”）。
+     *
+     * @param pos 文本位置
+     * @return 超链接
+     */
+    private Hyperlink findHyperlinkForDoubleClick(TextPos pos) {
+        if (pos == null) {
+            return null;
+        }
+        Hyperlink hyperlink = this.findHyperlink(pos);
+        if (hyperlink != null) {
+            return hyperlink;
+        }
+        int index = pos.index();
+        if (index < 0 || index >= this.getParagraphCount()) {
+            return null;
+        }
+        int paragraphLength = this.getParagraphLength(index);
+        if (paragraphLength <= 0 || paragraphLength > HYPERLINK_MAX_PARAGRAPH_LENGTH) {
+            return null;
+        }
+        int local = Math.max(0, Math.min(pos.offset(), paragraphLength));
+        String text = this.getModel().getPlainText(index);
+        // 向前最多回看 3 个字符，且中间只能是标点或空白
+        for (int delta = 1; delta <= 3; delta++) {
+            int probe = local - delta;
+            if (probe < 0) {
+                break;
+            }
+            Hyperlink candidate = this.findHyperlink(TextPos.ofLeading(index, probe));
+            if (candidate == null) {
+                continue;
+            }
+            // 点击位置本身必须是分隔符，避免双击链接后面的单词时误选中链接
+            boolean clickOnSeparator = local >= text.length()
+                    || !Character.isLetterOrDigit(text.charAt(local));
+            boolean gapIsPunctuation = clickOnSeparator;
+            for (int i = candidate.endOffset(); i < local && i < text.length() && gapIsPunctuation; i++) {
+                char c = text.charAt(i);
+                if (!Character.isWhitespace(c) && HYPERLINK_TRAILING_CHARS.indexOf(c) < 0) {
+                    gapIsPunctuation = false;
+                }
+            }
+            if (gapIsPunctuation) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 查找鼠标位置处的超链接
+     * <p>
+     * 注意：{@link #getTextPosition(double, double)} 需要的是屏幕坐标。
+     *
+     * @param screenX 屏幕x坐标
+     * @param screenY 屏幕y坐标
+     * @return 超链接
+     */
+    private Hyperlink findHyperlinkAt(double screenX, double screenY) {
+        return this.findHyperlink(this.getTextPosition(screenX, screenY));
+    }
+
+    /**
+     * 查找文本位置处的超链接。
+     * <p>
+     * 同一段落的匹配结果会被缓存，鼠标移动时只做区间判断，避免频繁正则匹配。
+     *
+     * @param pos 文本位置
+     * @return 超链接
+     */
+    private Hyperlink findHyperlink(TextPos pos) {
+        if (pos == null) {
+            return null;
+        }
+        int index = pos.index();
+        if (index < 0 || index >= this.getParagraphCount()) {
+            return null;
+        }
+        int paragraphLength = this.getParagraphLength(index);
+        if (paragraphLength <= 0 || paragraphLength > HYPERLINK_MAX_PARAGRAPH_LENGTH) {
+            return null;
+        }
+        List<Hyperlink> links = this.hyperlinkLinks(index);
+        if (links.isEmpty()) {
+            return null;
+        }
+        int local = Math.max(0, Math.min(pos.offset(), paragraphLength));
+        for (Hyperlink link : links) {
+            if (local >= link.startOffset() && local <= link.endOffset()) {
+                return link;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取指定段落的超链接列表，结果按段落缓存
+     *
+     * @param index 段落索引
+     * @return 超链接列表
+     */
+    private List<Hyperlink> hyperlinkLinks(int index) {
+        if (index == this.hyperlinkCacheParagraph) {
+            return this.hyperlinkCache;
+        }
+        String text = this.getModel().getPlainText(index);
+        List<Hyperlink> links = this.scanHyperlinks(index, text);
+        this.hyperlinkCacheParagraph = index;
+        this.hyperlinkCache = links;
+        return links;
+    }
+
+    /**
+     * 扫描段落中的全部超链接
+     *
+     * @param index 段落索引
+     * @param text  段落文本
+     * @return 超链接列表
+     */
+    private List<Hyperlink> scanHyperlinks(int index, String text) {
+        Matcher matcher = this.hyperlinkPattern.matcher(text);
+        List<Hyperlink> links = new ArrayList<>();
+        while (matcher.find()) {
+            int start = matcher.start(1);
+            int end = matcher.end(1);
+            // 去掉链接尾部标点
+            while (end > start && HYPERLINK_TRAILING_CHARS.indexOf(text.charAt(end - 1)) >= 0) {
+                end--;
+            }
+            if (end > start) {
+                links.add(new Hyperlink(text.substring(start, end), index, start, end));
+            }
+        }
+        return links;
+    }
+
+    /**
+     * 超链接缓存失效
+     */
+    private void invalidateHyperlinkCache() {
+        this.hyperlinkCacheParagraph = -1;
+        if (!this.hyperlinkCache.isEmpty()) {
+            this.hyperlinkCache = List.of();
+        }
+    }
+
+    /**
+     * 查找指定偏移处的超链接
+     *
+     * @param offset 文本偏移
+     * @return 超链接
+     */
+    private Hyperlink findHyperlinkAtOffset(int offset) {
+        if (offset < 0) {
+            return null;
+        }
+        int start = 0;
+        int count = this.getParagraphCount();
+        for (int i = 0; i < count; i++) {
+            int length = this.getParagraphLength(i);
+            if (offset <= start + length) {
+                return this.findHyperlink(TextPos.ofLeading(i, offset - start));
+            }
+            start += length + this.lineEndingLength();
+        }
+        return null;
+    }
+
+    /**
+     * 超链接信息
+     *
+     * @param url         超链接
+     * @param paragraph   段落索引
+     * @param startOffset 段内开始偏移
+     * @param endOffset   段内结束偏移
+     */
+    private record Hyperlink(String url, int paragraph, int startOffset, int endOffset) {
+
+        /**
+         * 获取开始位置
+         *
+         * @return 开始位置
+         */
+        TextPos start() {
+            return TextPos.ofLeading(this.paragraph, this.startOffset);
+        }
+
+        /**
+         * 获取结束位置
+         *
+         * @return 结束位置
+         */
+        TextPos end() {
+            return TextPos.ofLeading(this.paragraph, this.endOffset);
+        }
     }
 
     // ====== 自动补全成对符号 ======
