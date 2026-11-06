@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 
@@ -471,28 +472,28 @@ public interface NodeAdapter extends EventTarget {
         return null;
     }
 
-//    /**
-//     * 获取节点的窗口
-//     *
-//     * @return 窗口对象
-//     */
-//    default Window window() {
-//        if (this instanceof Node node) {
-//            Scene scene = node.getScene();
-//            if (scene != null) {
-//                return scene.getWindow();
-//            }
-//        } else if (this instanceof Tab node) {
-//            TabPane tabPane = node.getTabPane();
-//            if (tabPane != null) {
-//                Scene scene = tabPane.getScene();
-//                if (scene != null) {
-//                    return scene.getWindow();
-//                }
-//            }
-//        }
-//        return null;
-//    }
+    //    /**
+    //     * 获取节点的窗口
+    //     *
+    //     * @return 窗口对象
+    //     */
+    //    default Window window() {
+    //        if (this instanceof Node node) {
+    //            Scene scene = node.getScene();
+    //            if (scene != null) {
+    //                return scene.getWindow();
+    //            }
+    //        } else if (this instanceof Tab node) {
+    //            TabPane tabPane = node.getTabPane();
+    //            if (tabPane != null) {
+    //                Scene scene = tabPane.getScene();
+    //                if (scene != null) {
+    //                    return scene.getWindow();
+    //                }
+    //            }
+    //        }
+    //        return null;
+    //    }
 
     /**
      * 获取鼠标类型
@@ -535,10 +536,11 @@ public interface NodeAdapter extends EventTarget {
      * 当前节点设置为焦点节点
      */
     default void focusNode() {
-        if (this instanceof Node node) {
+        if (this instanceof Node node && this.scene() != null) {
             FXUtil.runWait(() -> {
                 try {
-                    ReflectUtil.invoke(this.scene(), "setFocusOwner", node, true);
+                    Method method = ReflectUtil.getMethodAuto(Scene.class, "setFocusOwner", Node.class, boolean.class);
+                    ReflectUtil.invoke(this.scene(), method, node, true);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
