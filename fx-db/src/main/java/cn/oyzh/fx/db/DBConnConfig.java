@@ -24,6 +24,11 @@ public class DBConnConfig {
     private Integer port;
 
     /**
+     * 数据库名称
+     */
+    private String database;
+
+    /**
      * 用户名
      */
     private String user;
@@ -107,6 +112,24 @@ public class DBConnConfig {
      */
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    /**
+     * 获取数据库名称。
+     *
+     * @return 数据库名称
+     */
+    public String getDatabase() {
+        return database;
+    }
+
+    /**
+     * 设置数据库名称。
+     *
+     * @param database 数据库名称
+     */
+    public void setDatabase(String database) {
+        this.database = database;
     }
 
     /**

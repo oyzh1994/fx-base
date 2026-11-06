@@ -41,6 +41,7 @@ public class DBDruidSqlParser extends DBSqlParser {
             case MYSQL -> DbType.mysql;
             case MARIADB -> DbType.mariadb;
             case DAMENG -> DbType.dm;
+            case POSTGRESQL -> DbType.postgresql;
             default -> null;
         };
     }

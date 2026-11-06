@@ -26,6 +26,7 @@ public class DBDataUtil {
         if (dialect == DBDialect.MYSQL
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.POSTGRESQL
                 || dialect == DBDialect.SQLITE) {
             boolean f1 = str.startsWith("'") && str.endsWith("'");
             if (f1) {

@@ -17,6 +17,7 @@ public enum DBDialect {
     MARIADB,
     MONGODB,
     DAMENG,
+    POSTGRESQL,
     ;
 
     /**

@@ -251,7 +251,7 @@ public class DBUtil {
             //            if (!name.endsWith("`")) {
             //                builder.append("`");
             //            }
-        } else if (dialect == DBDialect.DAMENG) {
+        } else if (dialect == DBDialect.DAMENG || dialect == DBDialect.POSTGRESQL) {
             if (!name.startsWith("\"") && !name.endsWith("\"")) {
                 builder.append("\"");
                 builder.append(name);
@@ -299,6 +299,7 @@ public class DBUtil {
         if (dialect == DBDialect.MYSQL
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.POSTGRESQL
                 || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
                 String v1 = DBDataUtil.escapeQuotes(v.toString(), dialect);
@@ -338,6 +339,7 @@ public class DBUtil {
         if (dialect == DBDialect.MYSQL
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.POSTGRESQL
                 || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
                 String v1 = v.toString();

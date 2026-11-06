@@ -32,6 +32,7 @@ public class DBBaseSqlParser extends DBSqlParser {
             case MYSQL -> SqlDatabase.MYSQL;
             case MARIADB -> SqlDatabase.MARIADB;
             case DAMENG -> SqlDatabase.DM;
+            case POSTGRESQL -> SqlDatabase.POSTGRESQL;
             case SQLITE -> SqlDatabase.SQLITE;
             default -> SqlDatabase.ANSI;
         };
