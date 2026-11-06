@@ -308,13 +308,17 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             EditorFormatType formatType = this.getFormatType();
             if (formatType != EditorFormatType.RAW) {
                 String syntaxesName = formatType == null ? null : formatType.getFullSyntaxesName();
-                // 如果未发生变化，则跳过
-                if (StringUtil.equals(this.syntaxesName, syntaxesName)) {
-                    return;
+                // 如果发生变化
+                if (StringUtil.notEquals(this.syntaxesName, syntaxesName)) {
+                    String path = "/tm4javafx/grammars/" + syntaxesName;
+                    // 切换语法会重置样式提供者内部的分词状态，必须与后台着色任务互斥，
+                    // 否则可能用半切换的语法着色，出现整篇文本只有一种颜色的情况
+                    synchronized (this.styleProvider) {
+                        this.styleProvider.setGrammar(IGrammarSource.fromResource(Editor.class, path));
+                        // 加载成功后才记录，避免加载失败后再也不重试
+                        this.syntaxesName = syntaxesName;
+                    }
                 }
-                this.syntaxesName = syntaxesName;
-                String path = "/tm4javafx/grammars/" + syntaxesName;
-                this.styleProvider.setGrammar(IGrammarSource.fromResource(Editor.class, path));
             }
             if (this.getSyntaxDecorator() instanceof StatelessSyntaxDecorator d) {
                 d.refresh(this.getModel());
@@ -457,6 +461,8 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * @param formatType 格式类型
      */
     public void showData(Object rawData, EditorFormatType formatType) {
+        // 内容是否未发生变化
+        boolean textUnchanged = false;
         try {
             this.ignoreChange = true;
             String data = null;
@@ -470,6 +476,8 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             // 设置格式
             this.setFormatType(formatType);
             if (data != null) {
+                // 内容未变化时，下面的text()不会触发变更事件，需要记录，稍后强制重新着色
+                textUnchanged = StringUtil.equals(this.getText(), data);
                 // 初始化语法格式
                 this.initSyntaxes();
                 // 设置内容
@@ -481,6 +489,10 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             this.forgetHistory();
         } finally {
             this.ignoreChange = false;
+        }
+        // 内容没变但格式变了时，text()不会触发行变更事件，这里强制按当前格式重新着色
+        if (textUnchanged) {
+            this.refreshText();
         }
     }
 
@@ -1204,10 +1216,12 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         try {
             // 根据主题的明暗模式和颜色相似度解析最接近的编辑器主题
             String path = EditorUtil.resolveThemeResource(style);
-            // 设置主题
-            this.styleProvider.setTheme(IThemeSource.fromResource(Editor.class, path));
-            // 应用颜色
-            StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
+            // 设置主题，与后台着色任务互斥，避免切换过程中被并发使用
+            synchronized (this.styleProvider) {
+                this.styleProvider.setTheme(IThemeSource.fromResource(Editor.class, path));
+                // 应用颜色
+                StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
+            }
             // TODO: 修复主题色可能不生效问题
             NodeHelper.processCSS(this);
             //            this.applyCss();

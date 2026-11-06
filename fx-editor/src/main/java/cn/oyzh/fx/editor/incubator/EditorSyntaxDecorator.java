@@ -507,6 +507,8 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
     @Override
     public void handleChange(@NonNull CodeTextModel model, @NonNull TextPos start, @NonNull TextPos end, int charsTop, int linesAdded, int charsBottom) {
+        // 版本号自增，使正在执行中的后台着色任务(基于旧文本)失效，避免其覆盖当前结果
+        int currentVersion = this.styleVersion.incrementAndGet();
         StyleProvider provider = this.getStyleProvider();
         if (provider == null) {
             this.myParagraphs = List.of();
@@ -538,7 +540,11 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
 
         // 同步构建，则构建完整段落
         if (!asyncSyntax) {
-            this.myParagraphs = this.buildRichParagraphs(text);
+            // StyleProvider 内部会保存分词状态(prevState)，可能与后台任务共享，
+            // 因此这里需要串行执行，避免状态被并发改写
+            synchronized (provider) {
+                this.myParagraphs = this.buildRichParagraphs(text);
+            }
             this.refresh(model);
             return;
         }
@@ -555,7 +561,6 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             return;
         }
         // 后台线程：完整语法着色
-        int currentVersion = this.styleVersion.incrementAndGet();
         // 提交异步线程
         this.styleExecutor.submit(() -> {
             if (this.styleVersion.get() != currentVersion) {
@@ -566,7 +571,6 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 if (this.styleVersion.get() != currentVersion) {
                     return;
                 }
-                provider.flush();
                 styled = this.buildRichParagraphs(text);
             }
             if (styleVersion.get() != currentVersion) {
@@ -662,6 +666,12 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             JulLog.warn("StyleProvider is null");
             return Collections.emptyList();
         }
+        // 每次整篇着色前必须重置分词状态。
+        // StyleProvider 会在多次调用之间保留上一行的分词状态(prevState)，若上一次着色时
+        // 文档末尾处于未闭合的多行结构(如 SQL/JS 中未闭合的单引号、双引号、块注释)，
+        // 残留状态会让本次着色从字符串/注释规则开始，表现为整篇文本都变成同一种颜色。
+        // 本方法始终是整篇重新着色，故此处重置状态是安全的。
+        provider.flush();
         String[] lines = text.split(LINE_SPLIT_PATTERN);
         List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
         for (String line : lines) {
