@@ -92,10 +92,13 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private final AtomicInteger styleVersion = new AtomicInteger(0);
 
     /**
-     * 后台语法高亮线程，单线程串行执行，避免provider状态冲突
+     * 后台语法高亮线程池。
+     * <p>
+     * 所有编辑器共享同一个线程池：每个编辑器单独建线程在消息列表等场景下会创建大量线程，
+     * 且组件销毁后线程无法回收。线程池中的线程为守护线程，空闲一段时间会自动回收。
      */
-    private final ExecutorService styleExecutor = Executors.newSingleThreadExecutor(r -> {
-        Thread t = new Thread(r, "syntax-highlighter");
+    private static final ExecutorService STYLE_EXECUTOR = Executors.newCachedThreadPool(r -> {
+        Thread t = new Thread(r, "editor-syntax-highlighter");
         t.setDaemon(true);
         return t;
     });
@@ -562,7 +565,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         }
         // 后台线程：完整语法着色
         // 提交异步线程
-        this.styleExecutor.submit(() -> {
+        STYLE_EXECUTOR.submit(() -> {
             if (this.styleVersion.get() != currentVersion) {
                 return;
             }

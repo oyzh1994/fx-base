@@ -131,7 +131,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     /**
      * 样式提供者
      */
-    private final StyleProvider styleProvider = new StyleProvider();
+    private final StyleProvider styleProvider = new EditorStyleProvider();
 
     /**
      * 流式文本model

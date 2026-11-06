@@ -20,6 +20,8 @@ public enum EditorFormatType {
     XML("XML", "xml,admx,adml,artdef,resx,pom,svg,ps1xml,filters,kuip"),
     HTML("HTML", "html,htm,ftl"),
     MARKDOWN("MARKDOWN", "md"),
+    // 大模型聊天输入：日常对话 + 网址/文件路径/IP/命令等高亮
+    LLM_CHAT("LLM CHAT", "llm,chat"),
     CSS("CSS", "css"),
     SQL("SQL", "sql"),
     PROPERTIES("PROPERTIES", "properties"),

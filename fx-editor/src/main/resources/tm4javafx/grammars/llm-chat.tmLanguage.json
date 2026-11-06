@@ -1,0 +1,901 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "LLM Chat",
+  "scopeName": "text.llm.chat",
+  "fileTypes": [
+    "llm",
+    "chat"
+  ],
+  "patterns": [
+    {
+      "include": "#fenced-code"
+    },
+    {
+      "include": "#inline-code"
+    },
+    {
+      "include": "#markdown-link"
+    },
+    {
+      "include": "#markdown-reference-link"
+    },
+    {
+      "include": "#autolink"
+    },
+    {
+      "include": "#heading"
+    },
+    {
+      "include": "#task-item"
+    },
+    {
+      "include": "#list-item"
+    },
+    {
+      "include": "#blockquote"
+    },
+    {
+      "include": "#hr"
+    },
+    {
+      "include": "#table"
+    },
+    {
+      "include": "#url"
+    },
+    {
+      "include": "#www-url"
+    },
+    {
+      "include": "#bare-domain"
+    },
+    {
+      "include": "#localhost"
+    },
+    {
+      "include": "#scp-remote"
+    },
+    {
+      "include": "#email"
+    },
+    {
+      "include": "#log-access-error"
+    },
+    {
+      "include": "#log-access-success"
+    },
+    {
+      "include": "#log-access"
+    },
+    {
+      "include": "#log-stacktrace"
+    },
+    {
+      "include": "#log-caused-by"
+    },
+    {
+      "include": "#log-more"
+    },
+    {
+      "include": "#log-timestamp"
+    },
+    {
+      "include": "#log-level-error"
+    },
+    {
+      "include": "#log-level-warn"
+    },
+    {
+      "include": "#log-level-info"
+    },
+    {
+      "include": "#log-level-debug"
+    },
+    {
+      "include": "#http-method"
+    },
+    {
+      "include": "#exception-type"
+    },
+    {
+      "include": "#log-thread"
+    },
+    {
+      "include": "#ipv4-address"
+    },
+    {
+      "include": "#ipv6-address"
+    },
+    {
+      "include": "#windows-path"
+    },
+    {
+      "include": "#windows-path-forward"
+    },
+    {
+      "include": "#unix-path"
+    },
+    {
+      "include": "#relative-path"
+    },
+    {
+      "include": "#filename"
+    },
+    {
+      "include": "#env-path"
+    },
+    {
+      "include": "#env-var"
+    },
+    {
+      "include": "#shell-prompt"
+    },
+    {
+      "include": "#dangerous-command"
+    },
+    {
+      "include": "#line-command"
+    },
+    {
+      "include": "#parameter"
+    },
+    {
+      "include": "#keyboard-shortcut"
+    },
+    {
+      "include": "#escape"
+    },
+    {
+      "include": "#bold-italic"
+    },
+    {
+      "include": "#bold"
+    },
+    {
+      "include": "#italic-star"
+    },
+    {
+      "include": "#italic-underscore"
+    },
+    {
+      "include": "#strikethrough"
+    },
+    {
+      "include": "#json-key"
+    },
+    {
+      "include": "#json-literal"
+    },
+    {
+      "include": "#quoted-string"
+    },
+    {
+      "include": "#number"
+    }
+  ],
+  "repository": {
+    "fenced-code": {
+      "begin": "^\\s*(`{3,}|~{3,})([\\w#+.-]*)\\s*$",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.fenced-code.block.llm"
+        },
+        "2": {
+          "name": "fenced-code.language.llm entity.name.type.llm"
+        }
+      },
+      "end": "^\\s*(`{3,}|~{3,})\\s*$",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.fenced-code.block.llm"
+        }
+      },
+      "name": "markup.fenced_code.block.llm",
+      "contentName": "markup.raw.block.llm markup.inline.raw.llm",
+      "patterns": [
+        {
+          "include": "#code-content"
+        }
+      ]
+    },
+    "inline-code": {
+      "begin": "`+",
+      "end": "`+|$",
+      "name": "markup.inline.raw.string.llm",
+      "patterns": [
+        {
+          "include": "#code-content"
+        }
+      ]
+    },
+    "code-content": {
+      "patterns": [
+        {
+          "include": "#log-access-error"
+        },
+        {
+          "include": "#log-access-success"
+        },
+        {
+          "include": "#log-access"
+        },
+        {
+          "include": "#log-thread"
+        },
+        {
+          "include": "#log-stacktrace"
+        },
+        {
+          "include": "#log-caused-by"
+        },
+        {
+          "include": "#log-more"
+        },
+        {
+          "include": "#log-timestamp"
+        },
+        {
+          "include": "#log-level-error"
+        },
+        {
+          "include": "#log-level-warn"
+        },
+        {
+          "include": "#log-level-info"
+        },
+        {
+          "include": "#log-level-debug"
+        },
+        {
+          "include": "#http-method"
+        },
+        {
+          "include": "#exception-type"
+        },
+        {
+          "include": "#dangerous-command"
+        },
+        {
+          "include": "#line-command"
+        },
+        {
+          "include": "#parameter"
+        },
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#scp-remote"
+        },
+        {
+          "include": "#ipv4-address"
+        },
+        {
+          "include": "#windows-path"
+        },
+        {
+          "include": "#unix-path"
+        },
+        {
+          "include": "#relative-path"
+        },
+        {
+          "include": "#filename"
+        },
+        {
+          "include": "#env-path"
+        },
+        {
+          "include": "#env-var"
+        },
+        {
+          "include": "#code-block-comment"
+        },
+        {
+          "include": "#code-line-comment"
+        },
+        {
+          "include": "#code-hash-comment"
+        },
+        {
+          "include": "#code-string-triple"
+        },
+        {
+          "include": "#json-key"
+        },
+        {
+          "include": "#json-literal"
+        },
+        {
+          "include": "#code-string-double"
+        },
+        {
+          "include": "#code-string-single"
+        },
+        {
+          "include": "#code-string-template"
+        },
+        {
+          "include": "#code-keyword"
+        },
+        {
+          "include": "#code-annotation"
+        },
+        {
+          "include": "#code-call"
+        },
+        {
+          "include": "#code-type"
+        },
+        {
+          "include": "#code-operator"
+        },
+        {
+          "include": "#number"
+        }
+      ]
+    },
+    "heading": {
+      "begin": "^(\\s{0,3})(#{1,6})(?=\\s)",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.heading.llm"
+        }
+      },
+      "end": "$",
+      "contentName": "markup.heading.llm",
+      "patterns": [
+        {
+          "include": "#inline-markdown"
+        }
+      ]
+    },
+    "url": {
+      "match": "(?i)\\b(((?:https?|ftps?|sftp|ssh|git|file|smb|ws|wss|telnet|redis|rediss|mongodb(?:\\+srv)?|jdbc|rdp|vnc|svn))://[A-Za-z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%]*[A-Za-z0-9\\-/?#\\[\\]@&$+=%])[.,;:!?)\\]}>，。；：！？）】」》]*",
+      "captures": {
+        "1": {
+          "name": "markup.underline.link.llm"
+        }
+      }
+    },
+    "www-url": {
+      "match": "(?i)\\b(www\\.[A-Za-z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%]*[A-Za-z0-9\\-/?#\\[\\]@&$+=%])[.,;:!?)\\]}>，。；：！？）】」》]*",
+      "captures": {
+        "1": {
+          "name": "markup.underline.link.llm"
+        }
+      }
+    },
+    "scp-remote": {
+      "match": "\\b[\\w.-]+@[\\w.-]+:[\\w.~/@%+-]*[\\w./@%+-]",
+      "name": "markup.underline.link.llm"
+    },
+    "email": {
+      "match": "\\b[\\w.+-]+@[\\w-]+(?:\\.[\\w-]+)+\\b",
+      "name": "markup.underline.link.llm"
+    },
+    "ipv4-address": {
+      "match": "\\b(?:(?:25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)(?:/\\d{1,2})?(?::\\d{1,5})?\\b",
+      "name": "constant.numeric.ip-address.llm"
+    },
+    "ipv6-address": {
+      "match": "\\b(?=[0-9A-Fa-f:]*[A-Fa-f]|::)(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}|(?:[0-9A-Fa-f]{1,4}:){1,6}:[0-9A-Fa-f]{1,4}|(?:[0-9A-Fa-f]{1,4}:){1,5}(?::[0-9A-Fa-f]{1,4}){1,2}|(?:[0-9A-Fa-f]{1,4}:){1,4}(?::[0-9A-Fa-f]{1,4}){1,3}|(?:[0-9A-Fa-f]{1,4}:){1,3}(?::[0-9A-Fa-f]{1,4}){1,4}|(?:[0-9A-Fa-f]{1,4}:){1,2}(?::[0-9A-Fa-f]{1,4}){1,5}|[0-9A-Fa-f]{1,4}:(?::[0-9A-Fa-f]{1,4}){1,6}|(?:[0-9A-Fa-f]{1,4}:){1,7}:|:(?:(?::[0-9A-Fa-f]{1,4}){1,7}|:))(?:/\\d{1,3})?\\b",
+      "name": "constant.numeric.ip-address.llm"
+    },
+    "windows-path": {
+      "match": "\\b[A-Za-z]:\\\\(?:[^\\\\/:*?\\\"<>|~\\r\\n]+\\\\)*[^\\\\/:*?\\\"<>|~\\r\\n]+",
+      "name": "string.other.file-path.llm"
+    },
+    "windows-path-forward": {
+      "match": "\\b[A-Za-z]:/[^\\s<>\\\"'`~*]*[^\\s<>\\\"'`~*]",
+      "name": "string.other.file-path.llm"
+    },
+    "unix-path": {
+      "match": "(?<![\\w./:-])((?:~|\\.{1,2})?/(?:[\\w.@%+-]+/)*[\\w.@%+-]+)(?::(\\d+)(?::(\\d+))?)?",
+      "captures": {
+        "1": {
+          "name": "string.other.file-path.llm"
+        },
+        "2": {
+          "name": "constant.numeric.file-line.llm"
+        },
+        "3": {
+          "name": "constant.numeric.file-column.llm"
+        }
+      }
+    },
+    "relative-path": {
+      "match": "(?<![\\w./:-])((?:[\\w.@%+-]+/){2,}[\\w.@%+-]+|[\\w.@%+-]+/[\\w.@%+-]+\\.[A-Za-z]\\w{0,9})(?::(\\d+)(?::(\\d+))?)?",
+      "captures": {
+        "1": {
+          "name": "string.other.file-path.llm"
+        },
+        "2": {
+          "name": "constant.numeric.file-line.llm"
+        },
+        "3": {
+          "name": "constant.numeric.file-column.llm"
+        }
+      }
+    },
+    "filename": {
+      "match": "(?<![\\w./:-])((?:(?:[\\w+-][\\w.+-]*)\\.(?:conf|cfg|cnf|ini|properties|ya?ml|jsonc?|toml|env|log|txt|md|markdown|sh|bash|zsh|fish|ps1|psm1|bat|cmd|py|js|mjs|cjs|tsx?|jsx|java|kt|kts|go|rs|c|h|hpp|cpp|cc|cs|php|rb|lua|pl|sql|db|sqlite3?|dump|bak|tar|tgz|gz|bz2|xz|zip|7z|rar|jar|war|ear|pem|key|crt|cer|p12|pfx|csr|service|socket|timer|target|mount|rules|repo|lock|pid|sock|swp|swo|tmp|old|orig|asc|gpg|kdbx|ovpn|rdp|vnc|pcap|har|xml|html?|css|scss|less|vue|svelte))(?![\\w-])|(?<![\\w./:-])(?:Dockerfile|Makefile|GNUmakefile|Vagrantfile|Jenkinsfile|Procfile|Caddyfile|Rakefile|Brewfile|id_rsa|id_ed25519|authorized_keys|known_hosts|sshd_config|my\\.cnf|nginx\\.conf|resolv\\.conf|supervisord\\.conf|docker-compose\\.ya?ml|fstab|crontab|hosts|\\.bashrc|\\.zshrc|\\.bash_profile|\\.profile|\\.gitignore|\\.gitattributes|\\.dockerignore|\\.npmrc|\\.vimrc|\\.env))(?![\\w-])(?::(\\d+)(?::(\\d+))?)?",
+      "captures": {
+        "1": {
+          "name": "string.other.file-path.llm"
+        },
+        "2": {
+          "name": "constant.numeric.file-line.llm"
+        },
+        "3": {
+          "name": "constant.numeric.file-column.llm"
+        }
+      }
+    },
+    "env-var": {
+      "match": "\\$\\{?[A-Za-z_][A-Za-z0-9_]*\\}?|%[A-Za-z_][A-Za-z0-9_]*%",
+      "name": "variable.other.env.llm"
+    },
+    "shell-prompt": {
+      "match": "^([ \\t]*)(\\$|PS[^>\\n]*>|(?:[\\w.-]+@)?[\\w.-]+:[~][^\\s#$]*[#$])([ \\t]+)([^\\s|;&<>]+)",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.prompt.llm"
+        },
+        "4": {
+          "name": "support.function.command.llm"
+        }
+      }
+    },
+    "dangerous-command": {
+      "match": "(?<![\\w-])(?:sudo\\s+)?(?:rm\\s+-[a-zA-Z]*[rf][a-zA-Z]*|mkfs(?:\\.[a-z0-9]+)?|dd\\s+if=|chmod\\s+-R\\s+0?777|chown\\s+-R\\s+root|(?:shutdown|reboot|halt|poweroff)\\s+(?:-h\\s+)?now|>\\s*/dev/sd[a-z])(?![\\w-])",
+      "name": "invalid.illegal.dangerous-command.llm"
+    },
+    "parameter": {
+      "match": "(?<=\\s)(--?[A-Za-z][\\w-]*)",
+      "name": "variable.parameter.llm"
+    },
+    "keyboard-shortcut": {
+      "match": "\\b(?:Ctrl|Control|Alt|Shift|Cmd|Command|Meta|Win|Super|Option|Fn)(?:\\s*\\+\\s*(?:Ctrl|Control|Alt|Shift|Cmd|Command|Meta|Win|Super|Option|Fn|F\\d{1,2}|[A-Za-z0-9]))+\\b",
+      "name": "keyword.other.keyboard.llm"
+    },
+    "bold": {
+      "begin": "\\*\\*(?=\\S)",
+      "end": "\\*\\*|$",
+      "name": "markup.bold.llm",
+      "patterns": [
+        {
+          "include": "#emphasis-content"
+        }
+      ]
+    },
+    "italic-star": {
+      "begin": "(?<![*\\w])\\*(?=\\S)(?!\\d)",
+      "end": "\\*(?![*\\w])|$",
+      "name": "markup.italic.llm",
+      "patterns": [
+        {
+          "include": "#emphasis-content"
+        }
+      ]
+    },
+    "italic-underscore": {
+      "begin": "(?<![\\w_])_(?=\\S)(?!\\d)",
+      "end": "_(?![\\w_])|$",
+      "name": "markup.italic.llm",
+      "patterns": [
+        {
+          "include": "#emphasis-content"
+        }
+      ]
+    },
+    "strikethrough": {
+      "begin": "~~(?=\\S)",
+      "end": "~~|$",
+      "name": "markup.strikethrough.llm",
+      "patterns": [
+        {
+          "include": "#emphasis-content"
+        }
+      ]
+    },
+    "quoted-string": {
+      "match": "\"(?:[^\"\\\\\\n]|\\\\.)*\"|“[^”\\n]*”",
+      "name": "string.quoted.double.llm"
+    },
+    "number": {
+      "match": "(?<![\\w.:/-])\\d+(?:\\.\\d+)*(?:%|(?:KiB|MiB|GiB|TiB|KB|MB|GB|TB|PB|ms|us|ns|min|d|h|s|B)\\b)?",
+      "name": "constant.numeric.llm"
+    },
+    "env-path": {
+      "match": "(?:\\$\\{?[A-Za-z_][A-Za-z0-9_]*\\}?|~)(?:/[\\w.@%+-]+)+",
+      "name": "string.other.file-path.llm"
+    },
+    "line-command": {
+      "match": "^(?:sudo\\s+)?(?:docker-compose|docker|ssh|scp|sftp|rsync|curl|wget|git|kubectl|helm|systemctl|journalctl|service|mysqldump|mysql|psql|redis-cli|mongo|mongosh|tar|unzip|zip|gzip|grep|egrep|awk|sed|find|xargs|cat|tail|head|less|more|ls|cd|pwd|mkdir|rmdir|rm|cp|mv|ln|touch|chmod|chown|chgrp|ps|top|htop|iotop|df|du|free|uptime|who|w|last|netstat|ss|lsof|iptables|nft|firewall-cmd|ufw|ping|traceroute|dig|nslookup|host|nc|telnet|openssl|ssh-keygen|crontab|mount|umount|fdisk|lsblk|mkfs|dd|sysctl|modprobe|useradd|userdel|usermod|passwd|su|sudo|apt-get|apt|yum|dnf|pacman|brew|npm|pnpm|yarn|pip3|pip|python3|python|java|node|cargo|cmake|make|mvn|gradle|ansible-playbook|ansible|terraform|vagrant|k9s|watch|nohup|screen|tmux|env|export|source|echo|printf|bash|sh|zsh)\\b",
+      "name": "support.function.command.llm"
+    },
+    "markdown-link": {
+      "match": "(!?)\\[([^\\]\\n]*)\\]\\(([^)\\s]*)\\)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.image.llm"
+        },
+        "2": {
+          "name": "string.other.link.title.llm"
+        },
+        "3": {
+          "name": "markup.underline.link.llm"
+        }
+      }
+    },
+    "markdown-reference-link": {
+      "match": "(!?)\\[([^\\]\\n]*)\\]\\[([^\\]\\n]*)\\]",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.image.llm"
+        },
+        "2": {
+          "name": "string.other.link.title.llm"
+        },
+        "3": {
+          "name": "string.other.link.title.llm"
+        }
+      }
+    },
+    "autolink": {
+      "match": "<((?:(?:https?|ftps?|sftp|ssh|git|file|smb|mailto|telnet|redis|rediss|mongodb(?:\\+srv)?|jdbc|rdp|vnc|svn):(?://)?)[^>\\s]+)>",
+      "captures": {
+        "1": {
+          "name": "markup.underline.link.llm"
+        }
+      }
+    },
+    "task-item": {
+      "match": "^(\\s*)([-*+]|\\d{1,3}[.)])(\\s+)(\\[[ xX]\\])(?=\\s)",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.list.llm"
+        },
+        "4": {
+          "name": "keyword.other.task.llm"
+        }
+      }
+    },
+    "list-item": {
+      "match": "^(\\s*)([-*+]|\\d{1,3}[.)])(\\s+)",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.list.llm"
+        }
+      }
+    },
+    "blockquote": {
+      "match": "^(\\s*)(>+)(?=\\s|$)",
+      "captures": {
+        "2": {
+          "name": "punctuation.definition.quote.llm"
+        }
+      }
+    },
+    "hr": {
+      "match": "^\\s{0,3}(?:(?:\\*\\s*){3,}|(?:-\\s*){3,}|(?:_{3,}))\\s*$",
+      "name": "markup.hr.llm"
+    },
+    "table": {
+      "begin": "^\\s*(\\|)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.separator.table.llm"
+        }
+      },
+      "end": "$",
+      "patterns": [
+        {
+          "match": "\\|",
+          "name": "punctuation.separator.table.llm"
+        }
+      ]
+    },
+    "bare-domain": {
+      "match": "(?i)\\b((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+(?:com|cn|net|org|io|dev|app|cloud|ai|co|me|info|xyz|top|site|tech|online|store|biz|tv|cc|edu|gov|mil|int|us|uk|de|jp|fr|ru|in|au|ca|hk|tw|sg|kr|eu|nl|se|ch|it|es|br|mx))(?::\\d{1,5})?(?:/[A-Za-z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%]*[A-Za-z0-9\\-/?#\\[\\]@&$+=%])?(?![\\w-])",
+      "name": "markup.underline.link.llm"
+    },
+    "localhost": {
+      "match": "(?i)\\b(localhost)(?::\\d{1,5})?(?:/[A-Za-z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%]*[A-Za-z0-9\\-/?#\\[\\]@&$+=%])?",
+      "name": "markup.underline.link.llm"
+    },
+    "escape": {
+      "match": "\\\\[\\\\`*_{}\\[\\]()#+.!>~-]",
+      "name": "constant.character.escape.llm"
+    },
+    "inline-markdown": {
+      "patterns": [
+        {
+          "include": "#markdown-link"
+        },
+        {
+          "include": "#markdown-reference-link"
+        },
+        {
+          "include": "#autolink"
+        },
+        {
+          "include": "#inline-code"
+        },
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#www-url"
+        },
+        {
+          "include": "#bare-domain"
+        },
+        {
+          "include": "#scp-remote"
+        },
+        {
+          "include": "#email"
+        },
+        {
+          "include": "#escape"
+        },
+        {
+          "include": "#bold"
+        },
+        {
+          "include": "#italic-star"
+        },
+        {
+          "include": "#italic-underscore"
+        },
+        {
+          "include": "#strikethrough"
+        }
+      ]
+    },
+    "emphasis-content": {
+      "patterns": [
+        {
+          "include": "#markdown-link"
+        },
+        {
+          "include": "#markdown-reference-link"
+        },
+        {
+          "include": "#autolink"
+        },
+        {
+          "include": "#inline-code"
+        },
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#www-url"
+        },
+        {
+          "include": "#bare-domain"
+        },
+        {
+          "include": "#scp-remote"
+        },
+        {
+          "include": "#email"
+        }
+      ]
+    },
+    "bold-italic": {
+      "begin": "\\*\\*\\*(?=\\S)",
+      "end": "\\*\\*\\*|$",
+      "name": "markup.bold-italic.llm",
+      "patterns": [
+        {
+          "include": "#emphasis-content"
+        }
+      ]
+    },
+    "log-level-error": {
+      "match": "(?i)\\b(?:ERROR|ERR|CRIT(?:ICAL)?|FATAL|SEVERE|PANIC|EMERG(?:ENCY)?|ALERT)\\b",
+      "name": "log-level-error.llm"
+    },
+    "log-level-warn": {
+      "match": "(?i)\\b(?:WARN(?:ING)?|NOTICE)\\b",
+      "name": "log-level-warn.llm"
+    },
+    "log-level-info": {
+      "match": "(?i)\\bINFO\\b",
+      "name": "log-level-info.llm"
+    },
+    "log-level-debug": {
+      "match": "(?i)\\b(?:TRACE|DEBUG|FINE|FINER|FINEST)\\b",
+      "name": "log-level-debug.llm"
+    },
+    "log-timestamp": {
+      "match": "\\b\\d{4}[-/]\\d{1,2}[-/]\\d{1,2}(?:[T ]\\d{1,2}:\\d{2}:\\d{2}(?:[.,]\\d{1,6})?(?:Z|[+-]\\d{2}:?\\d{2})?)?\\b|\\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+\\d{1,2}\\s+\\d{2}:\\d{2}:\\d{2}\\b|(?<![\\w:])\\d{2}:\\d{2}:\\d{2}(?:[.,]\\d{1,6})?\\b|\\b\\d{2}/(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/\\d{4}:\\d{2}:\\d{2}:\\d{2}\\b",
+      "name": "constant.numeric.log-timestamp.llm"
+    },
+    "log-access": {
+      "match": "^([\\w.:-]+) (\\S+) (\\S+) (\\[[^\\]]+\\]) (\\\"(?:[^\\\"\\\\]|\\\\.)*\\\") (\\d{3}) (\\d+|-) (\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\S+)? ?(\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\S+)?",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.ip-address.llm"
+        },
+        "4": {
+          "name": "constant.numeric.log-timestamp.llm"
+        },
+        "5": {
+          "name": "string.quoted.double.llm"
+        },
+        "6": {
+          "name": "constant.numeric.http-status.llm"
+        },
+        "7": {
+          "name": "constant.numeric.llm"
+        },
+        "8": {
+          "name": "string.quoted.double.llm"
+        },
+        "9": {
+          "name": "string.quoted.double.llm"
+        }
+      }
+    },
+    "log-stacktrace": {
+      "match": "^\\s*at\\s+([\\w.$/]+)\\(([^():]*)(?::(\\d+))?\\)",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.stacktrace.llm"
+        },
+        "2": {
+          "name": "string.other.file-path.llm"
+        },
+        "3": {
+          "name": "constant.numeric.file-line.llm"
+        }
+      }
+    },
+    "log-caused-by": {
+      "match": "^\\s*(Caused by:)\\s*([\\w.$]+)(?::\\s?(.*))?$",
+      "captures": {
+        "1": {
+          "name": "keyword.other.caused-by.llm"
+        },
+        "2": {
+          "name": "entity.name.type.exception.llm"
+        },
+        "3": {
+          "name": "string.other.exception-message.llm"
+        }
+      }
+    },
+    "log-more": {
+      "match": "^\\s*\\.\\.\\.\\s+\\d+\\s+more\\s*$",
+      "name": "comment.line.stacktrace.llm"
+    },
+    "exception-type": {
+      "match": "\\b(?:[a-z][\\w$]*\\.)*[A-Z][\\w$]*(?:Exception|Error|Throwable)\\b",
+      "name": "entity.name.type.exception.llm"
+    },
+    "http-method": {
+      "match": "\\b(?:GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|CONNECT)\\b",
+      "name": "keyword.other.http-method.llm"
+    },
+    "code-block-comment": {
+      "begin": "/\\*",
+      "end": "\\*/",
+      "name": "comment.block.code.llm"
+    },
+    "code-line-comment": {
+      "match": "(?<!:)//[^\\n]*",
+      "name": "comment.line.double-slash.code.llm"
+    },
+    "code-hash-comment": {
+      "match": "(?:^|(?<=\\s))#[^\\n]*",
+      "name": "comment.line.number-sign.code.llm"
+    },
+    "code-string-double": {
+      "match": "\\\"(?:[^\\\"\\\\\\n]|\\\\.)*\\\"",
+      "name": "string.quoted.double.code.llm"
+    },
+    "code-string-single": {
+      "match": "'(?:[^'\\\\\\n]|\\\\.)*'",
+      "name": "string.quoted.single.code.llm"
+    },
+    "code-string-triple": {
+      "begin": "\\\"\\\"\\\"|'''",
+      "end": "\\\"\\\"\\\"|'''|$",
+      "name": "string.quoted.triple.code.llm"
+    },
+    "code-string-template": {
+      "begin": "`",
+      "end": "`|$",
+      "name": "string.quoted.template.code.llm"
+    },
+    "code-keyword": {
+      "match": "\\b(?:if|else|elif|for|while|do|switch|case|default|break|continue|return|throw|throws|try|catch|finally|class|interface|enum|struct|record|extends|implements|new|delete|public|private|protected|static|final|abstract|synchronized|volatile|transient|native|void|int|long|short|byte|char|float|double|boolean|def|import|from|package|as|with|lambda|yield|async|await|function|const|let|var|typeof|instanceof|in|of|and|or|not|is|nil|None|True|False|true|false|null|this|super|self|fn|impl|mut|pub|use|mod|match|SELECT|INSERT|UPDATE|DELETE|FROM|INTO|VALUES|SET|WHERE|GROUP|ORDER|BY|LIMIT|HAVING|DISTINCT|UNION|JOIN|LEFT|RIGHT|INNER|OUTER|ON|CREATE|DROP|ALTER|TABLE|INDEX|VIEW|TRIGGER|PROCEDURE|BEGIN|END|DESC|ASC|CASE|WHEN|THEN|ELSE|EXISTS|NULL|LIKE|BETWEEN|OFFSET|WITH|AS|AND|OR|NOT|IN|IS|TRUE|FALSE)\\b",
+      "name": "keyword.control.code.llm"
+    },
+    "code-annotation": {
+      "match": "@[A-Za-z_][\\w.]*",
+      "name": "entity.name.function.decorator.code.llm"
+    },
+    "code-call": {
+      "match": "\\b[A-Za-z_$][\\w$]*(?=\\s*\\()",
+      "name": "entity.name.function.call.code.llm"
+    },
+    "code-type": {
+      "match": "\\b[A-Z][A-Za-z0-9_]*\\b",
+      "name": "entity.name.type.code.llm"
+    },
+    "code-operator": {
+      "match": "->|=>|::|===|!==|==|!=|<=|>=|&&|\\|\\||\\+\\+|--|\\+=|-=|\\*=|/=",
+      "name": "keyword.operator.code.llm"
+    },
+    "log-access-error": {
+      "match": "^([\\w.:-]+) (\\S+) (\\S+) (\\[[^\\]]+\\]) (\\\"(?:[^\\\"\\\\]|\\\\.)*\\\") ([45]\\d{2}) (\\d+|-) (\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\S+)? ?(\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\S+)?",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.ip-address.llm"
+        },
+        "4": {
+          "name": "constant.numeric.log-timestamp.llm"
+        },
+        "5": {
+          "name": "string.quoted.double.llm"
+        },
+        "7": {
+          "name": "constant.numeric.llm"
+        },
+        "8": {
+          "name": "string.quoted.double.llm"
+        },
+        "9": {
+          "name": "string.quoted.double.llm"
+        },
+        "6": {
+          "name": "log-status-error.llm"
+        }
+      }
+    },
+    "log-access-success": {
+      "match": "^([\\w.:-]+) (\\S+) (\\S+) (\\[[^\\]]+\\]) (\\\"(?:[^\\\"\\\\]|\\\\.)*\\\") ([123]\\d{2}) (\\d+|-) (\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\S+)? ?(\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|\\S+)?",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.ip-address.llm"
+        },
+        "4": {
+          "name": "constant.numeric.log-timestamp.llm"
+        },
+        "5": {
+          "name": "string.quoted.double.llm"
+        },
+        "7": {
+          "name": "constant.numeric.llm"
+        },
+        "8": {
+          "name": "string.quoted.double.llm"
+        },
+        "9": {
+          "name": "string.quoted.double.llm"
+        },
+        "6": {
+          "name": "log-status-success.llm"
+        }
+      }
+    },
+    "log-thread": {
+      "match": "\\[(?:main|http-[^\\]]*|pool-[^\\]]*|[Tt]hread-[^\\]]*|[Ww]orker[^\\]]*|exec-[^\\]]*|[A-Za-z0-9_.-]+-(?:thread|worker)[^\\]]*)\\]",
+      "name": "comment.line.log-thread.llm"
+    },
+    "json-key": {
+      "match": "\\\"([^\\\"\\\\\\n]+)\\\"\\s*(?=:)",
+      "name": "support.type.property-name.json.llm"
+    },
+    "json-literal": {
+      "match": "\\b(?:true|false|null)\\b",
+      "name": "keyword.other.json-literal.llm"
+    }
+  }
+}

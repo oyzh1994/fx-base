@@ -20,7 +20,7 @@ public class EditorFormatTypeOrderTest {
     @Test
     public void orderAndExtension() {
         EditorFormatType[] values = EditorFormatType.values();
-        assertEquals(125, values.length);
+        assertEquals(126, values.length);
         // 常用格式在前
         assertEquals(EditorFormatType.RAW, values[0]);
         assertEquals(EditorFormatType.JSON, values[1]);
@@ -36,6 +36,8 @@ public class EditorFormatTypeOrderTest {
         assertEquals(EditorFormatType.CPP, EditorFormatType.ofExtension("cpp"));
         assertEquals(EditorFormatType.MARKDOWN, EditorFormatType.ofExtension("md"));
         assertEquals(EditorFormatType.DOTENV, EditorFormatType.ofExtension("env"));
+        assertEquals(EditorFormatType.LLM_CHAT, EditorFormatType.ofExtension("llm"));
+        assertEquals(EditorFormatType.LLM_CHAT, EditorFormatType.ofExtension("chat"));
         assertEquals(EditorFormatType.JSON, EditorFormatType.ofExtension("json"));
         assertEquals(EditorFormatType.HTML, EditorFormatType.ofExtension("html"));
     }
