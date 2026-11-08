@@ -578,7 +578,9 @@ public interface StageAdapter extends WindowAdapter, ThemeAdapter {
 
             @Override
             protected boolean checkDragboard(Dragboard dragboard) {
-                return dragboard == null || !Objects.equals(dragboard.getString(), dragBoardContent);
+                // 只有真正的文件拖拽才交给窗口级文件拖拽处理器；内部节点拖拽不拦截
+                return dragboard != null && dragboard.hasFiles()
+                        && !Objects.equals(dragboard.getString(), dragBoardContent);
             }
 
             @Override
