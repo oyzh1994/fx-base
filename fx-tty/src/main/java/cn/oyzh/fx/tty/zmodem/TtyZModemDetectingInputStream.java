@@ -30,6 +30,15 @@ public class TtyZModemDetectingInputStream extends InputStream {
     /** 取消后清理残留数据的最长时间 */
     private static final long DEFAULT_CANCEL_MAX_MILLIS = 5000;
 
+    /** 等待潜在前缀后续字节的最长时间 */
+    private static final long PREFIX_LOOKAHEAD_MILLIS = 20;
+
+    /** 等待潜在帧头后续字节的最长时间 */
+    private static final long FRAME_HEADER_LOOKAHEAD_MILLIS = 100;
+
+    /** ZModem帧头长度 */
+    private static final int FRAME_HEADER_LENGTH = 6;
+
     /** 检测到ZModem帧后的处理器 */
     private final Handler handler;
 
@@ -65,7 +74,7 @@ public class TtyZModemDetectingInputStream extends InputStream {
         int count = 0;
         while (count < length) {
             // 已经有数据时不再等待后续字节，避免交互式终端被批量读取阻塞。
-            if (count > 0 && this.input.available() <= 0) {
+            if (count > 0 && this.input.available() <= 0 && this.pending.isEmpty()) {
                 break;
             }
             int value = this.nextTerminalByte();
@@ -90,6 +99,10 @@ public class TtyZModemDetectingInputStream extends InputStream {
         while (true) {
             int matched = this.matchPrefix();
             if (matched == PREFIX.length) {
+                if (!this.waitForAvailable(FRAME_HEADER_LENGTH - this.pending.size(),
+                        FRAME_HEADER_LOOKAHEAD_MILLIS)) {
+                    return this.pending.removeFirst();
+                }
                 byte[] frame = this.readFrameHeader();
                 // 只有合法的 ZRQINIT/ZRINIT 才启动传输。否则把候选字节还给终端，
                 // 避免文件内容或提示符中偶然出现的 "* * ZDLE" 被误判成新的 rz/sz。
@@ -102,6 +115,9 @@ public class TtyZModemDetectingInputStream extends InputStream {
             if (!this.pending.isEmpty() && (matched < this.pending.size() || this.pending.size() >= PREFIX.length)) {
                 return this.pending.removeFirst();
             }
+            if (!this.pending.isEmpty() && !this.waitForAvailable(1, PREFIX_LOOKAHEAD_MILLIS)) {
+                return this.pending.removeFirst();
+            }
 
             int value = this.input.read();
             if (value < 0) {
@@ -112,6 +128,37 @@ public class TtyZModemDetectingInputStream extends InputStream {
             }
             this.pending.addLast(value);
         }
+    }
+
+    /**
+     * 在有限时间内等待原始流出现指定数量的可用字节。
+     * <p>
+     * 单个 {@code *} 既是普通终端字符，也可能是 ZModem 前缀的首字节。这里不能为了确认前缀
+     * 而无期限阻塞，否则用户输入一个星号后，远端已经回显的数据仍会被扣留在检测层，
+     * 直到下一次按键才交给终端。
+     *
+     * @param required 需要的字节数
+     * @param millis   最长等待时间
+     * @return 是否已有足够字节
+     * @throws IOException IO异常
+     */
+    private boolean waitForAvailable(int required, long millis) throws IOException {
+        if (required <= 0 || this.input.available() >= required) {
+            return true;
+        }
+        long deadline = System.nanoTime() + millis * 1_000_000L;
+        while (System.nanoTime() < deadline) {
+            if (this.input.available() >= required) {
+                return true;
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return false;
+            }
+        }
+        return this.input.available() >= required;
     }
 
     /**

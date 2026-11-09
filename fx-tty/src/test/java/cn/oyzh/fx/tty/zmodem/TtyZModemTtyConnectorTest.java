@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
@@ -239,6 +241,70 @@ public class TtyZModemTtyConnectorTest {
         assertEquals("**" + (char) ZModemCharacter.ZDLE.value() + "X", received.toString());
     }
 
+    @Test(timeout = 2000)
+    public void emitsSingleAsteriskWithoutWaitingForAnotherKey() throws Exception {
+        PipedInputStream input = new PipedInputStream(64);
+        PipedOutputStream output = new PipedOutputStream(input);
+        TtyZModemTtyConnector connector = connector(input);
+        AtomicReference<String> received = new AtomicReference<>();
+        CountDownLatch done = new CountDownLatch(1);
+
+        Thread reader = new Thread(() -> {
+            try {
+                char[] buffer = new char[8];
+                int length = connector.read(buffer, 0, buffer.length);
+                received.set(new String(buffer, 0, length));
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            } finally {
+                done.countDown();
+            }
+        });
+        reader.setDaemon(true);
+        reader.start();
+        try {
+            output.write('*');
+            output.flush();
+
+            assertTrue("single asterisk was held by ZModem detection", done.await(500, TimeUnit.MILLISECONDS));
+            assertEquals("*", received.get());
+        } finally {
+            output.close();
+        }
+    }
+
+    @Test(timeout = 2000)
+    public void emitsAsteriskRunWithoutWaitingForZModemHeader() throws Exception {
+        PipedInputStream input = new PipedInputStream(64);
+        PipedOutputStream output = new PipedOutputStream(input);
+        TtyZModemTtyConnector connector = connector(input);
+        AtomicReference<String> received = new AtomicReference<>();
+        CountDownLatch done = new CountDownLatch(1);
+
+        Thread reader = new Thread(() -> {
+            try {
+                char[] buffer = new char[8];
+                int length = connector.read(buffer, 0, buffer.length);
+                received.set(new String(buffer, 0, length));
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            } finally {
+                done.countDown();
+            }
+        });
+        reader.setDaemon(true);
+        reader.start();
+        try {
+            output.write("****".getBytes(StandardCharsets.UTF_8));
+            output.flush();
+
+            assertTrue("asterisk run was held by ZModem detection", done.await(500, TimeUnit.MILLISECONDS));
+            assertEquals("****", received.get());
+        } finally {
+            output.close();
+        }
+    }
+
     private static TtyZModemTtyConnector connector(byte[] data, AtomicBoolean detected) {
         return connector(data, new AtomicReference<>(), detected);
     }
@@ -277,6 +343,37 @@ public class TtyZModemTtyConnectorTest {
                     public void process() {
                     }
                 };
+            }
+        };
+    }
+
+    private static TtyZModemTtyConnector connector(InputStream input) {
+        TtyStreamConnector source = new TtyStreamConnector(StandardCharsets.UTF_8) {
+            @Override
+            public InputStream input() {
+                return input;
+            }
+
+            @Override
+            public OutputStream output() {
+                return new ByteArrayOutputStream();
+            }
+
+            @Override
+            public boolean isConnected() {
+                return true;
+            }
+
+            @Override
+            public String getName() {
+                return "piped-input";
+            }
+        };
+        return new TtyZModemTtyConnector(terminalStub(), source) {
+            @Override
+            protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
+                                                          OutputStream output, Terminal terminal) {
+                throw new AssertionError("ordinary asterisks must not start ZModem");
             }
         };
     }
