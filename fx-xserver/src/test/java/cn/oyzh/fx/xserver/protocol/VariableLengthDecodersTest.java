@@ -27,10 +27,8 @@ import com.github.moaxcp.x11.protocol.xproto.Segment;
 import com.github.moaxcp.x11.protocol.xproto.SetClipRectangles;
 import com.github.moaxcp.x11.protocol.xproto.StoreColors;
 import cn.oyzh.fx.xserver.protocol.VariableLengthDecoders;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
 import org.junit.jupiter.api.Test;
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
@@ -96,7 +95,7 @@ class VariableLengthDecodersTest {
         PolySegment decoded = roundTrip(PolySegment.builder()
                 .drawable(DRAWABLE)
                 .gc(GC)
-                .segments(Lists.immutable.of(
+                .segments(List.of(
                         Segment.builder().x1((short) 1).y1((short) 2).x2((short) 3).y2((short) 4)
                                 .build(),
                         Segment.builder().x1((short) 5).y1((short) 6).x2((short) 7).y2((short) 8)
@@ -111,7 +110,7 @@ class VariableLengthDecodersTest {
         PolyRectangle decoded = roundTrip(PolyRectangle.builder()
                 .drawable(DRAWABLE)
                 .gc(GC)
-                .rectangles(Lists.immutable.of(
+                .rectangles(List.of(
                         Rectangle.builder().x((short) 1).y((short) 2).width((short) 3)
                                 .height((short) 4).build()))
                 .build());
@@ -124,7 +123,7 @@ class VariableLengthDecodersTest {
         PolyArc decoded = roundTrip(PolyArc.builder()
                 .drawable(DRAWABLE)
                 .gc(GC)
-                .arcs(Lists.immutable.of(arc()))
+                .arcs(List.of(arc()))
                 .build());
         assertEquals(1, decoded.getArcs().size());
         assertEquals(180, decoded.getArcs().get(0).getAngle2());
@@ -149,7 +148,7 @@ class VariableLengthDecodersTest {
         PolyFillRectangle decoded = roundTrip(PolyFillRectangle.builder()
                 .drawable(DRAWABLE)
                 .gc(GC)
-                .rectangles(Lists.immutable.of(
+                .rectangles(List.of(
                         Rectangle.builder().x((short) 7).y((short) 8).width((short) 9)
                                 .height((short) 10).build()))
                 .build());
@@ -161,7 +160,7 @@ class VariableLengthDecodersTest {
         PolyFillArc decoded = roundTrip(PolyFillArc.builder()
                 .drawable(DRAWABLE)
                 .gc(GC)
-                .arcs(Lists.immutable.of(arc()))
+                .arcs(List.of(arc()))
                 .build());
         assertEquals(90, decoded.getArcs().get(0).getAngle1());
     }
@@ -173,7 +172,7 @@ class VariableLengthDecodersTest {
                 .gc(GC)
                 .clipXOrigin((short) 3)
                 .clipYOrigin((short) 4)
-                .rectangles(Lists.immutable.of(
+                .rectangles(List.of(
                         Rectangle.builder().x((short) 0).y((short) 0).width((short) 20)
                                 .height((short) 30).build()))
                 .build());
@@ -186,7 +185,7 @@ class VariableLengthDecodersTest {
     void storeColorsRoundTrips() throws IOException {
         StoreColors decoded = roundTrip(StoreColors.builder()
                 .cmap(0x20)
-                .items(Lists.immutable.of(Coloritem.builder()
+                .items(List.of(Coloritem.builder()
                         .pixel(0x1234)
                         .red((short) 0x1111)
                         .green((short) 0x2222)
@@ -202,7 +201,7 @@ class VariableLengthDecodersTest {
     void queryTextExtentsRoundTrips() throws IOException {
         QueryTextExtents decoded = roundTrip(QueryTextExtents.builder()
                 .font(0x33)
-                .string(Lists.immutable.of(
+                .string(List.of(
                         Char2b.builder().byte1((byte) 0).byte2((byte) 'A').build(),
                         Char2b.builder().byte1((byte) 0).byte2((byte) 'B').build(),
                         Char2b.builder().byte1((byte) 0).byte2((byte) 'C').build()))
@@ -215,10 +214,10 @@ class VariableLengthDecodersTest {
     void queryColorsRoundTrips() throws IOException {
         QueryColors decoded = roundTrip(QueryColors.builder()
                 .cmap(0x20)
-                .pixels(IntLists.immutable.of(0x101010, 0x202020, 0x303030, 0x404040))
+                .pixels(ints(0x101010, 0x202020, 0x303030, 0x404040))
                 .build());
-        assertEquals(4, decoded.getPixels().size());
-        assertEquals(0x404040, decoded.getPixels().get(3));
+        assertEquals(4, decoded.getPixels().length);
+        assertEquals(0x404040, decoded.getPixels()[3]);
     }
 
     @Test
@@ -226,9 +225,9 @@ class VariableLengthDecodersTest {
         FreeColors decoded = roundTrip(FreeColors.builder()
                 .cmap(0x20)
                 .planeMask(0xFFFFFFFF)
-                .pixels(IntLists.immutable.of(1, 2, 3))
+                .pixels(ints(1, 2, 3))
                 .build());
-        assertEquals(3, decoded.getPixels().size());
+        assertEquals(3, decoded.getPixels().length);
     }
 
     @Test
@@ -240,12 +239,12 @@ class VariableLengthDecodersTest {
                 .gc(GC)
                 .x((short) 4)
                 .y((short) 5)
-                .items(ByteLists.immutable.of(items))
+                .items(bytes(items))
                 .build());
         // The request is padded to a four byte boundary; the zero padding reads as the
         // end-of-items marker, which is exactly how the handler stops.
-        assertEquals(0, decoded.getItems().get(items.length) & 0xFF);
-        assertEquals('a', decoded.getItems().get(1) & 0xFF);
+        assertEquals(0, decoded.getItems()[items.length] & 0xFF);
+        assertEquals('a', decoded.getItems()[1] & 0xFF);
     }
 
     @Test
@@ -256,9 +255,9 @@ class VariableLengthDecodersTest {
                 .gc(GC)
                 .x((short) 1)
                 .y((short) 2)
-                .items(ByteLists.immutable.of(items))
+                .items(bytes(items))
                 .build());
-        assertEquals(0, decoded.getItems().get(items.length) & 0xFF);
+        assertEquals(0, decoded.getItems()[items.length] & 0xFF);
     }
 
     @Test
@@ -277,10 +276,10 @@ class VariableLengthDecodersTest {
                 .dstY((short) 7)
                 .leftPad((byte) 0)
                 .depth((byte) 24)
-                .data(ByteLists.immutable.of(data))
+                .data(bytes(data))
                 .build());
-        assertEquals(data.length, decoded.getData().size());
-        assertEquals((byte) (data.length - 1), decoded.getData().get(data.length - 1));
+        assertEquals(data.length, decoded.getData().length);
+        assertEquals((byte) (data.length - 1), decoded.getData()[data.length - 1]);
         assertEquals(7, decoded.getDstY());
     }
 
@@ -316,7 +315,7 @@ class VariableLengthDecodersTest {
                 .dstY((short) 0)
                 .leftPad((byte) 0)
                 .depth((byte) 24)
-                .data(ByteLists.immutable.of(data))
+                .data(bytes(data))
                 .build();
         // The generated writer lays the request out, including the length field, which for a
         // request this size can only hold the low sixteen bits of the true length. That is exactly
@@ -331,8 +330,8 @@ class VariableLengthDecodersTest {
                 new ByteArrayInputStream(encoded, 1, encoded.length - 1));
         PutImage decoded = (PutImage) VariableLengthDecoders.decode(72, in, encoded.length);
 
-        assertEquals(data.length, decoded.getData().size(), "the image data was truncated");
-        assertEquals(data[data.length - 1], decoded.getData().get(data.length - 1));
+        assertEquals(data.length, decoded.getData().length, "the image data was truncated");
+        assertEquals(data[data.length - 1], decoded.getData()[data.length - 1]);
     }
 
     /**
@@ -362,7 +361,7 @@ class VariableLengthDecodersTest {
                 .dstY((short) 4)
                 .leftPad((byte) 0)
                 .depth((byte) 24)
-                .data(ByteLists.immutable.of(data))
+                .data(bytes(data))
                 .build();
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         X11LittleEndianOutputStream out = new X11LittleEndianOutputStream(buffer);
@@ -381,8 +380,8 @@ class VariableLengthDecodersTest {
                         new ByteArrayInputStream(encoded, 1, encoded.length - 1)),
                 encoded.length, decoderBytes);
 
-        assertEquals(data.length, fast.getData().size(), "the image data was truncated");
-        assertEquals(loop.getData(), fast.getData(), "the two routes read different image data");
+        assertEquals(data.length, fast.getData().length, "the image data was truncated");
+        assertArrayEquals(loop.getData(), fast.getData(), "the two routes read different image data");
         assertEquals(request.getDrawable(), fast.getDrawable());
         assertEquals(request.getWidth(), fast.getWidth());
     }
@@ -409,12 +408,12 @@ class VariableLengthDecodersTest {
         return (T) decoded;
     }
 
-    private static org.eclipse.collections.api.list.ImmutableList<Point> points(int... coords) {
+    private static List<Point> points(int... coords) {
         List<Point> points = new ArrayList<>();
         for (int i = 0; i < coords.length; i += 2) {
             points.add(Point.builder().x((short) coords[i]).y((short) coords[i + 1]).build());
         }
-        return Lists.immutable.withAll(points);
+        return List.copyOf(points);
     }
 
     private static Arc arc() {

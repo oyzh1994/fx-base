@@ -1,10 +1,11 @@
 package cn.oyzh.fx.xserver.event;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.X11Output;
 import com.github.moaxcp.x11.protocol.XEvent;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.event.XInputMasks;
-
 import java.io.IOException;
 
 /**
@@ -189,7 +190,7 @@ public final class Xi2RawEvent implements XEvent {
 
     @Override
     public void write(X11Output out) throws IOException {
-        out.writeVoid(org.eclipse.collections.impl.factory.primitive.ByteLists.immutable.of(bytes));
+        out.writeVoid(bytes(bytes));
     }
 
     @Override

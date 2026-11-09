@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.handler;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.xproto.ClearArea;
 import com.github.moaxcp.x11.protocol.xproto.CopyArea;
@@ -34,8 +36,6 @@ import cn.oyzh.fx.xserver.resource.XGC;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +171,7 @@ public final class DrawHandlers {
         }
         if (JulLog.isDebugEnabled()) {
             JulLog.debug("PutImage format={} depth={} data={} bytes {}x{} to {} at ({},{})",
-                    format, Byte.toUnsignedInt(r.getDepth()), r.getData().size(),
+                    format, Byte.toUnsignedInt(r.getDepth()), r.getData().length,
                     Short.toUnsignedInt(r.getWidth()), Short.toUnsignedInt(r.getHeight()),
                     drawable, r.getDstX(), r.getDstY());
         }
@@ -180,7 +180,7 @@ public final class DrawHandlers {
         ImageCodec.putImage(target.store(), target.rasterizer(), target.x(r.getDstX()),
                 target.y(r.getDstY()),
                 width, height, format, Byte.toUnsignedInt(r.getLeftPad()), depthOf(drawable),
-                r.getData().toArray(), 0, client.isBigEndian());
+                r.getData(), 0, client.isBigEndian());
         if (JulLog.isDebugEnabled()) {
             // The decoded corners: a put that "succeeds" but lands black is otherwise invisible in
             // the log, and that is exactly the difference between a drawn window and a black one.
@@ -244,7 +244,7 @@ public final class DrawHandlers {
                 .sequenceNumber(client.sequenceNumber())
                 .depth((byte) depthOf(drawable))
                 .visual(visual == null ? 0 : visual.id())
-                .data(ByteLists.immutable.of(data))
+                .data(bytes(data))
                 .build());
     }
 
@@ -352,7 +352,7 @@ public final class DrawHandlers {
         XGC gc = gc(client, r.getGc());
         XResource drawable = server.resources().requireDrawable(client, r.getDrawable());
         Target target = target(drawable, gc);
-        byte[] items = r.getItems().toArray();
+        byte[] items = r.getItems();
         int x = r.getX();
         int y = r.getY();
         XFont font = gc.font() != null ? gc.font() : defaultFont(client);
@@ -394,7 +394,7 @@ public final class DrawHandlers {
         XGC gc = gc(client, r.getGc());
         XResource drawable = server.resources().requireDrawable(client, r.getDrawable());
         Target target = target(drawable, gc);
-        byte[] items = r.getItems().toArray();
+        byte[] items = r.getItems();
         int x = r.getX();
         int y = r.getY();
         XFont font = gc.font() != null ? gc.font() : defaultFont(client);
@@ -440,7 +440,7 @@ public final class DrawHandlers {
         XGC gc = gc(client, r.getGc());
         XResource drawable = server.resources().requireDrawable(client, r.getDrawable());
         Target target = target(drawable, gc);
-        byte[] chars = r.getString().toArray();
+        byte[] chars = r.getString();
         XFont font = gc.font() != null ? gc.font() : defaultFont(client);
         target.rasterizer().drawText8(font, target.x(r.getX()), target.y(r.getY()), chars, 0,
                 chars.length);
@@ -451,7 +451,7 @@ public final class DrawHandlers {
         XGC gc = gc(client, r.getGc());
         XResource drawable = server.resources().requireDrawable(client, r.getDrawable());
         Target target = target(drawable, gc);
-        org.eclipse.collections.api.list.ImmutableList<com.github.moaxcp.x11.protocol.xproto.Char2b> source = r.getString();
+        List<com.github.moaxcp.x11.protocol.xproto.Char2b> source = r.getString();
         char[] chars = new char[source.size()];
         for (int i = 0; i < chars.length; i++) {
             chars[i] = (char) (((source.get(i).getByte1() & 0xFF) << 8)
@@ -698,7 +698,7 @@ public final class DrawHandlers {
     }
 
     /** Flattens the point list, resolving relative coordinates when the mode asks for it. */
-    private int[] flattenPoints(org.eclipse.collections.api.list.ImmutableList<com.github.moaxcp.x11.protocol.xproto.Point> points, int mode) {
+    private int[] flattenPoints(List<com.github.moaxcp.x11.protocol.xproto.Point> points, int mode) {
         int[] result = new int[points.size() * 2];
         int lastX = 0;
         int lastY = 0;

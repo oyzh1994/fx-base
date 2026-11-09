@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.extension;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.render.AddGlyphs;
@@ -72,14 +74,7 @@ import cn.oyzh.fx.xserver.resource.XCursor;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.primitive.IntList;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-import org.eclipse.collections.impl.factory.primitive.ShortLists;
 import cn.oyzh.common.log.JulLog;
-
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
@@ -322,15 +317,15 @@ public final class RenderExtension implements Extension {
         } else if (request instanceof CompositeGlyphs8 glyphs) {
             compositeGlyphs(client, glyphs.getOp(), glyphs.getSrc(), glyphs.getDst(),
                     glyphs.getMaskFormat(), glyphs.getGlyphset(), glyphs.getSrcX(), glyphs.getSrcY(),
-                    glyphs.getGlyphcmds().toArray(), 1);
+                    glyphs.getGlyphcmds(), 1);
         } else if (request instanceof CompositeGlyphs16 glyphs) {
             compositeGlyphs(client, glyphs.getOp(), glyphs.getSrc(), glyphs.getDst(),
                     glyphs.getMaskFormat(), glyphs.getGlyphset(), glyphs.getSrcX(), glyphs.getSrcY(),
-                    glyphs.getGlyphcmds().toArray(), 2);
+                    glyphs.getGlyphcmds(), 2);
         } else if (request instanceof CompositeGlyphs32 glyphs) {
             compositeGlyphs(client, glyphs.getOp(), glyphs.getSrc(), glyphs.getDst(),
                     glyphs.getMaskFormat(), glyphs.getGlyphset(), glyphs.getSrcX(), glyphs.getSrcY(),
-                    glyphs.getGlyphcmds().toArray(), 4);
+                    glyphs.getGlyphcmds(), 4);
         } else if (request instanceof CreateCursor createCursor) {
             createCursor(server, client, createCursor);
         } else if (request instanceof CreateAnimCursor createAnimCursor) {
@@ -510,14 +505,14 @@ public final class RenderExtension implements Extension {
                 }
                 depths.add(Pictdepth.builder()
                         .depth((byte) depth.depth())
-                        .visuals(Lists.immutable.ofAll(visuals))
+                        .visuals(List.copyOf(visuals))
                         .build());
                 totalDepths++;
                 totalVisuals += visuals.size();
             }
             screens.add(Pictscreen.builder()
                     .fallback(fallback.id())
-                    .depths(Lists.immutable.ofAll(depths))
+                    .depths(List.copyOf(depths))
                     .build());
         }
 
@@ -531,9 +526,9 @@ public final class RenderExtension implements Extension {
                 .sequenceNumber(client.sequenceNumber())
                 .numDepths(totalDepths)
                 .numVisuals(totalVisuals)
-                .formats(Lists.immutable.ofAll(formatInfos))
-                .screens(Lists.immutable.ofAll(screens))
-                .subpixels(IntLists.immutable.of(subpixelValues))
+                .formats(List.copyOf(formatInfos))
+                .screens(List.copyOf(screens))
+                .subpixels(ints(subpixelValues))
                 .build());
     }
 
@@ -598,7 +593,7 @@ public final class RenderExtension implements Extension {
         }
         client.sendReply(QueryPictIndexValuesReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .values(Lists.immutable.ofAll(values))
+                .values(List.copyOf(values))
                 .build());
     }
 
@@ -614,13 +609,13 @@ public final class RenderExtension implements Extension {
         List<Str> filters = new ArrayList<>(FILTER_NAMES.size());
         for (String name : FILTER_NAMES) {
             filters.add(Str.builder()
-                    .name(ByteLists.immutable.of(name.getBytes(StandardCharsets.ISO_8859_1)))
+                    .name(bytes(name.getBytes(StandardCharsets.ISO_8859_1)))
                     .build());
         }
         client.sendReply(QueryFiltersReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .aliases(ShortLists.immutable.of(FILTER_ALIASES))
-                .filters(Lists.immutable.ofAll(filters))
+                .aliases(shorts(FILTER_ALIASES))
+                .filters(List.copyOf(filters))
                 .build());
     }
 
@@ -804,8 +799,8 @@ public final class RenderExtension implements Extension {
 
     private void setPictureFilter(ClientConnection client, SetPictureFilter request) {
         Picture picture = requirePicture(request.getPicture());
-        String name = new String(request.getFilter().toArray(), StandardCharsets.ISO_8859_1);
-        picture.setFilter(resolveFilter(name), request.getValues().toArray());
+        String name = new String(request.getFilter(), StandardCharsets.ISO_8859_1);
+        picture.setFilter(resolveFilter(name), request.getValues());
     }
 
     /**
@@ -924,7 +919,7 @@ public final class RenderExtension implements Extension {
     private void triStrip(XServer server, ClientConnection client, TriStrip request) {
         Picture src = requirePicture(request.getSrc());
         Picture dst = requirePicture(request.getDst());
-        ImmutableList<Pointfix> points = request.getPoints();
+        List<Pointfix> points = request.getPoints();
         List<Shape> shapes = new ArrayList<>();
         // "Initially the first three points, then eliminate the first and append the next": every
         // consecutive triple in order, not the alternating rewinding a triangle strip usually is.
@@ -941,7 +936,7 @@ public final class RenderExtension implements Extension {
     private void triFan(XServer server, ClientConnection client, TriFan request) {
         Picture src = requirePicture(request.getSrc());
         Picture dst = requirePicture(request.getDst());
-        ImmutableList<Pointfix> points = request.getPoints();
+        List<Pointfix> points = request.getPoints();
         List<Shape> shapes = new ArrayList<>();
         // "Eliminate the second point": the fan keeps the first point and pivots on it.
         for (int i = 1; i + 1 < points.size(); i++) {
@@ -1068,20 +1063,20 @@ public final class RenderExtension implements Extension {
                 0, 0, null);
     }
 
-    private static double[] stopsOf(IntList raw) {
-        double[] stops = new double[raw.size()];
+    private static double[] stopsOf(int[] raw) {
+        double[] stops = new double[raw.length];
         for (int i = 0; i < stops.length; i++) {
-            stops[i] = fixed(raw.get(i));
+            stops[i] = fixed(raw[i]);
             // The protocol requires the stops to be inside [0,1] and increasing; a client that
             // sent otherwise would get a gradient that reads backwards or wraps.
             if (stops[i] < 0 || stops[i] > 1 || (i > 0 && stops[i] < stops[i - 1])) {
-                throw ProtocolException.badValue(raw.get(i));
+                throw ProtocolException.badValue(raw[i]);
             }
         }
         return stops;
     }
 
-    private static int[] colorsOf(ImmutableList<Color> raw) {
+    private static int[] colorsOf(List<Color> raw) {
         int[] colors = new int[raw.size()];
         for (int i = 0; i < colors.length; i++) {
             colors[i] = colorArgb(raw.get(i));
@@ -1121,12 +1116,12 @@ public final class RenderExtension implements Extension {
     private void addGlyphs(XServer server, ClientConnection client, AddGlyphs request) {
         GlyphSet set = requireGlyphSet(request.getGlyphset());
         PictFormat format = set.format();
-        IntList ids = request.getGlyphids();
-        ImmutableList<Glyphinfo> infos = request.getGlyphs();
-        if (ids.size() != infos.size()) {
+        int[] ids = request.getGlyphids();
+        List<Glyphinfo> infos = request.getGlyphs();
+        if (ids.length != infos.size()) {
             throw ProtocolException.badLength();
         }
-        byte[] data = request.getData().toArray();
+        byte[] data = request.getData();
         JulLog.debug("RENDER AddGlyphs: {} glyphs, {} data bytes, format depth {}",
                 infos.size(), data.length, format.depth());
         int offset = 0;
@@ -1135,7 +1130,7 @@ public final class RenderExtension implements Extension {
             int width = Short.toUnsignedInt(info.getWidth());
             int height = Short.toUnsignedInt(info.getHeight());
             if (width == 0 || height == 0) {
-                set.put(ids.get(i), new GlyphSet.Glyph(0, 0, info.getX(), info.getY(),
+                set.put(ids[i], new GlyphSet.Glyph(0, 0, info.getX(), info.getY(),
                         info.getXOff(), info.getYOff(), new int[0]));
                 continue;
             }
@@ -1145,7 +1140,7 @@ public final class RenderExtension implements Extension {
             if (offset + (long) stride * height > data.length) {
                 throw ProtocolException.badLength();
             }
-            set.put(ids.get(i), new GlyphSet.Glyph(width, height, info.getX(), info.getY(),
+            set.put(ids[i], new GlyphSet.Glyph(width, height, info.getX(), info.getY(),
                     info.getXOff(), info.getYOff(),
                     decodeGlyph(data, offset, width, height, stride, format,
                             client.isBigEndian())));
@@ -1206,8 +1201,8 @@ public final class RenderExtension implements Extension {
 
     private void freeGlyphs(ClientConnection client, FreeGlyphs request) {
         GlyphSet set = requireGlyphSet(request.getGlyphset());
-        for (int i = 0; i < request.getGlyphs().size(); i++) {
-            if (set.remove(request.getGlyphs().get(i)) == null) {
+        for (int i = 0; i < request.getGlyphs().length; i++) {
+            if (set.remove(request.getGlyphs()[i]) == null) {
                 // The protocol makes removing a glyph that was never added a match error.
                 throw ProtocolException.badMatch();
             }

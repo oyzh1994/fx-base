@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.client;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.XAuthority;
 import com.github.moaxcp.x11.protocol.xproto.Setup;
 import com.github.moaxcp.x11.protocol.xproto.SetupRequest;
@@ -7,11 +9,7 @@ import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.XAuthorityCookie;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.display.Screen;
-import org.eclipse.collections.api.list.primitive.ByteList;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
 import cn.oyzh.common.log.JulLog;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -241,9 +239,9 @@ public final class ConnectionSetup {
                 .bitmapFormatScanlinePad(BITMAP_SCANLINE_PAD)
                 .minKeycode(MIN_KEYCODE)
                 .maxKeycode(MAX_KEYCODE)
-                .vendor(ByteLists.immutable.of(VENDOR.getBytes(StandardCharsets.ISO_8859_1)))
-                .pixmapFormats(Lists.immutable.withAll(formats))
-                .roots(Lists.immutable.of(root))
+                .vendor(bytes(VENDOR.getBytes(StandardCharsets.ISO_8859_1)))
+                .pixmapFormats(List.copyOf(formats))
+                .roots(List.of(root))
                 .build();
 
         // The setup reply's own length field is at bytes 4..8, so it must not be rewritten the
@@ -274,12 +272,12 @@ public final class ConnectionSetup {
         }
     }
 
-    private static String asAscii(ByteList bytes) {
+    private static String asAscii(byte[] bytes) {
         return new String(toBytes(bytes), StandardCharsets.ISO_8859_1);
     }
 
-    private static byte[] toBytes(ByteList bytes) {
-        return bytes == null ? new byte[0] : bytes.toArray();
+    private static byte[] toBytes(byte[] bytes) {
+        return bytes == null ? new byte[0] : bytes;
     }
 
     /** The display name clients should use, e.g. {@code :1}. */

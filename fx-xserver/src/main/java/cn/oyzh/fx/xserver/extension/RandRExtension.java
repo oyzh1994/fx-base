@@ -1,5 +1,8 @@
 package cn.oyzh.fx.xserver.extension;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
+import java.util.List;
 import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
@@ -46,11 +49,6 @@ import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.display.Screen;
 import cn.oyzh.fx.xserver.extension.Extension;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-import org.eclipse.collections.impl.factory.primitive.ShortLists;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -196,7 +194,7 @@ public final class RandRExtension implements Extension {
             // position and its modes are this server's, and an empty list is what says so.
             client.sendReply(ListOutputPropertiesReply.builder()
                     .sequenceNumber(client.sequenceNumber())
-                    .atoms(IntLists.immutable.empty())
+                    .atoms(ints())
                     .build());
         } else if (request instanceof GetOutputProperty) {
             // An output property, and this output has none (see ListOutputProperties above).
@@ -215,7 +213,7 @@ public final class RandRExtension implements Extension {
                     .type(0)
                     .bytesAfter(0)
                     .numItems(0)
-                    .data(ByteLists.immutable.empty())
+                    .data(bytes())
                     .build());
         } else if (request instanceof GetProviders) {
             // No providers: this screen has one output and it is the host window's, so there is
@@ -226,7 +224,7 @@ public final class RandRExtension implements Extension {
             client.sendReply(GetProvidersReply.builder()
                     .sequenceNumber(client.sequenceNumber())
                     .timestamp(server.events().time())
-                    .providers(IntLists.immutable.empty())
+                    .providers(ints())
                     .build());
         } else if (request instanceof GetPanning r) {
             getPanning(client, screen, r);
@@ -309,10 +307,10 @@ public final class RandRExtension implements Extension {
                 .sequenceNumber(client.sequenceNumber())
                 .timestamp(server.events().time())
                 .configTimestamp(client.sequenceNumber())
-                .crtcs(IntLists.immutable.of(crtcId))
-                .outputs(IntLists.immutable.of(outputId))
-                .modes(Lists.immutable.of(mode(screen)))
-                .names(ByteLists.immutable.of(names(screen)))
+                .crtcs(ints(crtcId))
+                .outputs(ints(outputId))
+                .modes(List.of(mode(screen)))
+                .names(bytes(names(screen)))
                 .build();
     }
 
@@ -322,10 +320,10 @@ public final class RandRExtension implements Extension {
                 .sequenceNumber(client.sequenceNumber())
                 .timestamp(server.events().time())
                 .configTimestamp(client.sequenceNumber())
-                .crtcs(IntLists.immutable.of(crtcId))
-                .outputs(IntLists.immutable.of(outputId))
-                .modes(Lists.immutable.of(mode(screen)))
-                .names(ByteLists.immutable.of(names(screen)))
+                .crtcs(ints(crtcId))
+                .outputs(ints(outputId))
+                .modes(List.of(mode(screen)))
+                .names(bytes(names(screen)))
                 .build();
     }
 
@@ -373,8 +371,8 @@ public final class RandRExtension implements Extension {
                 .mode(status == 0 ? modeId : 0)
                 .rotation(ROTATE_NONE)
                 .rotations(ROTATIONS)
-                .outputs(IntLists.immutable.of(outputId))
-                .possible(IntLists.immutable.of(outputId))
+                .outputs(ints(outputId))
+                .possible(ints(outputId))
                 .build());
     }
 
@@ -404,9 +402,9 @@ public final class RandRExtension implements Extension {
         }
         client.sendReply(GetCrtcGammaReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .red(ShortLists.immutable.of(ramp))
-                .green(ShortLists.immutable.of(ramp))
-                .blue(ShortLists.immutable.of(ramp))
+                .red(shorts(ramp))
+                .green(shorts(ramp))
+                .blue(shorts(ramp))
                 .build());
     }
 
@@ -436,10 +434,10 @@ public final class RandRExtension implements Extension {
                 .pendingTransform(identity)
                 .hasTransforms(r.getCrtc() == crtcId)
                 .currentTransform(identity)
-                .pendingFilterName(ByteLists.immutable.empty())
-                .pendingParams(IntLists.immutable.empty())
-                .currentFilterName(ByteLists.immutable.empty())
-                .currentParams(IntLists.immutable.empty())
+                .pendingFilterName(bytes())
+                .pendingParams(ints())
+                .currentFilterName(bytes())
+                .currentParams(ints())
                 .build());
     }
 
@@ -551,7 +549,7 @@ public final class RandRExtension implements Extension {
     /** The screen's descriptor, whose sizes and rates are the one this server has. */
     private void getScreenInfo(ClientConnection client, XServer server, Screen screen) {
         RefreshRates rates = RefreshRates.builder()
-                .rates(ShortLists.immutable.of((short) server.options().tickRate()))
+                .rates(shorts((short) server.options().tickRate()))
                 .build();
         client.sendReply(GetScreenInfoReply.builder()
                 .sequenceNumber(client.sequenceNumber())
@@ -563,13 +561,13 @@ public final class RandRExtension implements Extension {
                 .rotation(ROTATE_NONE)
                 .rate((short) server.options().tickRate())
                 .nInfo((short) 1)
-                .sizes(Lists.immutable.of(ScreenSize.builder()
+                .sizes(List.of(ScreenSize.builder()
                         .width((short) screen.width())
                         .height((short) screen.height())
                         .mwidth((short) screen.widthMillimeters())
                         .mheight((short) screen.heightMillimeters())
                         .build()))
-                .rates(Lists.immutable.of(rates))
+                .rates(List.of(rates))
                 .build());
     }
 
@@ -585,7 +583,7 @@ public final class RandRExtension implements Extension {
                 .height((short) screen.height())
                 .widthInMillimeters(screen.widthMillimeters())
                 .heightInMillimeters(screen.heightMillimeters())
-                .outputs(IntLists.immutable.of(outputId))
+                .outputs(ints(outputId))
                 .build();
         client.sendReply(GetMonitorsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
@@ -595,7 +593,7 @@ public final class RandRExtension implements Extension {
                 // `xrandr --listmonitors` die in its own library (measured) rather than print
                 // anything at all.
                 .nOutputs(1)
-                .monitors(Lists.immutable.of(monitor))
+                .monitors(List.of(monitor))
                 .build());
     }
 

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.extension;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.sync.AlarmNotifyEvent;
@@ -35,7 +37,6 @@ import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.resource.XResource;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -174,7 +175,7 @@ public final class SyncExtension implements Extension {
         } else if (request instanceof ListSystemCounters) {
             client.sendReply(ListSystemCountersReply.builder()
                     .sequenceNumber(client.sequenceNumber())
-                    .counters(org.eclipse.collections.impl.factory.Lists.immutable.empty())
+                    .counters(List.of())
                     .build());
         } else if (request instanceof CreateCounter r) {
             counter(server, client, r.getId(), value(r.getInitialValue()));
@@ -250,9 +251,9 @@ public final class SyncExtension implements Extension {
             // Never waits: everything this server was asked to do is already done by the time the
             // request is read, so every fence named here is either triggered or will never be. The
             // fences are still resolved, so a client that names one it never created hears BadFence.
-            org.eclipse.collections.api.list.primitive.IntList fences = r.getFenceList();
-            for (int i = 0; i < fences.size(); i++) {
-                fence(server, client, fences.get(i));
+            int[] fences = r.getFenceList();
+            for (int i = 0; i < fences.length; i++) {
+                fence(server, client, fences[i]);
             }
         } else {
             throw new IllegalArgumentException("unhandled SYNC request " + request.getClass());

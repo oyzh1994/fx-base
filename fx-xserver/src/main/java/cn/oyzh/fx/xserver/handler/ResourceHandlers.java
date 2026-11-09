@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.handler;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.xproto.AllocColor;
 import com.github.moaxcp.x11.protocol.xproto.AllocColorCells;
 import com.github.moaxcp.x11.protocol.xproto.AllocColorCellsReply;
@@ -69,11 +71,6 @@ import cn.oyzh.fx.xserver.resource.XGC;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -283,11 +280,11 @@ public final class ResourceHandlers {
 
     public void setDashes(ClientConnection client, SetDashes r) {
         XGC gc = requireGc(client, r.getGc());
-        if ((r.getDashes().size() & 1) != 0 || r.getDashes().isEmpty()) {
+        if ((r.getDashes().length & 1) != 0 || r.getDashes().length == 0) {
             // The dash list is a sequence of even-length gaps and dashes.
-            throw ProtocolException.badValue(r.getDashes().size());
+            throw ProtocolException.badValue(r.getDashes().length);
         }
-        gc.setDashes(r.getDashes().toArray());
+        gc.setDashes(r.getDashes());
         gc.setDashOffset(Short.toUnsignedInt(r.getDashOffset()));
     }
 
@@ -542,7 +539,7 @@ public final class ResourceHandlers {
 
     public void queryTextExtents(ClientConnection client, QueryTextExtents r) {
         XFont font = requireFont(client, r.getFont());
-        org.eclipse.collections.api.list.ImmutableList<Char2b> chars = r.getString();
+        List<Char2b> chars = r.getString();
         int end = chars.size() - charLength(chars);
         int width = 0;
         // The left edge starts at "nothing seen yet" rather than at zero: it is the minimum of the
@@ -604,7 +601,7 @@ public final class ResourceHandlers {
         }
         client.sendReply(ListFontsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .names(Lists.immutable.withAll(names))
+                .names(List.copyOf(names))
                 .build());
     }
 
@@ -616,7 +613,7 @@ public final class ResourceHandlers {
     public void listFontsWithInfo(ClientConnection client, ListFontsWithInfo r) {
         List<String> names = matchFonts(ascii(r.getPattern()), Short.toUnsignedInt(r.getMaxNames()));
         List<XFont> fonts = new ArrayList<>();
-        List<ImmutableList<Fontprop>> fontProperties = new ArrayList<>();
+        List<List<Fontprop>> fontProperties = new ArrayList<>();
         List<String> replyNames = new ArrayList<>();
         for (String name : names) {
             // Never registered: the font only exists to measure the one this reply describes.
@@ -670,8 +667,8 @@ public final class ResourceHandlers {
                 .fontAscent((short) 0)
                 .fontDescent((short) 0)
                 .repliesHint(0)
-                .properties(Lists.immutable.empty())
-                .name(ByteLists.immutable.empty())
+                .properties(List.of())
+                .name(bytes())
                 .build());
     }
 
@@ -701,7 +698,7 @@ public final class ResourceHandlers {
         }
         client.sendReply(GetFontPathReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .path(Lists.immutable.withAll(path))
+                .path(List.copyOf(path))
                 .build());
     }
 
@@ -757,7 +754,7 @@ public final class ResourceHandlers {
     }
 
     /** The font's property set, with each property name interned as an atom. */
-    private ImmutableList<Fontprop> properties(XFont font) {
+    private List<Fontprop> properties(XFont font) {
         List<Fontprop> properties = new ArrayList<>();
         BitmapFont.Font bitmap = font.bitmap();
         if (bitmap != null) {
@@ -773,7 +770,7 @@ public final class ResourceHandlers {
                                 : server.atoms().intern(text))
                         .build());
             }
-            return Lists.immutable.withAll(properties);
+            return List.copyOf(properties);
         }
         for (XFont.FontProperty property : font.properties()) {
             properties.add(Fontprop.builder()
@@ -788,7 +785,7 @@ public final class ResourceHandlers {
                     .value(server.atoms().intern(property.value()))
                     .build());
         }
-        return Lists.immutable.withAll(properties);
+        return List.copyOf(properties);
     }
 
     /** The foundry component of an XLFD name, or the catch-all one for short alias names. */
@@ -840,7 +837,7 @@ public final class ResourceHandlers {
      * for laying out text before drawing it, so they are reported rather than left for the client
      * to guess from the bounds.
      */
-    private static ImmutableList<Charinfo> charInfos(XFont font) {
+    private static List<Charinfo> charInfos(XFont font) {
         // The reply's table covers the font's own range of codes and no more, and a client indexes
         // it from min-char-or-byte2: 255 entries starting at one is what a reference server answers
         // for a font whose codes begin there.
@@ -864,7 +861,7 @@ public final class ResourceHandlers {
                     .attributes((short) 0)
                     .build());
         }
-        return Lists.immutable.withAll(infos);
+        return List.copyOf(infos);
     }
 
     private static Charinfo charinfo(BitmapFont.Metric metric) {
@@ -883,7 +880,7 @@ public final class ResourceHandlers {
      * generated decoder keeps it. An even sized list that ends in NUL is therefore the padded form
      * of an odd string, and the padding has to be left out of the measurement.
      */
-    private static int charLength(org.eclipse.collections.api.list.ImmutableList<Char2b> chars) {
+    private static int charLength(List<Char2b> chars) {
         if (chars.size() % 2 == 0 && !chars.isEmpty()) {
             Char2b last = chars.get(chars.size() - 1);
             if (last.getByte1() == 0 && last.getByte2() == 0) {
@@ -1088,7 +1085,7 @@ public final class ResourceHandlers {
         }
         client.sendReply(ListInstalledColormapsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .cmaps(IntLists.immutable.of(result))
+                .cmaps(ints(result))
                 .build());
     }
 
@@ -1145,8 +1142,8 @@ public final class ResourceHandlers {
         }
         client.sendReply(AllocColorCellsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .pixels(IntLists.immutable.of(pixels))
-                .masks(IntLists.immutable.of(masks))
+                .pixels(ints(pixels))
+                .masks(ints(masks))
                 .build());
     }
 
@@ -1181,13 +1178,13 @@ public final class ResourceHandlers {
                 .redMask(planeMask(0, reds))
                 .greenMask(planeMask(reds, greens))
                 .blueMask(planeMask(reds + greens, blues))
-                .pixels(IntLists.immutable.of(allocation.pixels()))
+                .pixels(ints(allocation.pixels()))
                 .build());
     }
 
     public void freeColors(ClientConnection client, FreeColors r) {
         XColormap colormap = requireColormap(client, r.getCmap());
-        colormap.freeColors(r.getPixels().toArray());
+        colormap.freeColors(r.getPixels());
     }
 
     public void storeColors(ClientConnection client, StoreColors r) {
@@ -1237,7 +1234,7 @@ public final class ResourceHandlers {
     public void queryColors(ClientConnection client, QueryColors r) {
         XColormap colormap = requireColormap(client, r.getCmap());
         List<Rgb> colors = new ArrayList<>();
-        for (int pixel : r.getPixels().toArray()) {
+        for (int pixel : r.getPixels()) {
             int argb = colorForPixel(colormap, pixel);
             colors.add(Rgb.builder()
                     .red((short) to16((argb >> 16) & 0xFF))
@@ -1247,7 +1244,7 @@ public final class ResourceHandlers {
         }
         client.sendReply(QueryColorsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .colors(Lists.immutable.withAll(colors))
+                .colors(List.copyOf(colors))
                 .build());
     }
 
@@ -1557,11 +1554,11 @@ public final class ResourceHandlers {
 
     private static Str str(String name) {
         return Str.builder()
-                .name(ByteLists.immutable.of(name.getBytes(StandardCharsets.ISO_8859_1)))
+                .name(bytes(name.getBytes(StandardCharsets.ISO_8859_1)))
                 .build();
     }
 
-    private static String ascii(org.eclipse.collections.api.list.primitive.ByteList bytes) {
-        return new String(bytes.toArray(), StandardCharsets.ISO_8859_1);
+    private static String ascii(byte[] bytes) {
+        return new String(bytes, StandardCharsets.ISO_8859_1);
     }
 }

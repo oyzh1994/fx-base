@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.handler;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.xproto.ChangeSaveSet;
 import com.github.moaxcp.x11.protocol.xproto.ChangeWindowAttributes;
@@ -55,8 +57,6 @@ import cn.oyzh.fx.xserver.resource.XCursor;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -1232,7 +1232,7 @@ public final class WindowHandlers {
                 .sequenceNumber(client.sequenceNumber())
                 .root(window.root().id())
                 .parent(window.parent() == null ? 0 : window.parent().id())
-                .children(IntLists.immutable.ofAll(children))
+                .children(intsOf(children))
                 .build());
     }
 

@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.tools;
 
+import java.util.List;
 import com.github.moaxcp.x11.protocol.X11LittleEndianOutputStream;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.res.ClientIdMask;
@@ -12,8 +13,6 @@ import com.github.moaxcp.x11.protocol.res.QueryResourceBytes;
 import com.github.moaxcp.x11.protocol.res.QueryVersion;
 import com.github.moaxcp.x11.protocol.res.ResourceIdSpec;
 import cn.oyzh.fx.xserver.test.RawXClient;
-import org.eclipse.collections.impl.factory.Lists;
-
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -116,7 +115,7 @@ public final class ResProbe {
             // it answers is not something a probe can guess.
             for (int named : new int[]{base, 0x7FE00000}) {
                 send(client, opcode, QueryClientIds.builder()
-                        .specs(Lists.immutable.of(ClientIdSpec.builder().client(named).mask(1).build()))
+                        .specs(List.of(ClientIdSpec.builder().client(named).mask(1).build()))
                         .build());
                 try {
                     byte[] answer = client.readReply();
@@ -135,7 +134,7 @@ public final class ResProbe {
                     ClientIdMask.LOCAL_CLIENT_P_I_D.getValue(),
                     ClientIdMask.CLIENT_X_I_D.getValue() | ClientIdMask.LOCAL_CLIENT_P_I_D.getValue()}) {
                 send(client, opcode, QueryClientIds.builder()
-                        .specs(Lists.immutable.of(ClientIdSpec.builder()
+                        .specs(List.of(ClientIdSpec.builder()
                                 .client(0)                          // 0 = every client, per the spec
                                 .mask(mask)
                                 .build()))
@@ -171,7 +170,7 @@ public final class ResProbe {
                 for (int[] named : new int[][]{{window, 'w'}, {pixmap, 'p'}}) {
                     send(client, opcode, QueryResourceBytes.builder()
                             .client(base)
-                            .specs(Lists.immutable.of(ResourceIdSpec.builder()
+                            .specs(List.of(ResourceIdSpec.builder()
                                     .resource(named[0]).type(type).build()))
                             .build());
                     byte[] sizes = client.readReply();
@@ -219,7 +218,7 @@ public final class ResProbe {
 
             send(client, opcode, QueryResourceBytes.builder()
                     .client(0x7FE00000)
-                    .specs(Lists.immutable.of(ResourceIdSpec.builder()
+                    .specs(List.of(ResourceIdSpec.builder()
                             .resource(window).type(0).build()))
                     .build());
             try {

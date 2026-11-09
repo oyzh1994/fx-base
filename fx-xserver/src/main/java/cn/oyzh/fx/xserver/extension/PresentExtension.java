@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.extension;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.present.CompleteKind;
@@ -20,7 +22,6 @@ import cn.oyzh.fx.xserver.draw.PixelStore;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-
 import java.awt.Rectangle;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -135,8 +136,8 @@ public final class PresentExtension implements Extension {
         long divisor = in.readCard64();
         long remainder = in.readCard64();
         int count = Math.max(lengthUnits * 4 - FIXED_BYTES, 0) / 8;
-        org.eclipse.collections.api.list.MutableList<Notify> notifies =
-                org.eclipse.collections.impl.factory.Lists.mutable.withInitialCapacity(count);
+        List<Notify> notifies =
+                new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             notifies.add(Notify.readNotify(in));
         }
@@ -146,7 +147,7 @@ public final class PresentExtension implements Extension {
                 .xOff(xOff).yOff(yOff).targetCrtc(targetCrtc)
                 .waitFence(waitFence).idleFence(idleFence).options(options)
                 .targetMsc(targetMsc).divisor(divisor).remainder(remainder)
-                .notifies(notifies.toImmutable())
+                .notifies(List.copyOf(notifies))
                 .build();
     }
 

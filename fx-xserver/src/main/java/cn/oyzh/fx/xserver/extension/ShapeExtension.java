@@ -24,10 +24,7 @@ import cn.oyzh.fx.xserver.resource.ShapeState;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.impl.factory.Lists;
 import cn.oyzh.common.log.JulLog;
-
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -315,7 +312,7 @@ public final class ShapeExtension implements Extension {
                 .destinationWindow(window)
                 .xOffset(xOffset)
                 .yOffset(yOffset)
-                .rectangles(Lists.immutable.withAll(rectangles))
+                .rectangles(List.copyOf(rectangles))
                 .build();
     }
 
@@ -486,7 +483,7 @@ public final class ShapeExtension implements Extension {
         client.sendReply(GetRectanglesReply.builder()
                 .sequenceNumber(client.sequenceNumber())
                 .ordering((byte) ORDERING_YX_BANDED)
-                .rectangles(Lists.immutable.ofAll(reply))
+                .rectangles(List.copyOf(reply))
                 .build());
     }
 
@@ -644,7 +641,7 @@ public final class ShapeExtension implements Extension {
     }
 
     private static List<Rectangle> toAwt(
-            ImmutableList<com.github.moaxcp.x11.protocol.xproto.Rectangle> source) {
+            List<com.github.moaxcp.x11.protocol.xproto.Rectangle> source) {
         List<Rectangle> rectangles = new ArrayList<>(source.size());
         for (com.github.moaxcp.x11.protocol.xproto.Rectangle rectangle : source) {
             rectangles.add(new Rectangle(rectangle.getX(), rectangle.getY(),

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.handler;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.xproto.Bell;
 import com.github.moaxcp.x11.protocol.xproto.ChangeHosts;
 import com.github.moaxcp.x11.protocol.xproto.ChangeKeyboardControl;
@@ -32,9 +34,6 @@ import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.display.ScreenSaverState;
 import cn.oyzh.fx.xserver.extension.Extension;
 import cn.oyzh.fx.xserver.input.InputState;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,12 +80,12 @@ public final class MiscHandlers {
         for (String name : client.isTrusted() ? server.extensions().names()
                 : visibleToUntrusted()) {
             names.add(Str.builder()
-                    .name(ByteLists.immutable.of(name.getBytes(StandardCharsets.ISO_8859_1)))
+                    .name(bytes(name.getBytes(StandardCharsets.ISO_8859_1)))
                     .build());
         }
         client.sendReply(ListExtensionsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .names(Lists.immutable.withAll(names))
+                .names(List.copyOf(names))
                 .build());
     }
 
@@ -245,7 +244,7 @@ public final class MiscHandlers {
                 .bellPercent((byte) 50)
                 .bellPitch((short) 400)
                 .bellDuration((short) 100)
-                .autoRepeats(ByteLists.immutable.of(autoRepeats))
+                .autoRepeats(bytes(autoRepeats))
                 .build());
     }
 
@@ -298,13 +297,13 @@ public final class MiscHandlers {
         if (server.options().listenAll()) {
             hosts.add(Host.builder()
                     .family((byte) 0)
-                    .address(ByteLists.immutable.empty())
+                    .address(bytes())
                     .build());
         }
         client.sendReply(ListHostsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
                 .mode((byte) (server.options().authRequired() ? 0 : 1))
-                .hosts(Lists.immutable.withAll(hosts))
+                .hosts(List.copyOf(hosts))
                 .build());
     }
 
@@ -324,7 +323,7 @@ public final class MiscHandlers {
         }
     }
 
-    private static String ascii(org.eclipse.collections.api.list.primitive.ByteList bytes) {
-        return new String(bytes.toArray(), StandardCharsets.ISO_8859_1);
+    private static String ascii(byte[] bytes) {
+        return new String(bytes, StandardCharsets.ISO_8859_1);
     }
 }

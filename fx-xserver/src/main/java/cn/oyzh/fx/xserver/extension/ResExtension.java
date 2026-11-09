@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.extension;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.res.Client;
@@ -28,9 +30,6 @@ import cn.oyzh.fx.xserver.client.ProtocolException;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -161,7 +160,7 @@ public final class ResExtension implements Extension {
         }
         client.sendReply(QueryClientsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .clients(Lists.immutable.withAll(clients))
+                .clients(List.copyOf(clients))
                 .build());
     }
 
@@ -178,7 +177,7 @@ public final class ResExtension implements Extension {
                 .build()));
         client.sendReply(QueryClientResourcesReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .types(Lists.immutable.withAll(types))
+                .types(List.copyOf(types))
                 .build());
     }
 
@@ -225,7 +224,7 @@ public final class ResExtension implements Extension {
      * two servers *can* say, not in what they do with what they know.
      */
     private void queryClientIds(XServer server, ClientConnection client,
-                                org.eclipse.collections.api.list.ImmutableList<ClientIdSpec> specs) {
+                                List<ClientIdSpec> specs) {
         List<ClientIdValue> values = new ArrayList<>();
         for (ClientIdSpec spec : specs) {
             for (ClientConnection candidate : clientsMatching(server, spec.getClient())) {
@@ -240,7 +239,7 @@ public final class ResExtension implements Extension {
                                     .client(clientBase)
                                     .mask(CLIENT_X_I_D)
                                     .build())
-                            .value(IntLists.immutable.empty())
+                            .value(ints())
                             .build());
                 }
                 // LOCAL_CLIENT_P_I_D contributes nothing: see the note above. Any other bit is
@@ -251,7 +250,7 @@ public final class ResExtension implements Extension {
         }
         client.sendReply(QueryClientIdsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .ids(Lists.immutable.withAll(values))
+                .ids(List.copyOf(values))
                 .build());
     }
 
@@ -268,7 +267,7 @@ public final class ResExtension implements Extension {
      * window pixmap is the one resource shared between two names, and it too reports one.
      */
     private void queryResourceBytes(XServer server, ClientConnection client, int clientId,
-                                    org.eclipse.collections.api.list.ImmutableList<ResourceIdSpec> specs) {
+                                    List<ResourceIdSpec> specs) {
         // A `client` of zero asks about every client, the server's own included - measured, and not
         // guessable: zero is also the server's own resource base, and a reference answered a query
         // naming zero with a resource that belonged to the *asking* connection.
@@ -299,12 +298,12 @@ public final class ResExtension implements Extension {
                             .refCount(1)
                             .useCount(1)
                             .build())
-                    .crossReferences(Lists.immutable.empty())
+                    .crossReferences(List.of())
                     .build());
         }
         client.sendReply(QueryResourceBytesReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .sizes(Lists.immutable.withAll(sizes))
+                .sizes(List.copyOf(sizes))
                 .build());
     }
 

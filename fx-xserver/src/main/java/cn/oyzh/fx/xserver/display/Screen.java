@@ -8,8 +8,6 @@ import cn.oyzh.fx.xserver.draw.Framebuffer;
 import cn.oyzh.fx.xserver.resource.XColormap;
 import cn.oyzh.fx.xserver.resource.XCursor;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.impl.factory.Lists;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -319,7 +317,7 @@ public final class Screen {
             }
             protocolDepths.add(Depth.builder()
                     .depth((byte) info.depth())
-                    .visuals(Lists.immutable.withAll(visualtypes))
+                    .visuals(List.copyOf(visualtypes))
                     .build());
         }
         return com.github.moaxcp.x11.protocol.xproto.Screen.builder()
@@ -343,7 +341,7 @@ public final class Screen {
                 .backingStores((byte) 1)
                 .saveUnders(false)
                 .rootDepth((byte) rootDepth)
-                .allowedDepths(Lists.immutable.withAll(protocolDepths))
+                .allowedDepths(List.copyOf(protocolDepths))
                 .build();
     }
 

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.handler;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.xproto.ChangeProperty;
 import com.github.moaxcp.x11.protocol.xproto.ConvertSelection;
 import com.github.moaxcp.x11.protocol.xproto.DeleteProperty;
@@ -30,9 +32,6 @@ import cn.oyzh.fx.xserver.resource.AtomTable;
 import cn.oyzh.fx.xserver.resource.XProperty;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +87,7 @@ public final class AtomHandlers {
         }
         client.sendReply(GetAtomNameReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .name(ByteLists.immutable.of(name.getBytes(StandardCharsets.ISO_8859_1)))
+                .name(bytes(name.getBytes(StandardCharsets.ISO_8859_1)))
                 .build());
     }
 
@@ -113,7 +112,7 @@ public final class AtomHandlers {
             throw ProtocolException.badValue(r.getMode());
         }
 
-        byte[] incoming = normalize(r.getData().toArray(), format, client.isBigEndian());
+        byte[] incoming = normalize(r.getData(), format, client.isBigEndian());
         // X requires the data to be a whole number of items; anything trailing is ignored.
         int unit = format / 8;
         int usable = incoming.length - incoming.length % unit;
@@ -164,7 +163,7 @@ public final class AtomHandlers {
                     .type(AtomTable.NONE)
                     .bytesAfter(0)
                     .valueLen(0)
-                    .value(ByteLists.immutable.empty())
+                    .value(bytes())
                     .build());
             return;
         }
@@ -176,7 +175,7 @@ public final class AtomHandlers {
                     .type(property.typeAtom())
                     .bytesAfter(property.data().length)
                     .valueLen(0)
-                    .value(ByteLists.immutable.empty())
+                    .value(bytes())
                     .build());
             return;
         }
@@ -220,7 +219,7 @@ public final class AtomHandlers {
                 .type(property.typeAtom())
                 .bytesAfter(bytesAfter)
                 .valueLen(requestedBytes / unit)
-                .value(ByteLists.immutable.of(normalize(slice, property.format(),
+                .value(bytes(normalize(slice, property.format(),
                         client.isBigEndian())))
                 .build());
     }
@@ -231,14 +230,14 @@ public final class AtomHandlers {
         java.util.Collections.sort(atoms);
         client.sendReply(ListPropertiesReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .atoms(IntLists.immutable.ofAll(atoms))
+                .atoms(intsOf(atoms))
                 .build());
     }
 
     public void rotateProperties(ClientConnection client, RotateProperties r) {
         XWindow window = window(client, r.getWindow());
         List<Integer> atoms = new ArrayList<>();
-        for (int atom : r.getAtoms().toArray()) {
+        for (int atom : r.getAtoms()) {
             if (!window.properties().containsKey(atom)) {
                 throw ProtocolException.badAtom(atom);
             }
@@ -542,7 +541,7 @@ public final class AtomHandlers {
         } else {
             destination = window(client, r.getDestination());
         }
-        byte[] bytes = r.getEvent().toArray();
+        byte[] bytes = r.getEvent();
         if (bytes.length < 32) {
             throw ProtocolException.badValue(bytes.length);
         }
@@ -850,8 +849,8 @@ public final class AtomHandlers {
         return out;
     }
 
-    private static String ascii(org.eclipse.collections.api.list.primitive.ByteList bytes) {
-        return new String(bytes.toArray(), StandardCharsets.ISO_8859_1);
+    private static String ascii(byte[] bytes) {
+        return new String(bytes, StandardCharsets.ISO_8859_1);
     }
 
     /** True when a property exists on the window; used by diagnostics. */

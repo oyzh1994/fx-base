@@ -340,7 +340,7 @@ specification, and each worked around rather than patched upstream:
 
 - **Variable length lists are decoded from the wrong arithmetic.** Readers size lists with
   `withInitialCapacity(length - javaStart)`, mixing four byte units with a byte offset. For most
-  real requests the argument is negative and Eclipse Collections throws; for the rest it silently
+  real requests the argument is negative and the generated reader throws; for the rest it silently
   reads too few items, truncating `PutImage`, `PolyText8` and `QueryColors` data. Sixteen requests
   are decoded in `VariableLengthDecoders` instead.
 - **`QueryTextExtents` miscounts by one** for an odd length string, because the padding byte is

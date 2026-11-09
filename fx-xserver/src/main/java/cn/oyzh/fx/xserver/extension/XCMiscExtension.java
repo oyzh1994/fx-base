@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.extension;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.xc_misc.GetVersion;
@@ -12,8 +14,6 @@ import com.github.moaxcp.x11.protocol.xc_misc.XcMiscplugin;
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.resource.ResourceTable;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +92,7 @@ public final class XCMiscExtension implements Extension {
     private void getXidList(XServer server, ClientConnection client, GetXIDList request) {
         int count = request.getCount();
         if (count <= 0) {
-            org.eclipse.collections.api.list.primitive.IntList empty = IntLists.immutable.empty();
+            int[] empty = ints();
             client.sendReply(GetXIDListReply.builder()
                     .sequenceNumber(client.sequenceNumber())
                     .ids(empty)
@@ -116,7 +116,7 @@ public final class XCMiscExtension implements Extension {
         }
         client.sendReply(GetXIDListReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .ids(IntLists.immutable.ofAll(ids))
+                .ids(intsOf(ids))
                 .build());
     }
     /**

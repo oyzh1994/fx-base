@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.handler;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import cn.oyzh.common.log.JulLog;
 import com.github.moaxcp.x11.protocol.xproto.AllowEvents;
 import com.github.moaxcp.x11.protocol.xproto.ChangeActivePointerGrab;
@@ -39,10 +41,6 @@ import cn.oyzh.fx.xserver.input.InputState;
 import cn.oyzh.fx.xserver.input.Keymap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -145,7 +143,7 @@ public final class InputHandlers {
         }
         client.sendReply(GetMotionEventsReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .events(Lists.immutable.ofAll(events))
+                .events(List.copyOf(events))
                 .build());
     }
 
@@ -236,7 +234,7 @@ public final class InputHandlers {
         }
         client.sendReply(QueryKeymapReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .keys(ByteLists.immutable.of(keys))
+                .keys(bytes(keys))
                 .build());
     }
 
@@ -401,7 +399,7 @@ public final class InputHandlers {
     // ------------------------------------------------------------------
 
     public void setPointerMapping(ClientConnection client, SetPointerMapping r) {
-        byte[] requested = r.getMap().toArray();
+        byte[] requested = r.getMap();
         for (byte value : requested) {
             if ((value & 0xFF) > 10) {
                 throw ProtocolException.badValue(value & 0xFF);
@@ -429,12 +427,12 @@ public final class InputHandlers {
     public void getPointerMapping(ClientConnection client, GetPointerMapping r) {
         client.sendReply(GetPointerMappingReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .map(ByteLists.immutable.of(pointerMapping))
+                .map(bytes(pointerMapping))
                 .build());
     }
 
     public void setModifierMapping(ClientConnection client, SetModifierMapping r) {
-        byte[] keycodes = r.getKeycodes().toArray();
+        byte[] keycodes = r.getKeycodes();
         int maxKeycode = Keymap.MAX_KEYCODE & 0xFF;
         Set<Integer> seen = new LinkedHashSet<>();
         for (byte value : keycodes) {
@@ -507,7 +505,7 @@ public final class InputHandlers {
         if (first < (Keymap.MIN_KEYCODE & 0xFF) || first + count - 1 > maxKeycode) {
             throw ProtocolException.badValue(first);
         }
-        int[] keysyms = r.getKeysyms().toArray();
+        int[] keysyms = r.getKeysyms();
         if (keysyms.length < count * perKeycode) {
             throw ProtocolException.badLength();
         }
@@ -543,7 +541,7 @@ public final class InputHandlers {
         client.sendReply(GetKeyboardMappingReply.builder()
                 .sequenceNumber(client.sequenceNumber())
                 .keysymsPerKeycode((byte) perKeycode)
-                .keysyms(IntLists.immutable.of(keysyms))
+                .keysyms(ints(keysyms))
                 .build());
     }
 

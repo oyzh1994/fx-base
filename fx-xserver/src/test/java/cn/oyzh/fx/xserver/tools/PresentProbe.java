@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.tools;
 
+import java.util.List;
 import com.github.moaxcp.x11.protocol.X11LittleEndianOutputStream;
 import com.github.moaxcp.x11.protocol.present.NotifyMSC;
 import com.github.moaxcp.x11.protocol.present.Pixmap;
@@ -7,8 +8,6 @@ import com.github.moaxcp.x11.protocol.present.QueryCapabilities;
 import com.github.moaxcp.x11.protocol.present.QueryVersion;
 import com.github.moaxcp.x11.protocol.present.SelectInput;
 import cn.oyzh.fx.xserver.test.RawXClient;
-import org.eclipse.collections.impl.factory.Lists;
-
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -100,7 +99,7 @@ public final class PresentProbe {
                     .waitFence(0).idleFence(0)
                     .options(0)
                     .targetMsc(0).divisor(0).remainder(0)
-                    .notifies(Lists.immutable.empty())
+                    .notifies(List.of())
                     .build());
             client.flush();
             client.readTimeoutMillis(1500);

@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.extension;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.xfixes.ChangeCursor;
@@ -55,14 +57,7 @@ import cn.oyzh.fx.xserver.resource.XGC;
 import cn.oyzh.fx.xserver.resource.XPixmap;
 import cn.oyzh.fx.xserver.resource.XResource;
 import cn.oyzh.fx.xserver.resource.XWindow;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.primitive.ByteList;
-import org.eclipse.collections.api.list.primitive.IntList;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
 import cn.oyzh.common.log.JulLog;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -429,7 +424,7 @@ public final class XFixesExtension implements Extension {
         Region region = readRegion(in);
         return CreateRegion.builder()
                 .region(region.id())
-                .rectangles(Lists.immutable.withAll(region.rectangles()))
+                .rectangles(List.copyOf(region.rectangles()))
                 .build();
     }
 
@@ -446,7 +441,7 @@ public final class XFixesExtension implements Extension {
         Region region = readRegion(in);
         return SetRegion.builder()
                 .region(region.id())
-                .rectangles(Lists.immutable.withAll(region.rectangles()))
+                .rectangles(List.copyOf(region.rectangles()))
                 .build();
     }
 
@@ -565,13 +560,13 @@ public final class XFixesExtension implements Extension {
     }
 
     /** A cursor's name as the bytes of a reply, or nothing when it has none. */
-    private ByteList name(XCursor cursor, XServer server) {
+    private byte[] name(XCursor cursor, XServer server) {
         if (cursor.name() == 0) {
-            return ByteLists.immutable.empty();
+            return bytes();
         }
         String text = server.atoms().name(cursor.name());
-        return text == null ? ByteLists.immutable.empty()
-                : ByteLists.immutable.of(text.getBytes(java.nio.charset.StandardCharsets.ISO_8859_1));
+        return text == null ? bytes()
+                : bytes(text.getBytes(java.nio.charset.StandardCharsets.ISO_8859_1));
     }
 
     private void setCursorName(XServer server, ClientConnection client, SetCursorName request) {
@@ -580,13 +575,13 @@ public final class XFixesExtension implements Extension {
         // this server answers None for that, where a reference interns the empty string as an atom
         // and reports it (measured: 87 with no bytes, against 0 here). A client that tests for None
         // gets the sane answer; one that compares atoms it interned itself sees the difference.
-        String name = new String(request.getName().toArray(),
+        String name = new String(request.getName(),
                 java.nio.charset.StandardCharsets.ISO_8859_1);
         cursor.setName(name.isEmpty() ? 0 : server.atoms().intern(name));
         server.markScreenDirty();
     }
 
-    private static IntList cursorPixels(XCursor cursor) {
+    private static int[] cursorPixels(XCursor cursor) {
         int width = cursor.width();
         int height = cursor.height();
         int[] pixels = new int[width * height];
@@ -595,7 +590,7 @@ public final class XFixesExtension implements Extension {
                 pixels[y * width + x] = cursor.pixel(x, y);
             }
         }
-        return IntLists.immutable.of(pixels);
+        return ints(pixels);
     }
 
     // ------------------------------------------------------------------
@@ -780,7 +775,7 @@ public final class XFixesExtension implements Extension {
         client.sendReply(FetchRegionReply.builder()
                 .sequenceNumber(client.sequenceNumber())
                 .extents(extents == null ? emptyProtocolRectangle() : toProtocol(extents))
-                .rectangles(Lists.immutable.ofAll(reply))
+                .rectangles(List.copyOf(reply))
                 .build());
     }
 
@@ -922,7 +917,7 @@ public final class XFixesExtension implements Extension {
     // ------------------------------------------------------------------
 
     private static List<Rectangle> toAwt(
-            ImmutableList<com.github.moaxcp.x11.protocol.xproto.Rectangle> source) {
+            List<com.github.moaxcp.x11.protocol.xproto.Rectangle> source) {
         List<Rectangle> rectangles = new ArrayList<>(source.size());
         for (com.github.moaxcp.x11.protocol.xproto.Rectangle rectangle : source) {
             rectangles.add(toAwt(rectangle));

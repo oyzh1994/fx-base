@@ -1,5 +1,6 @@
 package cn.oyzh.fx.xserver.extension;
 
+import java.util.List;
 import com.github.moaxcp.x11.protocol.XProtocolPlugin;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.xinerama.IsActive;
@@ -117,7 +118,7 @@ public final class XineramaExtension implements Extension {
                 .build();
         client.sendReply(QueryScreensReply.builder()
                 .sequenceNumber(client.sequenceNumber())
-                .screenInfo(org.eclipse.collections.impl.factory.Lists.immutable.of(screen))
+                .screenInfo(List.of(screen))
                 .build());
     }
 }

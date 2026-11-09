@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.protocol;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.X11Input;
 import com.github.moaxcp.x11.protocol.XObject;
 import com.github.moaxcp.x11.protocol.XRequest;
@@ -26,10 +28,6 @@ import com.github.moaxcp.x11.protocol.render.Triangle;
 import com.github.moaxcp.x11.protocol.render.Triangles;
 import com.github.moaxcp.x11.protocol.xproto.Rectangle;
 import cn.oyzh.fx.xserver.protocol.VariableLengthDecoders;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +121,7 @@ public final class RenderDecoders {
                 .op(op)
                 .dst(dst)
                 .color(color)
-                .rects(Lists.immutable.withAll(rects))
+                .rects(List.copyOf(rects))
                 .build();
     }
 
@@ -141,7 +139,7 @@ public final class RenderDecoders {
                 .maskFormat(header.maskFormat)
                 .srcX(header.srcX)
                 .srcY(header.srcY)
-                .traps(Lists.immutable.withAll(traps))
+                .traps(List.copyOf(traps))
                 .build();
     }
 
@@ -159,7 +157,7 @@ public final class RenderDecoders {
                 .maskFormat(header.maskFormat)
                 .srcX(header.srcX)
                 .srcY(header.srcY)
-                .triangles(Lists.immutable.withAll(triangles))
+                .triangles(List.copyOf(triangles))
                 .build();
     }
 
@@ -174,13 +172,13 @@ public final class RenderDecoders {
             return TriStrip.builder()
                     .op(header.op).src(header.src).dst(header.dst)
                     .maskFormat(header.maskFormat).srcX(header.srcX).srcY(header.srcY)
-                    .points(Lists.immutable.withAll(points))
+                    .points(List.copyOf(points))
                     .build();
         }
         return TriFan.builder()
                 .op(header.op).src(header.src).dst(header.dst)
                 .maskFormat(header.maskFormat).srcX(header.srcX).srcY(header.srcY)
-                .points(Lists.immutable.withAll(points))
+                .points(List.copyOf(points))
                 .build();
     }
 
@@ -199,7 +197,7 @@ public final class RenderDecoders {
                 .picture(picture)
                 .xOff(xOff)
                 .yOff(yOff)
-                .traps(Lists.immutable.withAll(traps))
+                .traps(List.copyOf(traps))
                 .build();
     }
 
@@ -242,7 +240,7 @@ public final class RenderDecoders {
                 .picture(picture)
                 .clipXOrigin(clipXOrigin)
                 .clipYOrigin(clipYOrigin)
-                .rectangles(Lists.immutable.withAll(rectangles))
+                .rectangles(List.copyOf(rectangles))
                 .build();
     }
 
@@ -266,8 +264,8 @@ public final class RenderDecoders {
         }
         return SetPictureFilter.builder()
                 .picture(picture)
-                .filter(ByteLists.immutable.of(filter))
-                .values(IntLists.immutable.of(values))
+                .filter(bytes(filter))
+                .values(ints(values))
                 .build();
     }
 
@@ -282,7 +280,7 @@ public final class RenderDecoders {
         }
         return CreateAnimCursor.builder()
                 .cid(cid)
-                .cursors(Lists.immutable.withAll(cursors))
+                .cursors(List.copyOf(cursors))
                 .build();
     }
 
@@ -312,9 +310,9 @@ public final class RenderDecoders {
         }
         return AddGlyphs.builder()
                 .glyphset(glyphset)
-                .glyphids(IntLists.immutable.of(glyphids))
-                .glyphs(Lists.immutable.withAll(glyphs))
-                .data(ByteLists.immutable.of(data))
+                .glyphids(ints(glyphids))
+                .glyphs(List.copyOf(glyphs))
+                .data(bytes(data))
                 .build();
     }
 
@@ -339,17 +337,17 @@ public final class RenderDecoders {
             case 8 -> CompositeGlyphs8.builder()
                     .op(op).src(src).dst(dst).maskFormat(maskFormat).glyphset(glyphset)
                     .srcX(srcX).srcY(srcY)
-                    .glyphcmds(ByteLists.immutable.of(glyphcmds))
+                    .glyphcmds(bytes(glyphcmds))
                     .build();
             case 16 -> CompositeGlyphs16.builder()
                     .op(op).src(src).dst(dst).maskFormat(maskFormat).glyphset(glyphset)
                     .srcX(srcX).srcY(srcY)
-                    .glyphcmds(ByteLists.immutable.of(glyphcmds))
+                    .glyphcmds(bytes(glyphcmds))
                     .build();
             default -> CompositeGlyphs32.builder()
                     .op(op).src(src).dst(dst).maskFormat(maskFormat).glyphset(glyphset)
                     .srcX(srcX).srcY(srcY)
-                    .glyphcmds(ByteLists.immutable.of(glyphcmds))
+                    .glyphcmds(bytes(glyphcmds))
                     .build();
         };
     }
@@ -365,7 +363,7 @@ public final class RenderDecoders {
         }
         return FreeGlyphs.builder()
                 .glyphset(glyphset)
-                .glyphs(IntLists.immutable.of(glyphs))
+                .glyphs(ints(glyphs))
                 .build();
     }
 

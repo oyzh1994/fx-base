@@ -1,5 +1,7 @@
 package cn.oyzh.fx.xserver.protocol;
 
+import static cn.oyzh.fx.xserver.util.X11Arrays.*;
+
 import com.github.moaxcp.x11.protocol.X11Input;
 import com.github.moaxcp.x11.protocol.XRequest;
 import com.github.moaxcp.x11.protocol.xproto.Arc;
@@ -26,10 +28,6 @@ import com.github.moaxcp.x11.protocol.xproto.Rectangle;
 import com.github.moaxcp.x11.protocol.xproto.Segment;
 import com.github.moaxcp.x11.protocol.xproto.SetClipRectangles;
 import com.github.moaxcp.x11.protocol.xproto.StoreColors;
-import org.eclipse.collections.impl.factory.Lists;
-import org.eclipse.collections.impl.factory.primitive.ByteLists;
-import org.eclipse.collections.impl.factory.primitive.IntLists;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,7 @@ import java.util.List;
  * <p>The generated readers size their result list with {@code withInitialCapacity(length - javaStart)}
  * where {@code length} is the request length in <em>four byte units</em> and {@code javaStart} is a
  * byte offset. The two are not comparable, so for any request shorter than roughly four times its
- * own header the argument is negative and {@code Eclipse Collections} throws
+ * own header the argument is negative and the generated reader throws
  * {@code IllegalArgumentException}. That covers almost every real request: a two point
  * {@code PolyLine} is 5 units long with a 12 byte header, so the list would be sized {@code -7}.
  *
@@ -184,7 +182,7 @@ public final class VariableLengthDecoders {
                 .dstY(dstY)
                 .leftPad(leftPad)
                 .depth(depth)
-                .data(ByteLists.immutable.of(data))
+                .data(bytes(data))
                 .build();
     }
 
@@ -218,7 +216,7 @@ public final class VariableLengthDecoders {
                 .gc(gc)
                 .x(x)
                 .y(y)
-                .string(ByteLists.immutable.of(readBytes(in, length)))
+                .string(bytes(readBytes(in, length)))
                 .build();
     }
 
@@ -239,7 +237,7 @@ public final class VariableLengthDecoders {
                 .gc(gc)
                 .x(x)
                 .y(y)
-                .string(Lists.immutable.of(string))
+                .string(List.of(string))
                 .build();
     }
 
@@ -256,7 +254,7 @@ public final class VariableLengthDecoders {
                 .gc(gc)
                 .x(x)
                 .y(y)
-                .items(ByteLists.immutable.of(items))
+                .items(bytes(items))
                 .build();
     }
 
@@ -273,7 +271,7 @@ public final class VariableLengthDecoders {
                 .gc(gc)
                 .x(x)
                 .y(y)
-                .items(ByteLists.immutable.of(items))
+                .items(bytes(items))
                 .build();
     }
 
@@ -294,7 +292,7 @@ public final class VariableLengthDecoders {
         return FreeColors.builder()
                 .cmap(cmap)
                 .planeMask(planeMask)
-                .pixels(IntLists.immutable.of(pixels))
+                .pixels(ints(pixels))
                 .build();
     }
 
@@ -309,7 +307,7 @@ public final class VariableLengthDecoders {
         }
         return QueryColors.builder()
                 .cmap(cmap)
-                .pixels(IntLists.immutable.of(pixels))
+                .pixels(ints(pixels))
                 .build();
     }
 
@@ -335,7 +333,7 @@ public final class VariableLengthDecoders {
                 .coordinateMode(coordinateMode)
                 .drawable(drawable)
                 .gc(gc)
-                .points(Lists.immutable.withAll(points))
+                .points(List.copyOf(points))
                 .build();
     }
 
@@ -349,7 +347,7 @@ public final class VariableLengthDecoders {
                 .coordinateMode(coordinateMode)
                 .drawable(drawable)
                 .gc(gc)
-                .points(Lists.immutable.withAll(points))
+                .points(List.copyOf(points))
                 .build();
     }
 
@@ -371,7 +369,7 @@ public final class VariableLengthDecoders {
         return PolySegment.builder()
                 .drawable(drawable)
                 .gc(gc)
-                .segments(Lists.immutable.withAll(segments))
+                .segments(List.copyOf(segments))
                 .build();
     }
 
@@ -393,7 +391,7 @@ public final class VariableLengthDecoders {
         return PolyRectangle.builder()
                 .drawable(drawable)
                 .gc(gc)
-                .rectangles(Lists.immutable.withAll(rectangles))
+                .rectangles(List.copyOf(rectangles))
                 .build();
     }
 
@@ -410,7 +408,7 @@ public final class VariableLengthDecoders {
         return PolyArc.builder()
                 .drawable(drawable)
                 .gc(gc)
-                .arcs(Lists.immutable.withAll(arcs))
+                .arcs(List.copyOf(arcs))
                 .build();
     }
 
@@ -430,7 +428,7 @@ public final class VariableLengthDecoders {
                 .coordinateMode(coordinateMode)
                 .drawable(drawable)
                 .gc(gc)
-                .points(Lists.immutable.withAll(points))
+                .points(List.copyOf(points))
                 .build();
     }
 
@@ -452,7 +450,7 @@ public final class VariableLengthDecoders {
         return PolyFillRectangle.builder()
                 .drawable(drawable)
                 .gc(gc)
-                .rectangles(Lists.immutable.withAll(rectangles))
+                .rectangles(List.copyOf(rectangles))
                 .build();
     }
 
@@ -469,7 +467,7 @@ public final class VariableLengthDecoders {
         return PolyFillArc.builder()
                 .drawable(drawable)
                 .gc(gc)
-                .arcs(Lists.immutable.withAll(arcs))
+                .arcs(List.copyOf(arcs))
                 .build();
     }
 
@@ -494,7 +492,7 @@ public final class VariableLengthDecoders {
                 .gc(gc)
                 .clipXOrigin(clipXOrigin)
                 .clipYOrigin(clipYOrigin)
-                .rectangles(Lists.immutable.withAll(rectangles))
+                .rectangles(List.copyOf(rectangles))
                 .build();
     }
 
@@ -515,7 +513,7 @@ public final class VariableLengthDecoders {
         }
         return StoreColors.builder()
                 .cmap(cmap)
-                .items(Lists.immutable.withAll(items))
+                .items(List.copyOf(items))
                 .build();
     }
 
@@ -537,7 +535,7 @@ public final class VariableLengthDecoders {
         }
         return QueryTextExtents.builder()
                 .font(font)
-                .string(Lists.immutable.withAll(string))
+                .string(List.copyOf(string))
                 .build();
     }
 
