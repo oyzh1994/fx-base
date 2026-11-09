@@ -193,9 +193,9 @@ class WindowGravityTest {
 
     /**
      * The two gravities that mean "do not move": {@code Forget} (0) and {@code Static} (10), which are
-     * outside the three by three grid. (A window nobody sets a gravity on has {@code NorthWest}, which
-     * is where a window starts: measured against a reference server with {@code GetWindowAttributes},
-     * which answers 1 for a freshly created window.)
+     * outside the three by three grid. (This is about {@code win_gravity}, whose default - unlike
+     * {@code bit_gravity}'s - is {@code NorthWest}: a child nobody sets a gravity on keeps its
+     * distance to its parent's near edges.)
      */
     @Test
     void forgetAndStaticLeaveTheChildWhereItIs() throws Exception {

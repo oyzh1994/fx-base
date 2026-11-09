@@ -15,13 +15,35 @@
     <packaging>jar</packaging>
     <description>A modern X11 display server written in Java, rendered with JavaFX</description>
 
+    <!-- <properties> -->
+    <!--     <x11.version>0.22.0</x11.version> -->
+    <!-- </properties> -->
+
     <dependencies>
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
             <artifactId>fx-plus</artifactId>
         </dependency>
 
-        <!-- 自定义类库，x11相关 -->
+        <!-- &lt;!&ndash; X11 protocol codecs generated from the xcb protocol descriptions. -->
+        <!--      These give us read<Request>/read<Event>/read<Reply> plus the matching write methods -->
+        <!--      for every request, reply, event and error of the X11 protocol. &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.github.moaxcp.x11.x11-protocol</groupId> -->
+        <!--     <artifactId>x11-protocol-core</artifactId> -->
+        <!--     <version>${x11.version}</version> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.github.moaxcp.x11.x11-protocol</groupId> -->
+        <!--     <artifactId>x11-protocol-xproto</artifactId> -->
+        <!--     <version>${x11.version}</version> -->
+        <!-- </dependency> -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.github.moaxcp.x11.x11-protocol</groupId> -->
+        <!--     <artifactId>x11-protocol-bigreq</artifactId> -->
+        <!--     <version>${x11.version}</version> -->
+        <!-- </dependency> -->
+
         <dependency>
             <groupId>io.github.oyzh1994</groupId>
             <artifactId>base-x11</artifactId>

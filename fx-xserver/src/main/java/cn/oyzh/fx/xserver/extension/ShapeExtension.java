@@ -44,7 +44,7 @@ import java.util.WeakHashMap;
  * shape (the region that accepts pointer events, which is what makes click-through regions work).
  * Every modern toolkit uses it, so a toolkit that finds it missing falls back to square corners.
  *
- * <p>What is enforced today, and what is not:
+ * <p>What is enforced today:
  * <ul>
  *   <li>The <em>input</em> shape is enforced. {@link #acceptsPointer(XServer, XWindow, int, int)}
  *       answers whether a screen point reaches a window, and {@code InputState} consults it while
@@ -52,12 +52,13 @@ import java.util.WeakHashMap;
  *       exactly as on a real server. No shape means "accept everything", so the check is safe to
  *       call unconditionally.
  *   <li>The <em>bounding</em> and <em>clip</em> shapes are stored, reported through
- *       {@code QueryExtents} and {@code GetRectangles}, used as the fallback input region, and used
- *       when another shape or an XFIXES region is combined with them. Their <em>drawing</em> effect
- *       is not applied: the rasterizer clips to a {@link Rectangle} supplied by its caller and
- *       nothing in the drawing path consults {@link ShapeState}, so a shaped window's corners are
- *       still painted into the framebuffer. Shape changes call {@link XServer#markScreenDirty()} so
- *       the framebuffer is at least repainted, but the corners are not clipped out of it yet.
+ *       {@code QueryExtents} and {@code GetRectangles}, and applied to the window's pixels: both are
+ *       handed to the window ({@code XWindow.setBoundingShape}/{@code setClipShape}) and consulted
+ *       by its region code. The bounding shape is a subtraction from the window (its corners are not
+ *       part of it, go back to whatever is underneath, and clip the children too); the clip shape
+ *       leaves the window's footprint alone and says which part of it is contents - drawing is
+ *       clipped to it, and the band between it and the bounding region is the window's <b>border</b>,
+ *       painted in the border colour. That band is oclock's bezel.
  * </ul>
  *
  * <p>The state lives in a {@link WeakHashMap} keyed by window because {@code XWindow} has no shape
@@ -176,17 +177,25 @@ public final class ShapeExtension implements Extension {
     }
 
     /**
-     * Hands a window's bounding shape to the window itself, as rectangles in its own coordinates.
+     * Hands a window's bounding and clip shapes to the window itself, as rectangles in its own
+     * coordinates. The window cannot ask the extension from the drawing path (that runs once per
+     * request and has no server), so every shape change keeps the two copies in step.
      *
-     * <p>Nothing to hand over when the shape is unset - which is the common case and the reason the
+     * <p>Nothing to hand over when a shape is unset - which is the common case and the reason the
      * window's field is null there rather than "the whole rectangle": a null is a reference test per
      * request, an all-covering rectangle list is an intersection per request.
      */
-    private void pushBoundingShape(XWindow window) {
-        ShapeState.Shape shape = stateIfPresent(window) == null
-                ? null : state(window).shape(ShapeState.BOUNDING);
-        window.setBoundingShape(shape == null || !shape.isSet()
-                ? null : shape.absoluteRectangles());
+    private void pushShapes(XWindow window) {
+        ShapeState state = stateIfPresent(window);
+        if (state == null) {
+            window.setBoundingShape(null);
+            window.setClipShape(null);
+            return;
+        }
+        ShapeState.Shape bounding = state.shape(ShapeState.BOUNDING);
+        window.setBoundingShape(bounding.isSet() ? bounding.absoluteRectangles() : null);
+        ShapeState.Shape clip = state.shape(ShapeState.CLIP);
+        window.setClipShape(clip.isSet() ? clip.absoluteRectangles() : null);
     }
 
     /** Whether a window relative point reaches the window through its shape. */
@@ -554,15 +563,27 @@ public final class ShapeExtension implements Extension {
     /** A shape changed: repaint, and notify the clients that asked for shape events. */
     private void changed(XServer server, XWindow window, int kind) {
         if (kind == ShapeState.BOUNDING) {
-            // The window carries its own bounding region, and the region code reads it per drawing
-            // request: keep the two in step, and repaint what the change took away or added.
+            // A bounding shape changes what the window occupies, so it owes the two halves a move
+            // owes: the area it stopped showing goes back to whatever is underneath, and the area
+            // it started showing has to be painted and drawn by the client. The window carries its
+            // own region, and the region code reads it per drawing request: keep the two in step
+            // before asking for the before/after difference.
             List<Rectangle> before = window.coveredRegion();
-            pushBoundingShape(window);
+            pushShapes(window);
             List<Rectangle> after = window.coveredRegion();
             server.windows().shapeChanged(window, ShapeState.subtract(before, after),
                     ShapeState.subtract(after, before));
+        } else if (kind == ShapeState.CLIP) {
+            // A clip shape leaves the window's footprint alone and only moves the line between its
+            // contents and its border: content that became border is painted with the border, and
+            // content that became visible again is painted and exposed. Nothing goes back to the
+            // windows underneath, which is what `visibleRegion` - the contents - measures.
+            List<Rectangle> before = window.visibleRegion();
+            pushShapes(window);
+            List<Rectangle> after = window.visibleRegion();
+            server.windows().clipShapeChanged(window, ShapeState.subtract(after, before));
         } else {
-            pushBoundingShape(window);
+            pushShapes(window);
         }
         server.markScreenDirty(window);
         Set<ClientConnection> clients;

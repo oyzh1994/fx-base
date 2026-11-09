@@ -38,7 +38,11 @@ class ShapeClippingTest {
     private static final int FILL = 0x00FF00;
     private static final int BACKGROUND = Screen.DEFAULT_BACKGROUND_ARGB & 0xFFFFFF;
 
+    /** The colour a window's border starts with, which is what a shaped band is painted in. */
+    private static final int BORDER = Screen.DEFAULT_BORDER_ARGB & 0xFFFFFF;
+
     private static final int KIND_BOUNDING = 0;
+    private static final int KIND_CLIP = 1;
 
     private static XServer server;
 
@@ -69,8 +73,13 @@ class ShapeClippingTest {
      * shape handling, and that test is the one that would catch it coming back.
      */
     private static void shape(int windowId, Rectangle rectangle) {
+        shape(windowId, KIND_BOUNDING, rectangle);
+    }
+
+    /** The same for either kind of shape: the clip shape is a mask on what shows, not a move. */
+    private static void shape(int windowId, int kind, Rectangle rectangle) {
         XWindow window = (XWindow) server.resources().get(windowId);
-        new ShapeExtension().setShape(server, window, KIND_BOUNDING, List.of(rectangle), 0, 0);
+        new ShapeExtension().setShape(server, window, kind, List.of(rectangle), 0, 0);
     }
 
     /**
@@ -257,6 +266,97 @@ class ShapeClippingTest {
                     "the corner the shape took away goes back to what is underneath");
             assertEquals(FILL, screen.framebuffer().pixel(315, 115) & 0xFFFFFF,
                     "and what is still inside the shape keeps the client's paint");
+        }
+    }
+
+    @Test
+    void theClipShapeCutsTheWindowBackWithoutMovingIt() throws IOException {
+        try (RawXClient client = RawXClient.connect(DISPLAY)) {
+            int window = client.allocateId();
+            int gc = client.allocateId();
+            client.createWindow(window, client.root(), 1200, 100, 40, 40);
+            client.mapWindow(window);
+            sync(client, window);
+            client.createGC(gc, client.root(), FILL);
+
+            // Painted unclipped, so the whole window is the client's paint to begin with.
+            client.fillRectangle(window, gc, 0, 0, 40, 40);
+            sync(client, window);
+            Screen screen = server.screen();
+            assertEquals(FILL, screen.framebuffer().pixel(1202, 102) & 0xFFFFFF,
+                    "an unclipped window takes the paint everywhere");
+
+            // The clip shape does not move the window: it says which part of it is contents. The
+            // band it cut away is the window's border - the Shape extension defines it as the area
+            // between the bounding region and the clip - so it is painted in the border colour,
+            // not handed back to what is underneath. That band is exactly oclock's bezel.
+            shape(window, KIND_CLIP, new Rectangle(10, 10, 10, 10));
+            sync(client, window);
+
+            assertEquals(BORDER, screen.framebuffer().pixel(1202, 102) & 0xFFFFFF,
+                    "the band the clip cut away is the window's border");
+            assertEquals(FILL, screen.framebuffer().pixel(1215, 115) & 0xFFFFFF,
+                    "and what the clip still shows keeps the client's paint");
+        }
+    }
+
+    /**
+     * A clip shape already in place when the window is mapped: what a toolkit sets while realizing a
+     * shaped widget, and what oclock does with its face. Nothing of the window may be painted outside
+     * it, background included.
+     */
+    @Test
+    void aClippedWindowIsNotPaintedOutsideItsClipShape() throws IOException {
+        try (RawXClient client = RawXClient.connect(DISPLAY)) {
+            int window = client.allocateId();
+            int gc = client.allocateId();
+            client.createWindow(window, client.root(), 1000, 300, 40, 40);
+            sync(client, window);
+            shape(window, KIND_CLIP, new Rectangle(10, 10, 10, 10));
+            client.mapWindow(window);
+            client.createGC(gc, client.root(), FILL);
+
+            client.fillRectangle(window, gc, 0, 0, 40, 40);
+            sync(client, window);
+
+            Screen screen = server.screen();
+            assertEquals(FILL, screen.framebuffer().pixel(1015, 315) & 0xFFFFFF,
+                    "a point inside the clip shape is painted");
+            assertEquals(BORDER, screen.framebuffer().pixel(1002, 302) & 0xFFFFFF,
+                    "and the band outside it is the border");
+        }
+    }
+
+    /**
+     * The oclock arrangement: a widget whose clip leaves a bezel band inside its own rectangle,
+     * sitting in a shell of a different colour, with the band painted in the widget's border pixel.
+     *
+     * <p>This is the case the clip shape exists for in oclock: its 120x120 clock widget carries a
+     * clip circle of 108 and no bounding shape, so the six pixel band between the rectangle and the
+     * circle is the black bezel around the white face. Painting that band with the background
+     * instead left the clock a plain white disc, which is what a reference server does not show.
+     */
+    @Test
+    void aClippedWidgetPaintsItsBezelInTheBorderColour() throws IOException {
+        try (RawXClient client = RawXClient.connect(DISPLAY)) {
+            int shell = client.allocateId();
+            int widget = client.allocateId();
+            client.createWindow(shell, client.root(), 1000, 500, 60, 60, 0xFFFFFF);
+            client.mapWindow(shell);
+            sync(client, shell);
+            client.createWindow(widget, shell, 0, 0, 60, 60, 0xFFFFFF);
+            sync(client, widget);
+            XWindow window = (XWindow) server.resources().get(widget);
+            window.setBorderPixel(0xFF000000);
+            shape(widget, KIND_CLIP, new Rectangle(10, 10, 40, 40));
+            client.mapWindow(widget);
+            sync(client, widget);
+
+            Screen screen = server.screen();
+            assertEquals(0x000000, screen.framebuffer().pixel(1002, 502) & 0xFFFFFF,
+                    "the band between the widget's rectangle and its clip is its black border");
+            assertEquals(0xFFFFFF, screen.framebuffer().pixel(1030, 530) & 0xFFFFFF,
+                    "and the face inside the clip is the widget's background");
         }
     }
 

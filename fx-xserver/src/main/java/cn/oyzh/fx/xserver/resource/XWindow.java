@@ -97,15 +97,25 @@ public final class XWindow extends XResource {
     private boolean transparentUntilDrawn;
 
     /**
-     * The two gravities, whose default is X's own: {@code NorthWest} (1) for both. It matters that
-     * the default is measured rather than assumed - {@code bitGravity} was stored as 0, which is
-     * {@code Forget}, and a window resized under {@code Forget} **throws its contents away**: every
-     * window in the server would have lost its pixels on its first resize. Measured against a
-     * reference server 2026-09-26 with {@code GetWindowAttributes} on a freshly created window:
-     * {@code bit_gravity} answers 1 there and answered 0 here.
+     * The two gravities. X's defaults are not the same for the two: {@code bit_gravity} starts as
+     * {@code ForgetGravity} (0) and {@code win_gravity} as {@code NorthWest} (1), which is what
+     * {@code CreateWindow}'s own description says and what a reference answers for a window whose
+     * client did not name one.
+     *
+     * <p>{@code bit_gravity} was once stored as {@code NorthWest} here on the strength of a
+     * measurement against a reference that had in fact asked for it - and that default is not a
+     * cosmetic difference: a window resized under {@code NorthWest} keeps its old pixels (the server
+     * shifts them) and only the newly exposed strip is painted with the background, so a client that
+     * repaints only what it is told to draw leaves the old content behind. oclock's clock widget is
+     * exactly such a client and does not name a gravity: with the wrong default, every intermediate
+     * size of a live resize left its hands drawn at the previous scale, and a stretched clock
+     * accumulated them into a black smear across the face. Measured 2026-11-09 with
+     * {@code xtrace}: {@code oclock}'s shell sends {@code bit-gravity=NorthWest} explicitly and its
+     * clock widget sends no gravity at all, and Xvfb's {@code GetWindowAttributes} answers
+     * {@code ForgetGravity} for that widget.
      */
-    private int bitGravity = 1;
-    /** {@code winGravity}'s default is the same number; see {@link #bitGravity}. */
+    private int bitGravity = 0;
+    /** {@code win_gravity}'s default is {@code NorthWest}; see {@link #bitGravity}. */
     private int winGravity = 1;
 
     /** Background: either a pixel or a pixmap; {@code backgroundIsPixmap} says which. */
@@ -150,6 +160,18 @@ public final class XWindow extends XResource {
      */
     private List<Rectangle> boundingShape;
 
+    /**
+     * The window's clip shape as rectangles in window coordinates, or null when it has none.
+     *
+     * <p>The clip shape does not change what the window occupies - the bounding shape does that - it
+     * changes which part of it is <em>contents</em>: drawing is clipped to it, and the band between
+     * the window's bounding region and the clip is the window's <b>border</b>, painted in the border
+     * colour. That is what oclock's bezel is made of: its clock widget carries a bounding of its own
+     * 120x120 rectangle and a clip circle of 108, and the six pixel band between them is painted with
+     * the widget's border pixel.
+     */
+    private List<Rectangle> clipShape;
+
     /** The window's bounding shape in window coordinates, or null when it has none. */
     public List<Rectangle> boundingShape() {
         return boundingShape;
@@ -157,6 +179,15 @@ public final class XWindow extends XResource {
 
     public void setBoundingShape(List<Rectangle> shape) {
         this.boundingShape = shape == null || shape.isEmpty() ? null : List.copyOf(shape);
+    }
+
+    /** The window's clip shape in window coordinates, or null when it has none. */
+    public List<Rectangle> clipShape() {
+        return clipShape;
+    }
+
+    public void setClipShape(List<Rectangle> shape) {
+        this.clipShape = shape == null || shape.isEmpty() ? null : List.copyOf(shape);
     }
 
     private boolean redirectToParent;
@@ -736,9 +767,37 @@ public final class XWindow extends XResource {
         return visibleRegion(clipRect());
     }
 
-    /** {@link #visibleRegion()} for the border, which lives outside the window's inner rectangle. */
+    /**
+     * The area the window's outer boundary may occupy, in screen coordinates: its bounding shape
+     * when it has one, otherwise its rectangle including its {@code border_width} frame, clipped by
+     * its ancestors and by the windows stacked above it.
+     *
+     * <p>This is deliberately <em>not</em> clipped by the window's own clip shape: the clip shape
+     * says which part of that area is contents, and the difference between this region and
+     * {@link #visibleRegion()} is the border (see {@link #borderRegion()}).
+     */
     public List<Rectangle> outerVisibleRegion() {
-        return visibleRegion(outerClipRect());
+        return visibleRegion(outerClipRect(), false, false, false);
+    }
+
+    /**
+     * The area the window's border is painted in, in screen coordinates: its bounding region (its
+     * own rectangle when it has no bounding shape) minus its contents (its clip shape when it has
+     * one, otherwise the window's inner rectangle), clipped by its ancestors and by the windows
+     * stacked above it.
+     *
+     * <p>This is how the SHAPE extension defines a border, and it is not the same thing as the
+     * {@code border_width} frame: a window with no border width at all still has one once a clip
+     * shape is set, which is what oclock's black bezel is (its clock widget carries the clip circle
+     * and no bounding shape, so the band between the widget's rectangle and that circle is its
+     * border).
+     */
+    public List<Rectangle> borderRegion() {
+        List<Rectangle> outer = outerVisibleRegion();
+        if (outer.isEmpty()) {
+            return outer;
+        }
+        return ShapeState.subtract(outer, visibleRegion());
     }
 
     /**
@@ -751,13 +810,22 @@ public final class XWindow extends XResource {
      * frame has no visible region of its own at all, so an unmap that gives back "what the window
      * showed" computed that way gives back nothing - and the dialog's picture stays on the screen
      * after its window has gone. A moved or resized window is the same story.
+     *
+     * <p>The clip shape is deliberately not taken out here: the band it leaves is the window's
+     * border, which is still the window's own pixels, so the window still covers it and what is
+     * underneath has nothing to repaint there.
      */
     public List<Rectangle> coveredRegion() {
-        return visibleRegion(outerClipRect(), true, false);
+        return visibleRegion(outerClipRect(), true, false, false);
     }
 
     private List<Rectangle> visibleRegion(Rectangle clip) {
-        return visibleRegion(clip, false, false);
+        return visibleRegion(clip, false, false, true);
+    }
+
+    private List<Rectangle> visibleRegion(Rectangle clip, boolean includeChildren,
+                                          boolean ignoreObscuring) {
+        return visibleRegion(clip, includeChildren, ignoreObscuring, true);
     }
 
     /**
@@ -831,6 +899,13 @@ public final class XWindow extends XResource {
                     && !ShapeState.containsPoint(child.boundingShape(), childX, childY)) {
                 continue;
             }
+            if (child.clipShape() != null
+                    && !ShapeState.containsPoint(child.clipShape(), childX, childY)) {
+                // Outside the clip shape the child shows its border, not its contents: the band is
+                // painted by the server (see borderRegion), so that is what reading through the
+                // child has to answer.
+                return child.borderPixel();
+            }
             int deeper = child.pixelFromInferiors(childX, childY);
             if (deeper != NO_CHILD_PIXEL) {
                 return deeper;
@@ -851,9 +926,12 @@ public final class XWindow extends XResource {
      *                        its children are painted inside it, so they are part of what it shows
      *                        and must be given back when it goes away, while they are not part of
      *                        its own drawing surface - which stops at the child's rectangle.
+     * @param ownClip true to clip this window to its own clip shape (what its contents are), false
+     *                for its border region, which is defined as the area outside that clip. An
+     *                ancestor's clip always applies: a child is drawn inside its parent's contents.
      */
     private List<Rectangle> visibleRegion(Rectangle clip, boolean includeChildren,
-                                          boolean ignoreObscuring) {
+                                          boolean ignoreObscuring, boolean ownClip) {
         if (clip.isEmpty()) {
             return List.of();
         }
@@ -866,6 +944,16 @@ public final class XWindow extends XResource {
                 // The shape takes pixels away, at every level: the window's own corners are not
                 // part of it, and neither is the part of a child that falls outside its parent's.
                 region = ShapeState.intersect(region, ShapeState.translate(window.boundingShape(),
+                        window.absoluteX(), window.absoluteY()));
+                if (region.isEmpty()) {
+                    return region;
+                }
+            }
+            if (window.clipShape() != null && (window != this || ownClip)) {
+                // The clip shape says which part of the window is contents: drawing is clipped to
+                // it, and the band it leaves inside the window is the border. An ancestor's clip
+                // applies to a child too - a child is drawn inside its parent's contents.
+                region = ShapeState.intersect(region, ShapeState.translate(window.clipShape(),
                         window.absoluteX(), window.absoluteY()));
                 if (region.isEmpty()) {
                     return region;
@@ -924,6 +1012,10 @@ public final class XWindow extends XResource {
         // no longer has are the screen underneath's again. A window whose corners kept being
         // subtracted would never be asked to paint them, and they would stay whatever the covered
         // window left there.
+        //
+        // The clip shape is deliberately not used here: the band it leaves is the window's border,
+        // which the window paints itself, so the window still covers it and what is underneath has
+        // nothing to restore there.
         List<Rectangle> shape = above.boundingShape();
         return ShapeState.subtract(region, shape == null
                 ? List.of(above.absoluteBoundsWithBorder())

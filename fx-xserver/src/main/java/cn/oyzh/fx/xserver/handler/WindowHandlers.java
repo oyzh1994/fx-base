@@ -839,8 +839,12 @@ public final class WindowHandlers {
         Rectangle windowRect = window.absoluteBounds();
         int gravity = window.bitGravity();
         if (gravity == FORGET_GRAVITY) {
+            // Forget throws the old contents away, which for a window that keeps its own pixels
+            // means clearing the whole store rather than only the strip the resize gained. The
+            // Expose is *not* sent here: the resize path above already sent the whole new window
+            // as one Expose (that is what a reference sends for a Forget window), and a second one
+            // for the same resize is a series a toolkit would treat as two separate repaints.
             paintBackground(window, windowRect);
-            deliverExpose(window, windowRect);
             JulLog.debug("bit gravity Forget on 0x{}: the contents are thrown away",
                     Integer.toHexString(window.id()));
             return;
@@ -908,8 +912,10 @@ public final class WindowHandlers {
         Rectangle oldBounds = new Rectangle(0, 0, oldWidth, oldHeight);
         Rectangle newBounds = new Rectangle(0, 0, window.width(), window.height());
         if (gravity == FORGET_GRAVITY) {
+            // The store is cleared, not shifted, and the Expose for it was already sent by the
+            // resize path (one whole new window, as a reference sends); see the screen-pixels
+            // branch above for why a second one must not follow.
             paintBackground(window, window.absoluteBounds());
-            deliverExpose(window, window.absoluteBounds());
             JulLog.debug("bit gravity Forget on 0x{}: the contents are thrown away",
                     Integer.toHexString(window.id()));
             return;
@@ -1361,26 +1367,33 @@ public final class WindowHandlers {
         }
     }
 
+    /**
+     * Paints one piece of a window's border, in screen coordinates: the caller passes a rectangle of
+     * {@link XWindow#borderRegion()}, which is exactly the area the border owns.
+     *
+     * <p>A border is not only the {@code border_width} frame. The SHAPE extension defines it as the
+     * band between the window's bounding region and its clip region, so a window with no border
+     * width at all still has a border once a clip shape is set - oclock's black bezel is exactly
+     * that band, painted with the clock widget's border pixel and six pixels thick.
+     */
     private void paintBorder(XWindow window, Rectangle clip) {
-        int border = window.borderWidth();
-        if (border == 0) {
-            return;
-        }
-        Rectangle outer = window.absoluteBoundsWithBorder().intersection(clip);
+        Rectangle outer = clip.intersection(window.absoluteBoundsWithBorder());
         if (outer.isEmpty()) {
             return;
         }
-        Rectangle inner = window.absoluteBounds();
         Framebuffer framebuffer = window.screen().framebuffer();
-        XPixmap tile = tileOf(window);
-        int colour = window.borderPixel();
-        // Four bands around the inner rectangle.
-        fill(framebuffer, tile, colour, outer.x, outer.y, outer.width, inner.y - outer.y);
-        fill(framebuffer, tile, colour, outer.x, inner.y + inner.height, outer.width,
-                outer.y + outer.height - (inner.y + inner.height));
-        fill(framebuffer, tile, colour, outer.x, inner.y, inner.x - outer.x, inner.height);
-        fill(framebuffer, tile, colour, inner.x + inner.width, inner.y,
-                outer.x + outer.width - (inner.x + inner.width), inner.height);
+        fill(framebuffer, tileOf(window), window.borderPixel(), outer.x, outer.y, outer.width,
+                outer.height);
+    }
+
+    /** Paints every piece of a window's border, which a shape or a reveal can change. */
+    public void paintBorderRegion(XWindow window) {
+        if (!window.isViewable() || window.isInputOnly()) {
+            return;
+        }
+        for (Rectangle edge : window.borderRegion()) {
+            paintBorder(window, edge);
+        }
     }
 
     private XPixmap tileOf(XWindow window) {
@@ -1562,13 +1575,9 @@ public final class WindowHandlers {
         // The windows below keep what they have where this window still covers them, so only the
         // area it stopped covering is redrawn.
         repaintUnder(ShapeState.subtract(before, after), window);
-        // The border comes last: it sits outside the window's content, on top of whatever is below
-        // it, so painting it with the content only let the windows underneath - the root included -
-        // cover it again. Its own visible region is its clip, because the content region stops at
-        // the content rectangle and would leave all four bands zero wide.
-        for (Rectangle edge : window.outerVisibleRegion()) {
-            paintBorder(window, edge);
-        }
+        // The border comes last: it sits on top of the window's content at the shaped edge - the
+        // band a clip shape leaves - so painting it with the content would only let the content win.
+        paintBorderRegion(window);
     }
 
     /** The visible region of a window, or nothing when it is not on screen at all. */
@@ -1621,6 +1630,36 @@ public final class WindowHandlers {
             exposeInferiors(window, gained);
         }
         deliverExpose(window, gained);
+        // The band between the bounding region and the clip region is the border, so it changed
+        // with the shape too: it is painted last, over both the old and the new content.
+        paintBorderRegion(window);
+    }
+
+    /**
+     * A window's <em>clip</em> shape changed: the window still occupies the same area, but the part
+     * of it that is contents changed, and the band that leaves between its bounding region and the
+     * clip belongs to its border.
+     *
+     * <p>The content that the clip gave back is painted and exposed exactly as a bounding shape's
+     * gain is. The content it took away does <b>not</b> go back to whatever is underneath: the
+     * window still covers it, and the border is painted there - which is why this does not go
+     * through {@link #shapeChanged}, whose lost area is handed back with {@code repaintUnder}.
+     *
+     * @param gained the part of the content that is newly inside the clip, in screen coordinates
+     */
+    public void clipShapeChanged(XWindow window, List<Rectangle> gained) {
+        if (!window.isViewable()) {
+            return;
+        }
+        // The border first: it is the band the new clip leaves, and the area that merely stopped
+        // being content is there. The background and expose below then paint over the part that
+        // became content again, which is the other direction of the same change.
+        paintBorderRegion(window);
+        if (!gained.isEmpty()) {
+            paintBackground(window, gained);
+            exposeInferiors(window, gained);
+            deliverExpose(window, gained);
+        }
     }
 
     /**
@@ -1715,15 +1754,13 @@ public final class WindowHandlers {
                 paintBackground(candidate, parts);
                 uncovered.addAll(parts);
             }
-            // The border ring is outside the candidate's content, so it is the area this repaint is
-            // about that says whether any of it needs drawing - and the ring already excludes the
-            // windows above, which have just been painted. Painting an edge again paints the same
-            // pixels, so each edge is painted once however many of the parts touch it.
-            for (Rectangle edge : candidate.outerVisibleRegion()) {
+            // The border is the band the window's shapes leave, and it is repainted wherever the
+            // uncovered area reaches it.
+            for (Rectangle edge : candidate.borderRegion()) {
                 for (Rectangle area : areas) {
-                    if (!edge.intersection(area).isEmpty()) {
-                        paintBorder(candidate, edge);
-                        break;
+                    Rectangle part = edge.intersection(area);
+                    if (!part.isEmpty()) {
+                        paintBorder(candidate, part);
                     }
                 }
             }
