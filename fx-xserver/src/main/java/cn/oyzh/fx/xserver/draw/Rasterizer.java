@@ -1106,6 +1106,43 @@ public final class Rasterizer {
         }
     }
 
+    /**
+     * Fills the background rectangle an {@code ImageText8}/{@code ImageText16} owns before its
+     * glyphs are drawn: the whole run, {@code width} pixels wide and one font ascent plus descent
+     * tall, with the GC's background pixel.
+     *
+     * <p>That fill is the only difference between the image text requests and {@code PolyText8}/
+     * {@code PolyText16}, and it is not decoration: a terminal erases its cursor and repaints a cell
+     * by drawing the character that belongs there with {@code XDrawImageString}, which is a no-op
+     * over a cell whose background was never filled. Measured with xterm against a reference: an
+     * image text request leaves the character's whole cell in the background colour, and without
+     * that here every cursor position xterm ever visited stayed behind as a black block.
+     */
+    public void imageTextBackground(XFont font, int x, int y, int width) {
+        if (font == null || width <= 0) {
+            return;
+        }
+        int top = Math.max(y - font.ascent(), clipY0);
+        int bottom = Math.min(y + font.descent(), clipY1);
+        int left = Math.max(x, clipX0);
+        int right = Math.min(x + width, clipX1);
+        if (left >= right || top >= bottom) {
+            return;
+        }
+        if (solidCopy && simpleClip) {
+            // The common case: an opaque background with no clip of its own is one block fill, and
+            // a terminal repaints a whole line of cells per cursor move.
+            markDrawn(left, top, right - 1, bottom - 1);
+            store.fillRect(left, top, right - left, bottom - top, background);
+            return;
+        }
+        for (int py = top; py < bottom; py++) {
+            for (int px = left; px < right; px++) {
+                writePixel(px, py, background);
+            }
+        }
+    }
+
     /** Draws {@code length} 16 bit characters, the {@code PolyText16} mapping. */
     public void drawText16(XFont font, int x, int y, char[] chars, int offset, int length) {
         if (font == null) {

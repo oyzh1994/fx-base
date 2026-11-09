@@ -77,6 +77,39 @@ class DrawTextTest {
         }
     }
 
+    /**
+     * {@code ImageText8} fills the characters' cells with the GC's background; {@code PolyText8}
+     * draws only the ink.
+     *
+     * <p>That fill is a request's whole difference and a terminal depends on it: xterm erases the
+     * cursor and repaints a cell by drawing the character that belongs there with
+     * {@code XDrawImageString}, so without the background the old cursor block is never cleared.
+     * Measured with xterm against a reference: every cursor position it visited stayed behind as a
+     * black square.
+     */
+    @Test
+    void imageTextPaintsTheCharacterCellsWithTheBackground() throws Exception {
+        try (RawXClient client = RawXClient.connect(DISPLAY)) {
+            int window = client.allocateId();
+            client.createWindow(window, client.root(), 0, 0, 60, 40, 0x00FF00);
+            client.mapWindow(window);
+            int gc = client.allocateId();
+            client.createGC(gc, window, 0x000000);
+            client.changeGC(gc, RawXClient.GCBACKGROUND, 0xFF0000);
+            client.flush();
+            Thread.sleep(150);
+
+            // A space has no ink, so the whole of its cell is background: the fill is the only
+            // thing that can put the red there.
+            client.imageText8(window, gc, 10, 20, new byte[]{' '}, 0, 1);
+            client.flush();
+            client.geometry(window);                    // a fence
+
+            assertEquals(0xFF0000, client.pixelAt(window, 12, 15) & 0xFFFFFF,
+                    "the character's cell is the GC background colour");
+        }
+    }
+
     /** The same boundary for {@code ImageText16}, whose string is two bytes per character. */
     @Test
     void aLongWideStringIsAccepted() throws Exception {

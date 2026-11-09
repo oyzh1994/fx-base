@@ -54,6 +54,29 @@ class BitmapFontTest {
         }
     }
 
+    /**
+     * A name that differs from a table's only in its charset is that font.
+     *
+     * <p>This is how xterm asks for its font under UTF-8: the very same 6x13 bitmap as
+     * {@code fixed}, spelled with {@code iso10646-1} instead of {@code iso8859-1}. Without the
+     * table's answer the name fell back to the Java approximation, which is not fixed pitch - so
+     * xterm laid text out with {@code QueryFont}'s maximum width while this server advanced each
+     * glyph by its own, and the text drifted inside every line.
+     */
+    @Test
+    void aNameThatDiffersOnlyInItsCharsetIsTheSameFont() throws Exception {
+        try (RawXClient client = RawXClient.connect(DISPLAY)) {
+            int font = client.allocateId();
+            client.openFont(font,
+                    "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1");
+            byte[] reply = client.queryFont(font);
+
+            assertEquals(11, (short) RawXClient.readShort(reply, 52), "font ascent");
+            assertEquals(2, (short) RawXClient.readShort(reply, 54), "font descent");
+            assertEquals("lb=2 rb=6 width=6 asc=11 desc=2", metric(reply, 24), "max-bounds");
+        }
+    }
+
     /** {@code QueryFont} of a font with a table: the reference's bounds, ascent and metrics. */
     @Test
     void aFontWithATableAnswersWithTheReferencesMetrics() throws Exception {
@@ -128,6 +151,10 @@ class BitmapFontTest {
             int gc = client.allocateId();
             client.createGC(gc, window, WHITE);
             client.changeGC(gc, RawXClient.GCFONT, font);
+            // ImageText8 fills the cells with the GC background before the glyphs, so it has to be
+            // the window's black or the white glyph is drawn on white (a reference server fills the
+            // same way; the default background is the white pixel).
+            client.changeGC(gc, RawXClient.GCBACKGROUND, BLACK);
             byte[] text = "Hi".getBytes(java.nio.charset.StandardCharsets.ISO_8859_1);
             client.imageText8(window, gc, 0, BASELINE, text, 0, text.length);
             client.flush();

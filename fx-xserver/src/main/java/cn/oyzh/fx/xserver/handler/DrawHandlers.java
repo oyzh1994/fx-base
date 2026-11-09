@@ -442,6 +442,9 @@ public final class DrawHandlers {
         Target target = target(drawable, gc);
         byte[] chars = r.getString();
         XFont font = gc.font() != null ? gc.font() : defaultFont(client);
+        int width = font.stringWidth8(chars, 0, chars.length);
+        target.rasterizer().imageTextBackground(font, target.x(r.getX()), target.y(r.getY()),
+                width);
         target.rasterizer().drawText8(font, target.x(r.getX()), target.y(r.getY()), chars, 0,
                 chars.length);
         afterDrawing(client, gc, drawable, target, 0);
@@ -458,6 +461,9 @@ public final class DrawHandlers {
                     | (source.get(i).getByte2() & 0xFF));
         }
         XFont font = gc.font() != null ? gc.font() : defaultFont(client);
+        int width = font.stringWidth16(chars, 0, chars.length);
+        target.rasterizer().imageTextBackground(font, target.x(r.getX()), target.y(r.getY()),
+                width);
         target.rasterizer().drawText16(font, target.x(r.getX()), target.y(r.getY()), chars, 0,
                 chars.length);
         afterDrawing(client, gc, drawable, target, 0);

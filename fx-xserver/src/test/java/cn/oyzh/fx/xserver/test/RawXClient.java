@@ -1017,6 +1017,9 @@ public final class RawXClient implements AutoCloseable {
     /** {@code GCForeground}. */
     public static final int GCFOREGROUND = 0x4;
 
+    /** {@code GCBackground}, the colour image text fills the characters' cells with. */
+    public static final int GCBACKGROUND = 0x8;
+
     /** ImageText8: a Latin-1 string drawn with the GC's font at a baseline origin. */
     public void imageText8(int drawable, int gc, int x, int y, byte[] text, int offset, int length)
             throws IOException {

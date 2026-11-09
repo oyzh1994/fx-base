@@ -2047,6 +2047,20 @@ public final class BitmapFont {
             return exact;
         }
         if (key.indexOf('*') < 0 && key.indexOf('?') < 0) {
+            // **The same font under another charset is the same font.** The tables carry the
+            // ISO8859-1 spellings; a client that wants UTF-8 asks for the ISO10646-1 name of the
+            // very same bitmap (xterm does: its text GC is created with
+            // "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1"), and that name
+            // was falling through to the Java approximation. The fallback is not fixed pitch even
+            // when the name asks for one, so the client laid text out with QueryFont's max width
+            // (13 here) while the server advanced by each glyph's own width - the text drifted
+            // within a line and the terminal's cursor no longer sat where the client put it. Two
+            // fonts that differ only in the charset fields name the same shapes and the same
+            // metrics, so the table's answer is the right one.
+            Font sameShapes = withoutCharset(key);
+            if (sameShapes != null) {
+                return sameShapes;
+            }
             return null;
         }
         // The tables own five fonts, so the first of them a pattern matches is the answer - in a
@@ -2057,6 +2071,41 @@ public final class BitmapFont {
             }
         }
         return null;
+    }
+
+    /**
+     * The table font whose XLFD differs from {@code name} only in its charset fields, or null. Both
+     * names must be complete fourteen field XLFDs, which is what a client that opens a font by name
+     * sends; a name that is not one has no charset to ignore.
+     */
+    private static Font withoutCharset(String name) {
+        String bare = fieldsWithoutCharset(name);
+        if (bare == null) {
+            return null;
+        }
+        for (Font font : java.util.List.of(FIXED, FONT_7X13, FONT_9X15, FONT_10X20, FONT_12X24)) {
+            String other = fieldsWithoutCharset(font.xlfd().toLowerCase(java.util.Locale.ROOT));
+            if (bare.equals(other)) {
+                return font;
+            }
+        }
+        return null;
+    }
+
+    /** An XLFD without its last two fields (registry and encoding), or null when it is not one. */
+    private static String fieldsWithoutCharset(String name) {
+        if (!name.startsWith("-")) {
+            return null;
+        }
+        int last = name.lastIndexOf('-');
+        if (last <= 0) {
+            return null;
+        }
+        int secondLast = name.lastIndexOf('-', last - 1);
+        if (secondLast <= 0) {
+            return null;
+        }
+        return name.substring(0, secondLast);
     }
 
     /** Whether a font name matches an X font pattern: {@code *} is any run, {@code ?} exactly one. */

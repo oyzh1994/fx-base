@@ -58,6 +58,7 @@ import com.github.moaxcp.x11.protocol.xproto.StoreColors;
 import com.github.moaxcp.x11.protocol.xproto.StoreNamedColor;
 import com.github.moaxcp.x11.protocol.xproto.Str;
 import com.github.moaxcp.x11.protocol.xproto.UninstallColormap;
+import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.xserver.XServer;
 import cn.oyzh.fx.xserver.client.ClientConnection;
 import cn.oyzh.fx.xserver.client.ProtocolException;
@@ -86,10 +87,11 @@ import java.util.Map;
  * existing one. Everything they hand out is then consumed by the drawing requests, which live in
  * their own handler; nothing here touches the framebuffer.
  *
- * <p>Two deliberate simplifications run through the class. Fonts are Java fonts keyed by their X
- * name rather than rasterized X font files, and the colour database is the small built-in table
- * below rather than {@code rgb.txt}. Both are documented where they are used so a client that
- * depends on the missing fidelity is easy to spot.
+ * <p>Two simplifications used to run through the class: fonts were Java fonts keyed by their X
+ * name, and the colour database was a small built-in table rather than {@code rgb.txt}. Fonts now
+ * come from tables captured off a reference server (with the Java font left as the fallback for a
+ * name no table has), and colours from the reference's own {@code rgb.txt} bundled with the jar.
+ * Both are documented where they are used.
  */
 public final class ResourceHandlers {
 
@@ -149,10 +151,19 @@ public final class ResourceHandlers {
     }
 
     /**
-     * The colour database, as 0xRRGGBB. This is a curated subset of {@code rgb.txt}: the names
-     * every toolkit actually looks up, plus the full {@code gray}/{@code grey} ramp generated
-     * below. Names outside it, and the {@code #rgb} forms, are handled by
-     * {@link #lookupColorName(String)}.
+     * The colour database, as 0xRRGGBB: the reference server's own {@code rgb.txt}, bundled with
+     * this server, plus a small curated fallback for the few names it may miss.
+     *
+     * <p>The full database is not a nicety. xterm builds its ANSI palette from <b>names</b> such as
+     * {@code green3}, {@code cyan3} and {@code blue2} through {@code LookupColor}, and htop paints
+     * its header and F-key bars through those palette entries; a server that knows only {@code green}
+     * and {@code cyan} answers {@code BadName} for the numbered variants, and the bars come out
+     * black. Measured against Xvfb 2026-11-09 with htop: {@code green3} is {@code 0x00cd00} and
+     * {@code cyan3} {@code 0x00cdcd} there, and both were missing here. The file is
+     * {@code X11}'s {@code rgb.txt}, which is also where the reference's answers come from.
+     *
+     * <p>Names are matched case-insensitively with spaces ignored, which is what X's own lookup
+     * does; the {@code #rgb} forms are handled by {@link #lookupColorName(String)}.
      */
     private static final Map<String, Integer> COLOR_NAMES = buildColorNames();
 
@@ -1281,7 +1292,7 @@ public final class ResourceHandlers {
      * @return the colour, or null when the name is not known
      */
     private static Color8 lookupColorName(String name) {
-        String key = name.trim().toLowerCase(Locale.ROOT);
+        String key = colorKey(name);
         if (key.startsWith("#")) {
             return parseHexColor(key);
         }
@@ -1290,6 +1301,29 @@ public final class ResourceHandlers {
             return null;
         }
         return new Color8((packed >> 16) & 0xFF, (packed >> 8) & 0xFF, packed & 0xFF);
+    }
+
+    /**
+     * The form a colour name is stored under: case folded with whitespace removed, because X's
+     * lookup ignores case and spaces ({@code "ghost white"} and {@code "GhostWhite"} are one name,
+     * and so are {@code "gray 50"} and {@code "gray50"}).
+     */
+    private static String colorKey(String name) {
+        StringBuilder key = new StringBuilder(name.length());
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (!Character.isWhitespace(c)) {
+                key.append(Character.toLowerCase(c));
+            }
+        }
+        return key.toString();
+    }
+
+    /** The colour a name resolves to, as {@code 0xRRGGBB}, or null - for tests and diagnostics. */
+    static Integer colorForName(String name) {
+        Color8 color = lookupColorName(name);
+        return color == null ? null
+                : ((color.red() << 16) | (color.green() << 8) | color.blue());
     }
 
     /** The {@code #rgb} forms, with each channel scaled from 1, 2, 3 or 4 hex digits to 8 bits. */
@@ -1318,80 +1352,83 @@ public final class ResourceHandlers {
 
     private static Map<String, Integer> buildColorNames() {
         Map<String, Integer> names = new HashMap<>();
-        names.put("black", 0x000000);
-        names.put("white", 0xFFFFFF);
-        names.put("red", 0xFF0000);
-        names.put("green", 0x00FF00);
-        names.put("blue", 0x0000FF);
-        names.put("yellow", 0xFFFF00);
-        names.put("cyan", 0x00FFFF);
-        names.put("magenta", 0xFF00FF);
-        names.put("gray", 0xBEBEBE);
-        names.put("grey", 0xBEBEBE);
-        names.put("orange", 0xFFA500);
-        names.put("pink", 0xFFC0CB);
-        names.put("brown", 0xA52A2A);
-        names.put("purple", 0xA020F0);
-        names.put("violet", 0xEE82EE);
-        names.put("navy", 0x000080);
-        names.put("navyblue", 0x000080);
-        names.put("gold", 0xFFD700);
-        names.put("khaki", 0xF0E68C);
-        names.put("salmon", 0xFA8072);
-        names.put("snow", 0xFFFAFA);
-        names.put("ivory", 0xFFFFF0);
-        names.put("beige", 0xF5F5DC);
-        names.put("wheat", 0xF5DEB3);
-        names.put("tan", 0xD2B48C);
-        names.put("coral", 0xFF7F50);
-        names.put("tomato", 0xFF6347);
-        names.put("crimson", 0xDC143C);
-        names.put("firebrick", 0xB22222);
-        names.put("indigo", 0x4B0082);
-        names.put("orchid", 0xDA70D6);
-        names.put("plum", 0xDDA0DD);
-        names.put("thistle", 0xD8BFD8);
-        names.put("peru", 0xCD853F);
-        names.put("sienna", 0xA0522D);
-        names.put("chocolate", 0xD2691E);
-        names.put("seagreen", 0x2E8B57);
-        names.put("forestgreen", 0x228B22);
-        names.put("limegreen", 0x32CD32);
-        names.put("palegreen", 0x98FB98);
-        names.put("springgreen", 0x00FF7F);
-        names.put("yellowgreen", 0x9ACD32);
-        names.put("olivegreen", 0x6B8E23);
-        names.put("goldenrod", 0xDAA520);
-        names.put("indianred", 0xCD5C5C);
-        names.put("mediumblue", 0x0000CD);
-        names.put("royalblue", 0x4169E1);
-        names.put("skyblue", 0x87CEEB);
-        names.put("slateblue", 0x6A5ACD);
-        names.put("steelblue", 0x4682B4);
-        names.put("cadetblue", 0x5F9EA0);
-        names.put("turquoise", 0x40E0D0);
-        names.put("aquamarine", 0x7FFFD4);
-        names.put("lavender", 0xE6E6FA);
-        names.put("bisque", 0xFFE4C4);
-        names.put("peachpuff", 0xFFDAB9);
-        names.put("darkgray", 0xA9A9A9);
-        names.put("darkgrey", 0xA9A9A9);
-        names.put("lightgray", 0xD3D3D3);
-        names.put("lightgrey", 0xD3D3D3);
-        names.put("darkred", 0x8B0000);
-        names.put("darkgreen", 0x006400);
-        names.put("darkblue", 0x00008B);
-        names.put("darkcyan", 0x008B8B);
-        names.put("darkmagenta", 0x8B008B);
-        names.put("darkorange", 0xFF8C00);
-        names.put("darkviolet", 0x9400D3);
-        names.put("maroon", 0xB03060);
+        loadRgbDatabase(names);
+        // The fallback: the file is the reference's database and wins wherever both have a name,
+        // and these keep the server useful if the resource is ever missing from a build.
+        names.putIfAbsent("black", 0x000000);
+        names.putIfAbsent("white", 0xFFFFFF);
+        names.putIfAbsent("red", 0xFF0000);
+        names.putIfAbsent("green", 0x00FF00);
+        names.putIfAbsent("blue", 0x0000FF);
+        names.putIfAbsent("yellow", 0xFFFF00);
+        names.putIfAbsent("cyan", 0x00FFFF);
+        names.putIfAbsent("magenta", 0xFF00FF);
+        names.putIfAbsent("gray", 0xBEBEBE);
+        names.putIfAbsent("grey", 0xBEBEBE);
+        names.putIfAbsent("orange", 0xFFA500);
+        names.putIfAbsent("pink", 0xFFC0CB);
+        names.putIfAbsent("brown", 0xA52A2A);
+        names.putIfAbsent("purple", 0xA020F0);
+        names.putIfAbsent("violet", 0xEE82EE);
+        names.putIfAbsent("navy", 0x000080);
+        names.putIfAbsent("navyblue", 0x000080);
+        names.putIfAbsent("gold", 0xFFD700);
+        names.putIfAbsent("khaki", 0xF0E68C);
+        names.putIfAbsent("salmon", 0xFA8072);
+        names.putIfAbsent("snow", 0xFFFAFA);
+        names.putIfAbsent("ivory", 0xFFFFF0);
+        names.putIfAbsent("beige", 0xF5F5DC);
+        names.putIfAbsent("wheat", 0xF5DEB3);
+        names.putIfAbsent("tan", 0xD2B48C);
+        names.putIfAbsent("coral", 0xFF7F50);
+        names.putIfAbsent("tomato", 0xFF6347);
+        names.putIfAbsent("crimson", 0xDC143C);
+        names.putIfAbsent("firebrick", 0xB22222);
+        names.putIfAbsent("indigo", 0x4B0082);
+        names.putIfAbsent("orchid", 0xDA70D6);
+        names.putIfAbsent("plum", 0xDDA0DD);
+        names.putIfAbsent("thistle", 0xD8BFD8);
+        names.putIfAbsent("peru", 0xCD853F);
+        names.putIfAbsent("sienna", 0xA0522D);
+        names.putIfAbsent("chocolate", 0xD2691E);
+        names.putIfAbsent("seagreen", 0x2E8B57);
+        names.putIfAbsent("forestgreen", 0x228B22);
+        names.putIfAbsent("limegreen", 0x32CD32);
+        names.putIfAbsent("palegreen", 0x98FB98);
+        names.putIfAbsent("springgreen", 0x00FF7F);
+        names.putIfAbsent("yellowgreen", 0x9ACD32);
+        names.putIfAbsent("olivegreen", 0x6B8E23);
+        names.putIfAbsent("goldenrod", 0xDAA520);
+        names.putIfAbsent("indianred", 0xCD5C5C);
+        names.putIfAbsent("mediumblue", 0x0000CD);
+        names.putIfAbsent("royalblue", 0x4169E1);
+        names.putIfAbsent("skyblue", 0x87CEEB);
+        names.putIfAbsent("slateblue", 0x6A5ACD);
+        names.putIfAbsent("steelblue", 0x4682B4);
+        names.putIfAbsent("cadetblue", 0x5F9EA0);
+        names.putIfAbsent("turquoise", 0x40E0D0);
+        names.putIfAbsent("aquamarine", 0x7FFFD4);
+        names.putIfAbsent("lavender", 0xE6E6FA);
+        names.putIfAbsent("bisque", 0xFFE4C4);
+        names.putIfAbsent("peachpuff", 0xFFDAB9);
+        names.putIfAbsent("darkgray", 0xA9A9A9);
+        names.putIfAbsent("darkgrey", 0xA9A9A9);
+        names.putIfAbsent("lightgray", 0xD3D3D3);
+        names.putIfAbsent("lightgrey", 0xD3D3D3);
+        names.putIfAbsent("darkred", 0x8B0000);
+        names.putIfAbsent("darkgreen", 0x006400);
+        names.putIfAbsent("darkblue", 0x00008B);
+        names.putIfAbsent("darkcyan", 0x008B8B);
+        names.putIfAbsent("darkmagenta", 0x8B008B);
+        names.putIfAbsent("darkorange", 0xFF8C00);
+        names.putIfAbsent("darkviolet", 0x9400D3);
+        names.putIfAbsent("maroon", 0xB03060);
         // The X11 grey ramp: grey0 is black, grey100 is white.
         for (int i = 0; i <= 100; i++) {
             int level = (i * 255 + 50) / 100;
             int packed = (level << 16) | (level << 8) | level;
-            names.put("gray" + i, packed);
-            names.put("grey" + i, packed);
+            names.putIfAbsent("gray" + i, packed);
+            names.putIfAbsent("grey" + i, packed);
         }
         // X accepts both spellings of grey everywhere, and clients use both - twm asks for
         // "slategrey", which a table listing only "slategray" would reject with BadName.
@@ -1401,6 +1438,51 @@ public final class ResourceHandlers {
             }
         }
         return Map.copyOf(names);
+    }
+
+    /**
+     * Reads the bundled {@code rgb.txt}: lines of three decimal channels and a name, {@code !}
+     * comments, blank lines. A malformed line is skipped rather than failing the server - a colour
+     * table is not a reason to refuse to start.
+     */
+    private static void loadRgbDatabase(Map<String, Integer> names) {
+        try (java.io.InputStream in = ResourceHandlers.class.getResourceAsStream(
+                "/cn/oyzh/fx/xserver/rgb.txt")) {
+            if (in == null) {
+                JulLog.warn("the bundled rgb.txt is missing: only the curated colour names are known");
+                return;
+            }
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.US_ASCII))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    line = line.trim();
+                    if (line.isEmpty() || line.startsWith("!")) {
+                        continue;
+                    }
+                    // The name is the rest of the line and may contain spaces: only the first
+                    // three fields are the channels.
+                    String[] parts = line.split("\\s+", 4);
+                    if (parts.length < 4) {
+                        continue;
+                    }
+                    try {
+                        int red = Integer.parseInt(parts[0]);
+                        int green = Integer.parseInt(parts[1]);
+                        int blue = Integer.parseInt(parts[2]);
+                        if (red < 0 || red > 255 || green < 0 || green > 255
+                                || blue < 0 || blue > 255) {
+                            continue;
+                        }
+                        names.put(colorKey(parts[3]), (red << 16) | (green << 8) | blue);
+                    } catch (NumberFormatException notAColour) {
+                        // Not a data line; rgb.txt has only comments besides data.
+                    }
+                }
+            }
+        } catch (java.io.IOException e) {
+            JulLog.warn("could not read the bundled rgb.txt: {}", e.getMessage());
+        }
     }
 
     /** An 8 bit per channel colour; the requests carry 16 bit channels. */
