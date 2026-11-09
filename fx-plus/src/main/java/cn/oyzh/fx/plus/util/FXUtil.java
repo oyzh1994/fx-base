@@ -2,6 +2,7 @@ package cn.oyzh.fx.plus.util;
 
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.common.system.OSUtil;
+import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.common.thread.DownLatch;
 import cn.oyzh.common.thread.TaskManager;
 import cn.oyzh.common.util.IOUtil;
@@ -32,8 +33,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -734,5 +737,47 @@ public class FXUtil {
         if (url != null && FXConst.getHostServices() != null) {
             FXConst.getHostServices().showDocument(url);
         }
+    }
+
+    /**
+     * 打开地址
+     *
+     * @param url 地址
+     */
+    public static void open(Path url) {
+        if (url != null) {
+            open(url.toFile());
+        }
+    }
+
+    /**
+     * 打开地址
+     *
+     * @param url 地址
+     */
+    public static void open(File url) {
+        if (url == null) {
+            return;
+        }
+        if (isSupportOpen()) {
+            try {
+                open(url.getPath());
+            } catch (Exception ex) {
+                try {
+                    Desktop.getDesktop().open(url);
+                } catch (Exception ex1) {
+                    JulLog.error("open error", ex1);
+                }
+            }
+        } else {
+            SystemUtil.openFolderViaCommand(url.getPath());
+        }
+    }
+
+    /**
+     * 是否支持打开操作
+     */
+    public static boolean isSupportOpen() {
+        return Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN);
     }
 }
