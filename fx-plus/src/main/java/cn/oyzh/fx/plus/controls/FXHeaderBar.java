@@ -171,4 +171,36 @@ public class FXHeaderBar extends HeaderBar implements NodeAdapter, ThemeAdapter 
         this.setId("headerBar");
         NodeAdapter.super.initNode();
     }
+
+//    @Override
+//    public void onNodeInitialize() {
+//        if (!this.isNodeInitialize()) {
+//            NodeLifeCycle.super.onNodeInitialize();
+//            FXUtil.onWindowReady(this, window -> {
+//                if (window instanceof Stage stage) {
+//                    stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+//                        if (newValue) {
+//                            this.setVisible(false);
+//                            this.setManaged(false);
+//                            Node node = this.nextSibling();
+//                            if (node instanceof FlexAdapter adapter) {
+//                                adapter.setFlexHeight("100%");
+//                                adapter.parentAutosize();
+//                            }
+//                        } else {
+//                            this.setVisible(true);
+//                            this.setManaged(true);
+//                            Node node = this.nextSibling();
+//                            if (node instanceof FlexAdapter adapter) {
+//                                adapter.setFlexHeight("100% - 30");
+//                            }
+//                        }
+//                    });
+//                }
+//
+//            });
+//
+//        }
+//
+//    }
 }

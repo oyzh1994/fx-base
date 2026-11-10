@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -779,5 +780,30 @@ public class FXUtil {
      */
     public static boolean isSupportOpen() {
         return Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN);
+    }
+
+    /**
+     * 窗口就绪事件
+     *
+     * @param node     节点
+     * @param callback 回调
+     */
+    public static void onWindowReady(Node node, Consumer<Window> callback) {
+        // 监听窗口就绪
+        if (getWindow(node) != null) {
+            callback.accept(getWindow(node));
+        } else {
+            node.sceneProperty().subscribe((oldValue1, newValue1) -> {
+                if (getWindow(node) != null) {
+                    callback.accept(getWindow(node));
+                } else {
+                    newValue1.windowProperty().subscribe((oldValue2, newValue2) -> {
+                        if (newValue2 != null) {
+                            callback.accept(newValue2);
+                        }
+                    });
+                }
+            });
+        }
     }
 }

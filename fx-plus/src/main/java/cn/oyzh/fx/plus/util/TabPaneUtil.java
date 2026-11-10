@@ -47,24 +47,8 @@ public class TabPaneUtil {
         if (getWindow(tab) != null) {
             callback.accept(getWindow(tab));
         } else {
-            tab.tabPaneProperty().subscribe((oldValue,newValue) -> {
-                if (newValue != null) {
-                    if (getWindow(tab) != null) {
-                        callback.accept(getWindow(tab));
-                    } else {
-                        newValue.sceneProperty().subscribe((oldValue1,newValue1) -> {
-                            if (getWindow(tab) != null) {
-                                callback.accept(getWindow(tab));
-                            } else {
-                                newValue1.windowProperty().subscribe((oldValue2,newValue2) -> {
-                                    if (newValue2 != null) {
-                                        callback.accept(newValue2);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }
+            tab.tabPaneProperty().subscribe((oldValue, newValue) -> {
+                FXUtil.onWindowReady(newValue, callback);
             });
         }
     }
