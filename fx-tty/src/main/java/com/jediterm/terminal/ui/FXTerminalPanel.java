@@ -233,6 +233,11 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     private volatile boolean myBracketedPasteMode;
     private boolean myUsingAlternateBuffer = false;
     private boolean myFillCharacterBackgroundIncludingLineSpacing;
+
+    /**
+     * 终端默认背景不透明度，用于让窗口背景图透出；文本始终使用不透明前景色
+     */
+    private double backgroundOpacity = 1.0;
     private @Nullable TextStyle myCachedSelectionColor;
     private @Nullable TextStyle myCachedFoundPatternColor;
     private @Nullable TextStyle myCachedHyperlinkColor;
@@ -1141,7 +1146,53 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     public @NotNull javafx.scene.paint.Color getFXBackground() {
-        return FXTransformers.toFxColor(getWindowBackground());
+        return this.applyBackgroundOpacity(FXTransformers.toFxColor(getWindowBackground()));
+    }
+
+    /**
+     * 获取终端默认背景不透明度
+     *
+     * @return 不透明度，1表示完全不透明
+     */
+    public double getBackgroundOpacity() {
+        return this.backgroundOpacity;
+    }
+
+    /**
+     * 设置终端背景不透明度。背景色统一按该透明度绘制，文本前景色保持不透明。
+     *
+     * @param backgroundOpacity 不透明度，范围0-1
+     */
+    public void setBackgroundOpacity(double backgroundOpacity) {
+        double value = Math.max(0, Math.min(1, backgroundOpacity));
+        if (Double.compare(this.backgroundOpacity, value) == 0) {
+            return;
+        }
+        this.backgroundOpacity = value;
+        this.repaint();
+    }
+
+    private @NotNull javafx.scene.paint.Color applyBackgroundOpacity(@NotNull javafx.scene.paint.Color color) {
+        if (this.backgroundOpacity >= 1 || color.getOpacity() <= 0) {
+            return color;
+        }
+        return new javafx.scene.paint.Color(color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity() * this.backgroundOpacity);
+    }
+
+    /**
+     * 是否为终端默认背景。只有默认背景跟随窗口透出，ANSI/选中背景保持不透明。
+     */
+    private boolean isDefaultBackgroundStyle(@NotNull TextStyle style) {
+        if (style.hasOption(TextStyle.Option.INVERSE)) {
+            return false;
+        }
+        TerminalColor background = style.getBackground();
+        if (background == null) {
+            return true;
+        }
+        Color color = FXTransformers.toFxColor(this.toBackground(background));
+        Color window = FXTransformers.toFxColor(this.getWindowBackground());
+        return color.equals(window);
     }
 
     public @NotNull javafx.scene.paint.Color getFXForeground() {
@@ -1153,9 +1204,12 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
 
         setupAntialiasing(gfx);
 
-        gfx.setFill(getFXBackground());
-
-        gfx.fillRect(0, 0, this.getTermWidth(), this.getTermHeight());
+        // 半透明背景时需要先清空上一帧，避免文字和背景叠加产生残影
+        gfx.clearRect(0, 0, this.getTermWidth(), this.getTermHeight());
+        if (this.backgroundOpacity >= 1) {
+            gfx.setFill(getFXBackground());
+            gfx.fillRect(0, 0, this.getTermWidth(), this.getTermHeight());
+        }
         this.fixScrollBarThumbVisibility();
 
         try {
@@ -1683,12 +1737,13 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         double height = Math.min(myCharSize.getHeight() - (includeSpaceBetweenLines ? 0 : mySpaceBetweenLines), getTermHeight() - yCoord);
         double width = Math.min(textLength * this.myCharSize.getWidth(), FXTerminalPanel.this.getTermWidth() - xCoord);
 
+        // 默认背景跟随窗口背景透出，ANSI/选中背景保持不透明，避免 TUI 界面失去色块
         javafx.scene.paint.Color backgroundColor = getEffectiveBackground(style);
+        if (this.isDefaultBackgroundStyle(style)) {
+            backgroundColor = this.applyBackgroundOpacity(backgroundColor);
+        }
         gfx.setFill(backgroundColor);
-        gfx.fillRect(xCoord,
-                yCoord,
-                width,
-                height);
+        gfx.fillRect(xCoord, yCoord, width, height);
 
         if (buf.isNul()) {
             return; // nothing more to do
