@@ -1,15 +1,21 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.common.util.StringUtil;
-import cn.oyzh.fx.plus.controls.label.FXLabel;
 import cn.oyzh.fx.plus.controls.pane.FXPane;
 import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
 import cn.oyzh.fx.plus.node.NodeUtil;
 import cn.oyzh.fx.plus.rich.RichTextFlow;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+
+import java.util.List;
 
 /**
  * 富功能树节点内容盒，展示图标、名称与额外信息
@@ -51,6 +57,7 @@ public class RichTreeItemBox extends FXPane {
         SVGGlyph glyph = value.graphic();
         Color color = value.graphicColor();
         Color extraColor = value.extraColor();
+        List<Color> tagColors = value.tagColors();
         if (this.isChildEmpty()) {
             // 图标
             glyph.setColor(color);
@@ -63,15 +70,8 @@ public class RichTreeItemBox extends FXPane {
             nameNode.setId("name");
             this.addChild(nameNode);
 
-            // 额外信息
-            if (StringUtil.isNotBlank(extra)) {
-                FXLabel extraNode = new FXLabel(extra);
-                extraNode.setId("extra");
-                if (extraColor != null) {
-                    extraNode.setTextFill(extraColor);
-                }
-                this.addChild(extraNode);
-            }
+            // 标签与额外信息
+            this.updateTrailing(tagColors, extra, extraColor);
         } else {
             // 更新图标
             SVGGlyph graphicNode = this.getGraphic();
@@ -104,30 +104,70 @@ public class RichTreeItemBox extends FXPane {
                 nameNode.initTextFlow();
             }
 
-            // 更新额外信息
-            if (StringUtil.isNotBlank(extra)) {
-                FXLabel extraNode = this.getExtra();
-                // 新增
-                if (extraNode == null) {
-                    extraNode = new FXLabel(extra);
-                    if (extraColor != null) {
-                        extraNode.setTextFill(extraColor);
-                    }
-                    this.addChild(extraNode);
-                } else {
-                    // 更新文本
-                    if (StringUtil.notEquals(extra, extraNode.getText())) {
-                        extraNode.setText(extra);
-                    }
-                    // 更新颜色
-                    if (extraNode.getTextFill() != extraColor) {
-                        extraNode.setTextFill(extraColor);
-                    }
-                }
-            } else {
-                this.removeChild(2);
-            }
+            // 更新标签与额外信息
+            this.updateTrailing(tagColors, extra, extraColor);
         }
+    }
+
+    private void updateTrailing(List<Color> colors, String extra, Color extraColor) {
+        HBox trailing = this.getTrailing();
+        List<Color> values = colors == null ? List.of() : colors.stream()
+                .filter(color -> color != null)
+                .toList();
+        if (values.isEmpty() && StringUtil.isBlank(extra)) {
+            if (trailing != null) {
+                this.removeChild(trailing);
+            }
+            return;
+        }
+        if (trailing == null) {
+            trailing = new HBox(4);
+            trailing.setId("trailing");
+            trailing.setAlignment(Pos.CENTER_LEFT);
+            trailing.setMouseTransparent(true);
+            trailing.setMinWidth(Region.USE_PREF_SIZE);
+            trailing.setPrefWidth(Region.USE_PREF_SIZE);
+            trailing.setMaxWidth(Region.USE_PREF_SIZE);
+            this.addChild(2, trailing);
+        }
+        List<Node> children = new java.util.ArrayList<>();
+        if (!values.isEmpty()) {
+            double spacing = 6;
+            double diameter = 8.5;
+            Pane tagStrip = new Pane();
+            tagStrip.setId("tags");
+            tagStrip.setMouseTransparent(true);
+            double width = diameter + spacing * (values.size() - 1);
+            tagStrip.setMinWidth(width);
+            tagStrip.setPrefWidth(width);
+            tagStrip.setMaxWidth(width);
+            tagStrip.setMinHeight(diameter);
+            tagStrip.setPrefHeight(diameter);
+            tagStrip.setMaxHeight(diameter);
+
+            List<Circle> tags = new java.util.ArrayList<>();
+            for (int i = 0; i < values.size(); i++) {
+                Circle circle = new Circle(4.25, values.get(i));
+                circle.setStroke(Color.color(0, 0, 0, 0.08));
+                circle.setLayoutX(i * spacing + 4.25);
+                circle.setLayoutY(4.25);
+                tags.add(circle);
+            }
+            // 反向加入渲染层，让第一个标签位于最上层。
+            for (int i = tags.size() - 1; i >= 0; i--) {
+                tagStrip.getChildren().add(tags.get(i));
+            }
+            children.add(tagStrip);
+        }
+        if (StringUtil.isNotBlank(extra)) {
+            Text extraNode = new Text(extra);
+            extraNode.setId("extra");
+            if (extraColor != null) {
+                extraNode.setFill(extraColor);
+            }
+            children.add(extraNode);
+        }
+        trailing.getChildren().setAll(children);
     }
 
     /**
@@ -197,16 +237,20 @@ public class RichTreeItemBox extends FXPane {
      *
      * @return 额外信息节点
      */
-    public FXLabel getExtra() {
-        Node node = this.getChild(2);
-        if (node instanceof FXLabel) {
-            return (FXLabel) node;
-        }
-        node = this.lookup("#extra");
-        if (node instanceof FXLabel) {
-            return (FXLabel) node;
+    public Text getExtra() {
+        Node node = this.lookup("#extra");
+        if (node instanceof Text text) {
+            return text;
         }
         return null;
+    }
+
+    /**
+     * 获取标签节点
+     */
+    public HBox getTrailing() {
+        Node node = this.lookup("#trailing");
+        return node instanceof HBox trailing ? trailing : null;
     }
 
     /**
@@ -216,24 +260,32 @@ public class RichTreeItemBox extends FXPane {
      */
     public void setExtra(Text extra) {
         extra.setId("extra");
-        if (this.getChild(2) instanceof Text) {
-            this.setChild(2, extra);
+        Text current = this.getExtra();
+        HBox trailing = this.getTrailing();
+        if (current != null && trailing != null) {
+            trailing.getChildren().set(trailing.getChildren().indexOf(current), extra);
         } else {
-            this.addChild(2, extra);
+            this.addChild(extra);
         }
     }
 
     @Override
     protected void layoutChildren() {
         double x = 0;
+        double centerY = 0;
         for (Node child : this.getChildren()) {
             child.autosize();
             child.setLayoutX(x);
             if ("graphic".equals(child.getId())) {
-                x += NodeUtil.getWidth(child) + 3;
+                x += NodeUtil.getWidth(child) + 4;
                 child.setLayoutY(2);
             } else if ("name".equals(child.getId())) {
-                x += NodeUtil.getWidth(child) + 3;
+                centerY = NodeUtil.getHeight(child) / 2;
+                child.setLayoutY(0);
+                x += NodeUtil.getWidth(child) + 7;
+            } else if ("trailing".equals(child.getId())) {
+                child.setLayoutY(Math.max(0, centerY - NodeUtil.getHeight(child) / 2));
+                x += NodeUtil.getWidth(child);
             }
         }
         this.setPrefWidth(x + 30);

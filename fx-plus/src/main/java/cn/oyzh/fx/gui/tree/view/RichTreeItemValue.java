@@ -1,7 +1,9 @@
 package cn.oyzh.fx.gui.tree.view;
 
 import cn.oyzh.fx.plus.controls.tree.view.FXTreeItemValue;
+import javafx.scene.paint.Color;
 
+import java.util.List;
 
 /**
  * 富功能树节点值
@@ -48,5 +50,12 @@ public class RichTreeItemValue extends FXTreeItemValue {
      */
     public RichTreeItemValue(RichTreeItem<?> item) {
         super(item);
+    }
+
+    /**
+     * Optional tag colors displayed beside the node name.
+     */
+    public List<Color> tagColors() {
+        return List.of();
     }
 }
