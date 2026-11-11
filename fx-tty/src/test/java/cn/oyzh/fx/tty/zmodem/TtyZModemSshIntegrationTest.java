@@ -428,7 +428,7 @@ public class TtyZModemSshIntegrationTest {
 
         @Override
         protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
-                                                      OutputStream output, Terminal terminal) {
+                                                      OutputStream output, TtyZModemTerminal terminal) {
             Supplier<FileAdapter> receiveSupplier = () -> new CustomFile(this.receiveDir);
             Supplier<List<FileAdapter>> sendSupplier = () -> Collections.singletonList(new CustomFile(this.uploadFile));
             return new TtyZModemProcessor(frame, input, output, terminal, receiveSupplier, sendSupplier) {

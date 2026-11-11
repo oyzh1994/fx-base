@@ -1,6 +1,8 @@
 package cn.oyzh.fx.tty;
 
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.tty.ghostty.TerminalView;
+import cn.oyzh.fx.tty.zmodem.TtyZModemTerminal;
 import cn.oyzh.fx.tty.zmodem.TtyZModemTtyConnector;
 import com.jediterm.core.Color;
 import javafx.scene.input.KeyCode;
@@ -72,7 +74,71 @@ public class TtyTerminalUtil {
      * @return zModem 连接器
      */
     public static TtyZModemTtyConnector createZModemTtyConnector(TtyTermWidget widget, TtyStreamable connector) {
-        return new TtyZModemTtyConnector(widget.getTerminal(), connector);
+        return new TtyZModemTtyConnector(createZModemTerminal(widget), connector);
+    }
+
+    /**
+     * 创建 ZModem 终端效果适配器，根据组件当前使用的引擎路由到 JediTerm 或 Ghostty。
+     *
+     * <p>适配器在真正输出进度时才判断引擎，因此可以在 {@code openSession} 之前创建。</p>
+     *
+     * @param widget tty组件
+     * @return ZModem 终端效果适配器
+     */
+    public static TtyZModemTerminal createZModemTerminal(TtyTermWidget widget) {
+        if (widget == null) {
+            return TtyZModemTerminal.noop();
+        }
+        return new TtyZModemTerminal() {
+            @Override
+            public void nextLine() {
+                TerminalView view = this.ghosttyView();
+                if (view != null) {
+                    view.writeLocalOutput("\r\n");
+                } else if (widget.getTerminal() != null) {
+                    widget.getTerminal().nextLine();
+                }
+            }
+
+            @Override
+            public void saveCursor() {
+                TerminalView view = this.ghosttyView();
+                if (view != null) {
+                    // DECSC
+                    view.writeLocalOutput("\u001B7");
+                } else if (widget.getTerminal() != null) {
+                    widget.getTerminal().saveCursor();
+                }
+            }
+
+            @Override
+            public void writeCharacters(String text) {
+                if (text == null || text.isEmpty()) {
+                    return;
+                }
+                TerminalView view = this.ghosttyView();
+                if (view != null) {
+                    view.writeLocalOutput(text);
+                } else if (widget.getTerminal() != null) {
+                    widget.getTerminal().writeCharacters(text);
+                }
+            }
+
+            @Override
+            public void restoreCursor() {
+                TerminalView view = this.ghosttyView();
+                if (view != null) {
+                    // DECRC
+                    view.writeLocalOutput("\u001B8");
+                } else if (widget.getTerminal() != null) {
+                    widget.getTerminal().restoreCursor();
+                }
+            }
+
+            private TerminalView ghosttyView() {
+                return widget.isGhosttyActive() ? widget.getGhosttyView() : null;
+            }
+        };
     }
 
     /**

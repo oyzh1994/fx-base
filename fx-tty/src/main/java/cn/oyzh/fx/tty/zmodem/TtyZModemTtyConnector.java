@@ -18,15 +18,17 @@ import java.nio.charset.Charset;
 /**
  * ZModem协议tty连接器，读取数据时检测 ZModem 帧并交由处理器执行文件传输。
  *
+ * <p>传输进度的终端效果通过 {@link TtyZModemTerminal} 抽象，支持 JediTerm 与 Ghostty。</p>
+ *
  * @author oyzh
  * @since 2026-07-06
  */
 public class TtyZModemTtyConnector implements TtyConnector {
 
     /**
-     * 终端容器
+     * 终端效果适配器
      */
-    private Terminal terminal;
+    private TtyZModemTerminal terminal;
 
     /**
      * tty连接器
@@ -70,12 +72,24 @@ public class TtyZModemTtyConnector implements TtyConnector {
     /**
      * 构造 ZModem 连接器。
      *
-     * @param terminal  终端对象
+     * @param terminal  终端效果适配器
      * @param connector 被包装的连接器
      */
-    public TtyZModemTtyConnector(Terminal terminal, TtyStreamable connector) {
-        this.terminal = terminal;
+    public TtyZModemTtyConnector(TtyZModemTerminal terminal, TtyStreamable connector) {
+        this.terminal = terminal != null ? terminal : TtyZModemTerminal.noop();
         this.connector = connector;
+    }
+
+    /**
+     * 构造 ZModem 连接器（兼容旧版 JediTerm 终端对象）。
+     *
+     * @param terminal  JediTerm 终端对象
+     * @param connector 被包装的连接器
+     * @deprecated 使用 {@link #TtyZModemTtyConnector(TtyZModemTerminal, TtyStreamable)}
+     */
+    @Deprecated
+    public TtyZModemTtyConnector(Terminal terminal, TtyStreamable connector) {
+        this(TtyZModemTerminal.ofJediTerm(terminal), connector);
     }
 
     @Override
@@ -147,11 +161,26 @@ public class TtyZModemTtyConnector implements TtyConnector {
      * @param frame    ZModem帧数据
      * @param input    输入流
      * @param output   输出流
-     * @param terminal 终端对象
+     * @param terminal 终端效果适配器
      * @return ZModem处理器
      */
-    protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal) {
+    protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input, OutputStream output, TtyZModemTerminal terminal) {
         return new TtyZModemProcessor(frame, input, output, terminal);
+    }
+
+    /**
+     * 创建ZModem处理器（兼容旧版 JediTerm 终端对象）。
+     *
+     * @param frame    ZModem帧数据
+     * @param input    输入流
+     * @param output   输出流
+     * @param terminal JediTerm 终端对象
+     * @return ZModem处理器
+     * @deprecated 使用 {@link #createProcessor(byte[], InputStream, OutputStream, TtyZModemTerminal)}
+     */
+    @Deprecated
+    protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal) {
+        return this.createProcessor(frame, input, output, TtyZModemTerminal.ofJediTerm(terminal));
     }
 
     @Override

@@ -223,3 +223,65 @@ JEXTRACT=/path/to/jextract-25/bin/jextract \
 - 新增 `PtyTerminal` 与 `GhosttyTerminals`，开箱即用地创建本地终端。
 - Shell 集成资源统一放在 `/ghostty/shell`。
 - 测试迁移到本模块，保留原 GhosttyFX 的完整 `TerminalViewTest`。
+
+## 7. easyshell 双引擎接入
+
+`fx-tty` 通过 `TtyTermWidget` 把两套终端引擎统一到同一个组件中：
+
+```
+ShellXxxTermWidget (easyshell, 继承 TtyTermWidget)
+        │
+        ▼
+   TtyTermWidget ── 选择引擎 ──> JediTerm（原实现）
+        │
+        └──────────────────────> Ghostty TerminalView
+                                    ▲
+                        TtyConnectorTerminal
+                                    ▲
+                        TtyConnector（本地/SSH/Telnet/串口/Mosh/RLogin）
+```
+
+- 所有既有后端仍然实现 `TtyConnector`，不需要改造成 Ghostty 专用接口。
+- `TtyConnectorTerminal` 负责把 `TtyConnector` 的字符读写转换成 Ghostty 需要的字节流：
+  - 输出：`read(char[])` → Unicode → UTF-8，交给 libghostty-vt；
+  - 输入：Ghostty 的 UTF-8 按键字节 → Unicode → `write(String)`，由连接器按自身字符集写回；
+  - resize 转发到 `TtyConnector.resize(TermSize)`，复用 SSH/Mosh/Telnet 的远端 PTY 尺寸更新。
+- ZModem 的终端进度通过 `TtyZModemTerminal` 抽象：JediTerm 和 Ghostty 各自实现
+  换行、保存光标、写字符、恢复光标。Ghostty 通过 `TerminalView.writeLocalOutput`
+  把进度直接写入 libghostty-vt 的终端状态，不发送给远端进程，因此两套引擎都能显示
+  ZModem 传输进度。
+
+### 7.1 选择引擎
+
+打开会话前指定（优先级最高）：
+
+```java
+widget.setEngine(TtyTerminalEngine.GHOSTTY);
+widget.openSession(connector);
+```
+
+全局默认（只影响之后打开的会话）：
+
+```java
+TtyTermWidget.setDefaultEngine(TtyTerminalEngine.GHOSTTY);
+// 或 TtyTerminalEngine.setDefaultEngine(...)
+```
+
+也可以通过系统属性启动：
+
+```bash
+java -Dfx.tty.engine=ghostty --enable-native-access=ALL-UNNAMED ...
+```
+
+### 7.2 easyshell 中的使用
+
+easyshell 在“设置 → 终端 → 终端引擎”中提供 `JediTerm / Ghostty` 选择，保存后对新打开的终端生效。
+现有 FXML、控制器、连接器、分屏、标签页结构均不需要改动。
+
+### 7.3 限制
+
+- 已经打开的会话不会在两种引擎之间热切换（两种引擎的屏幕状态无法无损迁移）；
+  切换设置后打开新标签页即可使用新引擎。
+- ZModem 传输进度已支持两套引擎（通过 `TtyZModemTerminal` 抽象）。
+- Ghostty 的快捷键使用其内置方案；easyshell 自定义快捷键的完整映射仍在 JediTerm 上。
+- 终端背景图等 JediTerm 专有视觉特性暂未映射到 Ghostty。

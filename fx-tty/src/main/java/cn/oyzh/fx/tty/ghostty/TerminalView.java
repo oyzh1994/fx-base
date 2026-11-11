@@ -1657,6 +1657,46 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         return true;
     }
 
+    /// Writes local output directly into the terminal emulator without sending it to the backend.
+    ///
+    /// This is useful for host-side effects such as ZModem transfer progress, where the bytes
+    /// must be rendered by the terminal but must not reach the remote process.
+    ///
+    /// @param text the local text or VT sequence to render
+    /// @throws NullPointerException if `text` is `null`
+    public void writeLocalOutput(String text) {
+        Objects.requireNonNull(text, "text");
+        this.writeLocalOutput(text.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /// Writes local output directly into the terminal emulator without sending it to the backend.
+    ///
+    /// Safe to call from any thread; the write is scheduled onto the JavaFX application thread.
+    ///
+    /// @param bytes the local UTF-8/VT bytes to render
+    /// @throws NullPointerException if `bytes` is `null`
+    public void writeLocalOutput(byte[] bytes) {
+        Objects.requireNonNull(bytes, "bytes");
+        if (bytes.length == 0) {
+            return;
+        }
+        if (!Platform.isFxApplicationThread()) {
+            var copy = bytes.clone();
+            Platform.runLater(() -> this.writeLocalOutput(copy));
+            return;
+        }
+        if (!(this.terminalState.get() instanceof TerminalState.Running)) {
+            return;
+        }
+        try {
+            this.terminalSession.writeToTerminal(bytes);
+            this.refreshHover(false);
+            this.redraw();
+        } catch (RuntimeException _) {
+            // 会话正在关闭时忽略本地输出
+        }
+    }
+
     /// Selects all terminal text.
     ///
     /// @return `true`

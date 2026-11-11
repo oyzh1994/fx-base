@@ -15,7 +15,6 @@
  */
 package cn.oyzh.fx.tty;
 
-import cn.oyzh.fx.plus.FXConst;
 import cn.oyzh.fx.plus.util.FXUtil;
 import com.jediterm.terminal.model.hyperlinks.HyperlinkFilter;
 import com.jediterm.terminal.model.hyperlinks.LinkInfo;

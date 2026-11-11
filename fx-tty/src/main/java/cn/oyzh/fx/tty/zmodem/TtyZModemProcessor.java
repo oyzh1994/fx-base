@@ -32,6 +32,8 @@ import java.util.function.Supplier;
 /**
  * ZModem处理器，负责接收（sz）或发送（rz）文件，并在终端上刷新传输进度。
  *
+ * <p>刷新进度只依赖 {@link TtyZModemTerminal}，不直接依赖 JediTerm 或 Ghostty。</p>
+ *
  * @author oyzh
  * @since 2026-07-06
  */
@@ -46,8 +48,8 @@ public class TtyZModemProcessor implements CopyStreamListener {
     /** 上次刷新进度的时间戳 */
     private long lastRefreshTime;
 
-    /** 终端对象，用于输出进度 */
-    private final Terminal terminal;
+    /** 终端效果适配器，用于输出进度 */
+    private final TtyZModemTerminal terminal;
 
     /** 接收文件保存目录提供者，测试时可注入 */
     private final Supplier<FileAdapter> receiveSupplier;
@@ -63,8 +65,22 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @param output    输出流
      * @param terminal  终端对象
      */
-    public TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal) {
+    public TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, TtyZModemTerminal terminal) {
         this(frame, input, output, terminal, null, null);
+    }
+
+    /**
+     * 构造 ZModem 处理器（兼容旧版 JediTerm 终端对象）。
+     *
+     * @param frame     ZModem 帧数据
+     * @param input     输入流
+     * @param output    输出流
+     * @param terminal  JediTerm 终端对象
+     * @deprecated 使用 {@link #TtyZModemProcessor(byte[], InputStream, OutputStream, TtyZModemTerminal)}
+     */
+    @Deprecated
+    public TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal) {
+        this(frame, input, output, TtyZModemTerminal.ofJediTerm(terminal), null, null);
     }
 
     /**
@@ -77,16 +93,33 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @param receiveSupplier 接收文件保存目录提供者
      * @param sendSupplier    发送文件列表提供者
      */
-    TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal,
+    TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, TtyZModemTerminal terminal,
                        Supplier<FileAdapter> receiveSupplier, Supplier<List<FileAdapter>> sendSupplier) {
         // sz: * * 0x18 B 0 0
         // rz: * * 0x18 B 0 1
         this.sz = TtyZModemDetectingInputStream.isReceiveRequest(frame);
-        this.terminal = terminal;
+        this.terminal = terminal != null ? terminal : TtyZModemTerminal.noop();
         this.receiveSupplier = receiveSupplier;
         this.sendSupplier = sendSupplier;
         TtyZModemInputStream in = new TtyZModemInputStream(input, frame);
         this.zmodem = new ZModem(in, output);
+    }
+
+    /**
+     * 构造 ZModem 处理器（兼容旧版 JediTerm 终端对象）。
+     *
+     * @param frame           ZModem 帧数据
+     * @param input           输入流
+     * @param output          输出流
+     * @param terminal        JediTerm 终端对象
+     * @param receiveSupplier 接收文件保存目录提供者
+     * @param sendSupplier    发送文件列表提供者
+     * @deprecated 使用 {@link #TtyZModemProcessor(byte[], InputStream, OutputStream, TtyZModemTerminal, Supplier, Supplier)}
+     */
+    @Deprecated
+    TtyZModemProcessor(byte[] frame, InputStream input, OutputStream output, Terminal terminal,
+                       Supplier<FileAdapter> receiveSupplier, Supplier<List<FileAdapter>> sendSupplier) {
+        this(frame, input, output, TtyZModemTerminal.ofJediTerm(terminal), receiveSupplier, sendSupplier);
     }
 
     /**
@@ -157,9 +190,6 @@ public class TtyZModemProcessor implements CopyStreamListener {
      * @throws IOException IO 异常
      */
     private void refreshProgress(FileCopyStreamEvent event) throws IOException {
-        if (this.terminal == null) {
-            return;
-        }
         // 文件索引变化，则换行
         if (this.curIndex != event.getIndex()) {
             this.curIndex = event.getIndex();

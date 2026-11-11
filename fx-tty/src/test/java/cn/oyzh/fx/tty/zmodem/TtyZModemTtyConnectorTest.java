@@ -62,7 +62,7 @@ public class TtyZModemTtyConnectorTest {
         TtyZModemTtyConnector connector = new TtyZModemTtyConnector(terminalStub(), source) {
             @Override
             protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
-                                                          OutputStream output, Terminal terminal) {
+                                                          OutputStream output, TtyZModemTerminal terminal) {
                 detectedFrame.set(frame);
                 return new TtyZModemProcessor(frame, input, output, terminal) {
                     @Override
@@ -119,7 +119,7 @@ public class TtyZModemTtyConnectorTest {
         TtyZModemTtyConnector connector = new TtyZModemTtyConnector(terminalStub(), source) {
             @Override
             protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
-                                                          OutputStream output, Terminal terminal) {
+                                                          OutputStream output, TtyZModemTerminal terminal) {
                 return new TtyZModemProcessor(frame, input, output, terminal) {
                     @Override
                     public void process() {
@@ -335,7 +335,7 @@ public class TtyZModemTtyConnectorTest {
         return new TtyZModemTtyConnector(terminalStub(), source) {
             @Override
             protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
-                                                          OutputStream output, Terminal terminal) {
+                                                          OutputStream output, TtyZModemTerminal terminal) {
                 detected.set(true);
                 detectedFrame.set(frame);
                 return new TtyZModemProcessor(frame, input, output, terminal) {
@@ -372,7 +372,7 @@ public class TtyZModemTtyConnectorTest {
         return new TtyZModemTtyConnector(terminalStub(), source) {
             @Override
             protected TtyZModemProcessor createProcessor(byte[] frame, InputStream input,
-                                                          OutputStream output, Terminal terminal) {
+                                                          OutputStream output, TtyZModemTerminal terminal) {
                 throw new AssertionError("ordinary asterisks must not start ZModem");
             }
         };
