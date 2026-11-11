@@ -1186,12 +1186,17 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         if (style.hasOption(TextStyle.Option.INVERSE)) {
             return false;
         }
+        // HyperlinkStyle 的背景由 provider 按当前主题动态生成，不是终端内容里的 ANSI 背景；
+        // 它必须和终端默认背景一样受 backgroundOpacity 控制，否则主题切换后会留下色块。
+        if (style instanceof HyperlinkStyle) {
+            return true;
+        }
         TerminalColor background = style.getBackground();
         if (background == null) {
             return true;
         }
-        Color color = FXTransformers.toFxColor(this.toBackground(background));
-        Color window = FXTransformers.toFxColor(this.getWindowBackground());
+        javafx.scene.paint.Color color = FXTransformers.toFxColor(this.toBackground(background));
+        javafx.scene.paint.Color window = FXTransformers.toFxColor(this.getWindowBackground());
         return color.equals(window);
     }
 

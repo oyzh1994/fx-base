@@ -212,6 +212,7 @@ final class TerminalSession implements AutoCloseable {
     private long kittyStorageGeneration;
     private CachedLinks cachedLinks;
     private boolean hyperlinksEnabled = true;
+    private boolean backgroundTransparent;
     private Progress currentProgress;
     private boolean renderHeld;
     private double scrollOffsetRows;
@@ -510,6 +511,10 @@ final class TerminalSession implements AutoCloseable {
 
     void setHyperlinksEnabled(boolean value) {
         this.hyperlinksEnabled = value;
+    }
+
+    void setBackgroundTransparent(boolean value) {
+        this.backgroundTransparent = value;
     }
 
     private void configureKittyGraphics(Arena arena) {
@@ -2589,6 +2594,16 @@ final class TerminalSession implements AutoCloseable {
                             osc8Link = cellHasHyperlink.get(ValueLayout.JAVA_BOOLEAN, 0);
                         }
                         var linkCell = matchedLink || osc8Link;
+                        // 链接单元格可能仍携带切换前主题/旧调色板的默认背景色。
+                        // 透明背景下清除，让宿主背景图透出；不透明时恢复当前主题背景。
+                        if (linkCell && !selected && !searchHighlighted) {
+                            if (backgroundTransparent || themeBackground.getOpacity() < 1) {
+                                graphics.clearRect(x, y, metrics.cellWidthPx(), metrics.cellHeightPx());
+                            } else {
+                                graphics.setFill(themeBackground);
+                                graphics.fillRect(x, y, metrics.cellWidthPx(), metrics.cellHeightPx());
+                            }
+                        }
 
                         var faint = GhosttyStyle.faint(style);
                         var textBlinking = !GhosttyStyle.invisible(style) && GhosttyStyle.blink(style);

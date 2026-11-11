@@ -1190,6 +1190,34 @@ final class TerminalViewTest {
     }
 
     @Test
+    void transparentBackgroundDoesNotPaintDefaultCellBackgroundForLinks() throws Exception {
+        try (var view = createView("\u001B[47m\u001B[4m\u001B]8;;https://example.test\u001B\\abc\u001B]8;;\u001B\\\u001B[24m\u001B[49m"
+                + "\u001B]2;transparent-link-ready\u001B\\")) {
+            awaitTitle(view, "transparent-link-ready");
+            runOnFxThread(() -> {
+                view.setTheme(view.getTheme().withBackground(new Color(1, 1, 1, 0)));
+                view.setStyle("-fx-background-color: transparent;");
+                view.setBackgroundTransparent(true);
+                attachToScene(view);
+                var width = Math.ceil(view.prefWidth(-1));
+                var height = Math.ceil(view.prefHeight(-1));
+                view.resize(width, height);
+                view.applyCss();
+                view.layout();
+                var parameters = new SnapshotParameters();
+                parameters.setFill(Color.TRANSPARENT);
+                var snapshot = new WritableImage((int) width, (int) height);
+                view.snapshot(parameters, snapshot);
+                var background = snapshot.getPixelReader().getColor(
+                        (int) Math.floor(cellX(view, 1, 0.05)),
+                        (int) Math.floor(cellY(view, 0, 0.05)));
+                assertEquals(0.0, background.getOpacity(), 0.01);
+                return null;
+            });
+        }
+    }
+
+    @Test
     void hyperlinksUseDistinctColorAndRequireMainModifierToOpen() throws Exception {
         var output = "\u001B]8;;https://example.test\u001B\\abc\u001B]8;;\u001B\\";
         var modifierClicks = new AtomicInteger();

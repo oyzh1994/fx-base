@@ -1715,6 +1715,14 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         redrawNow();
     }
 
+    /// Marks whether the host window background is transparent behind this terminal.
+    ///
+    /// @param value whether the host background is transparent
+    public void setBackgroundTransparent(boolean value) {
+        terminalSession.setBackgroundTransparent(value);
+        redrawNow();
+    }
+
     /// Sets the scrollback memory limit in bytes.
     ///
     /// @param bytes the maximum scrollback size in bytes
