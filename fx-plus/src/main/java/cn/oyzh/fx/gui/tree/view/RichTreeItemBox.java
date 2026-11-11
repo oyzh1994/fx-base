@@ -114,6 +114,10 @@ public class RichTreeItemBox extends FXPane {
         List<Color> values = colors == null ? List.of() : colors.stream()
                 .filter(color -> color != null)
                 .toList();
+        double height = this.contentHeight();
+        this.setMinHeight(height);
+        this.setPrefHeight(height);
+        this.setMaxHeight(height);
         if (values.isEmpty() && StringUtil.isBlank(extra)) {
             if (trailing != null) {
                 this.removeChild(trailing);
@@ -130,6 +134,9 @@ public class RichTreeItemBox extends FXPane {
             trailing.setMaxWidth(Region.USE_PREF_SIZE);
             this.addChild(2, trailing);
         }
+        trailing.setMinHeight(height);
+        trailing.setPrefHeight(height);
+        trailing.setMaxHeight(height);
         List<Node> children = new java.util.ArrayList<>();
         if (!values.isEmpty()) {
             double spacing = 6;
@@ -168,6 +175,19 @@ public class RichTreeItemBox extends FXPane {
             children.add(extraNode);
         }
         trailing.getChildren().setAll(children);
+    }
+
+    private double contentHeight() {
+        double height = 16;
+        RichTextFlow nameNode = this.getName();
+        if (nameNode != null) {
+            height = Math.max(height, nameNode.prefHeight(-1));
+        }
+        SVGGlyph graphicNode = this.getGraphic();
+        if (graphicNode != null) {
+            height = Math.max(height, graphicNode.prefHeight(-1) + 2);
+        }
+        return Math.ceil(height);
     }
 
     /**
