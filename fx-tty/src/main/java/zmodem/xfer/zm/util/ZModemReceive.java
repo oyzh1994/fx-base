@@ -227,6 +227,10 @@ public class ZModemReceive {
                             break;
                         case ZFIN:
                             os.write(new Header(Format.HEX, ZModemCharacter.ZFIN));
+                            packet = is.read();
+                            if (!(packet instanceof Finish)) {
+                                throw new IOException("Invalid ZModem finish sequence");
+                            }
                             end = true;
                             break;
                         default:

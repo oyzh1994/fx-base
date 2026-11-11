@@ -221,29 +221,28 @@ public class TtyZModemProcessor implements CopyStreamListener {
         // 处理进度
         sb.append("\t");
         if (skip) {// 跳过
-            sb.append(I18nHelper.skip()).append("\r");
+            sb.append(I18nHelper.skip());
             allFinished = event.getIndex() == total;
         } else {// 进度
             completed = event.getBytesTransferred() >= event.getTotalBytesTransferred();
             double rate = event.getTotalBytesTransferred() > 0
                     ? (event.getBytesTransferred() * 1.0 / event.getTotalBytesTransferred()) * 100.0 : 0.0;
-            sb.append(NumberUtil.scale(rate, 2)).append('%').append("\r");
+            sb.append(NumberUtil.scale(rate, 2)).append('%');
             allFinished = completed && event.getIndex() >= total;
-        }
-
-        // 全部结束了，则跳过
-        if (allFinished) {
-            return;
         }
 
         // 刷新屏幕
         long now = System.currentTimeMillis();
         // 达到刷新阈值或当前文件传输完成或跳过，则执行刷新
-        if (now - this.lastRefreshTime > 200 || completed || skip) {
+        if (now - this.lastRefreshTime > 200 || completed || skip || allFinished) {
             this.lastRefreshTime = now;
             this.terminal.saveCursor();
+            this.terminal.clearLine();
             this.terminal.writeCharacters(sb.toString());
             this.terminal.restoreCursor();
+        }
+        if (allFinished) {
+            this.terminal.nextLine();
         }
     }
 

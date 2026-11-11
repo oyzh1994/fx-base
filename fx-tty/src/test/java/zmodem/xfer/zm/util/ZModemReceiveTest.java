@@ -93,7 +93,8 @@ public class ZModemReceiveTest {
                 packetBytes(new Header(Format.HEX, ZModemCharacter.ZDATA, 0)),
                 packetBytes(new DataPacket(ZModemCharacter.ZCRCW, new byte[]{9, 8, 7})),
                 packetBytes(new Header(Format.HEX, ZModemCharacter.ZEOF, 3)),
-                packetBytes(new Header(Format.HEX, ZModemCharacter.ZFIN))));
+                packetBytes(new Header(Format.HEX, ZModemCharacter.ZFIN)),
+                packetBytes(new zmodem.xfer.zm.packet.Finish())));
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         ZModemReceive receiver = new ZModemReceive(() -> new CustomFile(dir.toFile()), input, output);
 
@@ -103,6 +104,8 @@ public class ZModemReceiveTest {
         String response = output.toString(StandardCharsets.ISO_8859_1);
         assertTrue(response.contains("0900000000"));
         assertTrue(!response.contains("0500000000"));
+        assertTrue(!response.endsWith("OO"));
+        assertEquals(0, input.available());
         Files.deleteIfExists(received);
         Files.deleteIfExists(dir);
     }

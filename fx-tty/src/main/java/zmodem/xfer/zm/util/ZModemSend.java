@@ -261,8 +261,8 @@ public class ZModemSend {
                             }
                             break;
                         case ZFIN:
-                            end = true;
                             os.write(new Finish());
+                            end = true;
                             break;
                         default:
                             end = true;

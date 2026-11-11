@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -302,11 +303,41 @@ public class TtyZModemSshIntegrationTest {
                     sha256(uploadFile));
             System.out.println("escaped file verified");
 
+            String configuredFile = System.getProperty("zmodem.ssh.downloadFile");
+            if (configuredFile != null && !configuredFile.isBlank()) {
+                assertConfiguredDownload(zmodemConnector, localDir, terminalOutput, configuredFile);
+            }
+
             assertNoReadError(readError);
+            Thread.sleep(200);
+            assertNoStrayFinishSequence(terminalOutput.toString());
         } finally {
             running.set(false);
             reader.interrupt();
         }
+    }
+
+    private void assertConfiguredDownload(TtyZModemTtyConnector connector, Path localDir,
+                                          OutputBuffer terminalOutput, String remoteFile) throws Exception {
+        String marker = "CONFIGURED_DOWNLOAD_DONE";
+        String quotedRemoteFile = "'" + remoteFile.replace("'", "'\\''") + "'";
+        send(connector, "sz " + quotedRemoteFile
+                + "; sleep 0.2; echo ZMODEM_${NONE:-}" + marker
+                + "; wc -c < " + quotedRemoteFile
+                + "; sha256sum " + quotedRemoteFile);
+        assertTrue("configured download did not finish: " + terminalOutput,
+                terminalOutput.waitFor("ZMODEM_" + marker, 30000));
+
+        Path receivedFile = localDir.resolve(new File(remoteFile).getName());
+        assertTrue("configured download file is missing: " + receivedFile
+                + ", local files=" + java.util.Arrays.toString(localDir.toFile().list())
+                + ", terminal=\n" + terminalOutput, Files.exists(receivedFile));
+        String localHash = sha256(receivedFile);
+        assertTrue("configured download hash mismatch: " + terminalOutput,
+                terminalOutput.waitFor(localHash, 5000));
+        assertTrue("configured download size mismatch: " + terminalOutput,
+                terminalOutput.toString().contains(Long.toString(Files.size(receivedFile))));
+        System.out.println("configured file verified: " + remoteFile);
     }
 
     private static Thread startReader(TtyZModemTtyConnector connector, OutputBuffer output,
@@ -344,6 +375,14 @@ public class TtyZModemSshIntegrationTest {
         if (throwable != null) {
             throw new AssertionError("terminal reader failed", throwable);
         }
+    }
+
+    private static void assertNoStrayFinishSequence(String terminalOutput) {
+        String normalized = terminalOutput.replace("\r\n", "\n").replace('\r', '\n');
+        assertFalse("ZModem finish sequence leaked to the terminal:\n" + terminalOutput,
+                java.util.regex.Pattern.compile("(?m)^[ \\t]*OO[ \\t]*$").matcher(normalized).find());
+        assertFalse("stray ZModem input reached the remote shell:\n" + terminalOutput,
+                terminalOutput.contains("command not found"));
     }
 
     private static int uploadSize(int index) {

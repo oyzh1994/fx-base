@@ -125,6 +125,17 @@ public class TtyTerminalUtil {
             }
 
             @Override
+            public void clearLine() {
+                TerminalView view = this.ghosttyView();
+                if (view != null) {
+                    view.writeLocalOutput("\r\u001B[2K");
+                } else if (widget.getTerminal() != null) {
+                    widget.getTerminal().carriageReturn();
+                    widget.getTerminal().eraseInLine(2);
+                }
+            }
+
+            @Override
             public void restoreCursor() {
                 TerminalView view = this.ghosttyView();
                 if (view != null) {

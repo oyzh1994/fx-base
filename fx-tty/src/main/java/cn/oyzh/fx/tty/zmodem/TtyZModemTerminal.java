@@ -39,6 +39,11 @@ public interface TtyZModemTerminal {
     void writeCharacters(String text);
 
     /**
+     * 清除当前行。
+     */
+    void clearLine();
+
+    /**
      * 恢复光标位置。
      */
     void restoreCursor();
@@ -79,6 +84,12 @@ public interface TtyZModemTerminal {
             }
 
             @Override
+            public void clearLine() {
+                terminal.carriageReturn();
+                terminal.eraseInLine(2);
+            }
+
+            @Override
             public void restoreCursor() {
                 terminal.restoreCursor();
             }
@@ -116,6 +127,11 @@ public interface TtyZModemTerminal {
             }
 
             @Override
+            public void clearLine() {
+                view.writeLocalOutput("\r\u001B[2K");
+            }
+
+            @Override
             public void restoreCursor() {
                 // DECRC
                 view.writeLocalOutput("\u001B8");
@@ -143,6 +159,10 @@ public interface TtyZModemTerminal {
 
         @Override
         public void writeCharacters(String text) {
+        }
+
+        @Override
+        public void clearLine() {
         }
 
         @Override

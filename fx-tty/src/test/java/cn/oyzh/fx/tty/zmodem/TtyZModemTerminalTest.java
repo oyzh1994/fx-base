@@ -32,6 +32,10 @@ final class TtyZModemTerminalTest {
                             || method.getName().equals("saveCursor")
                             || method.getName().equals("restoreCursor")) {
                         calls.add(method.getName());
+                    } else if (method.getName().equals("carriageReturn")) {
+                        calls.add(method.getName());
+                    } else if (method.getName().equals("eraseInLine")) {
+                        calls.add(method.getName() + ":" + args[0]);
                     }
                     Class<?> type = method.getReturnType();
                     if (type == boolean.class) {
@@ -52,10 +56,12 @@ final class TtyZModemTerminalTest {
         var adapter = TtyZModemTerminal.ofJediTerm(terminal);
         adapter.nextLine();
         adapter.saveCursor();
+        adapter.clearLine();
         adapter.writeCharacters("progress");
         adapter.restoreCursor();
 
-        assertEquals(List.of("nextLine", "saveCursor", "write:progress", "restoreCursor"), calls);
+        assertEquals(List.of("nextLine", "saveCursor", "carriageReturn", "eraseInLine:2",
+                "write:progress", "restoreCursor"), calls);
     }
 
     @Test
@@ -78,6 +84,11 @@ final class TtyZModemTerminalTest {
             }
 
             @Override
+            public void clearLine() {
+                calls.add("clearLine");
+            }
+
+            @Override
             public void restoreCursor() {
                 calls.add("restoreCursor");
             }
@@ -90,11 +101,14 @@ final class TtyZModemTerminalTest {
                 terminal);
 
         processor.bytesTransferred(new FileCopyStreamEvent(this, "file.bin", 0, 1, 100, 50, 100));
+        processor.bytesTransferred(new FileCopyStreamEvent(this, "file.bin", 0, 1, 100, 100, 100));
 
         assertTrue(calls.contains("nextLine"));
         assertTrue(calls.contains("saveCursor"));
         assertTrue(calls.contains("restoreCursor"));
+        assertTrue(calls.contains("clearLine"));
         assertTrue(calls.stream().anyMatch(call -> call.contains("file.bin")));
+        assertEquals("nextLine", calls.getLast());
     }
 
     @Test
@@ -103,10 +117,12 @@ final class TtyZModemTerminalTest {
         var ghostty = TtyZModemTerminal.ofGhostty(null);
         jediTerm.nextLine();
         jediTerm.saveCursor();
+        jediTerm.clearLine();
         jediTerm.writeCharacters("ignored");
         jediTerm.restoreCursor();
         ghostty.nextLine();
         ghostty.saveCursor();
+        ghostty.clearLine();
         ghostty.writeCharacters("ignored");
         ghostty.restoreCursor();
         assertTrue(true);

@@ -9,6 +9,7 @@ import zmodem.xfer.zm.packet.Cancel;
 import zmodem.xfer.zm.packet.DataPacket;
 import zmodem.xfer.zm.packet.Format;
 import zmodem.xfer.zm.packet.Header;
+import zmodem.xfer.zm.packet.Finish;
 import zmodem.zm.io.ZMPacketInputStream;
 import zmodem.zm.io.ZMPacketOutputStream;
 
@@ -212,6 +213,28 @@ public class ZModemSendTest {
             // 输出结束
         }
         assertEquals(1, eofCount);
+        Files.deleteIfExists(file);
+    }
+
+    @Test
+    public void sendsFinishSequenceWithoutWaitingForReceiver() throws Exception {
+        Path file = Files.createTempFile("zmodem-send-finish-", ".bin");
+        Files.write(file, new byte[]{1, 2, 3});
+        List<FileAdapter> files = Collections.singletonList(new CustomFile(file.toFile()));
+        byte[] zrinit = packetBytes(new Header(Format.HEX, ZModemCharacter.ZRINIT, new byte[]{0, 0, 0, 0}));
+        byte[] zrpos = packetBytes(new Header(Format.HEX, ZModemCharacter.ZRPOS, 0));
+        byte[] zfin = packetBytes(new Header(Format.HEX, ZModemCharacter.ZFIN, new byte[]{0, 0, 0, 0}));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ZModemSend sender = new ZModemSend(() -> files,
+                new ByteArrayInputStream(concat(zrinit, zrpos, zfin)), output);
+
+        sender.send(() -> false);
+
+        byte[] expectedFinish = packetBytes(new Finish());
+        byte[] actual = output.toByteArray();
+        assertTrue(actual.length >= expectedFinish.length);
+        assertArrayEquals(expectedFinish,
+                java.util.Arrays.copyOfRange(actual, actual.length - expectedFinish.length, actual.length));
         Files.deleteIfExists(file);
     }
 
