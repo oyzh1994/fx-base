@@ -278,7 +278,15 @@ java -Dfx.tty.engine=ghostty --enable-native-access=ALL-UNNAMED ...
 easyshell 在“设置 → 终端 → 终端引擎”中提供 `JediTerm / Ghostty` 选择，保存后对新打开的终端生效。
 现有 FXML、控制器、连接器、分屏、标签页结构均不需要改动。
 
-### 7.3 限制
+### 7.3 尺寸稳定
+
+`TtyTermWidget` 是 `FXStackPane`，其 `layoutChildren()` 会对子节点调用 `autosize()`。
+`TerminalView` 默认的 `prefWidth/prefHeight` 来自 80x24 的 Canvas，如果不接管，布局会
+在“80 列宽度”和“父容器宽度”之间反复切换，导致终端行列数和 PTY resize 高频变化。
+因此 Ghostty 视图的 `prefWidth/prefHeight` 会绑定到 `TtyTermWidget` 的宽高，并在关闭时解绑，
+保证布局与终端尺寸稳定。
+
+### 7.4 限制
 
 - 已经打开的会话不会在两种引擎之间热切换（两种引擎的屏幕状态无法无损迁移）；
   切换设置后打开新标签页即可使用新引擎。

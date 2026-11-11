@@ -77,6 +77,21 @@ final class TtyTermWidgetEngineTest {
             var view = callOnFxThread(widget::getGhosttyView);
             assertTrue(callOnFxThread(() -> view.getWidth() > 0));
             assertTrue(callOnFxThread(() -> view.getHeight() > 0));
+
+            // 回归：FXStackPane 的 autosize() 不能让 Ghostty 视图在 80 列和父容器宽度之间抖动
+            var width = callOnFxThread(view::getWidth);
+            var height = callOnFxThread(view::getHeight);
+            var terminalSize = callOnFxThread(view::getTerminalSize);
+            callOnFxThread(() -> {
+                for (int i = 0; i < 10; i++) {
+                    widget.applyCss();
+                    widget.layout();
+                }
+                return null;
+            });
+            assertEquals(width, callOnFxThread(view::getWidth), 0.5);
+            assertEquals(height, callOnFxThread(view::getHeight), 0.5);
+            assertEquals(terminalSize, callOnFxThread(view::getTerminalSize));
         } finally {
             callOnFxThread(() -> {
                 widget.close();

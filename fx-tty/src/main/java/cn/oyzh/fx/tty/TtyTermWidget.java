@@ -116,10 +116,18 @@ public abstract class TtyTermWidget extends FXJediTermWidget {
         var panel = this.getTerminalPanel();
         panel.setVisible(false);
         panel.setManaged(false);
+        TerminalView view = null;
         try {
-            var view = new TerminalView((columns, rows) -> new TtyConnectorTerminal(ttyConnector, columns, rows));
+            view = new TerminalView((columns, rows) -> new TtyConnectorTerminal(ttyConnector, columns, rows));
             TtyGhosttySettings.apply(view, this.getSettingsProvider());
+            // FXStackPane.layoutChildren() 会对每个子节点调用 autosize()，而 TerminalView 的
+            // prefWidth/prefHeight 默认来自 80x24 的 Canvas。若不接管 pref 尺寸，布局会在
+            // “80 列宽度”和“父容器宽度”之间反复切换，导致终端尺寸高频变化。
+            // 绑定到宿主尺寸后 autosize() 与 StackPane 的填充结果一致，尺寸保持稳定。
+            view.setMinSize(0, 0);
             view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            view.prefWidthProperty().bind(this.widthProperty());
+            view.prefHeightProperty().bind(this.heightProperty());
             view.setFocusTraversable(true);
             StackPane.setAlignment(view, Pos.TOP_LEFT);
             this.addChild(view);
@@ -127,6 +135,12 @@ public abstract class TtyTermWidget extends FXJediTermWidget {
             this.ghosttyConnector = ttyConnector;
             Platform.runLater(view::requestFocus);
         } catch (RuntimeException ex) {
+            if (view != null) {
+                view.prefWidthProperty().unbind();
+                view.prefHeightProperty().unbind();
+            }
+            this.ghosttyView = null;
+            this.ghosttyConnector = null;
             panel.setVisible(true);
             panel.setManaged(true);
             throw ex;
@@ -261,6 +275,8 @@ public abstract class TtyTermWidget extends FXJediTermWidget {
         this.ghosttyView = null;
         this.ghosttyConnector = null;
         if (view != null) {
+            view.prefWidthProperty().unbind();
+            view.prefHeightProperty().unbind();
             try {
                 view.close();
             } catch (Exception ex) {
