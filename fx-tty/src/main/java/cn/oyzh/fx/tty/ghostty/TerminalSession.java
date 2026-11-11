@@ -211,6 +211,7 @@ final class TerminalSession implements AutoCloseable {
     private int physicalCellHeightPx;
     private long kittyStorageGeneration;
     private CachedLinks cachedLinks;
+    private boolean hyperlinksEnabled = true;
     private Progress currentProgress;
     private boolean renderHeld;
     private double scrollOffsetRows;
@@ -304,7 +305,7 @@ final class TerminalSession implements AutoCloseable {
                             initialFontMetrics.cellHeightPx()),
                     "ghostty_terminal_resize");
             configureKittyGraphics(arena);
-            setDefaultCursorStyle();
+            setDefaultCursorStyle(0);
             setCursorBlinking(true);
             var palette = GhosttyColorRgb.allocateArray(PALETTE_SIZE, arena);
             requireGhosttySuccess(
@@ -475,10 +476,15 @@ final class TerminalSession implements AutoCloseable {
         updateRenderState();
     }
 
-    private void setDefaultCursorStyle() {
+    void setDefaultCursorStyle(int shellStyle) {
+        var nativeStyle = switch (shellStyle) {
+            case 1 -> ghostty_vt_h.GHOSTTY_TERMINAL_CURSOR_STYLE_UNDERLINE();
+            case 2 -> ghostty_vt_h.GHOSTTY_TERMINAL_CURSOR_STYLE_BAR();
+            default -> ghostty_vt_h.GHOSTTY_TERMINAL_CURSOR_STYLE_BLOCK();
+        };
         try (var arena = Arena.ofConfined()) {
             var style = arena.allocate(ValueLayout.JAVA_INT);
-            style.set(ValueLayout.JAVA_INT, 0, ghostty_vt_h.GHOSTTY_TERMINAL_CURSOR_STYLE_BLOCK());
+            style.set(ValueLayout.JAVA_INT, 0, nativeStyle);
             requireGhosttySuccess(
                     ghostty_vt_h.ghostty_terminal_set(
                             terminal,
@@ -486,6 +492,24 @@ final class TerminalSession implements AutoCloseable {
                             style),
                     "ghostty_terminal_set(default_cursor_style)");
         }
+        updateRenderState();
+    }
+
+    void setScrollbackMaxBytes(long bytes) {
+        try (var arena = Arena.ofConfined()) {
+            var scrollbackLimit = arena.allocate(ValueLayout.JAVA_LONG);
+            scrollbackLimit.set(ValueLayout.JAVA_LONG, 0, Math.max(0, bytes));
+            requireGhosttySuccess(
+                    ghostty_vt_h.ghostty_terminal_set(
+                            terminal,
+                            ghostty_vt_h.GHOSTTY_TERMINAL_OPT_SCROLLBACK_MAX_BYTES(),
+                            scrollbackLimit),
+                    "ghostty_terminal_set(scrollback_max_bytes)");
+        }
+    }
+
+    void setHyperlinksEnabled(boolean value) {
+        this.hyperlinksEnabled = value;
     }
 
     private void configureKittyGraphics(Arena arena) {
@@ -2346,7 +2370,9 @@ final class TerminalSession implements AutoCloseable {
                     ? Math.toIntExact(GhosttyTerminalScrollbar.offset(scrollbar))
                     : 0;
             var visibleRows = Math.max(1, (int) Math.ceil(height / metrics.cellHeightPx()));
-            var linkResult = linkMatcherResult(linkMatchers, viewportTop, viewportTop + visibleRows);
+            var linkResult = hyperlinksEnabled
+                    ? linkMatcherResult(linkMatchers, viewportTop, viewportTop + visibleRows)
+                    : SearchResult.empty();
             var highlightedViewportRow = promptNavigationHighlightRow >= viewportTop
                     && promptNavigationHighlightRow < viewportTop + visibleRows
                             ? promptNavigationHighlightRow - viewportTop
@@ -2401,7 +2427,8 @@ final class TerminalSession implements AutoCloseable {
                                     ghostty_vt_h.GHOSTTY_ROW_DATA_HYPERLINK(),
                                     rowHasHyperlink),
                             "ghostty_row_get(hyperlink)");
-                    var rowMayHaveHyperlink = rowHasHyperlink.get(ValueLayout.JAVA_BOOLEAN, 0);
+                    var rowMayHaveHyperlink = hyperlinksEnabled
+                            && rowHasHyperlink.get(ValueLayout.JAVA_BOOLEAN, 0);
                     if ((!splitCellRendering || backgroundOnly) && viewportY == highlightedViewportRow) {
                         graphics.setFill(applyOpacity(theme.foreground(), 0.16));
                         graphics.fillRect(0, y, Math.max(0.0, width - scrollbarReservedWidthPx), metrics.cellHeightPx());
@@ -2545,6 +2572,24 @@ final class TerminalSession implements AutoCloseable {
                             }
                         }
 
+                        var osc8Link = false;
+                        if (rowMayHaveHyperlink) {
+                            requireGhosttySuccess(
+                                    ghostty_vt_h.ghostty_render_state_row_cells_get(
+                                            rowCells,
+                                            ghostty_vt_h.GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_RAW(),
+                                            rawCell),
+                                    "ghostty_render_state_row_cells_get(raw)");
+                            requireGhosttySuccess(
+                                    ghostty_vt_h.ghostty_cell_get(
+                                            rawCell.get(ValueLayout.JAVA_LONG, 0),
+                                            ghostty_vt_h.GHOSTTY_CELL_DATA_HAS_HYPERLINK(),
+                                            cellHasHyperlink),
+                                    "ghostty_cell_get(has_hyperlink)");
+                            osc8Link = cellHasHyperlink.get(ValueLayout.JAVA_BOOLEAN, 0);
+                        }
+                        var linkCell = matchedLink || osc8Link;
+
                         var faint = GhosttyStyle.faint(style);
                         var textBlinking = !GhosttyStyle.invisible(style) && GhosttyStyle.blink(style);
                         hasTextBlink |= textBlinking;
@@ -2569,7 +2614,9 @@ final class TerminalSession implements AutoCloseable {
                             }
                             var baseline = y + metrics.baselineOffsetPx();
                             if (!preeditCell) {
-                                var baseTextColor = selected ? theme.selectionText() : toFxColor(foreground);
+                                var baseTextColor = selected ? theme.selectionText()
+                                        : linkCell ? (hovered ? theme.linkColor().brighter() : theme.linkColor())
+                                        : toFxColor(foreground);
                                 var textColor = applyOpacity(baseTextColor, faintFactor);
                                 graphics.setFill(textColor);
                                 var codePoint = renderedText.codePointAt(0);
@@ -2583,23 +2630,7 @@ final class TerminalSession implements AutoCloseable {
                                 if (GhosttyStyle.underline(style) == ghostty_vt_h.GHOSTTY_SGR_UNDERLINE_NONE()
                                         && !GhosttyStyle.strikethrough(style)
                                         && !GhosttyStyle.overline(style)) {
-                                    var osc8Link = false;
-                                    if (rowMayHaveHyperlink) {
-                                        requireGhosttySuccess(
-                                                ghostty_vt_h.ghostty_render_state_row_cells_get(
-                                                        rowCells,
-                                                        ghostty_vt_h.GHOSTTY_RENDER_STATE_ROW_CELLS_DATA_RAW(),
-                                                        rawCell),
-                                                "ghostty_render_state_row_cells_get(raw)");
-                                        requireGhosttySuccess(
-                                                ghostty_vt_h.ghostty_cell_get(
-                                                        rawCell.get(ValueLayout.JAVA_LONG, 0),
-                                                        ghostty_vt_h.GHOSTTY_CELL_DATA_HAS_HYPERLINK(),
-                                                        cellHasHyperlink),
-                                                "ghostty_cell_get(has_hyperlink)");
-                                        osc8Link = cellHasHyperlink.get(ValueLayout.JAVA_BOOLEAN, 0);
-                                    }
-                                    if (matchedLink || osc8Link) {
+                                    if (linkCell) {
                                         var linkUnderlineOpacity = hovered
                                                 ? theme.hoveredLinkUnderlineOpacity()
                                                 : (osc8Link ? theme.osc8LinkUnderlineOpacity() : theme.matchedLinkUnderlineOpacity());

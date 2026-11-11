@@ -3,6 +3,7 @@ package cn.oyzh.fx.tty;
 import cn.oyzh.common.log.JulLog;
 import cn.oyzh.fx.tty.ghostty.TerminalTheme;
 import cn.oyzh.fx.tty.ghostty.TerminalView;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import com.jediterm.terminal.TerminalColor;
 import com.jediterm.terminal.TextStyle;
 import com.jediterm.terminal.emulator.ColorPalette;
@@ -11,6 +12,7 @@ import com.jediterm.terminal.ui.settings.FXDefaultSettingsProvider;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,8 @@ import java.util.List;
  * @since 2026-11-11
  */
 final class TtyGhosttySettings {
+
+    private static final Color DEFAULT_LINK_COLOR = Color.web("#3B8EEA");
 
     private static final Color[] DEFAULT_ANSI = {
             Color.rgb(0x00, 0x00, 0x00),
@@ -63,12 +67,29 @@ final class TtyGhosttySettings {
             JulLog.debug("apply ghostty font failed", ex);
         }
         try {
-            view.setTheme(theme(provider));
+            var previous = view.getTheme();
+            var next = theme(provider);
+            // 主窗口背景图启用时，终端默认背景被置为透明；主题切换后要保留透明，
+            // 但使用新主题的 RGB，避免退回不透明背景遮住背景图。
+            if (previous != null && previous.background().getOpacity() < 1
+                    && next.background().getOpacity() >= 1) {
+                var background = next.background();
+                next = next.withBackground(new Color(
+                        background.getRed(),
+                        background.getGreen(),
+                        background.getBlue(),
+                        previous.background().getOpacity()));
+            }
+            view.setTheme(next);
         } catch (Exception ex) {
             JulLog.debug("apply ghostty theme failed", ex);
         }
         try {
-            view.setCursorBlinking(provider.caretBlinkingMs() > 0);
+            int blinkMs = provider.caretBlinkingMs();
+            view.setCursorBlinking(blinkMs > 0);
+            if (blinkMs > 0) {
+                view.setCursorBlinkInterval(blinkMs);
+            }
         } catch (Exception ex) {
             JulLog.debug("apply ghostty cursor blinking failed", ex);
         }
@@ -76,6 +97,52 @@ final class TtyGhosttySettings {
             view.setMacOptionAsAlt(provider.altSendsEscape());
         } catch (Exception ex) {
             JulLog.debug("apply ghostty alt setting failed", ex);
+        }
+        try {
+            int maxLines = provider.getBufferMaxLinesCount();
+            if (maxLines <= 0) {
+                maxLines = 5000;
+            }
+            // Ghostty 的 scrollback 限制单位是字节；按每行 1KB 估算，至少保留配置的行数。
+            view.setScrollbackMaxBytes((long) maxLines * 1024L);
+        } catch (Exception ex) {
+            JulLog.debug("apply ghostty scrollback setting failed", ex);
+        }
+        try {
+            view.setMaxRefreshRate(provider.maxRefreshRate());
+        } catch (Exception ex) {
+            JulLog.debug("apply ghostty refresh rate failed", ex);
+        }
+        try {
+            view.setCopyOnSelect(provider.copyOnSelect());
+        } catch (Exception ex) {
+            JulLog.debug("apply ghostty copy-on-select failed", ex);
+        }
+        try {
+            view.setUseAntialiasing(provider.useAntialiasing());
+        } catch (Exception ex) {
+            JulLog.debug("apply ghostty antialiasing failed", ex);
+        }
+        try {
+            view.setOnBell(() -> {
+                if (provider.audibleBell()) {
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            });
+        } catch (Exception ex) {
+            JulLog.debug("apply ghostty bell failed", ex);
+        }
+        if (provider instanceof TtyTermSettingsProvider settingsProvider) {
+            try {
+                view.setDefaultCursorStyle(settingsProvider.getCursorStyle());
+            } catch (Exception ex) {
+                JulLog.debug("apply ghostty cursor style failed", ex);
+            }
+            try {
+                view.setHyperlinksEnabled(settingsProvider.isParseHyperlink());
+            } catch (Exception ex) {
+                JulLog.debug("apply ghostty hyperlink setting failed", ex);
+            }
         }
     }
 
@@ -111,10 +178,12 @@ final class TtyGhosttySettings {
         Color searchBorder = found == null ? foreground
                 : resolve(found.getForeground(), palette, false, foreground);
         Color currentSearchBackground = searchBackground.deriveColor(0, 1, 1, 0.45);
-        Color scrollbar = foreground.deriveColor(0, 1, 1, 0.45);
-        Color scrollbarActive = foreground.deriveColor(0, 1, 1, 0.7);
+        // 滚动条属于 JavaFX 控件，JediTerm 使用应用主题；Ghostty 自绘滚动条同样取应用主题色。
+        Color scrollbarBase = ThemeManager.currentForegroundColor();
+        Color scrollbar = scrollbarBase.deriveColor(0, 1, 1, 0.45);
+        Color scrollbarActive = scrollbarBase.deriveColor(0, 1, 1, 0.7);
 
-        return new TerminalTheme(
+        var theme = new TerminalTheme(
                 background,
                 foreground,
                 colors,
@@ -132,6 +201,22 @@ final class TtyGhosttySettings {
                 0.45,
                 0.45,
                 0.85);
+        return theme.withLinkColor(linkColor(provider, palette, foreground));
+    }
+
+    private static Color linkColor(SettingsProvider provider, ColorPalette palette, Color foreground) {
+        try {
+            TextStyle hyperlink = provider.getHyperlinkColor();
+            if (hyperlink != null) {
+                Color color = resolve(hyperlink.getForeground(), palette, false, DEFAULT_LINK_COLOR);
+                if (color != null && !color.equals(foreground)) {
+                    return color;
+                }
+            }
+        } catch (Exception ex) {
+            JulLog.debug("resolve ghostty hyperlink color failed", ex);
+        }
+        return DEFAULT_LINK_COLOR;
     }
 
     private static Color paletteColor(ColorPalette palette, int index, Color fallback) {

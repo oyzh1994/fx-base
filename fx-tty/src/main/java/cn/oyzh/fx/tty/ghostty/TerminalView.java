@@ -19,6 +19,7 @@ import cn.oyzh.fx.tty.ghostty.bindings.ghostty_vt_h;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -57,6 +58,7 @@ import javafx.scene.input.ScrollEvent.VerticalTextScrollUnits;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
@@ -131,6 +133,13 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         }
     };
     private final BooleanProperty cursorBlinking = new SimpleBooleanProperty(this, "cursorBlinking", true);
+    private final BooleanProperty copyOnSelect = new SimpleBooleanProperty(this, "copyOnSelect", false);
+    private final BooleanProperty hyperlinksEnabled = new SimpleBooleanProperty(this, "hyperlinksEnabled", true);
+    private final PauseTransition renderThrottle = new PauseTransition();
+    private int maxRefreshRate = -1;
+    private boolean useAntialiasing = true;
+    private boolean renderScheduled;
+    private long nextRenderNanos;
     private final StringProperty searchPromptText = new SimpleStringProperty(this, "searchPromptText", "Type to search...") {
         @Override
         public void set(String value) {
@@ -244,6 +253,11 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         cursorBlinkTimeline.setCycleCount(Animation.INDEFINITE);
         textBlinkTimeline = new Timeline(new KeyFrame(BLINK_INTERVAL, _ -> tickTextBlink()));
         textBlinkTimeline.setCycleCount(Animation.INDEFINITE);
+        renderThrottle.setOnFinished(_ -> {
+            renderScheduled = false;
+            nextRenderNanos = System.nanoTime() + frameIntervalNanos();
+            render();
+        });
         promptNavigationHighlightTimeline = new Timeline(new KeyFrame(PROMPT_NAVIGATION_HIGHLIGHT_DURATION, _ -> clearPromptNavigationHighlight()));
         var initialFontMetrics = fontMetrics.get();
         var viewRef = new WeakReference<>(this);
@@ -316,13 +330,13 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
                     || oldMetrics.cellHeightPx() != newMetrics.cellHeightPx()) {
                 handleResize();
             } else {
-                redraw();
+                redrawNow();
             }
         });
         linkMatchers.addListener((ListChangeListener<TerminalLinkMatcher>) _ -> {
             terminalSession.clearLinkCache();
             refreshHover(false);
-            redraw();
+            redrawNow();
         });
         cursorBlinking.addListener((_, _, value) -> {
             terminalSession.setCursorBlinking(value);
@@ -333,7 +347,7 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         theme.addListener((_, _, value) -> {
             terminalSession.applyTheme(value);
             applySearchTheme();
-            redraw();
+            redrawNow();
         });
         focusedProperty().addListener((_, _, focused) -> handleFocusChange(focused));
         setOnMousePressed(this::handleMousePressed);
@@ -1018,12 +1032,16 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
 
         var hit = contentHit(event);
         terminalSession.selectionGestureRelease(hit);
+        if (copyOnSelect.get() && terminalSession.hasSelection()) {
+            copySelection(false);
+        }
         if (terminalSession.selectionGestureClickCount() == 1
                 && !terminalSession.selectionGestureDragged()
                 && hit != null
                 && releasedGesture.link() != null
                 && releasedGesture.anchor().equals(hit.screenPoint())
-                && releasedGesture.link().sameTarget(activeLink(hit))) {
+                && releasedGesture.link().sameTarget(activeLink(hit))
+                && isLinkOpenModifierDown(event)) {
             releasedGesture.link().action().run();
         }
         refreshHover(event);
@@ -1327,6 +1345,9 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
     }
 
     private ActiveLink activeLink(TerminalSession.CellHit hit) {
+        if (!hyperlinksEnabled.get()) {
+            return null;
+        }
         if (hit.hyperlinkUri() != null && !hit.hyperlinkUri().isEmpty()) {
             var selection = terminalSession.hyperlinkSelection(hit.screenPoint(), hit.hyperlinkUri());
             if (selection.isEmpty()) {
@@ -1538,6 +1559,13 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         return event.isPrimaryButtonDown() || event.isSecondaryButtonDown() || event.isMiddleButtonDown();
     }
 
+    private static boolean isLinkOpenModifierDown(MouseEvent event) {
+        // 与 JediTerm 一致：macOS 使用 Command，其他平台使用 Control。
+        return HostPlatform.CURRENT.os() == HostPlatform.OS.MACOS
+                ? event.isMetaDown()
+                : event.isControlDown();
+    }
+
     private boolean isRectangleSelection(MouseEvent event) {
         return HostPlatform.CURRENT.os() == HostPlatform.OS.MACOS
                 ? event.isAltDown()
@@ -1593,16 +1621,129 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
     ///
     /// @return `true` if there was a selection to copy; otherwise `false`
     public boolean copySelection() {
+        return copySelection(true);
+    }
+
+    private boolean copySelection(boolean clear) {
         if (!canCopySelection()) {
             return false;
         }
 
         var content = new ClipboardContent();
         content.putString(selectedText());
-        if (Clipboard.getSystemClipboard().setContent(content)) {
+        if (Clipboard.getSystemClipboard().setContent(content) && clear) {
             clearSelection();
         }
         return true;
+    }
+
+    /// Returns whether selecting text copies it to the system clipboard.
+    ///
+    /// @return whether copy-on-select is enabled
+    public boolean isCopyOnSelect() {
+        return copyOnSelect.get();
+    }
+
+    /// Sets whether selecting text copies it to the system clipboard.
+    ///
+    /// @param value whether copy-on-select is enabled
+    public void setCopyOnSelect(boolean value) {
+        copyOnSelect.set(value);
+    }
+
+    /// Whether selecting text copies it to the system clipboard.
+    ///
+    /// @return the copy-on-select property
+    public BooleanProperty copyOnSelectProperty() {
+        return copyOnSelect;
+    }
+
+    /// Returns whether text hyperlinks are parsed and rendered.
+    ///
+    /// @return whether hyperlink parsing is enabled
+    public boolean isHyperlinksEnabled() {
+        return hyperlinksEnabled.get();
+    }
+
+    /// Sets whether text hyperlinks are parsed and rendered.
+    ///
+    /// @param value whether hyperlink parsing is enabled
+    public void setHyperlinksEnabled(boolean value) {
+        if (hyperlinksEnabled.get() == value) {
+            terminalSession.setHyperlinksEnabled(value);
+            return;
+        }
+        hyperlinksEnabled.set(value);
+        terminalSession.setHyperlinksEnabled(value);
+        clearHover(true);
+        refreshHover(false);
+        redrawNow();
+    }
+
+    /// Whether text hyperlinks are parsed and rendered.
+    ///
+    /// @return the hyperlink parsing property
+    public BooleanProperty hyperlinksEnabledProperty() {
+        return hyperlinksEnabled;
+    }
+
+    /// Sets the default cursor style.
+    ///
+    /// @param style `0` for block, `1` for underline, `2` for vertical bar
+    public void setDefaultCursorStyle(int style) {
+        terminalSession.setDefaultCursorStyle(style);
+        redrawNow();
+    }
+
+    /// Sets the cursor blink half-period in milliseconds.
+    ///
+    /// A non-positive value disables cursor blinking.
+    ///
+    /// @param millis the blink interval in milliseconds
+    public void setCursorBlinkInterval(int millis) {
+        if (millis <= 0) {
+            setCursorBlinking(false);
+            return;
+        }
+        setCursorBlinking(true);
+        var rate = BLINK_INTERVAL.toMillis() / (double) millis;
+        cursorBlinkTimeline.setRate(rate);
+        textBlinkTimeline.setRate(rate);
+        resetCursorBlink();
+        textBlinkVisible = true;
+        updateBlinkTimelines();
+        redrawNow();
+    }
+
+    /// Sets the scrollback memory limit in bytes.
+    ///
+    /// @param bytes the maximum scrollback size in bytes
+    public void setScrollbackMaxBytes(long bytes) {
+        terminalSession.setScrollbackMaxBytes(bytes);
+    }
+
+    /// Sets the maximum rendering refresh rate.
+    ///
+    /// A non-positive value renders immediately without throttling.
+    ///
+    /// @param fps the maximum frames per second
+    public void setMaxRefreshRate(int fps) {
+        maxRefreshRate = Math.max(0, fps);
+    }
+
+    /// Returns whether image smoothing/antialiasing is enabled.
+    ///
+    /// @return whether antialiasing is enabled
+    public boolean isUseAntialiasing() {
+        return useAntialiasing;
+    }
+
+    /// Sets whether image smoothing/antialiasing is enabled.
+    ///
+    /// @param value whether antialiasing is enabled
+    public void setUseAntialiasing(boolean value) {
+        useAntialiasing = value;
+        redrawNow();
     }
 
     /// Returns whether the system clipboard contains text that can be pasted.
@@ -2230,9 +2371,34 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         }
     }
 
-    private void redraw() {
+    private void redrawNow() {
         searchUi.refreshResults();
         render();
+    }
+
+    private void redraw() {
+        searchUi.refreshResults();
+        if (maxRefreshRate <= 0) {
+            render();
+            return;
+        }
+        var now = System.nanoTime();
+        var interval = frameIntervalNanos();
+        if (now >= nextRenderNanos) {
+            nextRenderNanos = now + interval;
+            render();
+            return;
+        }
+        if (!renderScheduled) {
+            renderScheduled = true;
+            var delayMs = Math.max(1.0, (nextRenderNanos - now) / 1_000_000.0);
+            renderThrottle.setDuration(Duration.millis(delayMs));
+            renderThrottle.playFromStart();
+        }
+    }
+
+    private long frameIntervalNanos() {
+        return maxRefreshRate > 0 ? 1_000_000_000L / maxRefreshRate : 0L;
     }
 
     private void render() {
@@ -2246,8 +2412,11 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         }
         canvas.resize(width, height);
 
+        var graphics = canvas.getGraphicsContext2D();
+        graphics.setFontSmoothingType(FontSmoothingType.GRAY);
+        graphics.setImageSmoothing(useAntialiasing);
         blinkState = terminalSession.render(
-                canvas.getGraphicsContext2D(),
+                graphics,
                 width,
                 height,
                 fontMetrics.get(),

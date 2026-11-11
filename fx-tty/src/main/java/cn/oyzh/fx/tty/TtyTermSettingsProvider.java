@@ -68,4 +68,22 @@ public interface TtyTermSettingsProvider {
     default void setAltSendsEscape(boolean altSendsEscape) {
 
     }
+
+    /**
+     * 获取默认光标样式。
+     *
+     * @return 0=方块，1=下划线，2=竖线
+     */
+    default int getCursorStyle() {
+        return 0;
+    }
+
+    /**
+     * 是否解析终端中的超链接。
+     *
+     * @return 是否解析
+     */
+    default boolean isParseHyperlink() {
+        return true;
+    }
 }

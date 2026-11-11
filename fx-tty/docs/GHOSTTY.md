@@ -14,6 +14,8 @@ Ghostty 终端实现：使用 [libghostty-vt](https://github.com/ghostty-org/gho
   Kitty 图形协议、OSC 8/9/22/133/1337、语义提示符（semantic prompt）、进度上报等。
 - 完整 JavaFX 控件：`TerminalView` 继承 `AnchorPane`，支持字体、主题、光标闪烁、
   鼠标上报、滚轮、剪贴板、输入法、快捷键、搜索框、滚动条。
+- 超链接使用 `SettingsProvider.getHyperlinkColor()` 的颜色显示；Ctrl（macOS 为 Command）
+  + 鼠标左键才打开，普通点击只做选择。
 - Shell 集成：自动为 bash / zsh / fish / PowerShell / cmd 注入 Ghostty Shell Integration，
   支持提示符跳转、当前目录、标题、命令边界。
 - 多平台：Linux / macOS / Windows，x86_64 与 aarch64 共 6 个平台的本机库全部内置于
@@ -310,7 +312,29 @@ Ghostty 默认会用自己的主题背景填充整个 Canvas。为了让 EasyShe
 - 字体缩放：范围与 JediTerm 一致（增大上限 30，减小下限 10），并通过
   `TtyTermSettingsProvider.setTerminalFontSize` 持久化；重置回到打开终端时的初始字号。
 
-### 7.6 限制
+### 7.6 终端设置映射
+
+`TtyGhosttySettings.apply(...)` 在打开 Ghostty 会话时读取 easyshell 的终端设置：
+
+| 设置 | Ghostty 行为 |
+| --- | --- |
+| 终端字体、字号、粗细 | `TerminalView.setFont` |
+| 前景色、背景色、ANSI 调色板、选中/搜索/链接颜色 | `TerminalTheme` |
+| 最大行数 | 转为 scrollback 字节限制（约 1KB/行） |
+| 光标样式（方块/下划线/竖线） | `ghostty_terminal_set(default_cursor_style)` |
+| 光标闪烁间隔 | JavaFX 光标/文本闪烁时间线速率；关闭时停止闪烁 |
+| 刷新率 | `TerminalView.setMaxRefreshRate` 节流重绘 |
+| 蜂鸣 | 终端 bell 回调，按设置决定是否调用系统蜂鸣 |
+| 解析超链接 | 控制 URL/OSC 8 超链接的悬停、下划线和打开行为 |
+| 选中即复制 | 鼠标释放后复制选区到剪贴板，保留选区 |
+| 抗锯齿 | `GraphicsContext.setImageSmoothing` |
+| Alt 作为 Escape | Ghostty 键盘编码选项 |
+
+应用切换明暗主题时，`TtyTermWidget.changeTheme(...)` 会重新读取 provider 并应用 Ghostty 主题，
+因此搜索高亮、超链接颜色等会随主题变化；如果窗口背景图正在使用透明终端背景，会保留
+透明 alpha，并使用新主题的 RGB 更新缓存的原始主题。
+
+### 7.7 限制
 
 - 已经打开的会话不会在两种引擎之间热切换（两种引擎的屏幕状态无法无损迁移）；
   切换设置后打开新标签页即可使用新引擎。

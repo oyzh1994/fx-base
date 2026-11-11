@@ -26,6 +26,7 @@ import javafx.scene.paint.Color;
 /// @param matchedLinkUnderlineOpacity the opacity of matched link underlines when not hovered, from `0.0` to `1.0`
 /// @param osc8LinkUnderlineOpacity the opacity of OSC8 link underlines when not hovered, from `0.0` to `1.0`
 /// @param hoveredLinkUnderlineOpacity the opacity of link underlines while hovered, from `0.0` to `1.0`
+/// @param linkColor the foreground color used for hyperlink text
 public record TerminalTheme(
         Color background,
         Color foreground,
@@ -43,8 +44,10 @@ public record TerminalTheme(
         Color searchCurrentMatchBorderColor,
         double matchedLinkUnderlineOpacity,
         double osc8LinkUnderlineOpacity,
-        double hoveredLinkUnderlineOpacity) {
+        double hoveredLinkUnderlineOpacity,
+        Color linkColor) {
 
+    private static final Color DEFAULT_LINK_COLOR = Color.web("#3B8EEA");
     private static final double DEFAULT_MATCHED_LINK_UNDERLINE_OPACITY = 0.45;
     private static final double DEFAULT_OSC8_LINK_UNDERLINE_OPACITY = 0.45;
     private static final double DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY = 0.85;
@@ -81,7 +84,8 @@ public record TerminalTheme(
                 searchCurrentMatchBorderColor,
                 DEFAULT_MATCHED_LINK_UNDERLINE_OPACITY,
                 DEFAULT_OSC8_LINK_UNDERLINE_OPACITY,
-                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY);
+                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY,
+                DEFAULT_LINK_COLOR);
     }
 
     public TerminalTheme(
@@ -114,7 +118,8 @@ public record TerminalTheme(
                 searchCurrentMatchColor,
                 DEFAULT_MATCHED_LINK_UNDERLINE_OPACITY,
                 DEFAULT_OSC8_LINK_UNDERLINE_OPACITY,
-                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY);
+                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY,
+                DEFAULT_LINK_COLOR);
     }
 
     public TerminalTheme(
@@ -146,7 +151,47 @@ public record TerminalTheme(
                 searchCurrentMatchColor,
                 DEFAULT_MATCHED_LINK_UNDERLINE_OPACITY,
                 DEFAULT_OSC8_LINK_UNDERLINE_OPACITY,
-                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY);
+                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY,
+                DEFAULT_LINK_COLOR);
+    }
+
+    public TerminalTheme(
+            Color background,
+            Color foreground,
+            List<Color> palette,
+            Color cursorColor,
+            Color cursorText,
+            Color selectionColor,
+            Color selectionText,
+            double faintOpacity,
+            Color scrollbarColor,
+            Color scrollbarActiveColor,
+            Color searchMatchColor,
+            Color searchMatchBorderColor,
+            Color searchCurrentMatchColor,
+            Color searchCurrentMatchBorderColor,
+            double matchedLinkUnderlineOpacity,
+            double osc8LinkUnderlineOpacity,
+            double hoveredLinkUnderlineOpacity) {
+        this(
+                background,
+                foreground,
+                palette,
+                cursorColor,
+                cursorText,
+                selectionColor,
+                selectionText,
+                faintOpacity,
+                scrollbarColor,
+                scrollbarActiveColor,
+                searchMatchColor,
+                searchMatchBorderColor,
+                searchCurrentMatchColor,
+                searchCurrentMatchBorderColor,
+                matchedLinkUnderlineOpacity,
+                osc8LinkUnderlineOpacity,
+                hoveredLinkUnderlineOpacity,
+                DEFAULT_LINK_COLOR);
     }
 
     public TerminalTheme {
@@ -163,6 +208,7 @@ public record TerminalTheme(
         Objects.requireNonNull(searchMatchBorderColor, "searchMatchBorderColor");
         Objects.requireNonNull(searchCurrentMatchColor, "searchCurrentMatchColor");
         Objects.requireNonNull(searchCurrentMatchBorderColor, "searchCurrentMatchBorderColor");
+        Objects.requireNonNull(linkColor, "linkColor");
         if (!Double.isFinite(faintOpacity) || faintOpacity < 0.0 || faintOpacity > 1.0) {
             throw new IllegalArgumentException("faintOpacity must be between 0 and 1");
         }
@@ -209,7 +255,35 @@ public record TerminalTheme(
                 searchCurrentMatchBorderColor,
                 matchedLinkUnderlineOpacity,
                 osc8LinkUnderlineOpacity,
-                hoveredLinkUnderlineOpacity);
+                hoveredLinkUnderlineOpacity,
+                linkColor);
+    }
+
+    /// Returns a copy of this theme with a different hyperlink color.
+    ///
+    /// @param linkColor the new hyperlink text color
+    /// @return the copied theme
+    public TerminalTheme withLinkColor(Color linkColor) {
+        Objects.requireNonNull(linkColor, "linkColor");
+        return new TerminalTheme(
+                background,
+                foreground,
+                palette,
+                cursorColor,
+                cursorText,
+                selectionColor,
+                selectionText,
+                faintOpacity,
+                scrollbarColor,
+                scrollbarActiveColor,
+                searchMatchColor,
+                searchMatchBorderColor,
+                searchCurrentMatchColor,
+                searchCurrentMatchBorderColor,
+                matchedLinkUnderlineOpacity,
+                osc8LinkUnderlineOpacity,
+                hoveredLinkUnderlineOpacity,
+                linkColor);
     }
 
     /// Returns the default terminal theme.
@@ -236,6 +310,7 @@ public record TerminalTheme(
                 foreground,
                 DEFAULT_MATCHED_LINK_UNDERLINE_OPACITY,
                 DEFAULT_OSC8_LINK_UNDERLINE_OPACITY,
-                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY);
+                DEFAULT_HOVERED_LINK_UNDERLINE_OPACITY,
+                DEFAULT_LINK_COLOR);
     }
 }

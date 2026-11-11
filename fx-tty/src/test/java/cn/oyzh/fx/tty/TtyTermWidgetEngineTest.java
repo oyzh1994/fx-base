@@ -4,7 +4,10 @@ import com.jediterm.core.util.TermSize;
 import com.jediterm.terminal.TtyConnector;
 import com.jediterm.terminal.ui.FXTerminalActionPresentation;
 import com.jediterm.terminal.ui.TerminalActionPresentation;
+import com.jediterm.terminal.TextStyle;
+import com.jediterm.terminal.TerminalColor;
 import com.jediterm.terminal.ui.settings.FXDefaultSettingsProvider;
+import com.jediterm.terminal.ui.settings.SettingsProvider;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
@@ -18,6 +21,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import cn.oyzh.fx.plus.theme.ThemeManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -321,6 +326,75 @@ final class TtyTermWidgetEngineTest {
     }
 
     @Test
+    void ghosttyAppliesTerminalSettings() throws Exception {
+        var provider = new TestSettingsProvider();
+        provider.copyOnSelect = true;
+        provider.parseHyperlink = false;
+        provider.cursorStyle = 2;
+        provider.blinkMs = 250;
+        provider.useAntialiasing = false;
+        var widget = callOnFxThread(() -> new TestWidget(provider));
+        var connector = new BlockingConnector();
+        try {
+            callOnFxThread(() -> {
+                widget.setEngine(TtyTerminalEngine.GHOSTTY);
+                widget.openSession(connector);
+                return null;
+            });
+            var view = callOnFxThread(widget::getGhosttyView);
+            assertTrue(callOnFxThread(view::isCopyOnSelect));
+            assertFalse(callOnFxThread(view::isHyperlinksEnabled));
+            assertTrue(callOnFxThread(view::isCursorBlinking));
+            assertFalse(callOnFxThread(view::isUseAntialiasing));
+        } finally {
+            callOnFxThread(() -> {
+                widget.close();
+                return null;
+            });
+            connector.close();
+        }
+    }
+
+    @Test
+    void ghosttyThemeChangeReappliesProviderColors() throws Exception {
+        var provider = new TestSettingsProvider();
+        var widget = callOnFxThread(() -> new TestWidget(provider));
+        var connector = new BlockingConnector();
+        try {
+            callOnFxThread(() -> {
+                widget.setEngine(TtyTerminalEngine.GHOSTTY);
+                widget.openSession(connector);
+                return null;
+            });
+            var view = callOnFxThread(widget::getGhosttyView);
+            var before = callOnFxThread(() -> view.getTheme().searchMatchBorderColor());
+            callOnFxThread(() -> {
+                var theme = view.getTheme();
+                view.setTheme(theme.withBackground(new Color(
+                        theme.background().getRed(),
+                        theme.background().getGreen(),
+                        theme.background().getBlue(),
+                        0)));
+                return null;
+            });
+            provider.searchBorder = TerminalColor.rgb(0, 255, 0);
+            callOnFxThread(() -> {
+                widget.changeTheme(ThemeManager.currentTheme());
+                return null;
+            });
+            assertEquals(0.0, callOnFxThread(() -> view.getTheme().background().getOpacity()), 0.001);
+            var after = callOnFxThread(() -> view.getTheme().searchMatchBorderColor());
+            assertNotEquals(before, after);
+        } finally {
+            callOnFxThread(() -> {
+                widget.close();
+                return null;
+            });
+            connector.close();
+        }
+    }
+
+    @Test
     void opensJediTermSessionWhenSelected() throws Exception {
         var widget = callOnFxThread(TestWidget::new);
         var connector = new BlockingConnector();
@@ -351,7 +425,11 @@ final class TtyTermWidgetEngineTest {
     private static final class TestWidget extends TtyTermWidget {
 
         private TestWidget() {
-            super(new TestSettingsProvider());
+            this(new TestSettingsProvider());
+        }
+
+        private TestWidget(SettingsProvider provider) {
+            super(provider);
         }
 
         @Override
@@ -363,6 +441,12 @@ final class TtyTermWidgetEngineTest {
     private static final class TestSettingsProvider extends FXDefaultSettingsProvider implements TtyTermSettingsProvider {
 
         private float terminalFontSize = 14;
+        private boolean copyOnSelect;
+        private boolean parseHyperlink = true;
+        private int cursorStyle;
+        private int blinkMs = 500;
+        private boolean useAntialiasing = true;
+        private TerminalColor searchBorder = TerminalColor.rgb(255, 0, 0);
 
         @Override
         public TerminalActionPresentation getIncrTermSizePresentation() {
@@ -390,6 +474,36 @@ final class TtyTermWidgetEngineTest {
         @Override
         public float getTerminalFontSize() {
             return this.terminalFontSize;
+        }
+
+        @Override
+        public boolean copyOnSelect() {
+            return this.copyOnSelect;
+        }
+
+        @Override
+        public boolean isParseHyperlink() {
+            return this.parseHyperlink;
+        }
+
+        @Override
+        public int getCursorStyle() {
+            return this.cursorStyle;
+        }
+
+        @Override
+        public int caretBlinkingMs() {
+            return this.blinkMs;
+        }
+
+        @Override
+        public boolean useAntialiasing() {
+            return this.useAntialiasing;
+        }
+
+        @Override
+        public TextStyle getFoundPatternColor() {
+            return new TextStyle(this.searchBorder, TerminalColor.WHITE);
         }
     }
 

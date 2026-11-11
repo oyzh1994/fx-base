@@ -6,6 +6,7 @@ import com.pty4j.WinSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -45,6 +46,7 @@ import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
@@ -690,7 +692,7 @@ final class TerminalViewTest {
                 view.resize(view.getWidth(), 24.75 * cellHeight(view));
                 view.scrollViewportToTop();
                 smoothScroll(view, 0.75);
-                assertColor(Color.WHITE, pixelColor(view, cellX(view, 11, 0.5), cellY(view, 24, 0.5)));
+                assertColor(view.getTheme().linkColor(), pixelColor(view, cellX(view, 11, 0.5), cellY(view, 24, 0.5)));
                 moveToCell(view, 0, 24);
                 assertEquals(new TerminalLink.Osc8("https://example.test"), view.getHoveredLink());
                 return null;
@@ -1108,7 +1110,7 @@ final class TerminalViewTest {
             awaitText(view, "issue-123");
             runOnFxThread(() -> {
                 view.getLinkMatchers().add(new TerminalLinkMatcher(Pattern.compile("issue-(\\d+)"), match -> group.set(match.group(1))));
-                clickCell(view, 2, 0);
+                linkClickCell(view, 2, 0);
                 assertEquals("123", group.get());
                 return null;
             });
@@ -1165,6 +1167,60 @@ final class TerminalViewTest {
     }
 
     @Test
+    void disablingHyperlinksRemovesHoverAndUnderline() throws Exception {
+        try (var view = createView("\u001B]8;;https://example.test\u001B\\abc\u001B]8;;\u001B\\")) {
+            awaitText(view, "abc");
+            runOnFxThread(() -> {
+                moveToCell(view, 1, 0);
+                assertNotNull(view.getHoveredLink());
+                assertTrue(view.isHyperlinksEnabled());
+                assertTrue(cellHasLinkUnderline(view, 1, 0));
+
+                view.setHyperlinksEnabled(false);
+                assertNull(view.getHoveredLink());
+                assertFalse(cellHasLinkUnderline(view, 1, 0));
+
+                view.setHyperlinksEnabled(true);
+                moveToCell(view, 1, 0);
+                assertNotNull(view.getHoveredLink());
+                assertTrue(cellHasLinkUnderline(view, 1, 0));
+                return null;
+            });
+        }
+    }
+
+    @Test
+    void hyperlinksUseDistinctColorAndRequireMainModifierToOpen() throws Exception {
+        var output = "\u001B]8;;https://example.test\u001B\\abc\u001B]8;;\u001B\\";
+        var modifierClicks = new AtomicInteger();
+        try (var view = createView(output)) {
+            awaitText(view, "abc");
+            runOnFxThread(() -> {
+                view.setOsc8LinkAction(_ -> modifierClicks.incrementAndGet());
+                var theme = view.getTheme();
+                assertNotEquals(theme.foreground(), theme.linkColor(), "link color must differ from terminal foreground");
+
+                // Ctrl（macOS 为 Command）+ 左键才打开链接
+                linkClickCell(view, 1, 0);
+                assertEquals(1, modifierClicks.get());
+                return null;
+            });
+        }
+
+        var plainClicks = new AtomicInteger();
+        try (var view = createView(output)) {
+            awaitText(view, "abc");
+            runOnFxThread(() -> {
+                view.setOsc8LinkAction(_ -> plainClicks.incrementAndGet());
+                // 普通左键只做选择/普通点击，不打开链接
+                clickCell(view, 1, 0);
+                assertEquals(0, plainClicks.get());
+                return null;
+            });
+        }
+    }
+
+    @Test
     void customLinkMatchersUseUserOrder() throws Exception {
         var clicks = new AtomicReference<String>();
         try (var view = createView("abc")) {
@@ -1172,7 +1228,7 @@ final class TerminalViewTest {
             runOnFxThread(() -> {
                 view.getLinkMatchers().add(new TerminalLinkMatcher(Pattern.compile("ab"), _ -> clicks.set("first")));
                 view.getLinkMatchers().add(new TerminalLinkMatcher(Pattern.compile("bc"), _ -> clicks.set("second")));
-                clickCell(view, 1, 0);
+                linkClickCell(view, 1, 0);
                 assertEquals("first", clicks.get());
                 return null;
             });
@@ -1187,7 +1243,7 @@ final class TerminalViewTest {
             awaitText(view, "XY");
             runOnFxThread(() -> {
                 view.getLinkMatchers().add(new TerminalLinkMatcher(Pattern.compile("XY"), match -> clicks.set(match.group())));
-                clickCell(view, 79, 0);
+                linkClickCell(view, 79, 0);
                 assertEquals("XY", clicks.get());
                 return null;
             });
@@ -1422,7 +1478,7 @@ final class TerminalViewTest {
                 view.getLinkMatchers().add(new TerminalLinkMatcher(Pattern.compile("issue-(\\d+)"), _ -> clicks.incrementAndGet()));
                 moveToCell(view, 5, 0);
                 assertSame(Cursor.HAND, view.getCursor());
-                clickCell(view, 5, 0);
+                linkClickCell(view, 5, 0);
                 assertEquals(1, clicks.get());
                 return null;
             });
@@ -1436,6 +1492,27 @@ final class TerminalViewTest {
             runOnFxThread(() -> {
                 clickCell(view, 1, 0, 2);
                 assertEquals("alpha", view.getInputMethodRequests().getSelectedText());
+                return null;
+            });
+        }
+    }
+
+    @Test
+    void copyOnSelectCopiesWithoutClearingSelection() throws Exception {
+        var clipboardContents = runOnFxThread(TerminalViewTest::snapshotClipboardContents);
+        try (var view = createView("alpha beta")) {
+            awaitText(view, "alpha beta");
+            runOnFxThread(() -> {
+                attachToScene(view);
+                view.setCopyOnSelect(true);
+                dragSelection(view, 0, 4);
+                assertEquals("alpha", Clipboard.getSystemClipboard().getString());
+                assertEquals("alpha", view.getInputMethodRequests().getSelectedText());
+                return null;
+            });
+        } finally {
+            runOnFxThread(() -> {
+                restoreClipboardContents(clipboardContents);
                 return null;
             });
         }
@@ -3196,6 +3273,27 @@ final class TerminalViewTest {
             Event.fireEvent(view, mouseEvent(MouseEvent.MOUSE_PRESSED, x, y, true, i));
             Event.fireEvent(view, mouseEvent(MouseEvent.MOUSE_RELEASED, x, y, false, i));
         }
+    }
+
+    private static void linkClickCell(TerminalView view, int column, int row) {
+        var x = cellX(view, column, 0.5);
+        var y = cellY(view, row, 0.5);
+        Event.fireEvent(view, new MouseEvent(
+                MouseEvent.MOUSE_PRESSED,
+                x, y, x, y,
+                MouseButton.PRIMARY,
+                1,
+                false, true, false, true,
+                true, false, false,
+                false, false, false, null));
+        Event.fireEvent(view, new MouseEvent(
+                MouseEvent.MOUSE_RELEASED,
+                x, y, x, y,
+                MouseButton.PRIMARY,
+                1,
+                false, true, false, true,
+                false, false, false,
+                false, false, false, null));
     }
 
     private static void moveToCell(TerminalView view, int column, int row) {

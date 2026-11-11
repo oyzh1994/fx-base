@@ -2,6 +2,7 @@ package cn.oyzh.fx.tty;
 
 import cn.oyzh.common.system.SystemUtil;
 import cn.oyzh.fx.plus.menu.ContextMenuManager;
+import cn.oyzh.fx.plus.theme.ThemeStyle;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.i18n.I18nHelper;
 import cn.oyzh.fx.tty.ghostty.TerminalShortcut;
@@ -550,6 +551,21 @@ public abstract class TtyTermWidget extends FXJediTermWidget {
             item.withMnemonicKey(mnemonicKey);
         }
         actions.add(item);
+    }
+
+    @Override
+    public void changeTheme(ThemeStyle style) {
+        super.changeTheme(style);
+        var view = this.ghosttyView;
+        if (view != null) {
+            try {
+                // JediTerm 在主题切换时会重绘并重新读取 provider 的搜索/链接等颜色；
+                // Ghostty 需要重新应用主题，否则会一直保留打开会话时的颜色。
+                TtyGhosttySettings.apply(view, this.getSettingsProvider());
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
