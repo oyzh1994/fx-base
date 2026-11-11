@@ -432,7 +432,9 @@ public interface NodeAdapter extends EventTarget {
     default void removeClass(String styleClass) {
         if (styleClass != null) {
             if (this instanceof Node node) {
-                node.getStyleClass().remove(styleClass);
+                if (node.getStyleClass() != null) {
+                    node.getStyleClass().remove(styleClass);
+                }
             }
         }
     }
