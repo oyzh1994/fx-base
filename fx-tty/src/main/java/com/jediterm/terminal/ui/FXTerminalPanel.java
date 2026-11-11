@@ -342,6 +342,8 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         this.canvas.setOnInputMethodTextChanged(this::processInputMethodEvent);
 
         this.scrollBar = scrollBar;
+        // 默认只保留右侧槽位用于搜索标记，不显示滚动条本身。
+        this.scrollBar.setVisible(false);
         this.scrollBar.valueProperty().addListener((observableValue, number, t1) -> {
             if (t1.doubleValue() == this.scrollBar.getMax()) {
                 this.disableAutoScroll.set(false);
@@ -725,31 +727,47 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     /**
+     * 是否显示滚动条。默认隐藏，仅保留右侧搜索标记槽位。
+     *
+     * @return 是否显示
+     */
+    public boolean isScrollBarVisible() {
+        return this.scrollBar != null && this.scrollBar.isVisible();
+    }
+
+    /**
+     * 设置滚动条是否显示。
+     *
+     * @param visible 是否显示
+     */
+    public void setScrollBarVisible(boolean visible) {
+        if (this.scrollBar == null) {
+            return;
+        }
+        this.scrollBar.setVisible(visible);
+        this.updateFindResultScrollBar();
+    }
+
+    /**
      * 将命中标记覆盖层对齐到滚动条，并按照当前查找结果重绘。
      */
     private void layoutFindResultScrollBar() {
         if (this.scrollBar == null) {
             return;
         }
-        Bounds bounds = this.scrollBar.getBoundsInParent();
-        double width = bounds.getWidth();
-        double height = bounds.getHeight();
-        if (width <= 0 || height <= 0) {
+        // 标记覆盖层固定在面板右侧预留槽位，不依赖滚动条是否可见或是否可滚动。
+        double gutterWidth = this.scrollBar.getWidth() > 0 ? this.scrollBar.getWidth() : 8;
+        gutterWidth = Math.min(gutterWidth, this.getWidth());
+        double height = this.getHeight();
+        if (gutterWidth <= 0 || height <= 0) {
             this.clearFindResultScrollBar();
             return;
         }
-        if (this.myFindResultScrollBar.getLayoutX() != bounds.getMinX()) {
-            this.myFindResultScrollBar.setLayoutX(bounds.getMinX());
-        }
-        if (this.myFindResultScrollBar.getLayoutY() != bounds.getMinY()) {
-            this.myFindResultScrollBar.setLayoutY(bounds.getMinY());
-        }
-        if (this.myFindResultScrollBar.getWidth() != width) {
-            this.myFindResultScrollBar.setWidth(width);
-        }
-        if (this.myFindResultScrollBar.getHeight() != height) {
-            this.myFindResultScrollBar.setHeight(height);
-        }
+        double x = Math.max(0, this.getWidth() - gutterWidth);
+        this.myFindResultScrollBar.setLayoutX(x);
+        this.myFindResultScrollBar.setLayoutY(0);
+        this.myFindResultScrollBar.setWidth(gutterWidth);
+        this.myFindResultScrollBar.setHeight(height);
         this.paintFindResultScrollBar();
     }
 
@@ -2736,6 +2754,9 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
         this.scrollBar.setVisibleAmount(extent);
         this.scrollBar.setMin(min);
         this.scrollBar.setMax(max);
+        // 与 Ghostty 一致：内容超过一屏（存在历史行）时才显示滚动条。
+        this.scrollBar.setVisible(max - min > extent);
+        this.updateFindResultScrollBar();
         // TODO: 取消自动滚动，则手动更新滚动条的值
         if (this.disableAutoScroll.get()) {
             this.moveScrollBar(min - this.lastScrollValue.doubleValue());

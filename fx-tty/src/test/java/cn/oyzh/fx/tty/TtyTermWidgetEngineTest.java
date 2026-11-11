@@ -407,6 +407,7 @@ final class TtyTermWidgetEngineTest {
             assertFalse(callOnFxThread(widget::isGhosttyActive));
             assertTrue(callOnFxThread(widget::isSessionRunning));
             assertEquals(connector, callOnFxThread(widget::getTtyConnector));
+            assertFalse(callOnFxThread(() -> widget.getTerminalPanel().isScrollBarVisible()));
         } finally {
             callOnFxThread(() -> {
                 widget.close();
