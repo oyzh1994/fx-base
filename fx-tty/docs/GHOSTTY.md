@@ -307,7 +307,8 @@ Ghostty 默认会用自己的主题背景填充整个 Canvas。为了让 EasyShe
 `TtyTermWidget` 会为 Ghostty 视图安装与 JediTerm 相同的终端动作：
 
 - 搜索：搜索栏结构与 JediTerm 对齐（输入框、`n of N` 匹配计数、上一个/下一个、关闭按钮），
-  使用 `SettingsProvider.getFindActionPresentation()` 的快捷键，右键菜单提供“查找”；
+  右侧预留槽位会为全部命中绘制标记，不依赖滚动条是否显示；使用 `SettingsProvider.getFindActionPresentation()` 的快捷键，
+  右键菜单提供“查找”；
 - 右键菜单：打开 URL、复制、粘贴、全选、清屏、向上/向下翻页、查找、字体增大/减小/重置；
 - 字体缩放：范围与 JediTerm 一致（增大上限 30，减小下限 10），并通过
   `TtyTermSettingsProvider.setTerminalFontSize` 持久化；重置回到打开终端时的初始字号。

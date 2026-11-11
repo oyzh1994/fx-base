@@ -1218,6 +1218,122 @@ final class TerminalViewTest {
     }
 
     @Test
+    void searchResultsDrawScrollbarMarkersForAllMatches() throws Exception {
+        var output = new StringBuilder();
+        for (var i = 0; i < 120; i++) {
+            if (i > 0) {
+                output.append("\r\n");
+            }
+            output.append(i == 50 ? "needle-marker" : "line-" + i);
+        }
+        output.append("\u001B]2;markers-ready\u001B\\");
+        try (var view = createView(output.toString())) {
+            awaitTitle(view, "markers-ready");
+            runOnFxThread(() -> {
+                var theme = view.getTheme();
+                view.setTheme(new TerminalTheme(
+                        theme.background(),
+                        theme.foreground(),
+                        theme.palette(),
+                        theme.cursorColor(),
+                        theme.cursorText(),
+                        theme.selectionColor(),
+                        theme.selectionText(),
+                        theme.faintOpacity(),
+                        theme.scrollbarColor(),
+                        theme.scrollbarActiveColor(),
+                        Color.RED,
+                        Color.RED,
+                        Color.RED,
+                        Color.RED,
+                        theme.matchedLinkUnderlineOpacity(),
+                        theme.osc8LinkUnderlineOpacity(),
+                        theme.hoveredLinkUnderlineOpacity()));
+                attachToScene(view);
+                view.openSearch();
+                ((TextField) view.lookup("#ghosttyfx-search-field")).setText("needle-marker");
+                return null;
+            });
+            await("search matches", START_TIMEOUT, () -> runOnFxThread(() ->
+                    view.searchMatchCount() == 1 ? Optional.of(Boolean.TRUE) : Optional.empty()));
+            runOnFxThread(() -> {
+                attachToScene(view);
+                var width = (int) Math.ceil(view.getWidth());
+                var height = (int) Math.ceil(view.getHeight());
+                view.resize(width, height);
+                view.applyCss();
+                view.layout();
+                var snapshot = new WritableImage(width, height);
+                view.snapshot(null, snapshot);
+                var reader = snapshot.getPixelReader();
+                var redPixels = 0;
+                for (var x = Math.max(0, width - 10); x < width; x++) {
+                    for (var y = 0; y < height; y++) {
+                        var color = reader.getColor(x, y);
+                        if (color.getRed() > 0.9 && color.getGreen() < 0.1 && color.getBlue() < 0.1) {
+                            redPixels++;
+                        }
+                    }
+                }
+                assertTrue(redPixels > 0, "search result should have a marker on the right scrollbar");
+                return null;
+            });
+        }
+    }
+
+    @Test
+    void searchResultsDrawMarkersWithoutScrollbar() throws Exception {
+        try (var view = createView("alpha\r\nneedle-marker\r\nomega\u001B]2;markers-no-scrollbar\u001B\\")) {
+            awaitTitle(view, "markers-no-scrollbar");
+            runOnFxThread(() -> {
+                var theme = view.getTheme();
+                view.setTheme(new TerminalTheme(
+                        theme.background(),
+                        theme.foreground(),
+                        theme.palette(),
+                        theme.cursorColor(),
+                        theme.cursorText(),
+                        theme.selectionColor(),
+                        theme.selectionText(),
+                        theme.faintOpacity(),
+                        theme.scrollbarColor(),
+                        theme.scrollbarActiveColor(),
+                        Color.RED,
+                        Color.RED,
+                        Color.RED,
+                        Color.RED,
+                        theme.matchedLinkUnderlineOpacity(),
+                        theme.osc8LinkUnderlineOpacity(),
+                        theme.hoveredLinkUnderlineOpacity()));
+                attachToScene(view);
+                view.openSearch();
+                ((TextField) view.lookup("#ghosttyfx-search-field")).setText("needle-marker");
+                return null;
+            });
+            await("search matches", START_TIMEOUT, () -> runOnFxThread(() ->
+                    view.searchMatchCount() == 1 ? Optional.of(Boolean.TRUE) : Optional.empty()));
+            runOnFxThread(() -> {
+                var width = (int) Math.ceil(view.getWidth());
+                var height = (int) Math.ceil(view.getHeight());
+                var snapshot = new WritableImage(width, height);
+                view.snapshot(null, snapshot);
+                var reader = snapshot.getPixelReader();
+                var redPixels = 0;
+                for (var x = Math.max(0, width - 10); x < width; x++) {
+                    for (var y = 0; y < height; y++) {
+                        var color = reader.getColor(x, y);
+                        if (color.getRed() > 0.9 && color.getGreen() < 0.1 && color.getBlue() < 0.1) {
+                            redPixels++;
+                        }
+                    }
+                }
+                assertTrue(redPixels > 0, "search result marker should be visible without a scrollbar");
+                return null;
+            });
+        }
+    }
+
+    @Test
     void hyperlinksUseDistinctColorAndRequireMainModifierToOpen() throws Exception {
         var output = "\u001B]8;;https://example.test\u001B\\abc\u001B]8;;\u001B\\";
         var modifierClicks = new AtomicInteger();

@@ -1436,23 +1436,7 @@ final class TerminalSession implements AutoCloseable {
                 requireGhosttySuccess(ghostty_vt_h.ghostty_search_get(search, ghostty_vt_h.GHOSTTY_SEARCH_DATA_SELECTED_MATCH(), match), "ghostty_search_get(selected_match)");
                 selectedMatch = searchSelection(match, arena);
             }
-            var buffer = GhosttySelectionBuffer.allocate(arena);
-            var capacityResult = ghostty_vt_h.ghostty_search_get(search, ghostty_vt_h.GHOSTTY_SEARCH_DATA_VIEWPORT_MATCHES(), buffer);
-            if (capacityResult != ghostty_vt_h.GHOSTTY_OUT_OF_SPACE()) {
-                requireGhosttySuccess(capacityResult, "ghostty_search_get(viewport_matches capacity)");
-            }
-            var capacity = GhosttySelectionBuffer.len(buffer);
-            var storage = GhosttySelection.allocateArray(capacity, arena);
-            GhosttySelectionBuffer.ptr(buffer, storage);
-            GhosttySelectionBuffer.cap(buffer, capacity);
-            requireGhosttySuccess(ghostty_vt_h.ghostty_search_get(search, ghostty_vt_h.GHOSTTY_SEARCH_DATA_VIEWPORT_MATCHES(), buffer), "ghostty_search_get(viewport_matches)");
-            var matches = new ArrayList<Selection>();
-            for (var i = 0; i < GhosttySelectionBuffer.len(buffer); i++) {
-                var match = searchSelection(storage.asSlice(i * GhosttySelection.sizeof(), GhosttySelection.sizeof()), arena);
-                if (!match.isEmpty()) {
-                    matches.add(match);
-                }
-            }
+            var matches = searchMatches(ghostty_vt_h.GHOSTTY_SEARCH_DATA_VIEWPORT_MATCHES(), arena);
             // Give the selected match priority where highlights overlap.
             var highlightedMatch = matches.indexOf(selectedMatch);
             if (highlightedMatch >= 0) {
@@ -1460,11 +1444,40 @@ final class TerminalSession implements AutoCloseable {
                 matches.addFirst(selectedMatch);
                 highlightedMatch = 0;
             }
+            var markerRows = new ArrayList<Integer>();
+            for (var match : searchMatches(ghostty_vt_h.GHOSTTY_SEARCH_DATA_MATCHES(), arena)) {
+                if (!match.isEmpty()) {
+                    markerRows.add(match.normalized().from().y());
+                }
+            }
             var status = arena.allocate(ValueLayout.JAVA_INT);
             requireGhosttySuccess(ghostty_vt_h.ghostty_search_get(search, ghostty_vt_h.GHOSTTY_SEARCH_DATA_STATUS(), status), "ghostty_search_get(status)");
-            return new SearchSnapshot(SearchResult.append(SearchResult.empty(), matches, columnCount()), highlightedMatch, selected,
-                    Math.toIntExact(total.get(ValueLayout.JAVA_LONG, 0)), status.get(ValueLayout.JAVA_INT, 0) == ghostty_vt_h.GHOSTTY_SEARCH_STATUS_COMPLETE());
+            return new SearchSnapshot(SearchResult.append(SearchResult.empty(), matches, columnCount(), markerRows),
+                    highlightedMatch, selected,
+                    Math.toIntExact(total.get(ValueLayout.JAVA_LONG, 0)),
+                    status.get(ValueLayout.JAVA_INT, 0) == ghostty_vt_h.GHOSTTY_SEARCH_STATUS_COMPLETE());
         }
+    }
+
+    private ArrayList<Selection> searchMatches(int data, Arena arena) {
+        var buffer = GhosttySelectionBuffer.allocate(arena);
+        var capacityResult = ghostty_vt_h.ghostty_search_get(search, data, buffer);
+        if (capacityResult != ghostty_vt_h.GHOSTTY_OUT_OF_SPACE()) {
+            requireGhosttySuccess(capacityResult, "ghostty_search_get(matches capacity)");
+        }
+        var capacity = GhosttySelectionBuffer.len(buffer);
+        var storage = GhosttySelection.allocateArray(capacity, arena);
+        GhosttySelectionBuffer.ptr(buffer, storage);
+        GhosttySelectionBuffer.cap(buffer, capacity);
+        requireGhosttySuccess(ghostty_vt_h.ghostty_search_get(search, data, buffer), "ghostty_search_get(matches)");
+        var matches = new ArrayList<Selection>();
+        for (var i = 0; i < GhosttySelectionBuffer.len(buffer); i++) {
+            var match = searchSelection(storage.asSlice(i * GhosttySelection.sizeof(), GhosttySelection.sizeof()), arena);
+            if (!match.isEmpty()) {
+                matches.add(match);
+            }
+        }
+        return matches;
     }
 
     private Selection searchSelection(MemorySegment match, Arena arena) {
@@ -2692,6 +2705,8 @@ final class TerminalSession implements AutoCloseable {
                         TerminalView.SCROLLBAR_ARC_PX,
                         TerminalView.SCROLLBAR_ARC_PX);
             }
+            drawSearchResultMarkers(graphics, theme, searchResult, scrollbarInfo,
+                    width, height, scrollbarReservedWidthPx);
             return new BlinkState(hasCursorBlink, hasTextBlink);
         }
     }
@@ -3192,6 +3207,36 @@ final class TerminalSession implements AutoCloseable {
         return point.y() != to.y() || point.x() <= to.x();
     }
 
+    /// Draws search hit markers on the right-side scrollbar, matching JediTerm's find result overlay.
+    private void drawSearchResultMarkers(
+            GraphicsContext graphics,
+            TerminalTheme theme,
+            SearchResult searchResult,
+            ScrollbarInfo scrollbar,
+            double width,
+            double height,
+            double scrollbarReservedWidthPx) {
+        if (searchResult.markerRows().isEmpty() || width <= 0 || height <= 0) {
+            return;
+        }
+        // 搜索标记不依赖滚动条是否显示；没有滚动条时也使用右侧预留槽位绘制。
+        var total = scrollbar != null ? scrollbar.total() : totalRowCount();
+        var trackHeight = scrollbar != null ? scrollbar.height() : height;
+        var gutterLeft = scrollbar != null
+                ? scrollbar.gutterLeft()
+                : Math.max(0, width - scrollbarReservedWidthPx);
+        if (total <= 0 || trackHeight <= 0 || gutterLeft >= width) {
+            return;
+        }
+        var markerHeight = Math.max(2.0, trackHeight / total);
+        var markerWidth = Math.max(1.0, Math.min(TerminalView.SCROLLBAR_WIDTH_PX, width - gutterLeft));
+        graphics.setFill(theme.searchMatchColor());
+        for (var row : searchResult.markerRows()) {
+            var markerY = Math.clamp(trackHeight * row / total, 0.0, Math.max(0.0, trackHeight - markerHeight));
+            graphics.fillRect(gutterLeft, markerY, markerWidth, markerHeight);
+        }
+    }
+
     private static void drawSearchHighlightBackground(
             GraphicsContext graphics,
             double x,
@@ -3477,16 +3522,21 @@ final class TerminalSession implements AutoCloseable {
         }
     }
 
-    record SearchResult(List<Selection> matches, Map<Integer, List<SearchSpan>> rows) {
+    record SearchResult(List<Selection> matches, Map<Integer, List<SearchSpan>> rows, List<Integer> markerRows) {
 
-        private static final SearchResult EMPTY = new SearchResult(List.of(), Map.of());
+        private static final SearchResult EMPTY = new SearchResult(List.of(), Map.of(), List.of());
 
         static SearchResult empty() {
             return EMPTY;
         }
 
         static SearchResult append(SearchResult result, List<Selection> matches, int columns) {
-            if (matches.isEmpty()) {
+            return append(result, matches, columns, List.of());
+        }
+
+        static SearchResult append(SearchResult result, List<Selection> matches, int columns,
+                                   List<Integer> markerRows) {
+            if (matches.isEmpty() && markerRows.isEmpty()) {
                 return result;
             }
 
@@ -3499,7 +3549,7 @@ final class TerminalSession implements AutoCloseable {
             var firstMatchIndex = allMatches.size();
             allMatches.addAll(matches);
             appendRows(rows, matches, firstMatchIndex, columns);
-            return new SearchResult(allMatches, rows);
+            return new SearchResult(allMatches, rows, List.copyOf(markerRows));
         }
 
         private static void appendRows(
