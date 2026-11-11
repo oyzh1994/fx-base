@@ -86,6 +86,42 @@ public class TtyZModemTtyConnectorTest {
     }
 
     @Test(timeout = 5000)
+    public void detectsFrameHeaderDelayedAfterPrefix() throws Exception {
+        byte[] frame = {'*', '*', (byte) ZModemCharacter.ZDLE.value(), 'B', '0', '0'};
+        AtomicReference<byte[]> detectedFrame = new AtomicReference<>();
+        InputStream input = new InputStream() {
+            private int index;
+
+            @Override
+            public int read() throws IOException {
+                if (this.index >= frame.length) {
+                    return -1;
+                }
+                if (this.index == 3) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException(e);
+                    }
+                }
+                return frame[this.index++] & 0xFF;
+            }
+
+            @Override
+            public int available() {
+                return this.index < 3 ? frame.length - this.index : 0;
+            }
+        };
+        TtyZModemDetectingInputStream stream = new TtyZModemDetectingInputStream(input, detectedFrame::set);
+
+        while (stream.read() >= 0) {
+        }
+
+        assertArrayEquals(frame, detectedFrame.get());
+    }
+
+    @Test(timeout = 5000)
     public void ignoresTerminalInputDuringTransfer() throws Exception {
         byte[] frame = {'*', '*', (byte) ZModemCharacter.ZDLE.value(), 'B', '0', '1'};
         AtomicBoolean cancelled = new AtomicBoolean(false);

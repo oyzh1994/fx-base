@@ -33,9 +33,6 @@ public class TtyZModemDetectingInputStream extends InputStream {
     /** 等待潜在前缀后续字节的最长时间 */
     private static final long PREFIX_LOOKAHEAD_MILLIS = 20;
 
-    /** 等待潜在帧头后续字节的最长时间 */
-    private static final long FRAME_HEADER_LOOKAHEAD_MILLIS = 100;
-
     /** ZModem帧头长度 */
     private static final int FRAME_HEADER_LENGTH = 6;
 
@@ -99,10 +96,6 @@ public class TtyZModemDetectingInputStream extends InputStream {
         while (true) {
             int matched = this.matchPrefix();
             if (matched == PREFIX.length) {
-                if (!this.waitForAvailable(FRAME_HEADER_LENGTH - this.pending.size(),
-                        FRAME_HEADER_LOOKAHEAD_MILLIS)) {
-                    return this.pending.removeFirst();
-                }
                 byte[] frame = this.readFrameHeader();
                 // 只有合法的 ZRQINIT/ZRINIT 才启动传输。否则把候选字节还给终端，
                 // 避免文件内容或提示符中偶然出现的 "* * ZDLE" 被误判成新的 rz/sz。

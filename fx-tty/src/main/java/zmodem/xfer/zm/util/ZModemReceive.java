@@ -248,13 +248,7 @@ public class ZModemReceive {
                                 break;
                             }
                             decodeFileNameData(data);
-                            if (file.exists() && file.length() == filesize) {
-                                os.write(new Header(Format.HEX, ZModemCharacter.ZSKIP));
-                                adapter.bytesTransferred(new FileCopyStreamEvent(this, file.getName(), remaining, index,
-                                        this.filesize, fOffset, 0, true));
-                            } else {
-                                os.write(new Header(Format.HEX, ZModemCharacter.ZRPOS, (int) file.length()));
-                            }
+                            os.write(new Header(Format.HEX, ZModemCharacter.ZRPOS, 0));
                             expect = Expect.NOTHING;
                             break;
                         case DATA:

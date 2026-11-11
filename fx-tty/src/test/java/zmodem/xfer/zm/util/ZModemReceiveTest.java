@@ -74,6 +74,39 @@ public class ZModemReceiveTest {
         Files.deleteIfExists(dir);
     }
 
+    @Test
+    public void sameSizeFileIsOverwrittenInsteadOfSkipped() throws Exception {
+        Path dir = Files.createTempDirectory("zmodem-receive-overwrite-");
+        Path received = dir.resolve("test.bin");
+        Files.write(received, new byte[]{1, 2, 3});
+
+        byte[] namePacket = "test.bin\0".getBytes(StandardCharsets.UTF_8);
+        byte[] metadata = "3 0 0 0 0 0".getBytes(StandardCharsets.UTF_8);
+        byte[] filePacket = new byte[namePacket.length + metadata.length];
+        System.arraycopy(namePacket, 0, filePacket, 0, namePacket.length);
+        System.arraycopy(metadata, 0, filePacket, namePacket.length, metadata.length);
+
+        ByteArrayInputStream input = new ByteArrayInputStream(concat(
+                packetBytes(new Header(Format.HEX, ZModemCharacter.ZRQINIT, new byte[]{0, 0, 0, 0})),
+                packetBytes(new Header(Format.HEX, ZModemCharacter.ZFILE, new byte[]{0, 0, 0, 0})),
+                packetBytes(new DataPacket(ZModemCharacter.ZCRCW, filePacket)),
+                packetBytes(new Header(Format.HEX, ZModemCharacter.ZDATA, 0)),
+                packetBytes(new DataPacket(ZModemCharacter.ZCRCW, new byte[]{9, 8, 7})),
+                packetBytes(new Header(Format.HEX, ZModemCharacter.ZEOF, 3)),
+                packetBytes(new Header(Format.HEX, ZModemCharacter.ZFIN))));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ZModemReceive receiver = new ZModemReceive(() -> new CustomFile(dir.toFile()), input, output);
+
+        receiver.receive(() -> false);
+
+        assertArrayEquals(new byte[]{9, 8, 7}, Files.readAllBytes(received));
+        String response = output.toString(StandardCharsets.ISO_8859_1);
+        assertTrue(response.contains("0900000000"));
+        assertTrue(!response.contains("0500000000"));
+        Files.deleteIfExists(received);
+        Files.deleteIfExists(dir);
+    }
+
     private static byte[] packetBytes(zmodem.xfer.zm.util.ZMPacket packet) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         new ZMPacketOutputStream(output).write(packet);
