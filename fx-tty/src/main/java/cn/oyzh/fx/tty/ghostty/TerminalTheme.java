@@ -184,6 +184,34 @@ public record TerminalTheme(
         }
     }
 
+    /// Returns a copy of this theme with a different default background color.
+    ///
+    /// The background color may be transparent so an application background can show through.
+    ///
+    /// @param background the new default background color
+    /// @return the copied theme
+    public TerminalTheme withBackground(Color background) {
+        Objects.requireNonNull(background, "background");
+        return new TerminalTheme(
+                background,
+                foreground,
+                palette,
+                cursorColor,
+                cursorText,
+                selectionColor,
+                selectionText,
+                faintOpacity,
+                scrollbarColor,
+                scrollbarActiveColor,
+                searchMatchColor,
+                searchMatchBorderColor,
+                searchCurrentMatchColor,
+                searchCurrentMatchBorderColor,
+                matchedLinkUnderlineOpacity,
+                osc8LinkUnderlineOpacity,
+                hoveredLinkUnderlineOpacity);
+    }
+
     /// Returns the default terminal theme.
     ///
     /// @return the default terminal theme

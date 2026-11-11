@@ -286,7 +286,14 @@ easyshell 在“设置 → 终端 → 终端引擎”中提供 `JediTerm / Ghost
 因此 Ghostty 视图的 `prefWidth/prefHeight` 会绑定到 `TtyTermWidget` 的宽高，并在关闭时解绑，
 保证布局与终端尺寸稳定。
 
-### 7.4 限制
+### 7.4 背景透明
+
+Ghostty 默认会用自己的主题背景填充整个 Canvas。为了让 EasyShell 的窗口背景图透出，
+`ShellWindowBackgroundManager` 会把 Ghostty 主题的默认背景 alpha 置 0，并清除宿主
+`TtyTermWidget`/`TerminalView` 的底色；关闭背景图时恢复原始主题。ANSI 背景色、
+选中背景和光标颜色保持不透明，行为与 JediTerm 的 `backgroundOpacity=0` 一致。
+
+### 7.5 限制
 
 - 已经打开的会话不会在两种引擎之间热切换（两种引擎的屏幕状态无法无损迁移）；
   切换设置后打开新标签页即可使用新引擎。

@@ -2302,9 +2302,17 @@ final class TerminalSession implements AutoCloseable {
                             colors),
                     "ghostty_render_state_get(colors)");
 
-            var defaultBackground = toFxColor(GhosttyRenderStateColors.background(colors));
-            graphics.setFill(defaultBackground);
-            graphics.fillRect(0, 0, width, height);
+            // 背景可能需要透明以透出宿主窗口的背景图。Canvas 必须先清除上一帧，
+            // 否则从“不透明背景”切到“透明背景”时旧像素会残留。
+            var themeBackground = theme.background();
+            var defaultBackground = themeBackground.getOpacity() < 1
+                    ? themeBackground
+                    : toFxColor(GhosttyRenderStateColors.background(colors));
+            graphics.clearRect(0, 0, width, height);
+            if (defaultBackground.getOpacity() > 0) {
+                graphics.setFill(defaultBackground);
+                graphics.fillRect(0, 0, width, height);
+            }
 
             var kittyPlacements = kittyPlacements(arena, width, height, metrics);
             drawKittyPlacements(graphics, kittyPlacements, Long.MIN_VALUE, KITTY_BELOW_BACKGROUND_Z);

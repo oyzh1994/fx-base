@@ -5,6 +5,8 @@ import com.jediterm.terminal.TtyConnector;
 import com.jediterm.terminal.ui.settings.FXDefaultSettingsProvider;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -92,6 +94,21 @@ final class TtyTermWidgetEngineTest {
             assertEquals(width, callOnFxThread(view::getWidth), 0.5);
             assertEquals(height, callOnFxThread(view::getHeight), 0.5);
             assertEquals(terminalSize, callOnFxThread(view::getTerminalSize));
+
+            // 透明背景：宿主窗口背景图应当可以从 Ghostty 空白区域透出
+            var backgroundAlpha = callOnFxThread(() -> {
+                var theme = view.getTheme();
+                var background = theme.background();
+                view.setTheme(theme.withBackground(new Color(
+                        background.getRed(), background.getGreen(), background.getBlue(), 0)));
+                var parameters = new SnapshotParameters();
+                parameters.setFill(Color.TRANSPARENT);
+                var image = view.snapshot(parameters, null);
+                return image.getPixelReader()
+                        .getColor((int) image.getWidth() - 10, (int) image.getHeight() - 10)
+                        .getOpacity();
+            });
+            assertEquals(0.0, backgroundAlpha, 0.01);
         } finally {
             callOnFxThread(() -> {
                 widget.close();
