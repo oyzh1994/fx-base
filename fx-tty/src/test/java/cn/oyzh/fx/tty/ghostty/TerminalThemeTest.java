@@ -1,0 +1,228 @@
+package cn.oyzh.fx.tty.ghostty;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+import java.util.stream.IntStream;
+import javafx.scene.paint.Color;
+import org.junit.jupiter.api.Test;
+
+final class TerminalThemeTest {
+
+    @Test
+    void defaultsResolveDerivedColors() {
+        var theme = TerminalTheme.defaults();
+
+        assertEquals(Color.BLACK, theme.background());
+        assertEquals(Color.WHITE, theme.foreground());
+        assertEquals(List.of(), theme.palette());
+        assertEquals(theme.foreground(), theme.cursorColor());
+        assertEquals(theme.background(), theme.cursorText());
+        assertEquals(theme.foreground(), theme.selectionColor());
+        assertEquals(theme.background(), theme.selectionText());
+        assertEquals(0.5, theme.faintOpacity());
+        assertEquals(theme.foreground().deriveColor(0, 1, 1, 0.45), theme.scrollbarColor());
+        assertEquals(theme.scrollbarColor(), theme.scrollbarActiveColor());
+        assertEquals(theme.foreground().deriveColor(0, 1, 1, 0.18), theme.searchMatchColor());
+        assertEquals(theme.foreground(), theme.searchMatchBorderColor());
+        assertEquals(theme.foreground().deriveColor(0, 1, 1, 0.35), theme.searchCurrentMatchColor());
+        assertEquals(theme.foreground(), theme.searchCurrentMatchBorderColor());
+        assertEquals(0.45, theme.matchedLinkUnderlineOpacity());
+        assertEquals(0.45, theme.osc8LinkUnderlineOpacity());
+        assertEquals(0.85, theme.hoveredLinkUnderlineOpacity());
+    }
+
+    @Test
+    void oldConstructorUsesScrollbarAndSearchColorsForNewFields() {
+        var theme = newTheme(List.of());
+
+        assertEquals(theme.scrollbarColor(), theme.scrollbarActiveColor());
+        assertEquals(theme.searchMatchColor(), theme.searchMatchBorderColor());
+        assertEquals(theme.searchCurrentMatchColor(), theme.searchCurrentMatchBorderColor());
+        assertEquals(0.45, theme.matchedLinkUnderlineOpacity());
+        assertEquals(0.45, theme.osc8LinkUnderlineOpacity());
+        assertEquals(0.85, theme.hoveredLinkUnderlineOpacity());
+    }
+
+    @Test
+    void activeScrollbarConstructorUsesSearchColorsForBorderColors() {
+        var theme = new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.gray(0.5),
+                Color.gray(0.55),
+                Color.gray(0.6),
+                Color.gray(0.7));
+
+        assertEquals(Color.gray(0.6), theme.searchMatchBorderColor());
+        assertEquals(Color.gray(0.7), theme.searchCurrentMatchBorderColor());
+        assertEquals(0.45, theme.matchedLinkUnderlineOpacity());
+        assertEquals(0.45, theme.osc8LinkUnderlineOpacity());
+        assertEquals(0.85, theme.hoveredLinkUnderlineOpacity());
+    }
+
+    @Test
+    void storesLinkUnderlineOpacities() {
+        var theme = new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.gray(0.5),
+                Color.gray(0.55),
+                Color.gray(0.6),
+                Color.gray(0.65),
+                Color.gray(0.7),
+                Color.gray(0.75),
+                0.0,
+                0.45,
+                1.0);
+
+        assertEquals(0.0, theme.matchedLinkUnderlineOpacity());
+        assertEquals(0.45, theme.osc8LinkUnderlineOpacity());
+        assertEquals(1.0, theme.hoveredLinkUnderlineOpacity());
+    }
+
+    @Test
+    void acceptsEmpty16And256ColorPalettes() {
+        newTheme(List.of());
+        newTheme(colors(16));
+        newTheme(colors(256));
+    }
+
+    @Test
+    void rejectsInvalidPaletteSizes() {
+        assertThrows(IllegalArgumentException.class, () -> newTheme(colors(1)));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(colors(17)));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(colors(255)));
+    }
+
+    @Test
+    void rejectsInvalidLinkUnderlineOpacities() {
+        assertThrows(IllegalArgumentException.class, () -> newTheme(-0.1, 0.45, 0.85));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(1.1, 0.45, 0.85));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(Double.NaN, 0.45, 0.85));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(0.45, -0.1, 0.85));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(0.45, 1.1, 0.85));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(0.45, Double.NEGATIVE_INFINITY, 0.85));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(0.45, 0.45, -0.1));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(0.45, 0.45, 1.1));
+        assertThrows(IllegalArgumentException.class, () -> newTheme(0.45, 0.45, Double.POSITIVE_INFINITY));
+    }
+
+    @Test
+    void rejectsNullThemeValues() {
+        assertThrows(NullPointerException.class, () -> new TerminalTheme(
+                null,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE));
+        assertThrows(NullPointerException.class, () -> new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.WHITE,
+                null,
+                Color.WHITE,
+                Color.WHITE));
+        assertThrows(NullPointerException.class, () -> new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                null,
+                Color.WHITE,
+                Color.WHITE));
+        assertThrows(NullPointerException.class, () -> new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                null));
+        assertThrows(NullPointerException.class, () -> newTheme(List.of(Color.BLACK, null)));
+    }
+
+    private static TerminalTheme newTheme(List<Color> palette) {
+        return new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                palette,
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.gray(0.5),
+                Color.gray(0.6),
+                Color.gray(0.7));
+    }
+
+    private static TerminalTheme newTheme(
+            double matchedLinkUnderlineOpacity,
+            double osc8LinkUnderlineOpacity,
+            double hoveredLinkUnderlineOpacity) {
+        return new TerminalTheme(
+                Color.BLACK,
+                Color.WHITE,
+                List.of(),
+                Color.WHITE,
+                Color.BLACK,
+                Color.WHITE,
+                Color.BLACK,
+                0.5,
+                Color.gray(0.5),
+                Color.gray(0.55),
+                Color.gray(0.6),
+                Color.gray(0.65),
+                Color.gray(0.7),
+                Color.gray(0.75),
+                matchedLinkUnderlineOpacity,
+                osc8LinkUnderlineOpacity,
+                hoveredLinkUnderlineOpacity);
+    }
+
+    private static List<Color> colors(int count) {
+        return IntStream.range(0, count)
+                .mapToObj(i -> Color.gray((double) i / Math.max(1, count - 1)))
+                .toList();
+    }
+}

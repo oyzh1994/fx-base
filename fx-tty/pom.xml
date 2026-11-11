@@ -14,6 +14,10 @@
         javafx for emulation terminal
     </description>
 
+    <properties>
+        <junit.jupiter.version>5.12.2</junit.jupiter.version>
+    </properties>
+
     <dependencies>
 
         <!-- 自定义类库，fx相关 -->
@@ -101,5 +105,33 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Ghostty 终端测试（JUnit 5 + 兼容既有 JUnit 4 测试） -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <!-- FFM 需要显式开启原生访问（JDK 24+） -->
+                    <argLine>--enable-native-access=ALL-UNNAMED</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

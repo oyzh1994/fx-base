@@ -1,0 +1,23 @@
+This directory bundles libghostty-vt, the standalone virtual terminal library
+extracted from Ghostty (https://github.com/ghostty-org/ghostty).
+
+Upstream commit: c3203ea4b169a18eb2ccfe92847e426d8afea858 (1.3.2-dev)
+Built with:      Zig 0.16.0, -Doptimize=ReleaseFast -Dapp-runtime=none
+                 -Demit-lib-vt=true -Dvt-features=-snapshot,-color,-glyph-protocol
+License:         MIT, see LICENSE in this directory.
+
+The bundled binaries were cross-compiled from the unmodified Ghostty sources.
+Platform ids follow the layout used by the GhosttyFX project:
+
+  linux-x86_64     x86_64-linux-gnu     libghostty-vt-linux-x86_64.so
+  linux-aarch64    aarch64-linux-gnu    libghostty-vt-linux-aarch64.so
+  macos-x86_64     x86_64-macos         libghostty-vt-macos-x86_64.dylib
+  macos-aarch64    aarch64-macos        libghostty-vt-macos-aarch64.dylib
+  windows-x86_64   x86_64-windows-gnu   libghostty-vt-windows-x86_64.dll
+  windows-aarch64  aarch64-windows-gnu  libghostty-vt-windows-aarch64.dll
+
+The Windows binaries use the MinGW-w64 runtime bundled with Zig and only depend
+on system DLLs (KERNEL32, ntdll and the Universal CRT).
+
+Shell integration scripts under shell/ originate from Ghostty/GhosttyFX;
+bash.zip and zsh.zip are distributed under GPLv3 (see the file headers).
