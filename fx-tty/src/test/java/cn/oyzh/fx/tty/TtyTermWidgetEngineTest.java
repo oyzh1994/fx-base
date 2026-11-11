@@ -2,11 +2,22 @@ package cn.oyzh.fx.tty;
 
 import com.jediterm.core.util.TermSize;
 import com.jediterm.terminal.TtyConnector;
+import com.jediterm.terminal.ui.FXTerminalActionPresentation;
+import com.jediterm.terminal.ui.TerminalActionPresentation;
 import com.jediterm.terminal.ui.settings.FXDefaultSettingsProvider;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -154,6 +165,162 @@ final class TtyTermWidgetEngineTest {
     }
 
     @Test
+    void ghosttyFontZoomMatchesJediTerm() throws Exception {
+        var widget = callOnFxThread(TestWidget::new);
+        var connector = new BlockingConnector();
+        try {
+            callOnFxThread(() -> {
+                widget.setEngine(TtyTerminalEngine.GHOSTTY);
+                widget.openSession(connector);
+                return null;
+            });
+            var view = callOnFxThread(widget::getGhosttyView);
+            var initial = callOnFxThread(() -> view.getFont().getSize());
+            callOnFxThread(() -> {
+                widget.increaseTerminalFontSize();
+                return null;
+            });
+            assertEquals(initial + 1, callOnFxThread(() -> view.getFont().getSize()), 0.01);
+            callOnFxThread(() -> {
+                widget.decreaseTerminalFontSize();
+                return null;
+            });
+            assertEquals(initial, callOnFxThread(() -> view.getFont().getSize()), 0.01);
+            callOnFxThread(() -> {
+                widget.increaseTerminalFontSize();
+                widget.increaseTerminalFontSize();
+                widget.resetTerminalFontSize();
+                return null;
+            });
+            assertEquals(initial, callOnFxThread(() -> view.getFont().getSize()), 0.01);
+        } finally {
+            callOnFxThread(() -> {
+                widget.close();
+                return null;
+            });
+            connector.close();
+        }
+    }
+
+    @Test
+    void ghosttyContextMenuMatchesJediTermActions() throws Exception {
+        var widget = callOnFxThread(TestWidget::new);
+        var connector = new BlockingConnector();
+        try {
+            callOnFxThread(() -> {
+                widget.setEngine(TtyTerminalEngine.GHOSTTY);
+                widget.openSession(connector);
+                return null;
+            });
+            var menu = callOnFxThread(widget::getGhosttyContextMenu);
+            assertNotNull(menu);
+            callOnFxThread(() -> {
+                widget.populateGhosttyContextMenu(menu);
+                return null;
+            });
+            var items = menu.getItems();
+            assertTrue(((MenuItem) items.getFirst()).getText().contains("Find"),
+                    "Find must be the first context menu action");
+            var pageDownIndex = -1;
+            var lineUpIndex = -1;
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i) instanceof MenuItem item) {
+                    if ("Page Down".equals(item.getText())) {
+                        pageDownIndex = i;
+                    } else if ("Line Up".equals(item.getText())) {
+                        lineUpIndex = i;
+                    }
+                }
+            }
+            assertTrue(pageDownIndex >= 0 && lineUpIndex > pageDownIndex);
+            assertTrue(items.get(lineUpIndex - 1) instanceof SeparatorMenuItem,
+                    "page and line actions must be separated");
+            var increase = items.stream()
+                    .filter(MenuItem.class::isInstance)
+                    .map(MenuItem.class::cast)
+                    .filter(item -> "Increase".equals(item.getText()))
+                    .findFirst()
+                    .orElse(null);
+            assertNotNull(increase);
+            var lineItems = menu.getItems().stream()
+                    .filter(MenuItem.class::isInstance)
+                    .map(MenuItem.class::cast)
+                    .map(MenuItem::getText)
+                    .filter(java.util.Objects::nonNull)
+                    .filter(text -> text.toLowerCase(java.util.Locale.ROOT).contains("line"))
+                    .count();
+            assertTrue(lineItems >= 2, "context menu must contain line up/down actions");
+            var view = callOnFxThread(widget::getGhosttyView);
+            var initial = callOnFxThread(() -> view.getFont().getSize());
+            callOnFxThread(() -> {
+                increase.fire();
+                return null;
+            });
+            assertEquals(initial + 1, callOnFxThread(() -> view.getFont().getSize()), 0.01);
+        } finally {
+            callOnFxThread(() -> {
+                widget.close();
+                return null;
+            });
+            connector.close();
+        }
+    }
+
+    @Test
+    void ghosttyContextMenuHidesOnScenePress() throws Exception {
+        var widget = callOnFxThread(TestWidget::new);
+        var connector = new BlockingConnector();
+        Stage stage = null;
+        try {
+            stage = callOnFxThread(() -> {
+                widget.setEngine(TtyTerminalEngine.GHOSTTY);
+                widget.openSession(connector);
+                var s = new Stage();
+                s.setScene(new Scene(widget, 600, 400));
+                s.show();
+                return s;
+            });
+            var view = callOnFxThread(widget::getGhosttyView);
+            var menu = callOnFxThread(widget::getGhosttyContextMenu);
+            assertNotNull(menu);
+            callOnFxThread(() -> {
+                Event.fireEvent(view, new MouseEvent(
+                        MouseEvent.MOUSE_PRESSED,
+                        10, 10, 10, 10,
+                        MouseButton.SECONDARY,
+                        1,
+                        false, false, false, false,
+                        false, false, true,
+                        false, false, false, null));
+                return null;
+            });
+            assertTrue(callOnFxThread(menu::isShowing));
+            callOnFxThread(() -> {
+                Event.fireEvent(view, new MouseEvent(
+                        MouseEvent.MOUSE_PRESSED,
+                        10, 10, 10, 10,
+                        MouseButton.PRIMARY,
+                        1,
+                        false, false, false, false,
+                        true, false, false,
+                        false, false, false, null));
+                return null;
+            });
+            assertFalse(callOnFxThread(menu::isShowing));
+        } finally {
+            var stageRef = stage;
+            callOnFxThread(() -> {
+                if (stageRef != null) {
+                    stageRef.close();
+                }
+                widget.close();
+                return null;
+            });
+            connector.close();
+        }
+    }
+
+    @Test
     void opensJediTermSessionWhenSelected() throws Exception {
         var widget = callOnFxThread(TestWidget::new);
         var connector = new BlockingConnector();
@@ -193,7 +360,37 @@ final class TtyTermWidgetEngineTest {
         }
     }
 
-    private static final class TestSettingsProvider extends FXDefaultSettingsProvider {
+    private static final class TestSettingsProvider extends FXDefaultSettingsProvider implements TtyTermSettingsProvider {
+
+        private float terminalFontSize = 14;
+
+        @Override
+        public TerminalActionPresentation getIncrTermSizePresentation() {
+            return new FXTerminalActionPresentation("Increase",
+                    new KeyCodeCombination(KeyCode.EQUALS, KeyCombination.META_DOWN));
+        }
+
+        @Override
+        public TerminalActionPresentation getDecrTermSizePresentation() {
+            return new FXTerminalActionPresentation("Decrease",
+                    new KeyCodeCombination(KeyCode.MINUS, KeyCombination.META_DOWN));
+        }
+
+        @Override
+        public TerminalActionPresentation getResetTermSizePresentation() {
+            return new FXTerminalActionPresentation("Reset",
+                    new KeyCodeCombination(KeyCode.SLASH, KeyCombination.META_DOWN));
+        }
+
+        @Override
+        public void setTerminalFontSize(float terminalFontSize) {
+            this.terminalFontSize = terminalFontSize;
+        }
+
+        @Override
+        public float getTerminalFontSize() {
+            return this.terminalFontSize;
+        }
     }
 
     private static final class BlockingConnector implements TtyConnector {

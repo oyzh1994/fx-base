@@ -79,7 +79,7 @@ final class TtyGhosttySettings {
         }
     }
 
-    private static Font font(SettingsProvider provider) {
+    static Font font(SettingsProvider provider) {
         if (provider instanceof FXDefaultSettingsProvider fxProvider) {
             Font font = fxProvider.getFXTerminalFont();
             if (font != null) {

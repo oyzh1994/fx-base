@@ -10,23 +10,28 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.skin.TextFieldSkin;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
+import cn.oyzh.fx.gui.svg.glyph.CloseSVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.Down1SVGGlyph;
+import cn.oyzh.fx.gui.svg.glyph.Up1SVGGlyph;
+import cn.oyzh.fx.plus.controls.svg.SVGGlyph;
+
+/**
+ * Ghostty 搜索栏。
+ *
+ * <p>UI 结构与 JediTerm 的 {@code FXJediTermDefaultSearchComponent} 对齐：
+ * 输入框 + 匹配计数 + 上一个/下一个 + 关闭按钮，使用应用主题的控件样式。</p>
+ */
 final class SearchUi {
-    private static final double WIDTH = 320;
+    private static final double WIDTH = 360;
+    private static final double HEIGHT = 30;
     private static final Pattern SHORT_QUERY = Pattern.compile("\\X{1,2}");
     private static final long SEARCH_BUDGET_NS = 1_000_000L;
     private static final long REFRESH_INTERVAL_NS = 24_000_000L;
@@ -34,9 +39,13 @@ final class SearchUi {
     private final TerminalSession terminalSession;
     private final Runnable matchSelected;
     private final Runnable render;
+    private final Runnable closeAction;
     private final HBox view;
     private final TextField field;
     private final Label count;
+    private final SVGGlyph next;
+    private final SVGGlyph previous;
+    private final SVGGlyph close;
     private final PauseTransition debounce = new PauseTransition(Duration.millis(300));
     private final AnimationTimer searchTimer = new AnimationTimer() {
         @Override
@@ -60,19 +69,21 @@ final class SearchUi {
             StringProperty searchPromptText,
             ReadOnlyDoubleProperty terminalWidth,
             Runnable matchSelected,
-            Runnable render) {
+            Runnable render,
+            Runnable closeAction) {
         this.terminalSession = terminalSession;
         this.matchSelected = matchSelected;
         this.render = render;
+        this.closeAction = closeAction;
         field = new TextField();
         field.setId("ghosttyfx-search-field");
-        field.setPrefColumnCount(20);
+        field.setPrefHeight(22);
+        field.setMaxHeight(22);
         field.setMinWidth(0);
-        field.setMaxWidth(Double.MAX_VALUE);
+        field.setMaxWidth(220);
         field.setFocusTraversable(true);
-        field.setPadding(new Insets(3));
-        field.setSkin(new SearchTextFieldSkin(field));
-        field.fontProperty().bind(font);
+        // 显式安装默认皮肤，确保 TextField 的编辑/全选/快捷键行为立即可用。
+        field.setSkin(new TextFieldSkin(field));
         field.promptTextProperty().bind(searchPromptText);
         field.textProperty().addListener((_, _, value) -> {
             debounce.stop();
@@ -86,19 +97,53 @@ final class SearchUi {
         });
         field.sceneProperty().addListener((_, _, _) -> updateSearchTimer());
         debounce.setOnFinished(_ -> startSearch());
-        count = new Label("0/0");
+
+        count = new Label();
         count.setId("ghosttyfx-search-count");
-        count.fontProperty().bind(font);
+        count.setPrefHeight(24);
         count.setMinWidth(Label.USE_PREF_SIZE);
-        view = new HBox(6, field, count);
+
+        next = createNextButton();
+        next.setId("ghosttyfx-search-next");
+        previous = createPreviousButton();
+        previous.setId("ghosttyfx-search-previous");
+        close = createCloseButton();
+        close.setId("ghosttyfx-search-close");
+
+        view = new HBox(field, count, next, previous, close);
         view.setId("ghosttyfx-search");
         view.setAlignment(Pos.CENTER_LEFT);
+        view.setPadding(new Insets(3));
         view.setMinWidth(0);
+        view.setPrefHeight(HEIGHT);
+        view.setMinHeight(HEIGHT);
+        view.setMaxHeight(HEIGHT);
+        view.setMaxWidth(WIDTH);
         view.prefWidthProperty().bind(Bindings.createDoubleBinding(
                 () -> Math.max(0, Math.min(WIDTH, terminalWidth.get() - 16)), terminalWidth));
-        view.maxWidthProperty().bind(view.prefWidthProperty());
+        view.setStyle("-fx-background-color: -fx-background;");
         view.setVisible(false);
+
         HBox.setHgrow(field, Priority.ALWAYS);
+        HBox.setMargin(count, new Insets(3, 0, 0, 3));
+        HBox.setMargin(next, new Insets(3, 0, 0, 3));
+        HBox.setMargin(previous, new Insets(3, 0, 0, 3));
+        HBox.setMargin(close, new Insets(3, 0, 0, 3));
+        next.setOnMousePrimaryClicked(event -> this.selectNext());
+        previous.setOnMousePrimaryClicked(event -> this.selectPrevious());
+        close.setOnMousePrimaryClicked(event -> this.closeAction.run());
+    }
+
+    private SVGGlyph createNextButton() {
+        return new Down1SVGGlyph();
+    }
+
+    private SVGGlyph createPreviousButton() {
+        return new Up1SVGGlyph();
+    }
+
+    private SVGGlyph createCloseButton() {
+        return new CloseSVGGlyph();
     }
 
     HBox view() {
@@ -160,7 +205,7 @@ final class SearchUi {
         searchTimer.stop();
         terminalSession.setSearchNeedle("");
         snapshot = TerminalSession.SearchSnapshot.empty();
-        count.setText("0/0");
+        count.setText("");
     }
 
     private void startSearch() {
@@ -182,14 +227,25 @@ final class SearchUi {
         if (!visible()) {
             return false;
         }
-        var next = terminalSession.searchSnapshot();
-        var changed = !next.equals(snapshot);
-        snapshot = next;
-        count.setText(field.getText().isEmpty() ? "0/0"
-                : snapshot.totalMatches() == 0 && !snapshot.complete() ? "..."
-                : (snapshot.selectedIndex() < 0 ? "-" : Integer.toString(snapshot.selectedIndex() + 1)) + "/" + snapshot.totalMatches());
+        var nextSnapshot = terminalSession.searchSnapshot();
+        var changed = !nextSnapshot.equals(snapshot);
+        snapshot = nextSnapshot;
+        updateCount();
         updateSearchTimer();
         return changed;
+    }
+
+    private void updateCount() {
+        if (field.getText().isEmpty()) {
+            count.setText("");
+            return;
+        }
+        if (snapshot.totalMatches() == 0) {
+            count.setText(snapshot.complete() ? "0 of 0" : "...");
+            return;
+        }
+        int selected = snapshot.selectedIndex();
+        count.setText((selected < 0 ? 1 : selected + 1) + " of " + snapshot.totalMatches());
     }
 
     boolean selectNext() {
@@ -232,36 +288,6 @@ final class SearchUi {
     }
 
     void applyTheme(TerminalTheme theme) {
-        view.setBackground(new Background(new BackgroundFill(
-                theme.background(),
-                new CornerRadii(2),
-                Insets.EMPTY)));
-        view.setBorder(new Border(new BorderStroke(
-                theme.scrollbarColor(),
-                BorderStrokeStyle.SOLID,
-                new CornerRadii(2),
-                BorderWidths.DEFAULT)));
-        view.setPadding(new Insets(4));
-        field.setBackground(new Background(new BackgroundFill(
-                theme.background(),
-                new CornerRadii(1),
-                Insets.EMPTY)));
-        field.setBorder(Border.EMPTY);
-        ((SearchTextFieldSkin) field.getSkin()).applyTheme(theme);
-        count.setTextFill(theme.foreground().deriveColor(0, 1, 1, theme.faintOpacity()));
-    }
-
-    private static final class SearchTextFieldSkin extends TextFieldSkin {
-
-        private SearchTextFieldSkin(TextField control) {
-            super(control);
-        }
-
-        private void applyTheme(TerminalTheme theme) {
-            setTextFill(theme.foreground());
-            setPromptTextFill(theme.foreground().deriveColor(0, 1, 1, theme.faintOpacity()));
-            setHighlightFill(theme.selectionColor());
-            setHighlightTextFill(theme.selectionText());
-        }
+        // 搜索栏使用应用主题的控件样式，与 JediTerm 搜索组件保持一致。
     }
 }

@@ -300,10 +300,21 @@ Ghostty 默认会用自己的主题背景填充整个 Canvas。为了让 EasyShe
 `TtyTermWidget`/`TerminalView` 的底色；关闭背景图时恢复原始主题。ANSI 背景色、
 选中背景和光标颜色保持不透明，行为与 JediTerm 的 `backgroundOpacity=0` 一致。
 
-### 7.5 限制
+### 7.5 搜索、右键菜单与字体缩放
+
+`TtyTermWidget` 会为 Ghostty 视图安装与 JediTerm 相同的终端动作：
+
+- 搜索：搜索栏结构与 JediTerm 对齐（输入框、`n of N` 匹配计数、上一个/下一个、关闭按钮），
+  使用 `SettingsProvider.getFindActionPresentation()` 的快捷键，右键菜单提供“查找”；
+- 右键菜单：打开 URL、复制、粘贴、全选、清屏、向上/向下翻页、查找、字体增大/减小/重置；
+- 字体缩放：范围与 JediTerm 一致（增大上限 30，减小下限 10），并通过
+  `TtyTermSettingsProvider.setTerminalFontSize` 持久化；重置回到打开终端时的初始字号。
+
+### 7.6 限制
 
 - 已经打开的会话不会在两种引擎之间热切换（两种引擎的屏幕状态无法无损迁移）；
   切换设置后打开新标签页即可使用新引擎。
 - ZModem 传输进度已支持两套引擎（通过 `TtyZModemTerminal` 抽象）。
-- Ghostty 的快捷键使用其内置方案；easyshell 自定义快捷键的完整映射仍在 JediTerm 上。
+- Ghostty 已接入 easyshell 终端快捷键（查找、复制、粘贴、全选、清屏、翻页、
+  字体增大/减小/重置）和右键菜单，与 JediTerm 对齐；搜索框提示文字使用查找动作名称。
 - 终端背景图等 JediTerm 专有视觉特性暂未映射到 Ghostty。

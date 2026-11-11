@@ -6,6 +6,7 @@ import com.pty4j.WinSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -2049,7 +2050,7 @@ final class TerminalViewTest {
                 assertEquals(2, view.searchMatchCount());
                 assertEquals(-1, view.selectedSearchMatchIndex());
 
-                assertEquals("-/2", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
+                assertEquals("1 of 2", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
                 assertTrue(view.searchNext());
                 assertEquals(0, view.selectedSearchMatchIndex());
                 assertTrue(view.searchNext());
@@ -2170,10 +2171,9 @@ final class TerminalViewTest {
                 assertSame(count, search.getChildren().get(1));
                 assertEquals(0, search.getMinWidth());
                 assertEquals(search.getPrefWidth(), search.getMaxWidth());
-                assertTrue(search.getPrefWidth() <= 320);
+                assertTrue(search.getPrefWidth() <= 360);
                 view.resize(220, view.getHeight());
-                assertTrue(search.getPrefWidth() < 320);
-                assertTrue(field.getBorder().getStrokes().isEmpty());
+                assertTrue(search.getPrefWidth() < 360);
                 assertEquals("Type to search...", view.getSearchPromptText());
                 assertEquals("Type to search...", field.getPromptText());
                 view.setSearchPromptText("Find in terminal");
@@ -2183,14 +2183,12 @@ final class TerminalViewTest {
                 field.setText("");
                 assertTrue(count.isManaged());
                 assertTrue(count.isVisible());
-                assertEquals("0/0", count.getText());
+                assertEquals("", count.getText());
                 assertEquals(Label.USE_PREF_SIZE, count.getMinWidth());
                 assertEquals(Label.USE_COMPUTED_SIZE, count.getMaxWidth());
-
-                var font = Font.font("Monospaced", field.getFont().getSize() + 3);
-                view.setFont(font);
-                assertEquals(font, field.getFont());
-                assertEquals(font, count.getFont());
+                assertNotNull(view.lookup("#ghosttyfx-search-next"));
+                assertNotNull(view.lookup("#ghosttyfx-search-previous"));
+                assertNotNull(view.lookup("#ghosttyfx-search-close"));
                 return null;
             });
         }
@@ -2212,7 +2210,7 @@ final class TerminalViewTest {
                 var count = (Label) view.lookup("#ghosttyfx-search-count");
                 var field = (TextField) view.lookup("#ghosttyfx-search-field");
                 assertEquals(-1, view.selectedSearchMatchIndex());
-                assertEquals("-/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 for (var expected : List.of(0, 1, 1)) {
                     field.fireEvent(keyEvent(new KeyCodeCombination(KeyCode.ENTER)));
                     assertEquals(expected, view.selectedSearchMatchIndex());
@@ -2232,9 +2230,9 @@ final class TerminalViewTest {
                     assertEquals(expected, view.selectedSearchMatchIndex());
                     assertEquals(2, field.getCaretPosition());
                 }
-                assertNull(view.lookup("#ghosttyfx-search-next"));
-                assertNull(view.lookup("#ghosttyfx-search-previous"));
-                assertNull(view.lookup("#ghosttyfx-search-close"));
+                assertNotNull(view.lookup("#ghosttyfx-search-next"));
+                assertNotNull(view.lookup("#ghosttyfx-search-previous"));
+                assertNotNull(view.lookup("#ghosttyfx-search-close"));
                 field.fireEvent(keyEvent(new KeyCodeCombination(KeyCode.ESCAPE)));
                 assertFalse(view.lookup("#ghosttyfx-search").isVisible());
                 return null;
@@ -2261,20 +2259,20 @@ final class TerminalViewTest {
                 return null;
             });
             await("search matches", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
+                    "1 of 2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
                             ? Optional.of(Boolean.TRUE) : Optional.empty()));
             var before = terminal.inputSnapshot().toByteArray();
             runOnFxThread(() -> {
                 var field = (TextField) view.lookup("#ghosttyfx-search-field");
                 var count = (Label) view.lookup("#ghosttyfx-search-count");
                 fireTerminalShortcut(field, next);
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 fireTerminalShortcut(field, next);
-                assertEquals("2/2", count.getText());
+                assertEquals("2 of 2", count.getText());
                 fireTerminalShortcut(field, previous);
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 fireTerminalShortcut(view, next);
-                assertEquals("2/2", count.getText());
+                assertEquals("2 of 2", count.getText());
                 fireTerminalShortcut(field, new KeyCodeCombination(KeyCode.A, modifier));
                 assertEquals("alpha", field.getSelectedText());
                 assertEquals("alpha", view.getInputMethodRequests().getSelectedText());
@@ -2301,7 +2299,7 @@ final class TerminalViewTest {
                 return null;
             });
             await("search matches", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
+                    "1 of 2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
                             ? Optional.of(Boolean.TRUE) : Optional.empty()));
             var before = terminal.inputSnapshot().size();
             runOnFxThread(() -> {
@@ -2311,26 +2309,26 @@ final class TerminalViewTest {
                 var escape = new KeyCodeCombination(KeyCode.ESCAPE);
                 view.getTerminalShortcuts().addFirst(new TerminalShortcut(up, () -> false));
                 fireTerminalShortcut(field, up);
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 view.getTerminalShortcuts().addFirst(new TerminalShortcut(up, view::searchPrevious));
                 fireTerminalShortcut(field, up);
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 view.getTerminalShortcuts().removeIf(shortcut -> shortcut.combination().equals(up));
                 field.positionCaret(2);
                 fireTerminalShortcut(field, up);
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 assertEquals(0, field.getCaretPosition());
                 view.getTerminalShortcuts().removeIf(shortcut -> shortcut.combination().equals(escape));
                 fireTerminalShortcut(field, escape);
                 assertTrue(view.lookup("#ghosttyfx-search").isVisible());
                 view.requestFocus();
                 fireTerminalShortcut(view, new KeyCodeCombination(KeyCode.DOWN));
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 view.openSearch();
                 field.setText("missing");
                 field.positionCaret(3);
                 fireTerminalShortcut(field, new KeyCodeCombination(KeyCode.DOWN));
-                assertEquals("-/0", count.getText());
+                assertEquals("0 of 0", count.getText());
                 assertEquals(3, field.getCaretPosition());
                 view.getTerminalShortcuts().add(new TerminalShortcut(escape, view::closeSearch));
                 fireTerminalShortcut(field, escape);
@@ -2359,28 +2357,28 @@ final class TerminalViewTest {
                 return null;
             });
             await("search matches", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
+                    "1 of 2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
                             ? Optional.of(Boolean.TRUE) : Optional.empty()));
             var before = terminal.inputSnapshot().size();
             runOnFxThread(() -> {
                 var field = (TextField) view.lookup("#ghosttyfx-search-field");
                 var count = (Label) view.lookup("#ghosttyfx-search-count");
                 fireTerminalShortcut(field, new KeyCodeCombination(KeyCode.UP));
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 fireTerminalShortcut(field, new KeyCodeCombination(KeyCode.UP));
-                assertEquals("2/2", count.getText());
+                assertEquals("2 of 2", count.getText());
                 fireTerminalShortcut(field, new KeyCodeCombination(KeyCode.DOWN));
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 view.requestFocus();
                 assertFalse(view.searchNextInField());
                 assertFalse(view.searchPreviousInField());
-                assertEquals("1/2", count.getText());
+                assertEquals("1 of 2", count.getText());
                 fireTerminalShortcut(view, new KeyCodeCombination(KeyCode.UP));
                 view.openSearch();
                 field.setText("missing");
                 assertTrue(view.searchNextInField());
                 assertTrue(view.searchPreviousInField());
-                assertEquals("-/0", count.getText());
+                assertEquals("0 of 0", count.getText());
                 return null;
             });
             assertEquals("\u001B[A", terminal.inputSnapshot().toString(StandardCharsets.UTF_8).substring(before));
@@ -2466,7 +2464,7 @@ final class TerminalViewTest {
                 return link;
             });
             await("scrollback match", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/1".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "1 of 1".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             runOnFxThread(() -> {
                 moveToCell(view, 1, 0);
                 assertEquals(initialLink, view.getHoveredLink());
@@ -2500,8 +2498,9 @@ final class TerminalViewTest {
                     ((TextField) view.lookup("#ghosttyfx-search-field")).setText(test.getKey());
                     return null;
                 });
+                var expectedCount = test.getValue() == 0 ? "0 of 0" : "1 of " + test.getValue();
                 await("native query " + test.getKey(), START_TIMEOUT, () -> runOnFxThread(() ->
-                        ((Label) view.lookup("#ghosttyfx-search-count")).getText().equals("-/" + test.getValue())
+                        ((Label) view.lookup("#ghosttyfx-search-count")).getText().equals(expectedCount)
                                 ? Optional.of(Boolean.TRUE) : Optional.empty()));
                 runOnFxThread(() -> {
                     assertEquals(-1, view.selectedSearchMatchIndex());
@@ -2579,7 +2578,7 @@ final class TerminalViewTest {
                 return null;
             });
             await("search matches", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "1 of 2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             var before = terminal.inputSnapshot().toByteArray();
             runOnFxThread(() -> {
                 var field = (TextField) view.lookup("#ghosttyfx-search-field");
@@ -2627,7 +2626,7 @@ final class TerminalViewTest {
                 assertTrue(view.closeSearch());
                 fireTerminalShortcut(view, searchTerminalShortcut());
                 assertEquals("", field.getText());
-                assertEquals("0/0", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
+                assertEquals("", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
                 dragSelection(view, 0, 4);
                 fireTerminalShortcut(view, searchTerminalShortcut());
                 assertEquals("alpha", field.getText());
@@ -2663,7 +2662,7 @@ final class TerminalViewTest {
                 return null;
             });
             await("initial matches", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "1 of 2".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             runOnFxThread(() -> {
                 assertTrue(view.searchNext());
                 assertEquals(0, view.selectedSearchMatchIndex());
@@ -2671,26 +2670,26 @@ final class TerminalViewTest {
             });
             terminal.emit("\r\nhit");
             await("new output retains match", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "2/3".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "2 of 3".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             terminal.emit("\u001B[?1049h\u001B[Hhit");
             await("alternate screen matches", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/1".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "1 of 1".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             runOnFxThread(() -> {
                 assertTrue(view.searchNext());
                 return null;
             });
             terminal.emit("\u001B[?1049l");
             await("primary search restored", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "2/3".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "2 of 3".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             runOnFxThread(() -> {
                 view.resize(view.getWidth() / 2, view.getHeight());
                 return null;
             });
             await("search after resize", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/3".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
+                    "1 of 3".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText()) ? Optional.of(Boolean.TRUE) : Optional.empty()));
             runOnFxThread(() -> {
                 assertTrue(view.searchNext());
-                assertEquals("1/3", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
+                assertEquals("1 of 3", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
                 return null;
             });
         }
@@ -2709,15 +2708,15 @@ final class TerminalViewTest {
                 return null;
             });
             await("completed history search", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/2000".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
+                    "1 of 2000".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
                             ? Optional.of(Boolean.TRUE) : Optional.empty()));
             terminal.emit("search-hit\r\n".repeat(1000));
             await("search resumed for new history", START_TIMEOUT, () -> runOnFxThread(() ->
-                    "-/3000".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
+                    "1 of 3000".equals(((Label) view.lookup("#ghosttyfx-search-count")).getText())
                             ? Optional.of(Boolean.TRUE) : Optional.empty()));
             runOnFxThread(() -> {
                 assertTrue(view.searchNext());
-                assertEquals("1/3000", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
+                assertEquals("1 of 3000", ((Label) view.lookup("#ghosttyfx-search-count")).getText());
                 return null;
             });
         }

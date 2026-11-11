@@ -295,7 +295,8 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
                 searchPromptText,
                 widthProperty(),
                 () -> refreshHover(false),
-                this::render);
+                this::render,
+                this::closeSearch);
         applySearchTheme();
         getChildren().add(canvas);
         AnchorPane.setTopAnchor(canvas, 0.0);
@@ -1697,6 +1698,69 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
         }
     }
 
+    /// Returns the currently selected text.
+    ///
+    /// @return the selected text, or an empty string when nothing is selected
+    public String getSelectedText() {
+        return selectedText();
+    }
+
+    /// Returns whether the current selection is an absolute HTTP(S) URL.
+    ///
+    /// @return `true` if the selection can be opened as a URL
+    public boolean isSelectionUrl() {
+        var text = selectedText();
+        if (text == null || text.isBlank()) {
+            return false;
+        }
+        try {
+            var scheme = URI.create(text.trim()).getScheme();
+            return "http".equalsIgnoreCase(scheme) || "https".equalsIgnoreCase(scheme);
+        } catch (RuntimeException _) {
+            return false;
+        }
+    }
+
+    /// Opens the current selection as a URL.
+    ///
+    /// @return `true` if a URL was opened
+    public boolean openSelectedUrl() {
+        var text = selectedText();
+        if (text == null || text.isBlank()) {
+            return false;
+        }
+        try {
+            var uri = URI.create(text.trim());
+            var scheme = uri.getScheme();
+            if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+                return false;
+            }
+            openHyperlink(uri);
+            return true;
+        } catch (RuntimeException _) {
+            return false;
+        }
+    }
+
+    /// Returns whether the terminal is currently using the alternate screen buffer.
+    ///
+    /// @return `true` when a full-screen application is active
+    public boolean isAlternateScreenBufferActive() {
+        return terminalSession.alternateScreenActive();
+    }
+
+    /// Clears the scrollback and asks the running shell to redraw the screen.
+    ///
+    /// @return `true` if the clear request was sent
+    public boolean clearBuffer() {
+        if (terminalSession.alternateScreenActive()) {
+            return false;
+        }
+        // ED 3 clears saved scrollback locally; Ctrl+L lets the shell repaint its prompt.
+        writeLocalOutput("\u001B[3J");
+        return sendText("\u000C");
+    }
+
     /// Selects all terminal text.
     ///
     /// @return `true`
@@ -1789,6 +1853,20 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
     /// @return `true` if scrolling was available; otherwise `false`
     public boolean scrollViewportPageDown() {
         return scrollViewportByRows(viewportRowCount());
+    }
+
+    /// Scrolls the viewport up by one line.
+    ///
+    /// @return `true` if scrolling was available; otherwise `false`
+    public boolean scrollViewportLineUp() {
+        return scrollViewportByRows(-1);
+    }
+
+    /// Scrolls the viewport down by one line.
+    ///
+    /// @return `true` if scrolling was available; otherwise `false`
+    public boolean scrollViewportLineDown() {
+        return scrollViewportByRows(1);
     }
 
     /// Scrolls the viewport to the top of the scrollback.
