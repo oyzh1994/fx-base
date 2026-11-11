@@ -38,5 +38,22 @@ rm -rf "$TARGET_DIR"
 mkdir -p "$TARGET_DIR"
 cp "$GENERATED"/*.java "$TARGET_DIR/"
 
+SHARED="$TARGET_DIR/ghostty_vt_h\$shared.java"
+awk '
+  /ValueLayout\.Of(Int|Long) C_LONG =/ {
+    print "    // jextract derives C_LONG from the host ABI. Ghostty only uses C long for";
+    print "    // size_t/intptr_t-like values, which are 64-bit on 64-bit Unix and Windows.";
+    print "    // Force a 64-bit layout so the same bindings work on LP64 and LLP64 hosts.";
+    print "    public static final ValueLayout.OfLong C_LONG = ValueLayout.JAVA_LONG;";
+    next
+  }
+  { print }
+' "$SHARED" > "$SHARED.tmp"
+mv "$SHARED.tmp" "$SHARED"
+grep -q 'C_LONG = ValueLayout.JAVA_LONG;' "$SHARED" || {
+  echo "error: failed to normalize C_LONG layout" >&2
+  exit 1
+}
+
 echo "==> 已生成 $(find "$TARGET_DIR" -name '*.java' | wc -l | tr -d ' ') 个绑定文件到 $TARGET_DIR"
 echo "    提示：6 个平台的 C 结构体布局已验证一致，同一套绑定可用于所有平台。"

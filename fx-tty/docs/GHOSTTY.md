@@ -76,8 +76,12 @@ Windows：`%LOCALAPPDATA%`），再调用 `System.load` 加载。缓存按文件
   - 目标架构正确（`file` / PE 头校验）；
   - 动态库导出符号完整（与 jextract 绑定所需符号逐一比对，除被 `-Dvt-features`
     禁用的 24 个 color/snapshot 符号外全部存在，且 Java 层未调用这些符号）；
-  - C 结构体大小/字段偏移在 6 个目标上全部一致（编译期 `_Static_assert` 校验），
-    因此同一套 jextract 绑定可安全用于所有平台；
+  - C 结构体大小/字段偏移在 6 个目标上全部一致（编译期 `_Static_assert` 校验）；
+  - jextract 绑定已把 `C_LONG` 固定为 64 位布局。Ghostty API 中的 `C_LONG` 只用于
+    `size_t`/`intptr_t` 等 64 位值，因此同一套绑定可同时用于 LP64（macOS/Linux）
+    与 LLP64（Windows）；否则 Windows 上 `long` 为 32 位，会在类初始化时因
+    `ValueLayout.OfIntImpl` 无法转换为 `ValueLayout.OfLong` 而崩溃；
+  - Windows x86_64 已完成 `GhosttyTerminalsTest` 冒烟测试；
   - Windows DLL 仅依赖系统 DLL。
 - **Windows aarch64** 尚未在真实 ARM64 Windows 设备上运行验证，若有环境建议补充
   冒烟测试。
@@ -214,6 +218,9 @@ GHOSTTY_SRC=/path/to/ghostty \
 JEXTRACT=/path/to/jextract-25/bin/jextract \
 ./fx-tty/tools/generate-bindings.sh
 ```
+
+生成脚本会在复制绑定后把 `ghostty_vt_h$shared.java` 中的 `C_LONG` 归一化为 64 位
+布局，避免重新生成后再次引入 Windows 上的 `ClassCastException`。
 
 ## 6. 与 GhosttyFX 的差异
 

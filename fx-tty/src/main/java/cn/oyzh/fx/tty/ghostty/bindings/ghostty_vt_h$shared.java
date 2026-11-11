@@ -27,7 +27,10 @@ public class ghostty_vt_h$shared {
     public static final ValueLayout.OfDouble C_DOUBLE = (ValueLayout.OfDouble) Linker.nativeLinker().canonicalLayouts().get("double");
     public static final AddressLayout C_POINTER = ((AddressLayout) Linker.nativeLinker().canonicalLayouts().get("void*"))
             .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, C_CHAR));
-    public static final ValueLayout.OfLong C_LONG = (ValueLayout.OfLong) Linker.nativeLinker().canonicalLayouts().get("long");
+    // jextract derives C_LONG from the host ABI. Ghostty only uses C long for
+    // size_t/intptr_t-like values, which are 64-bit on 64-bit Unix and Windows.
+    // Force a 64-bit layout so the same bindings work on LP64 and LLP64 hosts.
+    public static final ValueLayout.OfLong C_LONG = ValueLayout.JAVA_LONG;
 
     static final boolean TRACE_DOWNCALLS = Boolean.getBoolean("jextract.trace.downcalls");
 
