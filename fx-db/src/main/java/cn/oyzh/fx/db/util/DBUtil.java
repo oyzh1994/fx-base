@@ -12,12 +12,12 @@ import cn.oyzh.fx.plus.font.FontUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
@@ -122,7 +122,7 @@ public class DBUtil {
      */
     public static void setVal(PreparedStatement statement, Object val, int index) throws SQLException {
         if (val == null) {
-            statement.setNull(index, JDBCType.NULL.ordinal());
+            statement.setNull(index, Types.NULL);
         } else if (val instanceof byte[] x) {
             statement.setBytes(index, x);
         } else if (val instanceof Boolean x) {
