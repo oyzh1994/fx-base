@@ -33,7 +33,9 @@ public class DBConditionManager {
      * @param func    初始化器
      */
     public static void registerInitializer(DBDialect dialect, Runnable func) {
-        INITIALIZERS.put(dialect, func);
+        if (!INITIALIZERS.containsKey(dialect)) {
+            INITIALIZERS.put(dialect, func);
+        }
     }
 
     /**
