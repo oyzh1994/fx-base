@@ -62,6 +62,17 @@ public abstract class DBCondition {
     }
 
     /**
+     * 包装条件值
+     *
+     * @param value 条件值
+     * @return 包装后的条件值
+     */
+    protected String wrapValue(Object value) {
+        Object object = DBUtil.wrapData(value, this.getDialect());
+        return object == null ? null : object.toString();
+    }
+
+    /**
      * 包装条件
      *
      * @return 包装后的条件对象
@@ -76,9 +87,8 @@ public abstract class DBCondition {
      * @param condition 条件值
      * @return 包装后的条件值
      */
-    public String wrapCondition(Object condition) {
-        Object value = DBUtil.wrapData(condition, this.getDialect());
-        return value == null ? null : value.toString();
+    public Object wrapCondition(Object condition) {
+        return this.wrapCondition(null,condition);
     }
 
     /**
@@ -92,7 +102,7 @@ public abstract class DBCondition {
         if (!this.isRequireCondition()) {
             return this.getValue();
         }
-        String wrapped = this.wrapCondition(condition);
+        String wrapped = this.wrapValue(condition);
         return wrapped == null ? null : this.getValue() + " " + wrapped;
     }
 
@@ -115,7 +125,7 @@ public abstract class DBCondition {
         if (first == null || second == null) {
             return null;
         }
-        return this.wrapCondition(first) + " AND " + this.wrapCondition(second);
+        return this.wrapValue(first) + " AND " + this.wrapValue(second);
     }
 
     /**
@@ -134,7 +144,7 @@ public abstract class DBCondition {
             if (index > 0) {
                 builder.append(", ");
             }
-            builder.append(this.wrapCondition(items[index].trim()));
+            builder.append(this.wrapValue(items[index].trim()));
         }
         return builder.append(')').toString();
     }
