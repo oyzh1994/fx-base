@@ -203,9 +203,17 @@ public abstract class DBRecordFilter {
      * @throws Exception 异常
      */
     public Object condition() throws Exception {
+        if (this.column == null) {
+            return this.getCondition().wrapCondition(this.value());
+        }
         return this.getCondition().wrapCondition(this.columnName(), this.value());
     }
 
+    /**
+     * 获取方言
+     *
+     * @return 方言
+     */
     public DBDialect dialect() {
         return this.getCondition().getDialect();
     }
