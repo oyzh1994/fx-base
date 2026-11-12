@@ -410,12 +410,23 @@ public class StageManager {
     }
 
     /**
-     * 显示遮罩面板
+     * 显示遮罩面板。显示期间按 ESC 会取消任务、关闭遮罩，并清理遮罩状态。
      *
      * @param window   需要遮罩的窗口
      * @param callback 遮罩关闭处理完成后的回调
      */
     public static void showMask(Window window, Runnable callback) {
+        showMask(window, callback, null);
+    }
+
+    /**
+     * 显示遮罩面板。显示期间按 ESC 会执行 cancelAction、关闭遮罩，并清理遮罩状态。
+     *
+     * @param window       需要遮罩的窗口
+     * @param callback     遮罩关闭处理完成后的回调
+     * @param cancelAction ESC 取消时用于中断实际操作的清理动作
+     */
+    public static void showMask(Window window, Runnable callback, Runnable cancelAction) {
         if (window == null) {
             window = getFrontWindow();
         }
@@ -439,8 +450,10 @@ public class StageManager {
                     PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
                 }
             };
+            // 遮罩关闭时移除状态，避免后续 showMask 直接执行回调
+            Runnable closeCallback = () -> PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
             // 显示遮罩
-            StageMask.showMask(window, maskCallback);
+            StageMask.showMask(window, maskCallback, cancelAction, closeCallback);
         } else {// 直接执行
             callback.run();
         }
