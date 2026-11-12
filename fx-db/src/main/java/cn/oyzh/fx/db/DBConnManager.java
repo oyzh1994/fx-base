@@ -43,6 +43,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @param dbName     数据库
      * @param connection 连接
      */
+    @Deprecated
     public void addFunctionConnection(String dbName, Connection connection) {
         this.connections.put("function_connection_" + dbName, connection);
     }
@@ -53,6 +54,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @param dbName     数据库
      * @param connection 连接
      */
+    @Deprecated
     public void addProcedureConnection(String dbName, Connection connection) {
         this.connections.put("procedure_connection_" + dbName, connection);
     }
@@ -73,6 +75,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @param dbName 数据库
      * @return 结果
      */
+    @Deprecated
     public Connection getFunctionConnection(String dbName) {
         return this.connections.get("function_connection_" + dbName);
     }
@@ -83,6 +86,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @param dbName 数据库
      * @return 结果
      */
+    @Deprecated
     public Connection getProcedureConnection(String dbName) {
         return this.connections.get("procedure_connection_" + dbName);
     }
@@ -184,6 +188,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @return 结果
      * @throws Exception 异常
      */
+    @Deprecated
     public Connection functionConnection(String dbName) throws Exception {
         Connection connection = this.getFunctionConnection(dbName);
         if (!this.isValid(connection)) {
@@ -201,6 +206,7 @@ public abstract class DBConnManager implements AutoCloseable {
      * @return 结果
      * @throws Exception 异常
      */
+    @Deprecated
     public Connection procedureConnection(String name) throws Exception {
         Connection connection = this.getProcedureConnection(name);
         if (!this.isValid(connection)) {
