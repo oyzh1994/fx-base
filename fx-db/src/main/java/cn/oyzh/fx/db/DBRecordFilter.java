@@ -1,5 +1,6 @@
 package cn.oyzh.fx.db;
 
+import cn.oyzh.fx.db.condition.DBCondition;
 import cn.oyzh.fx.db.ui.DBJoinSymbolComboBox;
 import cn.oyzh.fx.plus.controls.box.FXHBox;
 import cn.oyzh.fx.plus.controls.button.FXCheckBox;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author oyzh
  * @since 2026-09-02
  */
-public class DBRecordFilter {
+public abstract class DBRecordFilter {
 
     /**
      * 值
@@ -39,6 +40,13 @@ public class DBRecordFilter {
      * 字段列表
      */
     protected List<? extends DBColumn> columns;
+
+    /**
+     * 获取条件对象
+     *
+     * @return 条件对象
+     */
+    public abstract DBCondition getCondition();
 
     /**
      * 获取启用组件
@@ -177,6 +185,29 @@ public class DBRecordFilter {
      */
     public Object value() throws Exception {
         return null;
+    }
+
+    /**
+     * 获取字段名称
+     *
+     * @return 结果
+     */
+    public String columnName() {
+        return this.column.getName();
+    }
+
+    /**
+     * 获取条件
+     *
+     * @return 条件
+     * @throws Exception 异常
+     */
+    public Object condition() throws Exception {
+        return this.getCondition().wrapCondition(this.columnName(), this.value());
+    }
+
+    public DBDialect dialect() {
+        return this.getCondition().getDialect();
     }
 }
 

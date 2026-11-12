@@ -1,6 +1,12 @@
 package cn.oyzh.fx.db.condition;
 
 
+import cn.oyzh.common.util.CollectionUtil;
+import cn.oyzh.fx.db.DBDialect;
+import cn.oyzh.fx.db.util.DBUtil;
+
+import java.util.Collection;
+
 /**
  * 数据库条件基类，封装条件的名称、值及是否为必需条件
  *
@@ -65,6 +71,17 @@ public abstract class DBCondition {
     }
 
     /**
+     * 包装条件值
+     *
+     * @param condition 条件值
+     * @return 包装后的条件值
+     */
+    public String wrapCondition(Object condition) {
+        Object value = DBUtil.wrapData(condition, this.getDialect());
+        return value == null ? null : value.toString();
+    }
+
+    /**
      * 包装条件
      *
      * @param columnName 列名
@@ -72,7 +89,54 @@ public abstract class DBCondition {
      * @return 包装后的条件对象
      */
     public Object wrapCondition(String columnName, Object condition) {
-        return null;
+        if (!this.isRequireCondition()) {
+            return this.getValue();
+        }
+        String wrapped = this.wrapCondition(condition);
+        return wrapped == null ? null : this.getValue() + " " + wrapped;
+    }
+
+    /**
+     * 包装between条件
+     *
+     * @param condition 条件
+     * @return 结果
+     */
+    public String wrapBetweenCondition(Object condition) {
+        Object first = null;
+        Object second = null;
+        if (condition instanceof Object[] values && values.length >= 2) {
+            first = values[0];
+            second = values[1];
+        } else if (condition instanceof Collection<?> values && values.size() >= 2) {
+            first = CollectionUtil.get(values, 0);
+            second = CollectionUtil.get(values, 1);
+        }
+        if (first == null || second == null) {
+            return null;
+        }
+        return this.wrapCondition(first) + " AND " + this.wrapCondition(second);
+    }
+
+    /**
+     * 包装list条件
+     *
+     * @param condition 条件
+     * @return 结果
+     */
+    public String wrapListCondition(Object condition) {
+        if (!(condition instanceof String value) || value.isBlank()) {
+            return null;
+        }
+        StringBuilder builder = new StringBuilder("(");
+        String[] items = value.split(",");
+        for (int index = 0; index < items.length; index++) {
+            if (index > 0) {
+                builder.append(", ");
+            }
+            builder.append(this.wrapCondition(items[index].trim()));
+        }
+        return builder.append(')').toString();
     }
 
     /**
@@ -128,4 +192,11 @@ public abstract class DBCondition {
     public void setRequireCondition(boolean requireCondition) {
         this.requireCondition = requireCondition;
     }
+
+    /**
+     * 获取方言
+     *
+     * @return 方言
+     */
+    public abstract DBDialect getDialect();
 }

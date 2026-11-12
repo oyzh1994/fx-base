@@ -7,6 +7,7 @@ import cn.oyzh.common.util.UUIDUtil;
 import cn.oyzh.fx.db.DBColumn;
 import cn.oyzh.fx.db.DBDialect;
 import cn.oyzh.fx.db.DBRecordData;
+import cn.oyzh.fx.db.DBRecordFilter;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.font.FontUtil;
 
@@ -21,6 +22,7 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -501,4 +503,32 @@ public class DBUtil {
     //        //        }
     //        return DBSqlParser.getParser(sql, dialect).isFullColumn();
     //    }
+
+    /**
+     * 构建条件
+     *
+     * @param filters 过滤条件
+     * @return 条件
+     * @throws Exception 异常
+     */
+    public static String buildCondition(List<? extends DBRecordFilter> filters) throws Exception {
+        if (filters == null || filters.isEmpty()) {
+            return "";
+        }
+        StringBuilder conditions = new StringBuilder();
+        for (int i = 0; i < filters.size(); i++) {
+            DBRecordFilter filter = filters.get(i);
+            Object condition = filter.condition();
+            if (condition != null) {
+                conditions.append(DBUtil.wrap(filter.columnName(), filter.dialect()))
+                        .append(" ")
+                        .append(condition)
+                        .append(" ");
+            }
+            if (i != filters.size() - 1) {
+                conditions.append(filter.getJoinSymbol()).append(" ");
+            }
+        }
+        return conditions.toString();
+    }
 }
