@@ -2,7 +2,7 @@ package cn.oyzh.fx.plus.controls.table;
 
 import cn.oyzh.common.file.FileNameUtil;
 import cn.oyzh.common.system.OSUtil;
-import cn.oyzh.fx.plus.util.IconUtil;
+import cn.oyzh.fx.plus.util.FileIconUtil;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -75,9 +75,9 @@ public class IconTableCell<S, T> extends FXTableCell<S, T> {
         }
         String fName = item.toString();
         String extension = FileNameUtil.extName(fName);
-        Image icon = OSUtil.isWindows() ? IconUtil.getSystemIcon(extension) : null;
+        Image icon = OSUtil.isWindows() ? FileIconUtil.getSystemIcon(extension) : null;
         if (icon == null) {
-            return IconUtil.getSVGIcon(extension);
+            return FileIconUtil.getSVGIcon(extension);
         }
         return icon;
     }
