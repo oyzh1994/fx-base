@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,6 +91,11 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private volatile List<RichParagraph> myParagraphs = List.of();
 
     /**
+     * 当前文档文本长度（含换行符），用于选择同步或异步着色。
+     */
+    private long documentChars;
+
+    /**
      * 样式版本号，用于丢弃过期的后台任务结果
      */
     private final AtomicInteger styleVersion = new AtomicInteger(0);
@@ -97,11 +106,36 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      * 所有编辑器共享同一个线程池：每个编辑器单独建线程在消息列表等场景下会创建大量线程，
      * 且组件销毁后线程无法回收。线程池中的线程为守护线程，空闲一段时间会自动回收。
      */
-    private static final ExecutorService STYLE_EXECUTOR = Executors.newCachedThreadPool(r -> {
+    private static final ExecutorService STYLE_EXECUTOR = Executors.newFixedThreadPool(
+            Math.max(1, Math.min(2, Runtime.getRuntime().availableProcessors() - 1)), r -> {
         Thread t = new Thread(r, "editor-syntax-highlighter");
         t.setDaemon(true);
         return t;
     });
+
+    /**
+     * 着色任务防抖调度器。
+     */
+    private static final ScheduledExecutorService STYLE_SCHEDULER = Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread t = new Thread(r, "editor-syntax-scheduler");
+        t.setDaemon(true);
+        return t;
+    });
+
+    /**
+     * 着色防抖时间，连续输入时只保留最后一次完整着色任务。
+     */
+    private static final long STYLE_DEBOUNCE_MILLIS = 80L;
+
+    /**
+     * 当前编辑器等待执行的着色任务。
+     */
+    private ScheduledFuture<?> pendingStyleTask;
+
+    /**
+     * 当前编辑器正在执行的着色任务。
+     */
+    private Future<?> runningStyleTask;
 
     /**
      * 高亮匹配模式
@@ -472,40 +506,26 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      * @param lineCount 行总数
      * @return 结果
      */
-    private boolean isAsyncSyntax(long lineCount) {
-        // 异步着色标志位
-        boolean asyncSyntax = false;
-        // 异步着色判断
-        if (this.syntaxStrategy == EditorSyntaxStrategy.AUTO) {
-            // 大于最小阈值，则异步
-            if (lineCount > this.syntaxAsyncMinThreshold) {
-                asyncSyntax = true;
-            }
-        } else if (this.syntaxStrategy == EditorSyntaxStrategy.ASYNC) {
-            asyncSyntax = true;
+    private boolean isAsyncSyntax(long lineCount, long contentLength) {
+        if (this.syntaxStrategy == EditorSyntaxStrategy.SYNC) {
+            return false;
+        }
+        if (this.syntaxStrategy == EditorSyntaxStrategy.ASYNC) {
+            return true;
         }
 
-        // 异步着色修正
-        if (asyncSyntax) {
-            // 首次异步
-            if (this.syntaxAsyncStrategy == EditorSyntaxAsyncStrategy.FIRST) {
-                if (!this.firstChange) {
-                    asyncSyntax = false;
-                }
-            } else if (this.syntaxAsyncStrategy == EditorSyntaxAsyncStrategy.AUTO) {// 自动异步
-                if (!this.firstChange) {
-                    // 小于自动阈值，则还是同步
-                    if (lineCount <= this.syntaxAsyncAutoThreshold) {
-                        asyncSyntax = false;
-                    }
-                }
-            }
+        boolean largeDocument = lineCount > this.syntaxAsyncMinThreshold
+                || lineCount > this.syntaxAsyncAutoThreshold
+                || contentLength > (long) this.syntaxAsyncMinThreshold * 1024L;
+        if (!largeDocument) {
+            return false;
         }
-        // 变更首次flag
-        if (this.firstChange) {
+        if (this.syntaxAsyncStrategy == EditorSyntaxAsyncStrategy.FIRST) {
+            boolean firstChange = this.firstChange;
             this.firstChange = false;
+            return firstChange;
         }
-        return asyncSyntax;
+        return true;
     }
 
     @Override
@@ -518,75 +538,49 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
             return;
         }
 
-        String text = this.getPlainText(model);
-        if (text.isEmpty()) {
+        if (model.size() == 0) {
             this.myParagraphs = List.of();
+            this.documentChars = 0;
             return;
+        }
+
+        boolean wholeDocument = TextPos.ZERO.equals(start) && end.equals(model.getDocumentEnd()) && linesAdded == 0;
+        if (wholeDocument) {
+            this.myParagraphs = this.buildFastParagraphs(model);
+            this.documentChars = this.calculateDocumentChars(model);
+        } else {
+            this.updateChangedParagraphs(model, start, end, linesAdded);
         }
 
         // 行号总数
-        long lineCount = text.lines().count();
+        long lineCount = model.size();
         // 是否语法着色
         boolean syntax = this.isSyntax(lineCount);
-        // 是否异步语法着色
-        boolean asyncSyntax = false;
-        if (syntax) {
-            asyncSyntax = this.isAsyncSyntax(lineCount);
-        }
 
-        // 非语法着色
-        if (!syntax) {
-            this.myParagraphs = this.buildBaseParagraphs(text);
-            this.refresh(model);
-            return;
-        }
-
-        // 同步构建，则构建完整段落
-        if (!asyncSyntax) {
-            // StyleProvider 内部会保存分词状态(prevState)，可能与后台任务共享，
-            // 因此这里需要串行执行，避免状态被并发改写
-            synchronized (provider) {
-                this.myParagraphs = this.buildRichParagraphs(text);
-            }
-            this.refresh(model);
-            return;
-        }
-
-        // 异步构建
-        // 快速路径：构建无语法着色的段落
-        this.myParagraphs = this.buildFastParagraphs(text);
-        this.refresh(model);
-
-        // 只有需要语法着色时才提交后台任务
-        if (CollectionUtil.isNotEmpty(this.prompts)
+        if (!syntax
+                || CollectionUtil.isNotEmpty(this.prompts)
                 || this.formatType == EditorFormatType.RAW
                 || this.formatType == null) {
+            if (wholeDocument) {
+                this.refresh(model);
+            }
             return;
         }
-        // 后台线程：完整语法着色
-        // 提交异步线程
-        STYLE_EXECUTOR.submit(() -> {
-            if (this.styleVersion.get() != currentVersion) {
-                return;
-            }
-            List<RichParagraph> styled;
+
+        boolean asyncSyntax = this.isAsyncSyntax(lineCount, this.documentChars);
+        if (!asyncSyntax) {
+            String text = this.getPlainText(model);
             synchronized (provider) {
-                if (this.styleVersion.get() != currentVersion) {
-                    return;
-                }
-                styled = this.buildRichParagraphs(text);
+                this.myParagraphs = this.buildRichParagraphs(text, currentVersion);
             }
-            if (styleVersion.get() != currentVersion) {
-                return;
-            }
-            FXUtil.runLater(() -> {
-                if (styleVersion.get() != currentVersion) {
-                    return;
-                }
-                this.myParagraphs = styled;
+            this.documentChars = text.length();
+            if (wholeDocument) {
                 this.refresh(model);
-            });
-        });
+            }
+            return;
+        }
+
+        this.scheduleRichParagraphs(model, currentVersion);
     }
 
     @Override
@@ -598,55 +592,157 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     }
 
     /**
-     * 基础构建段落，跳过语法着色和应用提示词，仅高亮。
-     *
-     * @param text 文本
+     * 仅重建本次编辑影响的段落，避免每次输入都扫描整篇文档。
      */
-    private List<RichParagraph> buildBaseParagraphs(String text) {
-        String[] lines = text.split(LINE_SPLIT_PATTERN);
-        List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
-        for (String line : lines) {
-            RichParagraph.Builder builder = RichParagraph.builder();
-            super.applyStyles(builder, new StyledToken(line, null));
-            if (StringUtil.isNotEmpty(this.highlight)) {
-                List<EditorMachToken> machTokens = this.machHighlight(line);
-                for (EditorMachToken token : machTokens) {
-                    builder.addHighlight(token.start(), token.length(), this.highlightColor);
-                }
+    private void updateChangedParagraphs(CodeTextModel model, TextPos start, TextPos end, int linesAdded) {
+        List<RichParagraph> previous = this.myParagraphs;
+        int modelSize = model.size();
+        int startIx = Math.max(0, Math.min(start.index(), modelSize));
+        int oldEndIx = Math.max(startIx, Math.min(end.index(), Math.max(previous.size() - 1, 0)));
+        int oldCount = previous.isEmpty() ? 0 : oldEndIx - startIx + 1;
+        int newCount = Math.max(1, Math.min(linesAdded + 1, modelSize - startIx));
+
+        int expectedPreviousSize = modelSize - newCount + oldCount;
+        if (previous.size() != expectedPreviousSize && !previous.isEmpty()) {
+            this.myParagraphs = this.buildFastParagraphs(model);
+            this.documentChars = this.calculateDocumentChars(model);
+            return;
+        }
+
+        long removedChars = 0;
+        int removeStart = Math.min(startIx, previous.size());
+        int removeEnd = Math.min(removeStart + oldCount, previous.size());
+        for (int i = removeStart; i < removeEnd; i++) {
+            removedChars += previous.get(i).getPlainText().length();
+        }
+
+        List<RichParagraph> replacement = new ArrayList<>(newCount);
+        long addedChars = 0;
+        for (int i = 0; i < newCount; i++) {
+            int paragraphIndex = startIx + i;
+            String line = model.getPlainText(paragraphIndex);
+            replacement.add(this.buildFastParagraph(line));
+            addedChars += line.length();
+        }
+
+        List<RichParagraph> updated = previous instanceof ArrayList ? previous : new ArrayList<>(previous);
+        updated.subList(removeStart, removeEnd).clear();
+        updated.addAll(removeStart, replacement);
+        this.myParagraphs = updated;
+        int lineEndingLength = model.getLineEnding().getText().length();
+        long lineEndingDelta = (long) (newCount - oldCount) * lineEndingLength;
+        this.documentChars = Math.max(0, this.documentChars - removedChars + addedChars + lineEndingDelta);
+    }
+
+    /**
+     * 计算文档文本长度，含换行符。
+     */
+    private long calculateDocumentChars(CodeTextModel model) {
+        long chars = 0;
+        int lineEndingLength = model.getLineEnding().getText().length();
+        for (int i = 0; i < model.size(); i++) {
+            if (i > 0) {
+                chars += lineEndingLength;
             }
-            paragraphs.add(builder.build());
+            chars += model.getParagraphLength(i);
+        }
+        return chars;
+    }
+
+    /**
+     * 防抖提交完整语法着色，连续输入时取消旧任务。
+     */
+    private void scheduleRichParagraphs(CodeTextModel model, int currentVersion) {
+        if (this.pendingStyleTask != null) {
+            this.pendingStyleTask.cancel(false);
+        }
+        if (this.runningStyleTask != null) {
+            this.runningStyleTask.cancel(true);
+        }
+        this.pendingStyleTask = STYLE_SCHEDULER.schedule(() -> FXUtil.runLater(() -> {
+            if (this.styleVersion.get() != currentVersion) {
+                return;
+            }
+            String text = this.getPlainText(model);
+            int paragraphCount = model.size();
+            if (this.styleVersion.get() != currentVersion) {
+                return;
+            }
+            this.runningStyleTask = STYLE_EXECUTOR.submit(() -> {
+                Thread.interrupted();
+                StyleProvider provider = this.getStyleProvider();
+                if (provider == null || this.styleVersion.get() != currentVersion) {
+                    return;
+                }
+                List<RichParagraph> styled;
+                synchronized (provider) {
+                    if (this.styleVersion.get() != currentVersion) {
+                        return;
+                    }
+                    styled = this.buildRichParagraphs(text, currentVersion);
+                }
+                if (this.styleVersion.get() != currentVersion || styled.size() != paragraphCount) {
+                    return;
+                }
+                FXUtil.runLater(() -> {
+                    if (this.styleVersion.get() != currentVersion) {
+                        return;
+                    }
+                    this.myParagraphs = styled;
+                    this.documentChars = text.length();
+                    this.refresh(model);
+                });
+            });
+        }), STYLE_DEBOUNCE_MILLIS, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 取消当前编辑器尚未完成的着色任务。
+     */
+    public void dispose() {
+        this.styleVersion.incrementAndGet();
+        if (this.pendingStyleTask != null) {
+            this.pendingStyleTask.cancel(false);
+            this.pendingStyleTask = null;
+        }
+        if (this.runningStyleTask != null) {
+            this.runningStyleTask.cancel(true);
+            this.runningStyleTask = null;
+        }
+    }
+
+    /**
+     * 快速构建模型中的全部段落，不执行语法分词。
+     */
+    private List<RichParagraph> buildFastParagraphs(CodeTextModel model) {
+        List<RichParagraph> paragraphs = new ArrayList<>(model.size());
+        for (int i = 0; i < model.size(); i++) {
+            paragraphs.add(this.buildFastParagraph(model.getPlainText(i)));
         }
         return paragraphs;
     }
 
     /**
-     * 快速构建段落，跳过语法着色，仅应用提示词和高亮。
-     *
-     * @param text 文本
+     * 快速构建单个段落，仅应用提示词和搜索高亮。
      */
-    private List<RichParagraph> buildFastParagraphs(String text) {
-        String[] lines = text.split(LINE_SPLIT_PATTERN);
-        List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
-        for (String line : lines) {
-            RichParagraph.Builder builder = RichParagraph.builder();
-            if (CollectionUtil.isNotEmpty(this.prompts)) {
-                List<EditorMachToken> machTokens = this.machPrompts(line);
-                List<StyledToken> tokens = this.buildTokens(line, machTokens);
-                for (StyledToken token : tokens) {
-                    super.applyStyles(builder, token);
-                }
-            } else {
-                super.applyStyles(builder, new StyledToken(line, null));
+    private RichParagraph buildFastParagraph(String line) {
+        RichParagraph.Builder builder = RichParagraph.builder();
+        if (CollectionUtil.isNotEmpty(this.prompts)) {
+            List<EditorMachToken> machTokens = this.machPrompts(line);
+            List<StyledToken> tokens = this.buildTokens(line, machTokens);
+            for (StyledToken token : tokens) {
+                super.applyStyles(builder, token);
             }
-            if (StringUtil.isNotEmpty(this.highlight)) {
-                List<EditorMachToken> machTokens = this.machHighlight(line);
-                for (EditorMachToken token : machTokens) {
-                    builder.addHighlight(token.start(), token.length(), this.highlightColor);
-                }
-            }
-            paragraphs.add(builder.build());
+        } else {
+            super.applyStyles(builder, new StyledToken(line, null));
         }
-        return paragraphs;
+        if (StringUtil.isNotEmpty(this.highlight)) {
+            List<EditorMachToken> machTokens = this.machHighlight(line);
+            for (EditorMachToken token : machTokens) {
+                builder.addHighlight(token.start(), token.length(), this.highlightColor);
+            }
+        }
+        return builder.build();
     }
 
     ///**
@@ -662,8 +758,9 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      * 此方法在后台线程中调用，可能耗时较长。
      *
      * @param text 文本
+     * @param version 着色版本号
      */
-    private List<RichParagraph> buildRichParagraphs(String text) {
+    private List<RichParagraph> buildRichParagraphs(String text, int version) {
         StyleProvider provider = this.getStyleProvider();
         if (provider == null) {
             JulLog.warn("StyleProvider is null");
@@ -675,12 +772,11 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         // 残留状态会让本次着色从字符串/注释规则开始，表现为整篇文本都变成同一种颜色。
         // 本方法始终是整篇重新着色，故此处重置状态是安全的。
         provider.flush();
-        String[] lines = text.split(LINE_SPLIT_PATTERN);
+        String[] lines = text.split(LINE_SPLIT_PATTERN, -1);
         List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
         for (String line : lines) {
-            if (Thread.interrupted()) {
-                JulLog.warn("Thread is interrupted");
-                return paragraphs;
+            if (Thread.currentThread().isInterrupted() || this.styleVersion.get() != version) {
+                return Collections.emptyList();
             }
             RichParagraph.Builder builder = RichParagraph.builder();
             if (CollectionUtil.isNotEmpty(this.prompts)) {

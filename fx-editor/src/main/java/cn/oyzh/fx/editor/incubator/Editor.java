@@ -424,6 +424,48 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     }
 
     /**
+     * 高效获取纯文本，避免CodeArea导出富文本段落造成额外开销。
+     */
+    private String plainText() {
+        StyledTextModel model = this.getModel();
+        if (model == null) {
+            return "";
+        }
+        int paragraphCount = model.size();
+        if (paragraphCount == 0) {
+            return "";
+        }
+        String lineEnding = model.getLineEnding().getText();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < paragraphCount; i++) {
+            if (i > 0) {
+                builder.append(lineEnding);
+            }
+            builder.append(model.getPlainText(i));
+        }
+        return builder.toString();
+    }
+
+    /**
+     * 获取文档长度，不展开富文本段落。
+     */
+    private int documentLength() {
+        StyledTextModel model = this.getModel();
+        if (model == null) {
+            return 0;
+        }
+        int length = 0;
+        int lineEndingLength = model.getLineEnding().getText().length();
+        for (int i = 0; i < model.size(); i++) {
+            if (i > 0) {
+                length += lineEndingLength;
+            }
+            length += model.getParagraphLength(i);
+        }
+        return length;
+    }
+
+    /**
      * 文本长度
      */
     private int textLen;
@@ -438,7 +480,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     private final StyledTextModel.Listener modelListener = e -> {
         if (e.isEdit()) {
-            String text = this.getText();
+            String text = this.plainText();
             this.textLen = text.length();
             this.textProperty.setValue(text);
         }
@@ -451,7 +493,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     public StringProperty textProperty() {
         if (this.textProperty == null) {
-            String text = this.getText();
+            String text = this.plainText();
             this.textLen = text.length();
             this.textProperty = new SimpleStringProperty(text);
             super.getModel().addListener(this.modelListener);
@@ -553,7 +595,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             this.setFormatType(formatType);
             if (data != null) {
                 // 内容未变化时，下面的text()不会触发变更事件，需要记录，稍后强制重新着色
-                textUnchanged = StringUtil.equals(this.getText(), data);
+                textUnchanged = StringUtil.equals(this.plainText(), data);
                 // 初始化语法格式
                 this.initSyntaxes();
                 // 设置内容
@@ -578,7 +620,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * @param text 内容
      */
     public void text(String text) {
-        if (StringUtil.notEquals(this.getText(), text)) {
+        if (StringUtil.notEquals(this.plainText(), text)) {
             FXUtil.runWait(() -> super.setText(text));
         }
     }
@@ -655,7 +697,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     public boolean isEmpty() {
         try {
-            String str = this.getText();
+            String str = this.plainText();
             if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r\n")) {
                 //            if (StringUtil.isEmpty(str) || StringUtil.equalsAny(str, "\n", "\r", "\r\n")) {
                 return true;
@@ -853,7 +895,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         //        }
         //        return text.length();
         if (this.textProperty == null) {
-            return this.getText().length();
+            return this.documentLength();
         }
         return this.textLen;
     }
@@ -864,7 +906,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * @return 内容
      */
     public String getTextTrim() {
-        String text = this.getText();
+        String text = this.plainText();
         if (text == null) {
             return null;
         }
@@ -1019,7 +1061,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     public void appendLine(String content, boolean endLine) {
         if (content != null) {
-            String text = this.getText();
+            String text = this.plainText();
             //            if (!StringUtil.endsWith(text, System.lineSeparator()) && !StringUtil.startWith(content, System.lineSeparator())) {
             //                content = System.lineSeparator() + content;
             if (!text.isEmpty()
@@ -1432,7 +1474,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * 格式化
      */
     public void formatting() {
-        String text = this.getText();
+        String text = this.plainText();
         String text1;
         if (this.formatted) {
             this.formatted = false;
@@ -1742,8 +1784,8 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      * @return 行数量
      */
     public long lineCount() {
-        String text = this.getText();
-        return text == null ? 0 : text.lines().count();
+        StyledTextModel model = this.getModel();
+        return model == null ? 0 : model.size();
     }
 
     /**
@@ -2173,26 +2215,33 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         SelectionSegment segment = this.getSelection();
         if (segment != null && !segment.isCollapsed()) {
             // 有选区 — 包裹选区
-            IndexRange range = this.getSelectionRange();
-            if (range != null) {
-                e.consume();
-                String selText = this.getSelectedText();
-                this.replaceText(range.getStart(), range.getEnd(), ch + selText + closeChar);
-                this.selectRange(range.getStart() + 1, range.getStart() + 1 + selText.length());
-            }
+            e.consume();
+            TextPos start = segment.getMin();
+            TextPos end = segment.getMax();
+            String selText = this.getSelectedText();
+            super.replaceText(start, end, ch + selText + closeChar);
+            TextPos selectionStart = TextPos.ofLeading(start.index(), start.offset() + 1);
+            TextPos selectionEnd = start.index() == end.index()
+                    ? TextPos.ofLeading(start.index(), end.offset() + 1)
+                    : TextPos.ofLeading(end.index(), end.offset());
+            this.select(selectionStart, selectionEnd);
         } else {
             // 无选区 — 智能跳过或插入成对符号
-            int caretPos = this.caretPosition();
-            String text = this.getText();
-            if (caretPos < text.length() && String.valueOf(text.charAt(caretPos)).equals(closeChar)) {
+            TextPos caret = super.getCaretPosition();
+            if (caret == null) {
+                return;
+            }
+            String paragraph = this.getPlainText(caret.index());
+            int offset = caret.offset();
+            if (offset < paragraph.length() && paragraph.charAt(offset) == closeChar.charAt(0)) {
                 e.consume();
                 // 光标右边已是结束符，直接跳过
-                this.positionCaret(caretPos + 1);
+                this.positionCaret(TextPos.ofLeading(caret.index(), offset + 1));
             } else {
                 e.consume();
                 // 插入成对符号，光标居中
-                this.replaceText(caretPos, caretPos, ch + closeChar);
-                this.positionCaret(caretPos + 1);
+                super.replaceText(caret, caret, ch + closeChar);
+                this.positionCaret(TextPos.ofLeading(caret.index(), offset + 1));
             }
         }
     }
@@ -2212,23 +2261,28 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             return;
         }
 
-        int caretPos = this.caretPosition();
-        String text = this.getText();
-        if (caretPos <= 0 || caretPos >= text.length()) {
+        TextPos caret = super.getCaretPosition();
+        if (caret == null) {
             return;
         }
-
-        String prevChar = String.valueOf(text.charAt(caretPos - 1));
-        String nextChar = String.valueOf(text.charAt(caretPos));
+        String paragraph = this.getPlainText(caret.index());
+        int offset = caret.offset();
+        if (offset <= 0 || offset >= paragraph.length()) {
+            return;
+        }
+        String prevChar = String.valueOf(paragraph.charAt(offset - 1));
+        String nextChar = String.valueOf(paragraph.charAt(offset));
         String expectedClosing = PAIR_MAP.get(prevChar);
         if (expectedClosing != null && expectedClosing.equals(nextChar)) {
             e.consume();
-            this.deleteText(caretPos - 1, caretPos + 1);
+            super.replaceText(TextPos.ofLeading(caret.index(), offset - 1),
+                    TextPos.ofLeading(caret.index(), offset + 1), "");
         }
     }
 
     @Override
     public void destroy() {
+        this.syntaxDecorator.dispose();
         //        if (this.modelListener != null) {
         //        this.getModel().removeListener(this.modelListener);
         //            this.modelListener = null;
