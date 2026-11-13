@@ -1,5 +1,6 @@
 package cn.oyzh.fx.tty.ghostty;
 
+import cn.oyzh.fx.tty.TtyTerminalUtil;
 import com.pty4j.PtyProcess;
 import com.pty4j.PtyProcessBuilder;
 import com.pty4j.WinSize;
@@ -300,7 +301,10 @@ final class TerminalViewTest {
                 var observed = new AtomicReference<TerminalSize>();
                 view.terminalSizeProperty().addListener((_, _, size) -> observed.set(size));
                 view.resize(
-                        40 * cellWidth(view) + TerminalView.SCROLLBAR_WIDTH_PX + 2 * TerminalView.SCROLLBAR_MARGIN_PX,
+                        TtyTerminalUtil.getTerminalContentInsetX()
+                                + 40 * cellWidth(view)
+                                + TerminalView.SCROLLBAR_WIDTH_PX
+                                + 2 * TerminalView.SCROLLBAR_MARGIN_PX,
                         12 * cellHeight(view));
 
                 var expected = new TerminalSize(40, 12);
@@ -653,7 +657,9 @@ final class TerminalViewTest {
             assertEquals(location, runOnFxThread(() -> view.getInputMethodRequests().getTextLocation(0)));
             terminal.emit("\u001B[?2026l\u001B]2;ime-released\u001B\\");
             awaitTitle(view, "ime-released");
-            assertEquals(0, runOnFxThread(() -> view.getInputMethodRequests().getTextLocation(0).getX()));
+            assertEquals(
+                    TtyTerminalUtil.getTerminalContentInsetX(),
+                    runOnFxThread(() -> view.getInputMethodRequests().getTextLocation(0).getX()));
         }
     }
 
@@ -3454,7 +3460,9 @@ final class TerminalViewTest {
     }
 
     private static double cellX(TerminalView view, int column, double offset) {
-        return column * cellWidth(view) + cellWidth(view) * offset;
+        return TtyTerminalUtil.getTerminalContentInsetX()
+                + column * cellWidth(view)
+                + cellWidth(view) * offset;
     }
 
     private static double cellY(TerminalView view, int row, double offset) {
@@ -3462,7 +3470,10 @@ final class TerminalViewTest {
     }
 
     private static double cellWidth(TerminalView view) {
-        return (view.prefWidth(-1) - 10) / 80;
+        return (view.prefWidth(-1)
+                - TtyTerminalUtil.getTerminalContentInsetX()
+                - TerminalView.SCROLLBAR_WIDTH_PX
+                - 2 * TerminalView.SCROLLBAR_MARGIN_PX) / 80;
     }
 
     private static double cellHeight(TerminalView view) {

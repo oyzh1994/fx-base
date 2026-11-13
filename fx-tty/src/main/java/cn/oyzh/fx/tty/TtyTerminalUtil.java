@@ -17,6 +17,11 @@ import javafx.scene.input.KeyEvent;
 public class TtyTerminalUtil {
 
     /**
+     * 终端内容左侧统一留白。
+     */
+    private static final int TERMINAL_CONTENT_INSET_X = 4;
+
+    /**
      * 首屏缓冲优化开关，默认关闭。
      */
     private static final String FIRST_SCREEN_BUFFER_ENABLED = "fx-tty.firstScreenBuffer";
@@ -31,6 +36,15 @@ public class TtyTerminalUtil {
      */
     public static boolean isFirstScreenBufferEnabled() {
         return Boolean.getBoolean(FIRST_SCREEN_BUFFER_ENABLED);
+    }
+
+    /**
+     * 获取终端内容左侧留白。
+     *
+     * @return 左侧留白像素
+     */
+    public static int getTerminalContentInsetX() {
+        return TERMINAL_CONTENT_INSET_X;
     }
 
     /**

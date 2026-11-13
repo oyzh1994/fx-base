@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.regex.Pattern;
 
+import cn.oyzh.fx.tty.TtyTerminalUtil;
 import cn.oyzh.fx.tty.ghostty.bindings.ghostty_vt_h;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
@@ -228,7 +229,9 @@ public final class TerminalView extends AnchorPane implements AutoCloseable {
                 baselineOffsetPx);
     }, font);
     private final Canvas canvas = new ResizableCanvas(
-            () -> INITIAL_COLUMNS * fontMetrics.get().cellWidthPx() + scrollbarReservedWidthPx(),
+            () -> TtyTerminalUtil.getTerminalContentInsetX()
+                    + INITIAL_COLUMNS * fontMetrics.get().cellWidthPx()
+                    + scrollbarReservedWidthPx(),
             () -> INITIAL_ROWS * fontMetrics.get().cellHeightPx());
 
     /// Creates a terminal view and opens its terminal backend.

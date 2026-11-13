@@ -30,6 +30,17 @@ final class TtyJediTermEmulatorTest {
     }
 
     @Test
+    void appliesHtopMouseModeAndFormatSequence() throws Exception {
+        var events = new ArrayList<String>();
+        var emulator = createEmulator("\u001B[?1000;1006h", events);
+
+        drain(emulator);
+
+        assertEquals(List.of("mode=" + MouseMode.MOUSE_REPORTING_NORMAL,
+                "format=" + MouseFormat.MOUSE_FORMAT_SGR), events);
+    }
+
+    @Test
     void appliesEveryParameterInPrivateModeResetSequence() throws Exception {
         var events = new ArrayList<String>();
         var emulator = createEmulator("\u001B[?1000;1006l", events);

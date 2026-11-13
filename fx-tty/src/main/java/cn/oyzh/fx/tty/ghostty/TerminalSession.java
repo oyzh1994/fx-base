@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.regex.MatchResult;
 
+import cn.oyzh.fx.tty.TtyTerminalUtil;
 import cn.oyzh.fx.tty.ghostty.bindings.GhosttyBuffer;
 import cn.oyzh.fx.tty.ghostty.bindings.GhosttyColorRgb;
 import cn.oyzh.fx.tty.ghostty.bindings.GhosttyDeviceAttributes;
@@ -76,6 +77,7 @@ import javafx.scene.paint.Color;
 
 final class TerminalSession implements AutoCloseable {
 
+    private static final double CONTENT_INSET_LEFT_PX = TtyTerminalUtil.getTerminalContentInsetX();
     private static final int GHOSTTY_SUCCESS = 0;
     private static final int MAX_GRAPHEME_CODEPOINTS = 16;
     private static final short GRAPHEME_CLUSTER_MODE = 2027;
@@ -771,7 +773,7 @@ final class TerminalSession implements AutoCloseable {
         var cellWidthPx = Math.clamp((int) Math.round(metrics.cellWidthPx() * scaleX), 1, MAX_GHOSTTY_DIMENSION);
         var cellHeightPx = Math.clamp((int) Math.round(metrics.cellHeightPx() * scaleY), 1, MAX_GHOSTTY_DIMENSION);
         var columns = Math.clamp(
-                (int) Math.floor(Math.max(0, widthPx - scrollbarReservedWidthPx) / metrics.cellWidthPx()),
+                (int) Math.floor(Math.max(0, widthPx - CONTENT_INSET_LEFT_PX - scrollbarReservedWidthPx) / metrics.cellWidthPx()),
                 1,
                 MAX_GHOSTTY_DIMENSION / cellWidthPx);
         var rows = Math.clamp(
@@ -1815,15 +1817,17 @@ final class TerminalSession implements AutoCloseable {
             TerminalView.FontMetrics metrics,
             double scrollbarReservedWidthPx,
             boolean clamp) {
-        var contentWidth = Math.max(0, widthPx - scrollbarReservedWidthPx);
+        var contentWidth = Math.max(0, widthPx - CONTENT_INSET_LEFT_PX - scrollbarReservedWidthPx);
         if (contentWidth <= 0 || heightPx <= 0) {
             return null;
         }
-        if (!clamp && (x < 0 || y < 0 || x >= contentWidth || y >= heightPx)) {
+        if (!clamp && (x < CONTENT_INSET_LEFT_PX || y < 0
+                || x >= CONTENT_INSET_LEFT_PX + contentWidth || y >= heightPx)) {
             return null;
         }
 
-        var hitX = clamp ? Math.clamp(x, 0.0, Math.max(0.0, contentWidth - 1.0)) : x;
+        var localX = x - CONTENT_INSET_LEFT_PX;
+        var hitX = clamp ? Math.clamp(localX, 0.0, Math.max(0.0, contentWidth - 1.0)) : localX;
         var hitY = (clamp ? Math.clamp(y, 0.0, Math.max(0.0, heightPx - 1.0)) : y)
                 + scrollOffsetRows * metrics.cellHeightPx();
         try (var arena = Arena.ofConfined()) {
@@ -2307,7 +2311,7 @@ final class TerminalSession implements AutoCloseable {
                     placement.sourceY(),
                     placement.sourceWidth(),
                     placement.sourceHeight(),
-                    placement.destinationX(),
+                    placement.destinationX() + CONTENT_INSET_LEFT_PX,
                     placement.destinationY(),
                     placement.destinationWidth(),
                     placement.destinationHeight());
@@ -2449,7 +2453,9 @@ final class TerminalSession implements AutoCloseable {
                             && rowHasHyperlink.get(ValueLayout.JAVA_BOOLEAN, 0);
                     if ((!splitCellRendering || backgroundOnly) && viewportY == highlightedViewportRow) {
                         graphics.setFill(applyOpacity(theme.foreground(), 0.16));
-                        graphics.fillRect(0, y, Math.max(0.0, width - scrollbarReservedWidthPx), metrics.cellHeightPx());
+                        graphics.fillRect(CONTENT_INSET_LEFT_PX, y,
+                                Math.max(0.0, width - CONTENT_INSET_LEFT_PX - scrollbarReservedWidthPx),
+                                metrics.cellHeightPx());
                     }
 
                     requireGhosttySuccess(
@@ -2459,7 +2465,7 @@ final class TerminalSession implements AutoCloseable {
                                     rowCellsPointer),
                             "ghostty_render_state_row_get(cells)");
 
-                    var x = 0.0;
+                    var x = CONTENT_INSET_LEFT_PX;
                     var viewportX = 0;
                     while (ghostty_vt_h.ghostty_render_state_row_cells_next(rowCells)) {
                         var screenPoint = new Selection.ScreenPoint(viewportX, viewportTop + viewportY);
@@ -2722,7 +2728,7 @@ final class TerminalSession implements AutoCloseable {
         return new TerminalView.CursorLocation(
                 cellX,
                 cellY,
-                cellX * (double) metrics.cellWidthPx(),
+                CONTENT_INSET_LEFT_PX + cellX * (double) metrics.cellWidthPx(),
                 (cellY - scrollOffsetRows) * metrics.cellHeightPx());
     }
 
@@ -2784,7 +2790,7 @@ final class TerminalSession implements AutoCloseable {
             GhosttyMouseEncoderSize.padding_top(size, 0);
             GhosttyMouseEncoderSize.padding_bottom(size, 0);
             GhosttyMouseEncoderSize.padding_right(size, (int) Math.ceil(scrollbarReservedWidthPx));
-            GhosttyMouseEncoderSize.padding_left(size, 0);
+            GhosttyMouseEncoderSize.padding_left(size, (int) Math.ceil(CONTENT_INSET_LEFT_PX));
             ghostty_vt_h.ghostty_mouse_encoder_setopt(
                     mouseEncoder,
                     ghostty_vt_h.GHOSTTY_MOUSE_ENCODER_OPT_SIZE(),
@@ -2923,7 +2929,7 @@ final class TerminalSession implements AutoCloseable {
         var geometry = GhosttySelectionGestureGeometry.allocate(arena);
         GhosttySelectionGestureGeometry.columns(geometry, Math.max(1, columnCount()));
         GhosttySelectionGestureGeometry.cell_width(geometry, Math.max(1, metrics.cellWidthPx()));
-        GhosttySelectionGestureGeometry.padding_left(geometry, 0);
+        GhosttySelectionGestureGeometry.padding_left(geometry, (int) Math.ceil(CONTENT_INSET_LEFT_PX));
         GhosttySelectionGestureGeometry.screen_height(geometry, Math.max(1, (int) Math.ceil(heightPx)));
         requireGhosttySuccess(
                 ghostty_vt_h.ghostty_selection_gesture_event_set(
@@ -3264,7 +3270,7 @@ final class TerminalSession implements AutoCloseable {
         graphics.setLineWidth(1.0);
         for (var span : spans) {
             var selected = span.matchIndex() == selectedSearchMatch;
-            var x = span.fromX() * metrics.cellWidthPx();
+            var x = CONTENT_INSET_LEFT_PX + span.fromX() * metrics.cellWidthPx();
             var width = (span.toX() - span.fromX() + 1) * metrics.cellWidthPx();
             graphics.setStroke(selected ? theme.searchCurrentMatchBorderColor() : theme.searchMatchBorderColor());
             graphics.strokeRect(x + 0.5, y + 0.5, width, metrics.cellHeightPx());
@@ -3627,7 +3633,8 @@ final class TerminalSession implements AutoCloseable {
         }
 
         var codePointCount = preedit.text().codePointCount(0, preedit.text().length());
-        var x = Short.toUnsignedInt(GhosttyRenderStateCursor.viewport_x(cursor)) * (double) metrics.cellWidthPx();
+        var x = CONTENT_INSET_LEFT_PX
+                + Short.toUnsignedInt(GhosttyRenderStateCursor.viewport_x(cursor)) * (double) metrics.cellWidthPx();
         var y = (Short.toUnsignedInt(GhosttyRenderStateCursor.viewport_y(cursor)) - scrollOffsetRows) * metrics.cellHeightPx();
         graphics.setFont(metrics.regular());
         graphics.setFill(theme.foreground());
@@ -3667,7 +3674,8 @@ final class TerminalSession implements AutoCloseable {
         var cursorColor = GhosttyRenderStateColors.cursor_has_value(colors)
                 ? toFxColor(GhosttyRenderStateColors.cursor(colors))
                 : theme.cursorColor();
-        var cursorPixelX = Short.toUnsignedInt(GhosttyRenderStateCursor.viewport_x(cursor)) * (double) metrics.cellWidthPx();
+        var cursorPixelX = CONTENT_INSET_LEFT_PX
+                + Short.toUnsignedInt(GhosttyRenderStateCursor.viewport_x(cursor)) * (double) metrics.cellWidthPx();
         var cursorPixelY = (Short.toUnsignedInt(GhosttyRenderStateCursor.viewport_y(cursor)) - scrollOffsetRows) * metrics.cellHeightPx();
         var cursorWidth = metrics.cellWidthPx();
         var cursorHeight = metrics.cellHeightPx();

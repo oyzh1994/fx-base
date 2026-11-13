@@ -1520,7 +1520,7 @@ public class FXTerminalPanel extends FXHBox implements Destroyable, TerminalDisp
     }
 
     protected int getInsetX() {
-        return 4;
+        return TtyTerminalUtil.getTerminalContentInsetX();
     }
 
     public void addTerminalMouseListener(final TerminalMouseListener listener) {
