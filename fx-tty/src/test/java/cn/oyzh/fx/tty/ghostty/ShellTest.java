@@ -33,12 +33,20 @@ final class ShellTest {
 
         assertSame(command, launcher.command());
         assertEquals("B", launcher.environment().get("A"));
-        assertEquals("xterm-256color", launcher.environment().get("TERM"));
-        assertEquals("truecolor", launcher.environment().get("COLORTERM"));
+        assertEquals("dumb", launcher.environment().get("TERM"));
+        assertEquals("false", launcher.environment().get("COLORTERM"));
         assertFalse(launcher.environment().containsKey("VTE_VERSION"));
         assertEquals("dumb", environment.get("TERM"));
         assertEquals("false", environment.get("COLORTERM"));
         assertEquals("12345", environment.get("VTE_VERSION"));
+    }
+
+    @Test
+    void suppliesTerminalEnvironmentWhenMissing() {
+        var launcher = Shell.integrate(List.of("nu"), Map.of());
+
+        assertEquals("xterm-256color", launcher.environment().get("TERM"));
+        assertEquals("truecolor", launcher.environment().get("COLORTERM"));
     }
 
     @Test

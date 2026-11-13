@@ -1,5 +1,7 @@
 package cn.oyzh.fx.tty.ghostty;
 
+import cn.oyzh.common.util.StringUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -43,8 +45,12 @@ public final class Shell {
         }
 
         var terminalEnvironment = new LinkedHashMap<>(environment);
-        terminalEnvironment.put("TERM", "xterm-256color");
-        terminalEnvironment.put("COLORTERM", "truecolor");
+        if (StringUtil.isBlank(terminalEnvironment.get("TERM"))) {
+            terminalEnvironment.put("TERM", "xterm-256color");
+        }
+        if (StringUtil.isBlank(terminalEnvironment.get("COLORTERM"))) {
+            terminalEnvironment.put("COLORTERM", "truecolor");
+        }
         terminalEnvironment.remove("VTE_VERSION");
 
         var executable = command.getFirst();

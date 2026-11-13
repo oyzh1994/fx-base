@@ -6,6 +6,7 @@ import cn.oyzh.fx.plus.controls.pane.FXStackPane;
 import cn.oyzh.fx.plus.node.NodeDestroyUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
 import cn.oyzh.fx.tty.TtyBufferedArrayDataStream;
+import cn.oyzh.fx.tty.TtyJediTermEmulator;
 import cn.oyzh.fx.tty.TtyKeyListener;
 import cn.oyzh.fx.tty.TtyRepaintGate;
 import cn.oyzh.fx.tty.TtyTerminalUtil;
@@ -14,6 +15,7 @@ import com.jediterm.core.typeahead.TypeAheadTerminalModel;
 import com.jediterm.terminal.ProcessTtyConnector;
 import com.jediterm.terminal.SubstringFinder;
 import com.jediterm.terminal.Terminal;
+import com.jediterm.terminal.TerminalDataStream;
 import com.jediterm.terminal.TerminalDisplay;
 import com.jediterm.terminal.TerminalExecutorServiceManager;
 import com.jediterm.terminal.TerminalMode;
@@ -221,11 +223,22 @@ public class FXJediTermWidget extends FXStackPane implements Destroyable, Termin
 
     protected TerminalStarter createTerminalStarter(@NotNull JediTerminal terminal, @NotNull TtyConnector connector) {
         if (!TtyTerminalUtil.isFirstScreenBufferEnabled()) {
-            return new TerminalStarter(terminal, connector,
-                    new TtyBasedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged), myTypeAheadManager, getExecutorServiceManager());
+            return this.createJediTermTerminalStarter(terminal, connector,
+                    new TtyBasedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged));
         }
-        return new TerminalStarter(terminal, connector,
-                new TtyBufferedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged, myRepaintGate), myTypeAheadManager, getExecutorServiceManager());
+        return this.createJediTermTerminalStarter(terminal, connector,
+                new TtyBufferedArrayDataStream(connector, myTypeAheadManager::onTerminalStateChanged, myRepaintGate));
+    }
+
+    private TerminalStarter createJediTermTerminalStarter(@NotNull JediTerminal terminal,
+                                                          @NotNull TtyConnector connector,
+                                                          @NotNull TerminalDataStream dataStream) {
+        return new TerminalStarter(terminal, connector, dataStream, myTypeAheadManager, getExecutorServiceManager()) {
+            @Override
+            protected TtyJediTermEmulator createEmulator(TerminalDataStream dataStream, Terminal terminal) {
+                return new TtyJediTermEmulator(dataStream, terminal);
+            }
+        };
     }
 
     @Override
