@@ -227,6 +227,14 @@ public class FixedClipChannel extends ClipChannel {
      * 每次远程剪贴板变更都会递增，防止旧IStream继续读取新剪贴板。
      */
     private volatile long remoteClipboardGeneration;
+    /**
+     * 最近一次通告给远端的本地剪贴板内容签名。
+     */
+    private volatile String lastAnnouncedClipboardSignature;
+    /**
+     * Native clipboard change counter observed after the latest synchronization.
+     */
+    private volatile long lastObservedClipboardChangeCount = Long.MIN_VALUE;
 
     public FixedClipChannel() {
         super();
@@ -427,6 +435,38 @@ public class FixedClipChannel extends ClipChannel {
         }
     }
 
+    /**
+     * Re-announces the local clipboard only when its contents changed.
+     * This covers clipboard updates that happen without a JavaFX focus event.
+     */
+    public synchronized void synchronizeLocalClipboardIfChanged() {
+        try {
+            if (state == null || !state.isRDP5()) {
+                return;
+            }
+            long changeCount = clipboard.changeCount();
+            if (changeCount >= 0 && changeCount == lastObservedClipboardChangeCount) {
+                return;
+            }
+            SystemClipboardAdapter.LocalContents local = clipboard.read();
+            if (local.ownedByUs()) {
+                lastAnnouncedClipboardSignature = null;
+                if (changeCount >= 0) {
+                    lastObservedClipboardChangeCount = changeCount;
+                }
+                return;
+            }
+            String signature = clipboardSignature(local);
+            if (changeCount < 0 && signature.equals(lastAnnouncedClipboardSignature)) {
+                return;
+            }
+            sendCapsIfNeeded();
+            announceLocalFormats();
+        } catch (Exception ex) {
+            JulLog.debug("剪贴板变更同步失败: " + ex.getMessage());
+        }
+    }
+
     // =====================================================================
     // 能力协商与格式通告（本地→远程入口）
     // =====================================================================
@@ -475,7 +515,7 @@ public class FixedClipChannel extends ClipChannel {
      * 服务器粘贴时优先DATA_REQUEST描述列表+FILECONTENTS_REQUEST流式拉取；
      * 老服务器回退DATA_REQUEST(FileContents)整文件拉取。
      */
-    private void announceLocalFormats() {
+    private synchronized void announceLocalFormats() {
         try {
             com.tangluobo.rdp4j.clipboard.WindowsVirtualFileClipboard nativeClipboard = windowsVirtualClipboard;
             if (nativeClipboard != null) {
@@ -489,11 +529,13 @@ public class FixedClipChannel extends ClipChannel {
             }
             SystemClipboardAdapter.LocalContents local = clipboard.read();
             if (local.ownedByUs()) {
+                lastAnnouncedClipboardSignature = null;
                 // This clipboard originated from this RDP channel. Advertising
                 // it back to the same server creates an ownership loop and can
                 // restart a large remote-file transfer.
                 return;
             }
+            String signature = clipboardSignature(local);
             boolean hasText = local.hasText();
 
             announcedFiles = null;
@@ -538,12 +580,33 @@ public class FixedClipChannel extends ClipChannel {
             }
             p.markEnd();
             send_packet(p);
+            lastAnnouncedClipboardSignature = signature;
+            lastObservedClipboardChangeCount = clipboard.changeCount();
             if (hasFiles) {
                 JulLog.info("已通告本地剪贴板文件（" + announcedFiles.size() + "项，长格式名）");
             }
         } catch (Exception e) {
             JulLog.error("通告本地剪贴板格式失败: " + e.getMessage(), e);
         }
+    }
+
+    private static String clipboardSignature(SystemClipboardAdapter.LocalContents local) {
+        StringBuilder signature = new StringBuilder();
+        if (local.hasText()) {
+            String text = local.text();
+            signature.append('T').append(text.length()).append(':').append(text.hashCode());
+        } else {
+            signature.append('T');
+        }
+        if (local.hasFiles()) {
+            signature.append('|');
+            for (File file : local.files()) {
+                signature.append(file.getAbsolutePath()).append(':')
+                        .append(file.length()).append(':')
+                        .append(file.lastModified()).append('|');
+            }
+        }
+        return signature.toString();
     }
 
     /**

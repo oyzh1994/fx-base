@@ -81,6 +81,14 @@ public interface SystemClipboardAdapter {
 	/** True when this channel is still the clipboard owner for what it wrote. */
 	boolean ownsClipboard();
 
+	/**
+	 * Native clipboard change counter when available, otherwise -1.
+	 * Polling this value avoids repeatedly materializing platform clipboard data.
+	 */
+	default long changeCount() {
+		return -1L;
+	}
+
 	/** Drop any published content and release resources. */
 	void dispose();
 }

@@ -2,7 +2,7 @@
 
 本文记录 `fx-rdp` 模块中已经定位并修复的 RDP 兼容性问题，包含问题现象、定位过程、根因、修改内容、验证方式和回归注意事项。
 
-记录日期：2026-10-21 至 2026-10-27
+记录日期：2026-10-21 至 2026-11-13
 
 验证客户端：`easyshell` 的 `RdpTest1`，使用 Java 27、JavaFX 27。
 
@@ -38,7 +38,7 @@ RDP异常: RDPGFX引用了不存在的位图缓存: 2
 4. 对比日志顺序后确认：服务端在 `RESET_GRAPHICS` 后继续引用位图缓存槽 `2`，但客户端已经把该缓存删除，因此将其判定为“不存在的位图缓存”。
 5. 保留 `surfaces` 和 `dirtySurfaces` 的清理，取消 `bitmapCache.clear()` 后重新连接验证，异常消失。
 
-### 根因
+### 初次修复
 
 `RESET_GRAPHICS` 用于重建 RDPGFX 的输出图面及相关显示状态，并不意味着服务端同时废弃了位图缓存。部分服务端实现（本次为 GNOME Remote Desktop）会在重置图形后继续复用重置前已经建立的缓存槽。
 
@@ -877,6 +877,156 @@ MS-RDPBCGR `TS_PERF_FLAGS`：
 - RDP 能力集必须在其结构化构造位置修改；不能依赖对整包进行固定字节序列搜索。
 - 文件传输回归必须同时覆盖随机数据、含能力集字节模式的数据、exe/msi 完整文件和安装流程，不能只检查文件大小。
 
+## 15. CLIPRDR 空响应和数据请求多发送 4 字节
+
+### 问题现象
+
+从 macOS 复制文件后，Windows RDP 主机经过短暂延迟会出现粘贴选项，但连接 Ubuntu 24.04 的 GNOME Remote Desktop 时不出现。Linux 端 `gnome-remote-desktop` 日志在客户端连接后记录：
+
+```text
+[RDP.CLIPRDR] Client capabilities: long format names, stream file clip, file clip no file paths
+msgType: CB_FORMAT_LIST_RESPONSE [0x0003], msgFlags: CB_RESPONSE_OK|[0x0001] dataLen: 0: 4 bytes not parsed
+msgType: CB_FORMAT_DATA_REQUEST [0x0004], msgFlags: NONE|[0x0000] dataLen: 4: 4 bytes not parsed
+```
+
+目标主机为 Ubuntu 24.04、GNOME Remote Desktop 46.3、FreeRDP 3.32.0 服务端库。Linux 端实际支持 `FileGroupDescriptorW`、`stream file clip` 和 FUSE 文件剪贴板，因此不是服务端缺少文件剪贴板能力。
+
+### 根因
+
+`ClipChannel.send_null()` 在 CLIPRDR 公共头声明 `dataLen=0` 后仍然写入 4 字节 pad；`ClipChannel.request_clipboard_data()` 在声明 `dataLen=4` 后也额外写入 4 字节 pad。两个 PDU 的物理长度分别比 `dataLen` 多 4 字节，不符合 MS-RDPECLIP 的长度语义。
+
+Windows 的 `rdpclip` 能容忍尾部多余字节，而 GNOME Remote Desktop 背后的 FreeRDP 服务端解析器会报告 `4 bytes not parsed`。这些报文确实不符合 MS-RDPECLIP，因此先按标准修正。
+
+### 修复内容
+
+文件：`fx-rdp/src/main/java/com/tangluobo/rdp4j/rdp5/cliprdr/ClipChannel.java`
+
+- `send_null()` 只生成 8 字节 CLIPRDR 公共头，不再附加未声明的 pad。
+- `request_clipboard_data()` 改为生成标准 12 字节 `CB_FORMAT_DATA_REQUEST`，通过 `send_packet()` 统一添加虚拟通道头，不再写 4 字节垃圾 pad。
+- 删除因此不再需要的 `Secure`、`SecurityType` 导入。
+
+### 验证结果
+
+- `mvn -pl fx-rdp -am -DskipTests package` 编译通过。
+- 包级报文检查确认 `CB_FORMAT_LIST_RESPONSE` 为 8 字节、`CB_FORMAT_DATA_REQUEST` 为 12 字节，`dataLen` 分别为 0 和 4，尾部没有多余数据。
+
+### 回归注意事项
+
+- CLIPRDR PDU 的物理负载长度必须与公共头中的 `dataLen` 一致。
+- `send_null()` 只适用于确实没有消息数据区的 PDU；`FILECONTENTS_RESPONSE` 等带 `streamId` 的消息仍必须单独写入 `streamId` 并正确计算 `dataLen`。
+- Windows 能兼容的越界 pad 不应作为协议实现依据；Linux/FreeRDP 和未来更严格的 Windows 版本可能直接拒绝该报文。
+
+## 16. FreeRDP 3.32.0 文件名含单个点导致剪贴板线程死循环
+
+### 问题现象
+
+完成第 15 节报文修正后，Linux 主机仍没有文件粘贴选项。使用标准 `xfreerdp 3.32.2` 连接同一 Ubuntu 24.04 / GNOME Remote Desktop 46.3 主机，并复制带扩展名的文件，也能稳定复现，说明问题不是 `fx-rdp` 独有的报文编码错误。
+
+服务端流程一直走到：
+
+1. 接收客户端 `CB_FORMAT_LIST`。
+2. 接收 596 字节的 `FILEDESCRIPTORW`。
+3. 调用 `ClipboardSetData(... FileGroupDescriptorW ...)`。
+4. 约 15 秒后，GNOME Shell 报 `Remote selection transfer was cancelled`。
+5. FUSE 剪贴板目录保持为空，GNOME Remote Desktop 进程 CPU 接近 90%。
+
+### 根因
+
+Ubuntu 24.04 的 `libfreerdp3-3 3.32.0` 在 `libfreerdp/utils/cliprdr_utils.c` 的 `contains_dotdot()` 中存在死循环：遇到文件名中的单个 `.` 时执行 `continue`，但没有推进 `tst` 指针，于是反复检查同一个点。
+
+例如 `http.svg` 会立即触发该循环。无扩展名的文件名不触发，因此问题表现为“Linux 主机偶尔能粘贴某些文件，但常见文件都不行”。该缺陷在 FreeRDP 3.32.1 中修复；上游修复是在 `continue` 前执行 `tst++` 和 `tstlen--`。
+
+### 修复内容
+
+补丁文件：`fx-rdp/docs/patches/freerdp-3.32.0-cliprdr-dotfix.patch`
+
+目标机处理：
+
+- 从 Ubuntu 的 FreeRDP 3.32.0 源码构建同版本、同 ABI 的 `libfreerdp3.so.3.32.0`。
+- 仅替换 `/usr/lib/aarch64-linux-gnu/libfreerdp3.so.3.32.0`。
+- 原库备份到 `/var/backups/freerdp-3.32.0-dotfix/libfreerdp3.so.3.32.0`。
+- 补丁和修复库同时备份到该目录。
+
+构建方式：
+
+```bash
+cmake -S freerdp-3.32.0 -B build -GNinja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_SKIP_RPATH=ON \
+  -DWITH_CLIENT=OFF -DWITH_SERVER=OFF \
+  -DWITH_CHANNELS=ON \
+  -DWITH_CLIENT_CHANNELS=OFF -DWITH_SERVER_CHANNELS=OFF \
+  -DWITH_X11=OFF -DWITH_WAYLAND=OFF \
+  -DWITH_FFMPEG=OFF -DWITH_SWSCALE=OFF \
+  -DWITH_PULSE=OFF -DWITH_ALSA=OFF \
+  -DWITH_CUPS=OFF -DWITH_PCSC=OFF -DWITH_KRB5=OFF \
+  -DWITH_FUSE=OFF -DWITH_MANPAGES=OFF \
+  -DWITH_SAMPLE=OFF -DWITH_SHADOW=OFF -DWITH_PROXY=OFF
+ninja -C build freerdp
+```
+
+### 验证结果
+
+- 修复后的系统库 SHA256：`088925b2127b58d80cf20470ea152be2ef4e9f78fdc3d0e8fbb01fb426d283d3`
+- 原始库备份 SHA256：`9bad465948744c9d070e179ea828f3592e7fb944ae7710859d8bd72c09c72627`
+- 使用含 `http.svg` 的真实 `FILEDESCRIPTORW` 调用 `cliprdr_parse_file_list()`，结果立即返回 `result=0 count=1`。
+- 修复前同一描述会让 GNOME Remote Desktop 进程持续占用近一颗 CPU 核心；修复后不再进入死循环。
+
+### 回归注意事项
+
+- Ubuntu 24.04 当前仓库版本仍为 FreeRDP 3.32.0；后续 `apt upgrade` 如果覆盖该库，需要重新安装包含该修复的版本。
+- FreeRDP 3.32.1 及之后的官方版本已经包含该修复，优先直接升级，不建议长期维护本地替换库。
+- 该问题位于 RDP 服务端文件列表解析，不属于 `fx-rdp` 的 `FILEDESCRIPTORW` 序列化错误；客户端发送 4 字节数量 + 592 字节描述是有效的。
+
+## 17. macOS 剪贴板只依赖窗口焦点导致复制时机漏同步
+
+### 问题现象
+
+服务端 FreeRDP 死循环修复后，如果先建立 RDP 连接、之后才在 Finder 中复制文件，远端偶尔仍显示灰色“粘贴”。服务端日志中没有新的 `CB_FORMAT_LIST`，说明客户端没有把最新文件列表通告出去。
+
+原实现只在 RDP 视图重新获得焦点时调用 `synchronizeClipboard()`。复制动作与窗口焦点事件没有严格先后关系，特别是从 Finder 返回 RDP 窗口时，存在漏通告窗口。
+
+### 根因
+
+JavaFX 剪贴板没有可订阅的内容变更事件。不能简单在后台反复调用 `AWT Clipboard.getContents()`：
+
+- macOS AWT 在粘贴板发生变化后重复读取可能阻塞在 `CClipboard.checkPasteboardWithoutNotification()`。
+- RDP 主循环运行在 JavaFX Application Thread 上，轮询任务投递到该线程后也无法及时执行。
+
+### 修复内容
+
+- 使用 JNA 读取 macOS `NSPasteboard.generalPasteboard.changeCount`，每 500 ms 只比较一个整数。
+- `changeCount` 变化后直接通过 `NSPasteboard.pasteboardItems` 读取 `public.utf8-plain-text` 和 `public.file-url`，绕开会阻塞的 AWT 读取路径。
+- 通过 `NSURL.filePathURL.path` 将 Finder 文件 URL 转成本地文件路径。
+- 仅当 `changeCount` 改变时发送新的 CLIPRDR `FORMAT_LIST`，不会持续重复通告。
+- 保留窗口焦点同步作为立即刷新路径。
+
+文件：
+
+- `clipboard/FxSystemClipboardAdapter.java`
+- `clipboard/FixedClipChannel.java`
+- `RdpClient.java`
+
+### 验证结果
+
+- 连接后不切换窗口焦点，把本地文本从 `initial-text` 改为 `poll-updated`，远端文本在一秒内同步更新。
+- 连接后不切换窗口焦点，把本地剪贴板改为 `README.md`，远端出现：
+
+  ```text
+  x-special/gnome-copied-files
+  text/uri-list
+  file:///run/user/1000/gnome-remote-desktop/cliprdr-ddM9bo/4294967296/README.md
+  ```
+
+- 远端 FUSE 文件为 1653 字节，SHA256 `8baf49b8e9363692dbd72e753d8a84e3a1a74986ae6be4c926c6ce304b2750d1`，与本地 `README.md` 完全一致。
+- `mvn -pl fx-rdp -am -DskipTests package` 编译通过。
+
+### 回归注意事项
+
+- macOS 原生粘贴板读取是平台专用路径；Windows/Linux 继续使用原有 AWT/JavaFX 路径。
+- 不应在后台线程直接调用 macOS AWT 文件粘贴板读取，否则可能永久阻塞。
+- 轮询只负责发现变化，实际通告仍使用 `FixedClipChannel.announceLocalFormats()`，不能绕过文件描述和内容流的既有校验。
+
 ## 审查结论
 
 本次共修复了 8 类高置信度协议问题，重点集中在：
@@ -900,6 +1050,9 @@ MS-RDPBCGR `TS_PERF_FLAGS`：
 | TPKT 长度错误 | `Packet.java`、`layers/Transport.java`、`layers/ISO.java` | 大端 16 位无符号读取、包长 0xffff 上限、长度至少 4 |
 | 虚拟通道重组 | `FixedVChannels.java` | 每通道独立缓冲、64MB 上限、孤立分片丢弃、chunk 头校验 |
 | CLIPRDR 长度/内存放大 | `clipboard/FixedClipChannel.java` | `dataLen` 与剩余字节校验、单次文件块限制 1MB |
+| CLIPRDR 报文尾部多 4 字节 | `rdp5/cliprdr/ClipChannel.java` | 空响应和数据请求严格按 `dataLen` 编码 |
+| FreeRDP 3.32.0 点文件名死循环 | `docs/patches/freerdp-3.32.0-cliprdr-dotfix.patch` | 服务端 `contains_dotdot()` 推进扫描指针 |
+| macOS 剪贴板变更漏同步 | `clipboard/FxSystemClipboardAdapter.java`、`clipboard/FixedClipChannel.java`、`RdpClient.java` | `NSPasteboard.changeCount` 轮询、原生读取、变化时通告 |
 | 位图/调色板/订单/缓存边界 | `layers/Rdp.java`、`graphics/Bitmap.java`、`Orders.java`、`Cache.java`、`graphics/RdesktopCanvas.java` | 尺寸、长度、色数、索引、光标和字形边界校验 |
 | Bitmap Cache2 偏移错误 | `Orders.java` | 未压缩行数据从当前 position 读取、PERSIST 字段正确跳过 |
 | TLS 瞬态失败错误降级 | `RdpClient.java`、`io/DefaultIO.java` | HYBRID 原位重试、连接超时、连接中可取消、关闭后禁止隐式重连 |

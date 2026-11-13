@@ -16,6 +16,10 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
@@ -45,6 +49,8 @@ public class RdpClient {
     private volatile long currentAttemptId;
     private volatile com.tangluobo.rdp4j.io.IO currentIo;
     private volatile boolean connectCancelled;
+    private volatile ScheduledExecutorService clipboardPollExecutor;
+    private volatile ScheduledFuture<?> clipboardPollFuture;
     private final RdpFrontend frontend;
 
     /**
@@ -473,6 +479,7 @@ public class RdpClient {
             FixedClipChannel clipChannel = new FixedClipChannel();
             channels.register(clipChannel);
             clipboardChannel = clipChannel;
+            startClipboardPolling();
             // Focus-driven clipboard re-announcement is wired through
             // RdpFrontend.setFocusGainedListener -> synchronizeClipboard().
             JulLog.info("剪贴板同步通道已注册");
@@ -567,10 +574,47 @@ public class RdpClient {
     }
 
     private void clearClipboardChannel() {
+        stopClipboardPolling();
         FixedClipChannel current = clipboardChannel;
         clipboardChannel = null;
         if (current != null) {
             current.close();
+        }
+    }
+
+    private synchronized void startClipboardPolling() {
+        if (!mapClipboard || clipboardPollFuture != null && !clipboardPollFuture.isDone()) {
+            return;
+        }
+        ScheduledExecutorService executor = clipboardPollExecutor;
+        if (executor == null || executor.isShutdown()) {
+            executor = Executors.newSingleThreadScheduledExecutor(runnable -> {
+                Thread thread = new Thread(runnable, "rdp-clipboard-poll");
+                thread.setDaemon(true);
+                return thread;
+            });
+            clipboardPollExecutor = executor;
+        }
+        clipboardPollFuture = executor.scheduleWithFixedDelay(this::pollLocalClipboard,
+                500, 500, TimeUnit.MILLISECONDS);
+    }
+
+    private synchronized void stopClipboardPolling() {
+        ScheduledFuture<?> current = clipboardPollFuture;
+        clipboardPollFuture = null;
+        if (current != null) {
+            current.cancel(false);
+        }
+    }
+
+    private void pollLocalClipboard() {
+        FixedClipChannel current = clipboardChannel;
+        if (connected && mapClipboard && current != null) {
+            try {
+                current.synchronizeLocalClipboardIfChanged();
+            } catch (RuntimeException ex) {
+                JulLog.debug("轮询本地剪贴板失败: " + ex.getMessage());
+            }
         }
     }
 

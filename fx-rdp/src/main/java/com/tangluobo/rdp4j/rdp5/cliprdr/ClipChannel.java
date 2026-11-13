@@ -13,8 +13,6 @@ package com.tangluobo.rdp4j.rdp5.cliprdr;
 
 import com.tangluobo.rdp4j.Packet;
 import com.tangluobo.rdp4j.RdesktopException;
-import com.tangluobo.rdp4j.SecurityType;
-import com.tangluobo.rdp4j.layers.Secure;
 import com.tangluobo.rdp4j.rdp5.VChannel;
 import com.tangluobo.rdp4j.rdp5.VChannels;
 
@@ -92,12 +90,10 @@ public abstract class ClipChannel extends VChannel implements ClipInterface {
 
 	@Override
 	public void send_null(int type, int status) {
-		Packet s;
-		s = new Packet(12);
+		Packet s = new Packet(8);
 		s.setLittleEndian16(type);
 		s.setLittleEndian16(status);
 		s.setLittleEndian32(0);
-		s.setLittleEndian32(0); // pad
 		s.markEnd();
 		try {
 			this.send_packet(s);
@@ -126,19 +122,13 @@ public abstract class ClipChannel extends VChannel implements ClipInterface {
 	}
 
 	void request_clipboard_data(int formatcode) throws RdesktopException, IOException {
-		Packet s = secure.init(state.getSecurityType() == SecurityType.STANDARD ? Secure.SEC_ENCRYPT : 0, 24);
-		s.setLittleEndian32(16); // length
-		int flags = VChannels.CHANNEL_FLAG_FIRST | VChannels.CHANNEL_FLAG_LAST;
-		if ((this.flags() & VChannels.CHANNEL_OPTION_SHOW_PROTOCOL) != 0)
-			flags |= VChannels.CHANNEL_FLAG_SHOW_PROTOCOL;
-		s.setLittleEndian32(flags);
+		Packet s = new Packet(8 + 4);
 		s.setLittleEndian16(CLIPRDR_DATA_REQUEST);
 		s.setLittleEndian16(CLIPRDR_REQUEST);
-		s.setLittleEndian32(4); // Remaining length
+		s.setLittleEndian32(4);
 		s.setLittleEndian32(formatcode);
-		s.setLittleEndian32(0); // Unknown. Garbage pad?
 		s.markEnd();
-		secure.send_to_channel(s, state.getSecurityType() == SecurityType.STANDARD ? Secure.SEC_ENCRYPT : 0, this.mcs_id());
+		this.send_packet(s);
 	}
 
 }

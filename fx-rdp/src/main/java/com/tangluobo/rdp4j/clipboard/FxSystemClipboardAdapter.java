@@ -1,6 +1,10 @@
 package com.tangluobo.rdp4j.clipboard;
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.fx.plus.util.FXUtil;
+import com.sun.jna.Function;
+import com.sun.jna.NativeLibrary;
+import com.sun.jna.Pointer;
 import javafx.application.Platform;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -11,6 +15,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -50,8 +55,35 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 
 	@Override
 	public LocalContents read() {
-		String text = readText();
-		List<File> files = readFiles();
+		try {
+			if (com.sun.jna.Platform.isMac()) {
+				MacPasteboard.NativeContents contents = MacPasteboard.read();
+				if (contents == null) {
+					return LocalContents.empty();
+				}
+				return localContents(contents.text(), contents.files());
+			}
+			return callOnFxThread(this::readOnFxThread);
+		} catch (RuntimeException e) {
+			JulLog.debug("Clipboard read failed: " + e.getMessage());
+			return LocalContents.empty();
+		}
+	}
+
+	private LocalContents readOnFxThread() {
+		Clipboard clipboard = Clipboard.getSystemClipboard();
+		String text = clipboard.hasString() ? clipboard.getString() : null;
+		Transferable contents;
+		try {
+			contents = java.awt.Toolkit.getDefaultToolkit()
+					.getSystemClipboard().getContents(owner);
+		} catch (RuntimeException e) {
+			contents = null;
+		}
+		return localContents(text, readFiles(contents));
+	}
+
+	private LocalContents localContents(String text, List<File> files) {
 		boolean owned = ownsClipboard;
 		if (owned && publishedText != null && !publishedText.equals(text)) {
 			// The clipboard text is no longer ours. Without this check the flag
@@ -64,22 +96,8 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 		return new LocalContents(text, files, owned);
 	}
 
-	private String readText() {
+	private List<File> readFiles(Transferable contents) {
 		try {
-			return callOnFxThread(() -> {
-				Clipboard clipboard = Clipboard.getSystemClipboard();
-				return clipboard.hasString() ? clipboard.getString() : null;
-			});
-		} catch (RuntimeException e) {
-			JulLog.debug("Clipboard text read failed: " + e.getMessage());
-			return null;
-		}
-	}
-
-	private List<File> readFiles() {
-		try {
-			Transferable contents = java.awt.Toolkit.getDefaultToolkit()
-					.getSystemClipboard().getContents(owner);
 			if (contents == null || !contents.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				return List.of();
 			}
@@ -102,7 +120,7 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 	@Override
 	public void writeText(String text) {
 		String value = text == null ? "" : text;
-		runOnFxThread(() -> {
+		FXUtil.runLater(() -> {
 			ClipboardContent content = new ClipboardContent();
 			content.putString(value);
 			Clipboard.getSystemClipboard().setContent(content);
@@ -114,7 +132,7 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 	@Override
 	public DeferredFileHandle writeDeferredFileList() {
 		DeferredFileListTransferable transfer = new DeferredFileListTransferable();
-		runOnFxThread(() -> {
+		FXUtil.runLater(() -> {
 			try {
 				setAwtContents(transfer);
 				publishedText = null;
@@ -129,7 +147,7 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 
 	@Override
 	public void writeFileList(List<File> files) {
-		runOnFxThread(() -> {
+		FXUtil.runLater(() -> {
 			setAwtContents(new FileListTransferable(files));
 			publishedText = null;
 			ownsClipboard = true;
@@ -137,12 +155,20 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 	}
 
 	private void setAwtContents(Transferable transferable) {
-		java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transferable, owner);
+		callOnAwtThread(() -> {
+			java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transferable, owner);
+			return null;
+		});
 	}
 
 	@Override
 	public boolean ownsClipboard() {
 		return ownsClipboard;
+	}
+
+	@Override
+	public long changeCount() {
+		return MacPasteboard.changeCount();
 	}
 
 	@Override
@@ -155,13 +181,13 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 	// Thread marshalling
 	// ------------------------------------------------------------------
 
-	private void runOnFxThread(Runnable action) {
-		if (Platform.isFxApplicationThread()) {
-			action.run();
-		} else {
-			Platform.runLater(action);
-		}
-	}
+//	private void runOnFxThread(Runnable action) {
+//		if (Platform.isFxApplicationThread()) {
+//			action.run();
+//		} else {
+//			Platform.runLater(action);
+//		}
+//	}
 
 	/**
 	 * Runs a blocking read on the JavaFX thread. Reads originate on the RDP
@@ -184,6 +210,23 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 		}
 	}
 
+	private <T> T callOnAwtThread(java.util.function.Supplier<T> action) {
+		if (java.awt.EventQueue.isDispatchThread()) {
+			return action.get();
+		}
+		FutureTask<T> task = new FutureTask<>(action::get);
+		java.awt.EventQueue.invokeLater(task);
+		try {
+			return task.get(FX_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IllegalStateException("Interrupted reading the AWT clipboard", e);
+		} catch (ExecutionException | TimeoutException e) {
+			task.cancel(true);
+			throw new IllegalStateException("Unable to read the AWT clipboard", e);
+		}
+	}
+
 	// ------------------------------------------------------------------
 	// AWT transferables: the isolated file-list path
 	// ------------------------------------------------------------------
@@ -197,6 +240,180 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 		public void lostOwnership(java.awt.datatransfer.Clipboard clipboard, Transferable contents) {
 			ownsClipboard = false;
 			JulLog.debug("Lost clipboard ownership");
+		}
+	}
+
+	private static final class MacPasteboard {
+		private record NativeContents(String text, List<File> files) {
+		}
+
+		private static final Function MESSAGE;
+		private static final Pointer GENERAL_PASTEBOARD;
+		private static final Pointer CHANGE_COUNT;
+		private static final Pointer PASTEBOARD_ITEMS;
+		private static final Pointer COUNT;
+		private static final Pointer OBJECT_AT_INDEX;
+		private static final Pointer STRING_FOR_TYPE;
+		private static final Pointer UTF8_STRING;
+		private static final Pointer NSSTRING_CLASS;
+		private static final Pointer STRING_WITH_UTF8;
+		private static final Pointer NSURL_CLASS;
+		private static final Pointer URL_WITH_STRING;
+		private static final Pointer FILE_PATH_URL;
+		private static final Pointer PATH;
+
+		static {
+			Function message = null;
+			Pointer pasteboard = null;
+			Pointer changeCount = null;
+			Pointer pasteboardItems = null;
+			Pointer count = null;
+			Pointer objectAtIndex = null;
+			Pointer stringForType = null;
+			Pointer utf8String = null;
+			Pointer nsStringClass = null;
+			Pointer stringWithUtf8 = null;
+			Pointer nsUrlClass = null;
+			Pointer urlWithString = null;
+			Pointer filePathUrl = null;
+			Pointer path = null;
+			if (com.sun.jna.Platform.isMac()) {
+				try {
+					NativeLibrary objc = NativeLibrary.getInstance("objc");
+					Function getClass = objc.getFunction("objc_getClass");
+					Function selector = objc.getFunction("sel_registerName");
+					message = objc.getFunction("objc_msgSend");
+					Pointer pasteboardClass = getClass.invokePointer(new Object[]{"NSPasteboard"});
+					Pointer generalSelector = selector.invokePointer(new Object[]{"generalPasteboard"});
+					pasteboard = message.invokePointer(new Object[]{pasteboardClass, generalSelector});
+					changeCount = selector.invokePointer(new Object[]{"changeCount"});
+					pasteboardItems = selector.invokePointer(new Object[]{"pasteboardItems"});
+					count = selector.invokePointer(new Object[]{"count"});
+					objectAtIndex = selector.invokePointer(new Object[]{"objectAtIndex:"});
+					stringForType = selector.invokePointer(new Object[]{"stringForType:"});
+					utf8String = selector.invokePointer(new Object[]{"UTF8String"});
+					nsStringClass = getClass.invokePointer(new Object[]{"NSString"});
+					stringWithUtf8 = selector.invokePointer(new Object[]{"stringWithUTF8String:"});
+					nsUrlClass = getClass.invokePointer(new Object[]{"NSURL"});
+					urlWithString = selector.invokePointer(new Object[]{"URLWithString:"});
+					filePathUrl = selector.invokePointer(new Object[]{"filePathURL"});
+					path = selector.invokePointer(new Object[]{"path"});
+				} catch (Throwable error) {
+					JulLog.debug("Native pasteboard unavailable: " + error.getMessage());
+					message = null;
+					pasteboard = null;
+					changeCount = null;
+					pasteboardItems = null;
+					count = null;
+					objectAtIndex = null;
+					stringForType = null;
+					utf8String = null;
+					nsStringClass = null;
+					stringWithUtf8 = null;
+					nsUrlClass = null;
+					urlWithString = null;
+					filePathUrl = null;
+					path = null;
+				}
+			}
+			MESSAGE = message;
+			GENERAL_PASTEBOARD = pasteboard;
+			CHANGE_COUNT = changeCount;
+			PASTEBOARD_ITEMS = pasteboardItems;
+			COUNT = count;
+			OBJECT_AT_INDEX = objectAtIndex;
+			STRING_FOR_TYPE = stringForType;
+			UTF8_STRING = utf8String;
+			NSSTRING_CLASS = nsStringClass;
+			STRING_WITH_UTF8 = stringWithUtf8;
+			NSURL_CLASS = nsUrlClass;
+			URL_WITH_STRING = urlWithString;
+			FILE_PATH_URL = filePathUrl;
+			PATH = path;
+		}
+
+		static long changeCount() {
+			if (MESSAGE == null || GENERAL_PASTEBOARD == null || CHANGE_COUNT == null) {
+				return -1L;
+			}
+			try {
+				return MESSAGE.invokeLong(new Object[]{GENERAL_PASTEBOARD, CHANGE_COUNT});
+			} catch (Throwable error) {
+				return -1L;
+			}
+		}
+
+		static NativeContents read() {
+			if (MESSAGE == null || GENERAL_PASTEBOARD == null || PASTEBOARD_ITEMS == null) {
+				return null;
+			}
+			try {
+				Pointer items = MESSAGE.invokePointer(new Object[]{GENERAL_PASTEBOARD, PASTEBOARD_ITEMS});
+				if (items == null) {
+					return new NativeContents(null, List.of());
+				}
+				long count = MESSAGE.invokeLong(new Object[]{items, COUNT});
+				String text = null;
+				List<File> files = new ArrayList<>();
+				for (long i = 0; i < count; i++) {
+					Pointer item = MESSAGE.invokePointer(
+							new Object[]{items, OBJECT_AT_INDEX, new com.sun.jna.NativeLong(i)});
+					if (item == null) {
+						continue;
+					}
+					if (text == null) {
+						text = stringForType(item, "public.utf8-plain-text");
+					}
+					File file = resolveFileUrl(stringForType(item, "public.file-url"));
+					if (file != null && !files.contains(file)) {
+						files.add(file);
+					}
+				}
+				return new NativeContents(text, files);
+			} catch (Throwable error) {
+				JulLog.debug("Native pasteboard read failed: " + error.getMessage());
+				return null;
+			}
+		}
+
+		private static String stringForType(Pointer item, String type) {
+			Pointer typeString = nativeString(type);
+			if (typeString == null) {
+				return null;
+			}
+			Pointer value = MESSAGE.invokePointer(
+					new Object[]{item, STRING_FOR_TYPE, typeString});
+			return javaString(value);
+		}
+
+		private static File resolveFileUrl(String value) {
+			if (value == null || value.isEmpty()) {
+				return null;
+			}
+			try {
+				Pointer urlString = nativeString(value);
+				Pointer url = MESSAGE.invokePointer(
+						new Object[]{NSURL_CLASS, URL_WITH_STRING, urlString});
+				Pointer fileUrl = MESSAGE.invokePointer(new Object[]{url, FILE_PATH_URL});
+				Pointer pathString = MESSAGE.invokePointer(new Object[]{fileUrl, PATH});
+				String path = javaString(pathString);
+				return path == null || path.isEmpty() ? null : new File(path);
+			} catch (Throwable error) {
+				return null;
+			}
+		}
+
+		private static Pointer nativeString(String value) {
+			return MESSAGE.invokePointer(
+					new Object[]{NSSTRING_CLASS, STRING_WITH_UTF8, value});
+		}
+
+		private static String javaString(Pointer value) {
+			if (value == null) {
+				return null;
+			}
+			Pointer utf8 = MESSAGE.invokePointer(new Object[]{value, UTF8_STRING});
+			return utf8 == null ? null : utf8.getString(0);
 		}
 	}
 
