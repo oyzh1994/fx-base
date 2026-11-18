@@ -3,6 +3,8 @@ package cn.oyzh.fx.plus.format;
 import cn.oyzh.common.util.NumberUtil;
 import cn.oyzh.common.util.StringUtil;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.util.Objects;
@@ -105,8 +107,13 @@ public class DigitalFormat extends DecimalFormat {
     public String format(Number number) {
         if (number != null) {
             try {
-                String string = this.format().format(number);
-                return string.replaceAll(",", "");
+                BigDecimal value = new BigDecimal(number.toString());
+                if (this.scaleLen != null && this.scaleLen > 0) {
+                    value = value.setScale(this.scaleLen, RoundingMode.HALF_EVEN);
+                } else {
+                    value = value.stripTrailingZeros();
+                }
+                return value.toPlainString();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

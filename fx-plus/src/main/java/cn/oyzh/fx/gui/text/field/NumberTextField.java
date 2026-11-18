@@ -5,6 +5,7 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.scene.control.TextFormatter;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.UnaryOperator;
 
@@ -134,7 +135,7 @@ public class NumberTextField extends DigitalTextField {
             return sequence.toString();
         }
         if (val instanceof Number number) {
-            return number.longValue() + "";
+            return new BigDecimal(number.toString()).stripTrailingZeros().toPlainString();
         }
         return null;
     }

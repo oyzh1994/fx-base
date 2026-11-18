@@ -137,17 +137,15 @@ public abstract class DigitalTextField extends LimitTextField {
             // 解析值
             Number number = NumberUtil.parseNumber(newVal);
             // 判断新值是否小于等于最小值，如果是则禁用减号按钮
-            if (this.minVal != null && number.doubleValue() <= this.minVal.doubleValue()) {
+            if (this.minVal != null && NumberUtil.isLTEq(number, this.minVal)) {
                 skin.disableDecrButton();
-                // this.setValue(this.minVal);
             } else {
                 // 否则启用减号按钮
                 skin.enableDecrButton();
             }
             // 判断新值是否大于等于最大值，如果是则禁用加号按钮
-            if (this.maxVal != null && number.doubleValue() >= this.maxVal.doubleValue()) {
+            if (this.maxVal != null && NumberUtil.isGTEq(number, this.maxVal)) {
                 skin.disableIncrButton();
-                // this.setValue(this.maxVal);
             } else {
                 // 否则启用加号按钮
                 skin.enableIncrButton();
@@ -291,13 +289,13 @@ public abstract class DigitalTextField extends LimitTextField {
     @Override
     protected void onBlur() {
         super.onBlur();
-        Double val = this.getDoubleValue();
+        Number val = this.value();
         if (val == null) {
             return;
         }
-        if (this.minVal != null && val < this.minVal.doubleValue()) {
+        if (this.minVal != null && NumberUtil.isLT(val, this.minVal)) {
             this.setValue(this.minVal);
-        } else if (this.maxVal != null && val > this.maxVal.doubleValue()) {
+        } else if (this.maxVal != null && NumberUtil.isGT(val, this.maxVal)) {
             this.setValue(this.maxVal);
         }
     }
