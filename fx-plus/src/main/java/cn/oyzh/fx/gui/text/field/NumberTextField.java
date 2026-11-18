@@ -5,6 +5,7 @@ import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.scene.control.TextFormatter;
 
+import java.math.BigInteger;
 import java.util.function.UnaryOperator;
 
 /**
@@ -21,10 +22,6 @@ public class NumberTextField extends DigitalTextField {
     public NumberTextField() {
         super(null);
     }
-
-    //    public NumberTextField(boolean unsigned) {
-    //        super(unsigned, null);
-    //    }
 
     /**
      * 构造整数文本域
@@ -44,8 +41,8 @@ public class NumberTextField extends DigitalTextField {
      */
     public NumberTextField(Long maxLen, Long minVal, Long maxVal) {
         super(maxLen);
-        super.setMinVal(minVal);
-        super.setMaxVal(maxVal);
+        this.setMin(minVal);
+        this.setMax(maxVal);
     }
 
     /**
@@ -64,18 +61,18 @@ public class NumberTextField extends DigitalTextField {
     @Override
     protected void incrValue() {
         // 设置值
-        Long val = this.getValue();
+        BigInteger val = this.getValue();
         if (this.step != null && val != null) {
-            this.setValue(val + this.step.longValue());
+            this.setValue(val.add(new BigInteger(this.step.toString())));
         }
     }
 
     @Override
     protected void decrValue() {
         // 设置值
-        Long val = this.getValue();
+        BigInteger val = this.getValue();
         if (this.step != null && val != null) {
-            this.setValue(val - this.step.longValue());
+            this.setValue(val.subtract(BigInteger.valueOf(this.step.longValue())));
         }
     }
 
@@ -89,10 +86,6 @@ public class NumberTextField extends DigitalTextField {
                     if (StringUtil.isEmpty(text) || StringUtil.equalsAny(text, "+", "-")) {
                         return change;
                     }
-                    // // 无符号判断
-                    // if (this.isUnsigned() && text.startsWith("-")) {
-                    //     return null;
-                    // }
                     // 数字判断
                     if (!RegexUtil.isNumber(text)) {
                         return null;
@@ -101,17 +94,6 @@ public class NumberTextField extends DigitalTextField {
                     if (!super.checkLenLimit(change)) {
                         return null;
                     }
-                    // Number number = NumberUtil.parseNumber(text);
-                    // // 如果超过了最大值，则将组件值设置为最大值
-                    // if (this.maxVal != null && cn.oyzh.common.util.NumberUtil.isGT(number.longValue(), this.maxVal)) {
-                    //     this.setValue(this.maxVal.longValue());
-                    //     return null;
-                    // }
-                    // // 如果小于了最小值，则将组件值设置为最小值
-                    // if (this.minVal != null && cn.oyzh.common.util.NumberUtil.isLT(number.longValue(), this.minVal)) {
-                    //     this.setValue(this.minVal.longValue());
-                    //     return null;
-                    // }
                 } catch (Exception ignored) {
                 }
             }
@@ -120,10 +102,16 @@ public class NumberTextField extends DigitalTextField {
     }
 
     @Override
-    public Long getValue() {
+    public BigInteger getValue() {
         Number val = this.value();
         // 否则，将文本转为Double类型并返回
-        return val == null ? null : val.longValue();
+        if (val == null) {
+            return null;
+        }
+        if (val instanceof BigInteger integer) {
+            return integer;
+        }
+        return new BigInteger(val.toString());
     }
 
     @Override
@@ -151,22 +139,17 @@ public class NumberTextField extends DigitalTextField {
         return null;
     }
 
-    //    /**
-    //     * 设置值，如果超出最大值或最小值，将设置为最大值或最小值
-    //     *
-    //     * @param value 值
-    //     */
-    //    public void setValue(long value) {
-    //        super.value(value);
-    //    }
-
     /**
      * 设置最小值
      *
      * @param minVal 最小值
      */
     public void setMin(Long minVal) {
-        this.minVal = minVal;
+        if (minVal != null) {
+            this.minVal = new BigInteger(minVal.toString());
+        } else {
+            this.minVal = null;
+        }
     }
 
     /**
@@ -184,7 +167,11 @@ public class NumberTextField extends DigitalTextField {
      * @param maxVal 最大值
      */
     public void setMax(Long maxVal) {
-        this.maxVal = maxVal;
+        if (maxVal != null) {
+            this.maxVal = new BigInteger(maxVal.toString());
+        } else {
+            this.maxVal = null;
+        }
     }
 
     /**

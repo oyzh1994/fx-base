@@ -1,11 +1,14 @@
 package cn.oyzh.fx.gui.text.field;
 
 import cn.oyzh.common.util.NumberUtil;
+import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.gui.skin.DigitalTextFieldSkin;
 import cn.oyzh.fx.plus.converter.DigitalConverter;
 import javafx.scene.control.TextFormatter;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.function.UnaryOperator;
 
 /**
@@ -29,14 +32,7 @@ public abstract class DigitalTextField extends LimitTextField {
     /**
      * 递进值
      */
-    protected Number step = 1L;
-
-    //    /**
-    //     * 无符号模式
-    //     * TODO: 废弃，以mavVal和minVal来限制
-    //     */
-    //    @Deprecated
-    //    private boolean unsigned;
+    protected Number step = 1;
 
     /**
      * 获取最大值。
@@ -92,16 +88,6 @@ public abstract class DigitalTextField extends LimitTextField {
         this.step = step;
     }
 
-    //    @Deprecated
-    //    public boolean isUnsigned() {
-    //        return unsigned;
-    //    }
-    //
-    //    @Deprecated
-    //    public void setUnsigned(boolean unsigned) {
-    //        this.unsigned = unsigned;
-    //    }
-
     /**
      * 获取文本格式器
      *
@@ -129,7 +115,6 @@ public abstract class DigitalTextField extends LimitTextField {
         // 监听值变化
         this.textFormatter.valueProperty().addListener((observableValue, number, t1) -> this.valueChanged(t1));
         this.setMaxLen(maxLen);
-        //        this.setUnsigned(unsigned);
     }
 
     /**
@@ -257,7 +242,10 @@ public abstract class DigitalTextField extends LimitTextField {
         if (StringUtil.isBlank(text)) {
             return null;
         }
-        return NumberUtil.parseNumber(text);
+        if (RegexUtil.isDecimal(text)) {
+            return new BigDecimal(text);
+        }
+        return new BigInteger(text);
     }
 
     /**
@@ -267,9 +255,9 @@ public abstract class DigitalTextField extends LimitTextField {
      */
     protected void value(Number value) {
         if (value != null) {
-            if (this.maxVal != null && value.doubleValue() > this.maxVal.doubleValue()) {
+            if (this.maxVal != null && NumberUtil.isGT(value, this.maxVal)) {
                 value = this.maxVal;
-            } else if (this.minVal != null && value.doubleValue() < this.minVal.doubleValue()) {
+            } else if (this.minVal != null && NumberUtil.isLT(value, this.minVal)) {
                 value = this.minVal;
             }
             this.textFormatter.setValue(value.toString());
