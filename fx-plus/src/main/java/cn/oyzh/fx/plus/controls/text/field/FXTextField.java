@@ -124,6 +124,15 @@ public class FXTextField extends TextField implements Destroyable, FlexAdapter, 
         return this.getLength() == 0 || this.getText().isEmpty();
     }
 
+    /**
+     * 是否为空
+     *
+     * @return 结果
+     */
+    public boolean isBlank() {
+        return StringUtil.isBlank(this.getText());
+    }
+
     @Override
     public boolean validate() {
         if (this.require && this.isEmpty()) {

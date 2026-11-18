@@ -240,10 +240,7 @@ public abstract class DigitalTextField extends LimitTextField {
         if (StringUtil.isBlank(text)) {
             return null;
         }
-        if (RegexUtil.isDecimal(text)) {
-            return new BigDecimal(text);
-        }
-        return new BigInteger(text);
+        return NumberUtil.parseNumber(text);
     }
 
     /**

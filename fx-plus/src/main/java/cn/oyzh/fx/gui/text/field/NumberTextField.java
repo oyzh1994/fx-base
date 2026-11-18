@@ -105,7 +105,6 @@ public class NumberTextField extends DigitalTextField {
     @Override
     public BigInteger getValue() {
         Number val = this.value();
-        // 否则，将文本转为Double类型并返回
         if (val == null) {
             return null;
         }
