@@ -140,7 +140,7 @@ public abstract class DBConnManager implements AutoCloseable {
         if (connection == null || connection.isClosed()) {
             return false;
         }
-        return connection.isValid(this.getConnectTimeout() / 1000);
+        return connection.isValid(Math.max(1, this.getConnectTimeout()));
     }
 
     /**

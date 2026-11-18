@@ -239,40 +239,30 @@ public class DBUtil {
      * @return 结果
      */
     public static String wrap(String name, DBDialect dialect) {
-        StringBuilder builder = new StringBuilder();
-        if (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB) {
-            if (!name.startsWith("`") && !name.endsWith("`")) {
-                builder.append("`");
-                builder.append(name);
-                builder.append("`");
-            }
-            //            if (!name.startsWith("`")) {
-            //                builder.append("`");
-            //            }
-            //            builder.append(name);
-            //            if (!name.endsWith("`")) {
-            //                builder.append("`");
-            //            }
-        } else if (dialect == DBDialect.DAMENG || dialect == DBDialect.POSTGRESQL) {
-            if (!name.startsWith("\"") && !name.endsWith("\"")) {
-                builder.append("\"");
-                builder.append(name);
-                builder.append("\"");
-            }
-            //            if (!name.startsWith("\"")) {
-            //                builder.append("\"");
-            //            }
-            //            builder.append(name);
-            //            if (!name.endsWith("\"")) {
-            //                builder.append("\"");
-            //            }
-        } else if (dialect == DBDialect.SQLITE) {
-            if (name.startsWith("\"") && name.endsWith("\"") && name.length() > 1) {
-                return name;
-            }
-            builder.append("\"").append(name.replace("\"", "\"\"")).append("\"");
+        if (name == null) {
+            return null;
         }
-        return builder.toString();
+        String value = name;
+        if (dialect == DBDialect.MYSQL
+                || dialect == DBDialect.MARIADB) {
+            if (value.length() > 1 && value.startsWith("`") && value.endsWith("`")) {
+                value = value.substring(1, value.length() - 1);
+            }
+            return "`" + value.replace("`", "``") + "`";
+        } else if (dialect == DBDialect.DAMENG
+                || dialect == DBDialect.POSTGRESQL
+                || dialect == DBDialect.ORACLE) {
+            if (value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+                value = value.substring(1, value.length() - 1);
+            }
+            return "\"" + value.replace("\"", "\"\"") + "\"";
+        } else if (dialect == DBDialect.SQLITE) {
+            if (value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
+                value = value.substring(1, value.length() - 1);
+            }
+            return "\"" + value.replace("\"", "\"\"") + "\"";
+        }
+        return name;
     }
 
     /**
@@ -302,6 +292,7 @@ public class DBUtil {
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
                 || dialect == DBDialect.POSTGRESQL
+                || dialect == DBDialect.ORACLE
                 || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
                 String v1 = DBDataUtil.escapeQuotes(v.toString(), dialect);
@@ -342,6 +333,7 @@ public class DBUtil {
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
                 || dialect == DBDialect.POSTGRESQL
+                || dialect == DBDialect.ORACLE
                 || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
                 String v1 = v.toString();

@@ -18,6 +18,7 @@ public enum DBDialect {
     MONGODB,
     DAMENG,
     POSTGRESQL,
+    ORACLE,
     ;
 
     /**
