@@ -13,8 +13,8 @@ import cn.oyzh.fx.plus.node.NodeGroup;
 import cn.oyzh.fx.plus.node.NodeManager;
 import cn.oyzh.fx.plus.theme.ThemeAdapter;
 import cn.oyzh.fx.plus.util.FXUtil;
-import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -211,6 +211,10 @@ public class FXTab extends Tab implements FontAdapter, MenuItemAdapter, NodeGrou
      */
     public String getAppendText() {
         return this.getProp("appendText");
+    }
+
+    public void text(String text) {
+        FXUtil.runWait(() -> super.setText(text));
     }
 
     @Override
