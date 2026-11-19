@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * 日期输入框皮肤
@@ -104,9 +105,7 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
             }
             this.handleHide();
         });
-//        submit.setSizeStr("13,11");
         CancelSVGGlyph cancel = new CancelSVGGlyph();
-//        cancel.setSizeStr("11");
         cancel.setOnMousePrimaryClicked(mouseEvent -> this.handleHide());
         // 按钮组件
         FXHBox hBox = new FXHBox(submit, cancel);
@@ -134,6 +133,7 @@ public class DateTextFieldSkin extends ActionTextFieldSkin {
         if (StringUtil.isNotBlank(this.getText())) {
             try {
                 return LocalDateTime.parse(this.getText(), this.formatter());
+            } catch (DateTimeParseException ignore) {
             } catch (Exception e) {
                 e.printStackTrace();
             }

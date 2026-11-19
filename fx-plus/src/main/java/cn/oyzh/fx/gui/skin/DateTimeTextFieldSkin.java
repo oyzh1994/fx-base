@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * 日期时间输入框皮肤
@@ -194,8 +195,9 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
         if (StringUtil.isNotBlank(text)) {
             try {
                 return LocalDateTime.parse(text, this.formatter());
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (DateTimeParseException ignore) {
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
         return null;
