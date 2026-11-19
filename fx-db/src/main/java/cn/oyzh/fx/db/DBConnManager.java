@@ -203,41 +203,41 @@ public abstract class DBConnManager implements AutoCloseable {
         return connection;
     }
 
-    /**
-     * 执行函数连接
-     *
-     * @param dbName 数据库
-     * @return 结果
-     * @throws Exception 异常
-     */
-    @Deprecated
-    public Connection functionConnection(String dbName) throws Exception {
-        Connection connection = this.getFunctionConnection(dbName);
-        if (!this.isValid(connection)) {
-            connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
-            this.addFunctionConnection(dbName, connection);
-        }
-        connection.setAutoCommit(true);
-        return connection;
-    }
-
-    /**
-     * 执行过程连接
-     *
-     * @param name 名称
-     * @return 结果
-     * @throws Exception 异常
-     */
-    @Deprecated
-    public Connection procedureConnection(String name) throws Exception {
-        Connection connection = this.getProcedureConnection(name);
-        if (!this.isValid(connection)) {
-            connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
-            this.addProcedureConnection(name, connection);
-        }
-        connection.setAutoCommit(true);
-        return connection;
-    }
+//    /**
+//     * 执行函数连接
+//     *
+//     * @param dbName 数据库
+//     * @return 结果
+//     * @throws Exception 异常
+//     */
+//    @Deprecated
+//    public Connection functionConnection(String dbName) throws Exception {
+//        Connection connection = this.getFunctionConnection(dbName);
+//        if (!this.isValid(connection)) {
+//            connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
+//            this.addFunctionConnection(dbName, connection);
+//        }
+//        connection.setAutoCommit(true);
+//        return connection;
+//    }
+//
+//    /**
+//     * 执行过程连接
+//     *
+//     * @param name 名称
+//     * @return 结果
+//     * @throws Exception 异常
+//     */
+//    @Deprecated
+//    public Connection procedureConnection(String name) throws Exception {
+//        Connection connection = this.getProcedureConnection(name);
+//        if (!this.isValid(connection)) {
+//            connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
+//            this.addProcedureConnection(name, connection);
+//        }
+//        connection.setAutoCommit(true);
+//        return connection;
+//    }
 
     /**
      * 执行新连接
@@ -280,10 +280,10 @@ public abstract class DBConnManager implements AutoCloseable {
         if (connection == null || connection == current) {
             return;
         }
-        try {
-            connection.close();
-        } catch (SQLException ignored) {
-        }
+//        try {
+//            connection.close();
+//        } catch (SQLException ignored) {
+//        }
     }
 
     /**
