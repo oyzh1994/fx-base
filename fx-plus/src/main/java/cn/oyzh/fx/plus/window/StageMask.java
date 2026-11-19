@@ -34,6 +34,11 @@ public class StageMask extends Stage implements StageAdapter {
     private Window target;
 
     /**
+     * 异步任务
+     */
+    private Thread task;
+
+    /**
      * 回调
      */
     private Runnable callback;
@@ -41,17 +46,12 @@ public class StageMask extends Stage implements StageAdapter {
     /**
      * 取消动作回调，仅在 ESC 或主动 cancel 时执行
      */
-    private Runnable cancelAction;
+    private final Runnable cancelAction;
 
     /**
      * 遮罩关闭清理回调
      */
-    private Runnable closeCallback;
-
-    /**
-     * 异步任务
-     */
-    private Thread task;
+    private final Runnable closeCallback;
 
     /**
      * 是否已取消
@@ -67,11 +67,6 @@ public class StageMask extends Stage implements StageAdapter {
      * 关闭清理是否已执行
      */
     private final AtomicBoolean closeCallbackInvoked = new AtomicBoolean();
-
-    //    /**
-    //     * 异步回调
-    //     */
-    //    private final Future<?> future;
 
     /**
      * x坐标变化监听

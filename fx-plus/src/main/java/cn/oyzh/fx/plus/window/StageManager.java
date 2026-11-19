@@ -466,7 +466,7 @@ public class StageManager {
      */
     public static Window getFrontWindow() {
         for (Window window : Window.getWindows()) {
-            if (window instanceof StageMask || window instanceof PopupMask) {
+            if (window instanceof PopupWindow || window instanceof StageMask) {
                 continue;
             }
             if (window.isShowing() && window.isFocused()) {
