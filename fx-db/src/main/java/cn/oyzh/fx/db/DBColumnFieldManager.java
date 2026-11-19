@@ -92,6 +92,25 @@ public class DBColumnFieldManager {
         return fields(dialect).parallelStream().map(DBColumnField::getName).collect(Collectors.toList());
     }
 
+    private static boolean matchesType(String type, DBColumnField field) {
+        return StringUtil.equalsAnyIgnoreCase(normalizeType(type), field.name, field.alias);
+    }
+
+    private static String normalizeType(String type) {
+        if (type == null) {
+            return null;
+        }
+        String result = type.trim();
+        int open = result.indexOf('(');
+        if (open > 0) {
+            int close = result.indexOf(')', open);
+            result = close > 0
+                    ? result.substring(0, open) + result.substring(close + 1)
+                    : result.substring(0, open);
+        }
+        return result.replaceAll("\\s+", " ").trim();
+    }
+
     /**
      * 判断指定类型是否支持长度
      *
@@ -101,7 +120,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportSize(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportSize;
             }
         }
@@ -117,7 +136,7 @@ public class DBColumnFieldManager {
      */
     public static Integer suggestSize(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.suggestSize;
             }
         }
@@ -133,7 +152,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportUnsigned(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportUnsigned;
             }
         }
@@ -149,7 +168,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportJson(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportJson;
             }
         }
@@ -165,7 +184,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportKeySize(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportKeySize;
             }
         }
@@ -181,7 +200,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportString(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportString;
             }
         }
@@ -197,7 +216,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportText(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportText;
             }
         }
@@ -213,7 +232,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportValue;
             }
         }
@@ -229,7 +248,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportZeroFill(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportZeroFill;
             }
         }
@@ -245,7 +264,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportBit(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportBit;
             }
         }
@@ -261,7 +280,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportBinary(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportBinary;
             }
         }
@@ -277,7 +296,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportDigits(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportDigits;
             }
         }
@@ -293,7 +312,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportDefaultValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportDefaultValue;
             }
         }
@@ -309,7 +328,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportGeometry(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportGeometry;
             }
         }
@@ -325,7 +344,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportEnum(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportEnum;
             }
         }
@@ -341,7 +360,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportCharset(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportCharset;
             }
         }
@@ -357,7 +376,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportTimestamp(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportTimestamp;
             }
         }
@@ -373,7 +392,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportInteger(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportInteger;
             }
         }
@@ -389,7 +408,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportAutoIncrement(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportAutoIncrement;
             }
         }
@@ -405,11 +424,11 @@ public class DBColumnFieldManager {
      */
     public static Object exampleValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.exampleValue;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -421,11 +440,11 @@ public class DBColumnFieldManager {
      */
     public static Object defaultValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.defaultValue;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -437,7 +456,7 @@ public class DBColumnFieldManager {
      */
     public static Long minValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.minValue;
             }
         }
@@ -453,7 +472,7 @@ public class DBColumnFieldManager {
      */
     public static Long maxValue(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.maxValue;
             }
         }
@@ -469,7 +488,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportJsonArray(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportJsonArray;
             }
         }
@@ -485,7 +504,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportBigInteger(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportBigInteger;
             }
         }
@@ -501,7 +520,7 @@ public class DBColumnFieldManager {
      */
     public static boolean supportBoolean(DBDialect dialect, String type) {
         for (DBColumnField value : fields(dialect)) {
-            if (StringUtil.equalsAnyIgnoreCase(type, value.name, value.alias)) {
+            if (matchesType(type, value)) {
                 return value.supportBoolean;
             }
         }
