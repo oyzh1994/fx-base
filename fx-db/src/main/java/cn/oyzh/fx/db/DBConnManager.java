@@ -2,6 +2,7 @@ package cn.oyzh.fx.db;
 
 
 import cn.oyzh.common.log.JulLog;
+import cn.oyzh.common.util.IOUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,77 +31,77 @@ public abstract class DBConnManager implements AutoCloseable {
     /**
      * 添加连接
      *
-     * @param dbName     数据库
+     * @param name       名称
      * @param connection 连接
      */
-    public synchronized void addConnection(String dbName, Connection connection) {
-        Connection old = this.connections.put("db_connection_" + dbName, connection);
+    public synchronized void addConnection(String name, Connection connection) {
+        Connection old = this.connections.put("connection_" + name, connection);
         this.closeQuietly(old, connection);
     }
 
     /**
      * 移除连接
      *
-     * @param dbName 数据库
+     * @param name 名称
      */
-    public synchronized void removeConnection(String dbName) {
-        Connection old = this.connections.remove("db_connection_" + dbName);
+    public synchronized void removeConnection(String name) {
+        Connection old = this.connections.remove("connection_" + name);
         this.closeQuietly(old, null);
     }
 
-    /**
-     * 添加函数连接
-     *
-     * @param dbName     数据库
-     * @param connection 连接
-     */
-    @Deprecated
-    public void addFunctionConnection(String dbName, Connection connection) {
-        this.connections.put("function_connection_" + dbName, connection);
-    }
+    //    /**
+    //     * 添加函数连接
+    //     *
+    //     * @param dbName     数据库
+    //     * @param connection 连接
+    //     */
+    //    @Deprecated
+    //    public void addFunctionConnection(String dbName, Connection connection) {
+    //        this.connections.put("function_connection_" + dbName, connection);
+    //    }
 
-    /**
-     * 添加过程连接
-     *
-     * @param dbName     数据库
-     * @param connection 连接
-     */
-    @Deprecated
-    public void addProcedureConnection(String dbName, Connection connection) {
-        this.connections.put("procedure_connection_" + dbName, connection);
-    }
+    //    /**
+    //     * 添加过程连接
+    //     *
+    //     * @param dbName     数据库
+    //     * @param connection 连接
+    //     */
+    //    @Deprecated
+    //    public void addProcedureConnection(String dbName, Connection connection) {
+    //        this.connections.put("procedure_connection_" + dbName, connection);
+    //    }
 
     /**
      * 获取连接
      *
-     * @param dbName 数据库
+     * @param name 名称
      * @return 结果
      */
-    public Connection getConnection(String dbName) {
-        return this.connections.get("db_connection_" + dbName);
+    public Connection getConnection(String name) {
+        return this.connections.get("connection_" + name);
     }
 
-    /**
-     * 获取函数连接
-     *
-     * @param dbName 数据库
-     * @return 结果
-     */
-    @Deprecated
-    public Connection getFunctionConnection(String dbName) {
-        return this.connections.get("function_connection_" + dbName);
-    }
+    //    /**
+    //     * 获取函数连接
+    //     *
+    //     * @param dbName 数据库
+    //     * @return 结果
+    //     */
+    //    @Deprecated
+    //    public Connection getFunctionConnection(String dbName) {
+    //        return this.connections.get("function_connection_" + dbName);
+    //    }
 
-    /**
-     * 获取过程连接
-     *
-     * @param dbName 数据库
-     * @return 结果
-     */
-    @Deprecated
-    public Connection getProcedureConnection(String dbName) {
-        return this.connections.get("procedure_connection_" + dbName);
-    }
+    //    /**
+    //     * 获取过程连接
+    //     *
+    //     * @param dbName 数据库
+    //     * @return 结果
+    //     */
+    //    @Deprecated
+    //    public Connection getProcedureConnection(String dbName) {
+    //        return this.connections.get("procedure_connection_" + dbName);
+    //    }
 
     @Override
     public synchronized void close() {
@@ -203,41 +204,41 @@ public abstract class DBConnManager implements AutoCloseable {
         return connection;
     }
 
-//    /**
-//     * 执行函数连接
-//     *
-//     * @param dbName 数据库
-//     * @return 结果
-//     * @throws Exception 异常
-//     */
-//    @Deprecated
-//    public Connection functionConnection(String dbName) throws Exception {
-//        Connection connection = this.getFunctionConnection(dbName);
-//        if (!this.isValid(connection)) {
-//            connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
-//            this.addFunctionConnection(dbName, connection);
-//        }
-//        connection.setAutoCommit(true);
-//        return connection;
-//    }
-//
-//    /**
-//     * 执行过程连接
-//     *
-//     * @param name 名称
-//     * @return 结果
-//     * @throws Exception 异常
-//     */
-//    @Deprecated
-//    public Connection procedureConnection(String name) throws Exception {
-//        Connection connection = this.getProcedureConnection(name);
-//        if (!this.isValid(connection)) {
-//            connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
-//            this.addProcedureConnection(name, connection);
-//        }
-//        connection.setAutoCommit(true);
-//        return connection;
-//    }
+    //    /**
+    //     * 执行函数连接
+    //     *
+    //     * @param dbName 数据库
+    //     * @return 结果
+    //     * @throws Exception 异常
+    //     */
+    //    @Deprecated
+    //    public Connection functionConnection(String dbName) throws Exception {
+    //        Connection connection = this.getFunctionConnection(dbName);
+    //        if (!this.isValid(connection)) {
+    //            connection = this.initConnection(dbName, this.config.getUser(), this.config.getPassword());
+    //            this.addFunctionConnection(dbName, connection);
+    //        }
+    //        connection.setAutoCommit(true);
+    //        return connection;
+    //    }
+    //
+    //    /**
+    //     * 执行过程连接
+    //     *
+    //     * @param name 名称
+    //     * @return 结果
+    //     * @throws Exception 异常
+    //     */
+    //    @Deprecated
+    //    public Connection procedureConnection(String name) throws Exception {
+    //        Connection connection = this.getProcedureConnection(name);
+    //        if (!this.isValid(connection)) {
+    //            connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
+    //            this.addProcedureConnection(name, connection);
+    //        }
+    //        connection.setAutoCommit(true);
+    //        return connection;
+    //    }
 
     /**
      * 执行新连接
@@ -280,10 +281,7 @@ public abstract class DBConnManager implements AutoCloseable {
         if (connection == null || connection == current) {
             return;
         }
-//        try {
-//            connection.close();
-//        } catch (SQLException ignored) {
-//        }
+        IOUtil.closeQuietly(connection);
     }
 
     /**
