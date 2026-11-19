@@ -288,34 +288,49 @@ public class DBUtil {
         if (val == null) {
             return null;
         }
-        if (dialect == DBDialect.MYSQL
-                || dialect == DBDialect.MARIADB
-                || dialect == DBDialect.DAMENG
-                || dialect == DBDialect.POSTGRESQL
-                || dialect == DBDialect.ORACLE
-                || dialect == DBDialect.SQLITE) {
+        if (isSqlDialect(dialect)) {
             if (val instanceof CharSequence v) {
-                String v1 = DBDataUtil.escapeQuotes(v.toString(), dialect);
-                if (v1.isEmpty()) {
-                    return "''";
+                String text = v.toString();
+                // 兼容调用方传入已带引号的 SQL 字面量，例如数据库列默认值 'N/A'
+                if (text.length() >= 2 && text.startsWith("'") && text.endsWith("'")) {
+                    return DBDataUtil.escapeQuotes(text, dialect);
                 }
-                if (v1.startsWith("'") && v1.endsWith("'")) {
-                    return v1;
-                }
-                //                if (!v1.startsWith("'") && !v1.startsWith("\"")) {
-                //                    v1 = "'" + v1;
-                //                }
-                //                if (!v1.endsWith("'") && !v1.endsWith("\"")) {
-                //                    v1 = v1 + "'";
-                //                }
-                //                return v1;
-                return "'" + v1 + "'";
+                return wrapString(text, dialect);
             }
             if (val instanceof java.util.Date || val instanceof Temporal) {
                 return "'" + val + "'";
             }
         }
         return val;
+    }
+
+    /**
+     * 将原始字符串包装为 SQL 字符串字面量。
+     *
+     * <p>与 {@link #wrapData(Object, DBDialect)} 不同，本方法始终把入参当作原始数据，
+     * 不会把首尾单引号识别为已有的 SQL 引号。</p>
+     *
+     * @param val     原始字符串
+     * @param dialect 方言
+     * @return SQL 字符串字面量
+     */
+    public static String wrapString(String val, DBDialect dialect) {
+        if (val == null) {
+            return null;
+        }
+        if (!isSqlDialect(dialect)) {
+            return val;
+        }
+        return "'" + val.replace("'", "''") + "'";
+    }
+
+    private static boolean isSqlDialect(DBDialect dialect) {
+        return dialect == DBDialect.MYSQL
+                || dialect == DBDialect.MARIADB
+                || dialect == DBDialect.DAMENG
+                || dialect == DBDialect.POSTGRESQL
+                || dialect == DBDialect.ORACLE
+                || dialect == DBDialect.SQLITE;
     }
 
     /**

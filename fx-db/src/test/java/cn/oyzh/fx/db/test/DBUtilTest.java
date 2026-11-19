@@ -1,6 +1,7 @@
 package cn.oyzh.fx.db.test;
 
 import cn.oyzh.fx.db.DBDialect;
+import cn.oyzh.fx.db.util.DBDataUtil;
 import cn.oyzh.fx.db.util.DBUtil;
 import org.junit.Test;
 
@@ -10,6 +11,7 @@ import java.sql.Types;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * 数据库方言数据包装工具（DBUtil）测试
@@ -23,6 +25,23 @@ public class DBUtilTest {
     public void test1() {
         String str = "1:总人数 2:实际参会人数'";
         System.out.println(DBUtil.wrapData(str, DBDialect.DAMENG));
+    }
+
+    @Test
+    public void wrapsRawStringLiterals() {
+        assertEquals("'a''b'", DBUtil.wrapString("a'b", DBDialect.ORACLE));
+        assertEquals("''''", DBUtil.wrapString("'", DBDialect.ORACLE));
+        assertEquals("'''abc'''", DBUtil.wrapString("'abc'", DBDialect.ORACLE));
+        assertEquals("''", DBUtil.wrapString("", DBDialect.ORACLE));
+        assertEquals("'a\\b'", DBUtil.wrapString("a\\b", DBDialect.ORACLE));
+        assertNull(DBUtil.wrapString(null, DBDialect.ORACLE));
+    }
+
+    @Test
+    public void preservesQuotedDefaultsWithoutSingleQuoteCrash() {
+        assertEquals("'N/A'", DBUtil.wrapData("'N/A'", DBDialect.ORACLE));
+        assertEquals("''''", DBUtil.wrapData("'", DBDialect.ORACLE));
+        assertEquals("''", DBDataUtil.escapeQuotes("'", DBDialect.ORACLE));
     }
 
     @Test

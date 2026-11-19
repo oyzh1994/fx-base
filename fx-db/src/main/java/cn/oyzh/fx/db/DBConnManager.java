@@ -39,6 +39,16 @@ public abstract class DBConnManager implements AutoCloseable {
     }
 
     /**
+     * 移除连接
+     *
+     * @param dbName 数据库
+     */
+    public synchronized void removeConnection(String dbName) {
+        Connection old = this.connections.remove("db_connection_" + dbName);
+        this.closeQuietly(old, null);
+    }
+
+    /**
      * 添加函数连接
      *
      * @param dbName     数据库
@@ -120,6 +130,14 @@ public abstract class DBConnManager implements AutoCloseable {
     public synchronized void setServerConnection(Connection serverConnection) {
         Connection old = this.connections.put("server_connection", serverConnection);
         this.closeQuietly(old, serverConnection);
+    }
+
+    /**
+     * 移除服务连接
+     */
+    public synchronized void removeServerConnection() {
+        Connection old = this.connections.remove("server_connection");
+        this.closeQuietly(old, null);
     }
 
     /**

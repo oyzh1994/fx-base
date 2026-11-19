@@ -1,5 +1,6 @@
 package cn.oyzh.fx.db.util;
 
+import cn.oyzh.common.json.JSONUtil;
 import cn.oyzh.common.util.HexUtil;
 import cn.oyzh.common.util.TextUtil;
 import cn.oyzh.fx.db.DBColumn;
@@ -29,7 +30,7 @@ public class DBDataUtil {
                 || dialect == DBDialect.POSTGRESQL
                 || dialect == DBDialect.ORACLE
                 || dialect == DBDialect.SQLITE) {
-            boolean f1 = str.startsWith("'") && str.endsWith("'");
+            boolean f1 = str.length() >= 2 && str.startsWith("'") && str.endsWith("'");
             if (f1) {
                 str = str.substring(1, str.length() - 1);
             }
@@ -48,6 +49,29 @@ public class DBDataUtil {
             return str;
         }
         return TextUtil.escape(str);
+    }
+
+    /**
+     * 规范化 JSON 字符串。
+     *
+     * <p>去除首尾空白；如果内容中包含反斜杠转义，则先反转义，
+     * 仅当反转义结果仍是合法 JSON 时采用反转义结果。</p>
+     *
+     * @param value JSON 字符串
+     * @return 规范化后的 JSON 字符串
+     */
+    public static String normalizeJson(String value) {
+        if (value == null) {
+            return null;
+        }
+        String text = value.trim();
+        if (text.indexOf('\\') >= 0) {
+            String unescaped = TextUtil.unescape(text).trim();
+            if (!unescaped.equals(text) && JSONUtil.isJson(unescaped)) {
+                return unescaped;
+            }
+        }
+        return text;
     }
 
 
