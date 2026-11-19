@@ -33,8 +33,9 @@ public abstract class DBConnManager implements AutoCloseable {
      * @param dbName     数据库
      * @param connection 连接
      */
-    public void addConnection(String dbName, Connection connection) {
-        this.connections.put("db_connection_" + dbName, connection);
+    public synchronized void addConnection(String dbName, Connection connection) {
+        Connection old = this.connections.put("db_connection_" + dbName, connection);
+        this.closeQuietly(old, connection);
     }
 
     /**
@@ -92,7 +93,7 @@ public abstract class DBConnManager implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public synchronized void close() {
         for (Connection connection : this.connections.values()) {
             try {
                 connection.close();
@@ -116,8 +117,9 @@ public abstract class DBConnManager implements AutoCloseable {
      *
      * @param serverConnection 服务连接
      */
-    public void setServerConnection(Connection serverConnection) {
-        this.connections.put("server_connection", serverConnection);
+    public synchronized void setServerConnection(Connection serverConnection) {
+        Connection old = this.connections.put("server_connection", serverConnection);
+        this.closeQuietly(old, serverConnection);
     }
 
     /**
@@ -150,12 +152,13 @@ public abstract class DBConnManager implements AutoCloseable {
      * @throws SQLException           异常
      * @throws ClassNotFoundException 异常
      */
-    public Connection connection() throws Exception {
+    public synchronized Connection connection() throws Exception {
         if (this.config == null) {
             return null;
         }
         Connection connection = this.getServerConnection();
         if (!this.isValid(connection)) {
+            this.closeQuietly(connection, null);
             connection = this.initConnection(null, this.config.getUser(), this.config.getPassword());
             this.setServerConnection(connection);
         }
@@ -170,9 +173,10 @@ public abstract class DBConnManager implements AutoCloseable {
      * @throws SQLException           异常
      * @throws ClassNotFoundException 异常
      */
-    public Connection connection(String name) throws Exception {
+    public synchronized Connection connection(String name) throws Exception {
         Connection connection = this.getConnection(name);
         if (!this.isValid(connection)) {
+            this.closeQuietly(connection, null);
             connection = this.initConnection(name, this.config.getUser(), this.config.getPassword());
             this.addConnection(name, connection);
             JulLog.info("initConnection for {}", name);
@@ -247,6 +251,22 @@ public abstract class DBConnManager implements AutoCloseable {
      * @return 结果
      */
     public abstract String getConnectionString();
+
+    /**
+     * 关闭不再使用的连接
+     *
+     * @param connection 旧连接
+     * @param current    当前连接
+     */
+    private void closeQuietly(Connection connection, Connection current) {
+        if (connection == null || connection == current) {
+            return;
+        }
+        try {
+            connection.close();
+        } catch (SQLException ignored) {
+        }
+    }
 
     /**
      * 获取配置。
