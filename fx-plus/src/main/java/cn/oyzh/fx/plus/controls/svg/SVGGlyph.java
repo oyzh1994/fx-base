@@ -75,7 +75,7 @@ public class SVGGlyph extends StackPane implements LayoutAdapter, NodeGroup, Nod
      * 是否开启动画功能
      */
     private boolean enableWaiting;
-    // private boolean enableWaiting = true;
+//     private boolean enableWaiting = true;
 
     /**
      * 原始svg组件
