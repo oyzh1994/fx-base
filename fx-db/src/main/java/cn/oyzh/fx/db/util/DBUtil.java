@@ -11,6 +11,8 @@ import cn.oyzh.fx.db.DBRecordFilter;
 import cn.oyzh.fx.plus.font.FontManager;
 import cn.oyzh.fx.plus.font.FontUtil;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -21,6 +23,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Map;
@@ -141,18 +144,26 @@ public class DBUtil {
             statement.setFloat(index, x);
         } else if (val instanceof Double x) {
             statement.setDouble(index, x);
+        } else if (val instanceof BigDecimal x) {
+            statement.setBigDecimal(index, x);
+        } else if (val instanceof BigInteger x) {
+            statement.setBigDecimal(index, new BigDecimal(x));
         } else if (val instanceof CharSequence x) {
             statement.setString(index, x.toString());
-        } else if (val instanceof Date x) {
-            statement.setDate(index, x);
         } else if (val instanceof Timestamp x) {
             statement.setTimestamp(index, x);
+        } else if (val instanceof java.sql.Time x) {
+            statement.setTime(index, x);
+        } else if (val instanceof Date x) {
+            statement.setDate(index, x);
         } else if (val instanceof java.util.Date x) {
             statement.setDate(index, new Date(x.getTime()));
         } else if (val instanceof LocalDate x) {
             statement.setDate(index, Date.valueOf(x));
         } else if (val instanceof LocalDateTime x) {
             statement.setTimestamp(index, Timestamp.valueOf(x));
+        } else if (val instanceof LocalTime x) {
+            statement.setTime(index, java.sql.Time.valueOf(x));
         } else if (val instanceof Object x) {
             statement.setObject(index, x);
         }
@@ -321,7 +332,10 @@ public class DBUtil {
         if (!isSqlDialect(dialect)) {
             return val;
         }
-        return "'" + val.replace("'", "''") + "'";
+        String escaped = (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB)
+                ? val.replace("\\", "\\\\")
+                : val;
+        return "'" + escaped.replace("'", "''") + "'";
     }
 
     private static boolean isSqlDialect(DBDialect dialect) {

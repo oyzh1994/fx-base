@@ -305,6 +305,12 @@ public class DBDataUtil {
         if (column.supportGeometry()) {
             return "ST_GeomFromText('" + value + "')";
         }
+        if (column.isYearType()) {
+            String text = value.toString();
+            if (text.matches("\\d{4}.*")) {
+                return DBUtil.wrapData(text.substring(0, 4), dialect);
+            }
+        }
         //        if (column.supportTimestamp() || column.isDateTimeType() || column.isDateType() || column.isTimeType()) {
         //            Date date = (Date) value;
         //            value = DateHelper.formatDate(date);
@@ -322,6 +328,9 @@ public class DBDataUtil {
             }
         }
         if (column.supportBit()) {
+            if (value instanceof Boolean bool) {
+                return bool ? "b'1'" : "b'0'";
+            }
             byte[] bytes = (byte[]) value;
             if (bytes.length == 0) {
                 return "NULL";
