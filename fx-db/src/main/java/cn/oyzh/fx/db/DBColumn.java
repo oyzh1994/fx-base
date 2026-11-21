@@ -120,6 +120,16 @@ public interface DBColumn extends DBName {
     }
 
     /**
+     * 是否为数据库方言元数据标记的虚拟列。
+     * 该标记可能存在方言误报，不能直接等同于生成列或只读列。
+     *
+     * @return 结果
+     */
+    default boolean isVirtual() {
+        return false;
+    }
+
+    /**
      * 是否生成的字段
      *
      * @return 结果
