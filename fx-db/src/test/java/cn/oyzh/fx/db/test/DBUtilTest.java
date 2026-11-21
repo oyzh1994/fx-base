@@ -22,6 +22,15 @@ import static org.junit.Assert.assertNull;
 public class DBUtilTest {
 
     @Test
+    public void unwrapDataOnlyRemovesMatchingWrapperQuotes() {
+        assertEquals("$.\"row1\".\"name\"",
+                DBUtil.unwrapData("$.\"row1\".\"name\"", DBDialect.POSTGRESQL));
+        assertEquals("wrapped", DBUtil.unwrapData("'wrapped'", DBDialect.POSTGRESQL));
+        assertEquals("wrapped", DBUtil.unwrapData("\"wrapped\"", DBDialect.POSTGRESQL));
+        assertEquals("'mismatch\"", DBUtil.unwrapData("'mismatch\"", DBDialect.POSTGRESQL));
+    }
+
+    @Test
     public void test1() {
         String str = "1:总人数 2:实际参会人数'";
         System.out.println(DBUtil.wrapData(str, DBDialect.DAMENG));

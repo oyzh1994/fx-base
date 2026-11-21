@@ -355,11 +355,11 @@ public class DBUtil {
                 if (v1.isEmpty()) {
                     return null;
                 }
-                if (v1.startsWith("'") || v1.startsWith("\"")) {
-                    v1 = v1.substring(1);
-                }
-                if (v1.endsWith("'") || v1.endsWith("\"")) {
-                    v1 = v1.substring(0, v1.length() - 1);
+                // 只有首尾引号成对出现时才视为外部包装，避免破坏JSONPath等合法值
+                if (v1.length() >= 2
+                        && ((v1.startsWith("'") && v1.endsWith("'"))
+                        || (v1.startsWith("\"") && v1.endsWith("\"")))) {
+                    v1 = v1.substring(1, v1.length() - 1);
                 }
                 return v1;
             }

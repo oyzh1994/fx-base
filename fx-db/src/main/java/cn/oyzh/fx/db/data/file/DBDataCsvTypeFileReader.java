@@ -56,7 +56,7 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
      * @throws IOException IO 异常
      */
     public DBDataCsvTypeFileReader(File file, DBDataImportConfig config) throws IOException {
-        this(file, config, ",");
+        this(file, config, config.getFieldSeparator());
     }
 
     /**

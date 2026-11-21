@@ -69,7 +69,9 @@ public class DBDataExcelTypeFileReader extends DBDataTypeFileReader {
         }
         // dataRowStarts 为 1 基，此处换算为 0 基行号
         Integer dataRowStarts = this.config.getDataRowStarts();
-        this.currentRowIndex = dataRowStarts == null ? 0 : dataRowStarts - 1;
+        this.currentRowIndex = dataRowStarts == null
+                ? this.config.getColumnIndex() + 1
+                : dataRowStarts - 1;
     }
 
     @Override
