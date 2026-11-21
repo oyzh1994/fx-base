@@ -537,17 +537,18 @@ public class DBUtil {
             return "";
         }
         StringBuilder conditions = new StringBuilder();
-        for (int i = 0; i < filters.size(); i++) {
-            DBRecordFilter filter = filters.get(i);
+        String nextJoin = null;
+        for (DBRecordFilter filter : filters) {
             Object condition = filter.condition();
             if (condition != null) {
+                if (!conditions.isEmpty()) {
+                    conditions.append(StringUtil.blankToDefault(nextJoin, "AND")).append(" ");
+                }
                 conditions.append(DBUtil.wrap(filter.columnName(), filter.dialect()))
                         .append(" ")
                         .append(condition)
                         .append(" ");
-            }
-            if (i != filters.size() - 1) {
-                conditions.append(filter.getJoinSymbol()).append(" ");
+                nextJoin = filter.getJoinSymbol();
             }
         }
         return conditions.toString();

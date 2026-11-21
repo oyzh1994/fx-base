@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
      * @throws IOException IO 异常
      */
     public DBDataCsvTypeFileReader(File file, DBDataImportConfig config) throws IOException {
-        this(file, config, config.getFieldSeparator());
+        this(file, config, detectFieldSeparator(file, config));
     }
 
     /**
@@ -153,5 +154,73 @@ public class DBDataCsvTypeFileReader extends DBDataTypeFileReader {
     public void close() throws IOException {
         this.parser.close();
         this.columns = null;
+    }
+
+    /**
+     * CSV 文件头自动识别常见分隔符，兼容历史导出的逗号 CSV。
+     * TXT 读取器仍使用显式配置的分隔符。
+     */
+    private static String detectFieldSeparator(File file, DBDataImportConfig config)
+            throws IOException {
+        String configured = config.getFieldSeparator();
+        Path path = file.toPath();
+        String header;
+        try (Reader reader = Files.newBufferedReader(
+                path, Charset.forName(config.getCharset()))) {
+            header = readHeader(reader);
+        }
+        if (header == null) {
+            return configured;
+        }
+        String detected = configured;
+        int maxCount = countUnquoted(header, configured, config.getTxtIdentifier());
+        for (String candidate : List.of(",", ";", "\t")) {
+            if (candidate.equals(configured)) {
+                continue;
+            }
+            int count = countUnquoted(header, candidate, config.getTxtIdentifier());
+            if (count > maxCount) {
+                detected = candidate;
+                maxCount = count;
+            }
+        }
+        return detected;
+    }
+
+    private static String readHeader(Reader reader) throws IOException {
+        StringBuilder header = new StringBuilder();
+        int value;
+        while ((value = reader.read()) >= 0) {
+            char character = (char) value;
+            if (character == '\r' || character == '\n') {
+                break;
+            }
+            header.append(character);
+        }
+        return header.isEmpty() ? null : header.toString();
+    }
+
+    private static int countUnquoted(String value, String delimiter, String quoteValue) {
+        if (delimiter == null || delimiter.isEmpty()) {
+            return 0;
+        }
+        char delimiterChar = delimiter.charAt(0);
+        char quote = quoteValue == null || quoteValue.isEmpty() ? 0 : quoteValue.charAt(0);
+        int count = 0;
+        boolean quoted = false;
+        for (int index = 0; index < value.length(); index++) {
+            char character = value.charAt(index);
+            if (quote != 0 && character == quote) {
+                if (quoted && index + 1 < value.length()
+                        && value.charAt(index + 1) == quote) {
+                    index++;
+                } else {
+                    quoted = !quoted;
+                }
+            } else if (!quoted && character == delimiterChar) {
+                count++;
+            }
+        }
+        return count;
     }
 }

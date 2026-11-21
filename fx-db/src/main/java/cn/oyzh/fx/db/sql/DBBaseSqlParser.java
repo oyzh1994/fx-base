@@ -72,7 +72,7 @@ public class DBBaseSqlParser extends DBSqlParser {
         try {
             this.sqlList = SqlUtil.split(sqlContent, this.database);
             for (String sql : this.sqlList) {
-                sql = sql.replace("\n", " ");
+                sql = normalizeLineBreaks(sql);
                 sqlList.add(sql);
             }
             success = true;
@@ -90,11 +90,50 @@ public class DBBaseSqlParser extends DBSqlParser {
         String sqlContent = this.removeComment(this.sqlContent);
         String sql = SqlUtil.singleStatement(sqlContent, this.database);
         if (sql != null) {
-            sql = sql.replace("\n", " ");
+            sql = normalizeLineBreaks(sql);
             this.sqlList = new ArrayList<>();
             this.sqlList.add(sql);
         }
         return sql;
+    }
+
+    /**
+     * 将 SQL 字面量外的换行压缩为空格，保留字符串和引用标识符中的原始内容。
+     */
+    private String normalizeLineBreaks(String sql) {
+        StringBuilder result = new StringBuilder(sql.length());
+        char quote = 0;
+        for (int index = 0; index < sql.length(); index++) {
+            char value = sql.charAt(index);
+            if (quote != 0) {
+                result.append(value);
+                if ((this.dialect == DBDialect.MYSQL || this.dialect == DBDialect.MARIADB)
+                        && value == '\\' && index + 1 < sql.length()) {
+                    result.append(sql.charAt(++index));
+                } else if (value == quote) {
+                    if (quote != ']' && index + 1 < sql.length()
+                            && sql.charAt(index + 1) == quote) {
+                        result.append(sql.charAt(++index));
+                    } else {
+                        quote = 0;
+                    }
+                }
+                continue;
+            }
+            if (value == '\'' || value == '"' || value == '`' || value == '[') {
+                quote = value == '[' ? ']' : value;
+                result.append(value);
+            } else if (value == '\r' || value == '\n') {
+                result.append(' ');
+                if (value == '\r' && index + 1 < sql.length()
+                        && sql.charAt(index + 1) == '\n') {
+                    index++;
+                }
+            } else {
+                result.append(value);
+            }
+        }
+        return result.toString();
     }
 
     @Override

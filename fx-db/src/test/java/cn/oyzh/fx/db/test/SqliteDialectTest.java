@@ -40,6 +40,12 @@ public class SqliteDialectTest {
         assertEquals(1, DBSqlParser.parseSql(
                 "CREATE TEMP TRIGGER trg AFTER DELETE ON item BEGIN DELETE FROM log; END", DBDialect.SQLITE).size());
         assertTrue(new DBBaseSqlParser("SELECT * FROM item", DBDialect.SQLITE).isSelect("SELECT * FROM item"));
+
+        String multiline = "INSERT INTO item(value) VALUES('first\nsecond');\nSELECT\n  1;";
+        List<String> multilineSql = DBSqlParser.parseSql(multiline, DBDialect.SQLITE);
+        assertEquals(2, multilineSql.size());
+        assertTrue(multilineSql.getFirst().contains("first\nsecond"));
+        assertEquals("SELECT   1", multilineSql.get(1));
     }
 
 }
