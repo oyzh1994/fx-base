@@ -118,6 +118,20 @@ public class EditorSkin extends CodeAreaSkin {
     }
 
     /**
+     * 重建富文本可见单元格。
+     * <p>
+     * 标题或折叠会把普通文本段落替换为自定义区域，仅刷新样式不会切换 TextCell
+     * 的内容类型，因此需要清理 VFlow 单元格缓存后重新布局。
+     */
+    public void refreshBlockLayout() {
+        VFlow flow = this.getVFlow();
+        if (flow != null) {
+            flow.invalidateLayout();
+            this.getSkinnable().requestLayout();
+        }
+    }
+
+    /**
      * 获取光标信息
      *
      * @return 光标信息

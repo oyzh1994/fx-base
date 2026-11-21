@@ -5,6 +5,12 @@ import cn.oyzh.common.util.CollectionUtil;
 import cn.oyzh.common.util.RegexUtil;
 import cn.oyzh.common.util.StringUtil;
 import cn.oyzh.fx.plus.util.FXUtil;
+import javafx.geometry.Pos;
+import javafx.scene.AccessibleRole;
+import javafx.scene.Cursor;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.CodeTextModel;
@@ -70,6 +76,21 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private volatile EditorFormatType formatType = EditorFormatType.RAW;
 
     /**
+     * 所属编辑器
+     */
+    private volatile Editor editor;
+
+    /**
+     * 可折叠段落
+     */
+    private volatile List<EditorFold> folds = List.of();
+
+    /**
+     * 段落标题
+     */
+    private volatile List<EditorHeading> headings = List.of();
+
+    /**
      * 构造语法装饰器
      */
     public EditorSyntaxDecorator() {
@@ -83,6 +104,33 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
      */
     public EditorSyntaxDecorator(@Nullable StyleProvider styleProvider) {
         super(styleProvider);
+    }
+
+    /**
+     * 设置所属编辑器。
+     *
+     * @param editor 编辑器
+     */
+    public void setEditor(Editor editor) {
+        this.editor = editor;
+    }
+
+    /**
+     * 设置可折叠段落。
+     *
+     * @param folds 折叠配置
+     */
+    public void setFolds(List<EditorFold> folds) {
+        this.folds = folds == null ? List.of() : List.copyOf(folds);
+    }
+
+    /**
+     * 设置段落标题。
+     *
+     * @param headings 段落标题
+     */
+    public void setHeadings(List<EditorHeading> headings) {
+        this.headings = headings == null ? List.of() : List.copyOf(headings);
     }
 
     /**
@@ -621,7 +669,8 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         for (int i = 0; i < newCount; i++) {
             int paragraphIndex = startIx + i;
             String line = model.getPlainText(paragraphIndex);
-            replacement.add(this.buildFastParagraph(line));
+            replacement.add(this.applyBlock(paragraphIndex,
+                    this.buildFastParagraph(paragraphIndex, line)));
             addedChars += line.length();
         }
 
@@ -717,7 +766,8 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     private List<RichParagraph> buildFastParagraphs(CodeTextModel model) {
         List<RichParagraph> paragraphs = new ArrayList<>(model.size());
         for (int i = 0; i < model.size(); i++) {
-            paragraphs.add(this.buildFastParagraph(model.getPlainText(i)));
+            paragraphs.add(this.applyBlock(i,
+                    this.buildFastParagraph(i, model.getPlainText(i))));
         }
         return paragraphs;
     }
@@ -725,16 +775,16 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
     /**
      * 快速构建单个段落，仅应用提示词和搜索高亮。
      */
-    private RichParagraph buildFastParagraph(String line) {
+    private RichParagraph buildFastParagraph(int index, String line) {
         RichParagraph.Builder builder = RichParagraph.builder();
         if (CollectionUtil.isNotEmpty(this.prompts)) {
             List<EditorMachToken> machTokens = this.machPrompts(line);
             List<StyledToken> tokens = this.buildTokens(line, machTokens);
             for (StyledToken token : tokens) {
-                super.applyStyles(builder, token);
+                this.applyToken(builder, token, index);
             }
         } else {
-            super.applyStyles(builder, new StyledToken(line, null));
+            this.applyToken(builder, new StyledToken(line, null), index);
         }
         if (StringUtil.isNotEmpty(this.highlight)) {
             List<EditorMachToken> machTokens = this.machHighlight(line);
@@ -774,7 +824,8 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         provider.flush();
         String[] lines = text.split(LINE_SPLIT_PATTERN, -1);
         List<RichParagraph> paragraphs = new ArrayList<>(lines.length);
-        for (String line : lines) {
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
             if (Thread.currentThread().isInterrupted() || this.styleVersion.get() != version) {
                 return Collections.emptyList();
             }
@@ -783,10 +834,10 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 List<EditorMachToken> machTokens = this.machPrompts(line);
                 List<StyledToken> tokens = this.buildTokens(line, machTokens);
                 for (StyledToken token : tokens) {
-                    super.applyStyles(builder, token);
+                    this.applyToken(builder, token, i);
                 }
             } else if (this.formatType == EditorFormatType.RAW || this.formatType == null) {
-                super.applyStyles(builder, new StyledToken(line, null));
+                this.applyToken(builder, new StyledToken(line, null), i);
             } else {
                 List<StyledToken> tokens;
                 //String hash = MD5Util.md5Hex(line);
@@ -802,7 +853,7 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                 //}
                 // 应用样式
                 for (StyledToken token : tokens) {
-                    super.applyStyles(builder, token);
+                    this.applyToken(builder, token, i);
                 }
             }
             if (StringUtil.isNotEmpty(this.highlight)) {
@@ -811,9 +862,133 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
                     builder.addHighlight(token.start(), token.length(), this.highlightColor);
                 }
             }
-            paragraphs.add(builder.build());
+            paragraphs.add(this.applyBlock(i, builder.build()));
         }
         return paragraphs;
+    }
+
+    /**
+     * 应用段落折叠。
+     *
+     * @param index     段落索引
+     * @param paragraph 原始段落
+     * @return 折叠后的段落
+     */
+    private RichParagraph applyBlock(int index, RichParagraph paragraph) {
+        for (EditorFold fold : this.folds) {
+            if (index == fold.startParagraph()) {
+                return RichParagraph.of(() -> this.createFoldHeader(fold));
+            }
+            if (fold.collapsed()
+                    && index > fold.startParagraph()
+                    && index <= fold.endParagraph()) {
+                return RichParagraph.of(EditorSyntaxDecorator::createHiddenFoldBody);
+            }
+        }
+        for (EditorHeading heading : this.headings) {
+            if (index == heading.paragraphIndex()) {
+                return RichParagraph.of(() -> this.createHeading(heading));
+            }
+        }
+        return paragraph;
+    }
+
+    /**
+     * 应用段落文本样式。
+     *
+     * @param builder 段落构建器
+     * @param token   文本片段
+     * @param index   段落索引
+     */
+    private void applyToken(RichParagraph.Builder builder, StyledToken token, int index) {
+        Color bodyColor = this.foldBodyColor(index);
+        if (bodyColor != null) {
+            StyleAttributeMap style = token.style() == null
+                    ? StyleAttributeMap.EMPTY
+                    : token.style();
+            style = style.combine(StyleAttributeMap.builder()
+                    .setTextColor(bodyColor)
+                    .build());
+            token = new StyledToken(token.text(), style);
+        }
+        super.applyStyles(builder, token);
+    }
+
+    /**
+     * 获取展开状态折叠正文的颜色。
+     *
+     * @param index 段落索引
+     * @return 正文颜色
+     */
+    private Color foldBodyColor(int index) {
+        for (EditorFold fold : this.folds) {
+            if (!fold.collapsed()
+                    && fold.bodyColor() != null
+                    && index > fold.startParagraph()
+                    && index <= fold.endParagraph()) {
+                return fold.bodyColor();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 创建折叠标题。
+     *
+     * @param fold 折叠配置
+     * @return 折叠标题
+     */
+    private Region createFoldHeader(EditorFold fold) {
+        Label arrow = new Label(fold.collapsed() ? "▶" : "▼");
+        arrow.getStyleClass().add("editor-fold-arrow");
+        Label title = new Label(fold.title());
+        title.getStyleClass().add("editor-fold-title");
+        HBox header = new HBox(5, arrow, title);
+        header.getStyleClass().addAll("editor-block-header", "editor-fold-header",
+                fold.collapsed() ? "collapsed" : "expanded");
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setMaxWidth(Double.MAX_VALUE);
+        header.setCursor(Cursor.HAND);
+        header.setAccessibleRole(AccessibleRole.BUTTON);
+        header.setAccessibleText(fold.title());
+        header.setOnMouseClicked(event -> {
+            if (this.editor != null) {
+                this.editor.toggleFold(fold.id());
+            }
+            event.consume();
+        });
+        return header;
+    }
+
+    /**
+     * 创建普通章节标题。
+     *
+     * @param heading 标题配置
+     * @return 标题区域
+     */
+    private Region createHeading(EditorHeading heading) {
+        Label title = new Label(heading.title());
+        title.getStyleClass().add("editor-block-heading");
+        if (!heading.styleClass().isBlank()) {
+            title.getStyleClass().add(heading.styleClass());
+        }
+        title.setMaxWidth(Double.MAX_VALUE);
+        return title;
+    }
+
+    /**
+     * 创建折叠后不占空间的正文占位。
+     *
+     * @return 正文占位
+     */
+    private static Region createHiddenFoldBody() {
+        Region body = new Region();
+        body.getStyleClass().add("editor-fold-hidden");
+        body.setMinHeight(0);
+        body.setPrefHeight(0);
+        body.setMaxHeight(0);
+        body.setManaged(false);
+        return body;
     }
 
     /**

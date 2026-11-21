@@ -183,6 +183,21 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     /**
+     * 折叠配置
+     */
+    private List<EditorFold> folds = List.of();
+
+    /**
+     * 段落标题
+     */
+    private List<EditorHeading> headings = List.of();
+
+    /**
+     * 折叠展开状态，按标识保留用户操作
+     */
+    private final Map<String, Boolean> foldStates = new HashMap<>();
+
+    /**
      * 默认边距
      */
     private static final Insets DEFAULT_PADDING = new Insets(5);
@@ -330,6 +345,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
         this.setBorder(border);
         // 初始化组件
         this.textFlowModel.setStyleProvider(this.styleProvider);
+        this.syntaxDecorator.setEditor(this);
         this.syntaxDecorator.setStyleProvider(this.styleProvider);
         this.richTextAreaModel.setStyleProvider(this.styleProvider);
         // 语法装饰
@@ -413,6 +429,114 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
                 this.syntaxDecorator.refreshText(model);
             }
         });
+    }
+
+    /**
+     * 设置可折叠段落。
+     * <p>
+     * 相同标识的折叠状态会保留，便于文本刷新后保持用户的展开/折叠选择。
+     *
+     * @param folds 折叠配置
+     */
+    public void setFolds(List<EditorFold> folds) {
+        this.setBlocks(this.headings, folds);
+    }
+
+    /**
+     * 同时设置段落标题和折叠配置。
+     *
+     * @param headings 段落标题
+     * @param folds    折叠配置
+     */
+    public void setBlocks(List<EditorHeading> headings, List<EditorFold> folds) {
+        List<EditorHeading> headingSpecs = headings == null ? List.of() : List.copyOf(headings);
+        List<EditorFold> foldSpecs = folds == null ? List.of() : List.copyOf(folds);
+        List<EditorFold> resolved = foldSpecs.stream()
+                .map(fold -> fold.withCollapsed(
+                        this.foldStates.getOrDefault(fold.id(), fold.collapsed())))
+                .toList();
+        this.headings = headingSpecs;
+        this.folds = resolved;
+        this.syntaxDecorator.setHeadings(this.headings);
+        this.syntaxDecorator.setFolds(resolved);
+        this.refreshText();
+        this.refreshBlockLayout();
+    }
+
+    /**
+     * 设置段落标题。
+     *
+     * @param headings 段落标题
+     */
+    public void setHeadings(List<EditorHeading> headings) {
+        List<EditorHeading> value = headings == null ? List.of() : List.copyOf(headings);
+        if (value.equals(this.headings)) {
+            return;
+        }
+        this.setBlocks(value, this.folds);
+    }
+
+    /**
+     * 获取段落标题。
+     *
+     * @return 段落标题
+     */
+    public List<EditorHeading> getHeadings() {
+        return this.headings;
+    }
+
+    /**
+     * 获取折叠配置。
+     *
+     * @return 折叠配置
+     */
+    public List<EditorFold> getFolds() {
+        return this.folds;
+    }
+
+    /**
+     * 切换折叠状态。
+     *
+     * @param id 折叠标识
+     */
+    public void toggleFold(String id) {
+        if (id == null || id.isBlank()) {
+            return;
+        }
+        List<EditorFold> updated = new ArrayList<>(this.folds.size());
+        boolean changed = false;
+        for (EditorFold fold : this.folds) {
+            if (fold.id().equals(id)) {
+                fold = fold.withCollapsed(!fold.collapsed());
+                this.foldStates.put(id, fold.collapsed());
+                changed = true;
+            }
+            updated.add(fold);
+        }
+        if (changed) {
+            this.folds = List.copyOf(updated);
+            this.syntaxDecorator.setFolds(this.folds);
+            this.refreshText();
+        this.refreshBlockLayout();
+        }
+    }
+
+    /**
+     * 清除折叠展开状态，用于单元格绑定到其他消息。
+     */
+    public void resetFoldState() {
+        this.foldStates.clear();
+        this.folds = List.of();
+        this.syntaxDecorator.setFolds(this.folds);
+    }
+
+    /**
+     * 重建可见段落，使普通文本与标题/折叠区域能够互相切换。
+     */
+    private void refreshBlockLayout() {
+        if (this.getSkin() instanceof EditorSkin skin) {
+            skin.refreshBlockLayout();
+        }
     }
 
     /**

@@ -598,6 +598,16 @@ public class MenuItemHelper {
     }
 
     /**
+     * 导出
+     *
+     * @param action 执行动作
+     * @return 菜单项
+     */
+    public static FXMenuItem export(Runnable action) {
+        return (FXMenuItem) MenuItemManager.getMenuItem(I18nHelper.export(), new ExportSVGGlyph(), action);
+    }
+
+    /**
      * 排序升序。
      *
      * @param action 执行动作
