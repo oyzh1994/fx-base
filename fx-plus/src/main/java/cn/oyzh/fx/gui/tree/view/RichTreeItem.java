@@ -126,6 +126,30 @@ public abstract class RichTreeItem<V extends RichTreeItemValue> extends FXTreeIt
     }
 
     /**
+     * 递增缓存数量，缓存不存在时保持未加载状态。
+     *
+     * @param count 当前缓存数量
+     * @return 递增后的数量
+     */
+    public Integer incrementCount(Integer count) {
+        return count == null ? null : count + 1;
+    }
+
+    /**
+     * 格式化节点额外数量信息。
+     * 缓存被清空但子节点已加载时，使用实际子节点数量。
+     *
+     * @param count 缓存数量
+     * @return 额外数量信息
+     */
+    public String extraCount(Integer count) {
+        if (count == null && (this.isLoaded() || !this.richChildren().isEmpty())) {
+            count = this.unfilteredChildrenSize();
+        }
+        return count == null ? null : " (" + count + ")";
+    }
+
+    /**
      * 设置加载中
      *
      * @param loading 加载中
