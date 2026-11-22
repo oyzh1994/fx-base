@@ -101,6 +101,9 @@ public class DBNodeUtil {
         if (column.supportEnum()) {
             return Color.valueOf("#E8E0F0");
         }
+        if (column.supportBoolean()) {
+            return Color.valueOf("#FAE1E4");
+        }
         if (column.supportInteger()) {
             return Color.valueOf("#D7EED0");
         }
@@ -112,9 +115,6 @@ public class DBNodeUtil {
         }
         if (column.supportBit()) {
             return Color.valueOf("#FCE1E4");
-        }
-        if (column.supportBoolean()) {
-            return Color.valueOf("#FAE1E4");
         }
         if (column.supportTimestamp()
                 || column.isDateType()
@@ -160,6 +160,10 @@ public class DBNodeUtil {
             BinaryTextFiled textField = new BinaryTextFiled();
             textField.setValue(object);
             node = textField;
+        } else if (column.supportBoolean()) {
+            BooleanTextFiled textField = new BooleanTextFiled();
+            textField.setValue(object);
+            node = textField;
         } else if (column.supportInteger() || column.supportBigInteger()) {
             NumberTextField textField = new NumberTextField();
             textField.setValue(object);
@@ -170,10 +174,6 @@ public class DBNodeUtil {
             node = textField;
         } else if (column.supportBit()) {
             BitTextField textField = new BitTextField();
-            textField.setValue(object);
-            node = textField;
-        } else if (column.supportBoolean()) {
-            BooleanTextFiled textField = new BooleanTextFiled();
             textField.setValue(object);
             node = textField;
         } else if (column.supportTimestamp()||column.isDateTimeType()) {
@@ -242,14 +242,14 @@ public class DBNodeUtil {
             } else {
                 node = new ClearableTextField();
             }
+        } else if (column.supportBoolean()) {
+            node = new BooleanTextFiled();
         } else if (column.supportBit()) {
             if (column.getSize() != null) {
                 node = new BitTextField((long) column.getSize() * 8L);
             } else {
                 node = new BitTextField();
             }
-        } else if (column.supportBoolean()) {
-            node = new BooleanTextFiled();
         } else if (column.supportInteger() || column.supportBigInteger()) {
             Integer size = column.getSize();
             node = new NumberTextField(size == null ? null : size.longValue(), column.minValue(), column.maxValue());

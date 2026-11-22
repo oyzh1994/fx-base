@@ -3,6 +3,7 @@ package cn.oyzh.fx.gui.skin;
 import atlantafx.base.controls.Calendar;
 import cn.oyzh.common.date.LocalDateTimeUtil;
 import cn.oyzh.common.util.StringUtil;
+import cn.oyzh.fx.gui.text.field.DateTimeTextField;
 import cn.oyzh.fx.gui.svg.glyph.CancelSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.DateSVGGlyph;
 import cn.oyzh.fx.gui.svg.glyph.SubmitSVGGlyph;
@@ -199,6 +200,7 @@ public class DateTimeTextFieldSkin extends ActionTextFieldSkin {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            return DateTimeTextField.parseDateTime(text);
         }
         return null;
     }
