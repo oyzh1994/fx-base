@@ -28,6 +28,7 @@ public class DBQueryUtil {
         PROMPT_CODES.add(KeyCode.MINUS);
         PROMPT_CODES.add(KeyCode.SPACE);
         PROMPT_CODES.add(KeyCode.UNDERSCORE);
+        PROMPT_CODES.add(KeyCode.OPEN_BRACKET);
         // 字母
         PROMPT_CODES.add(KeyCode.A);
         PROMPT_CODES.add(KeyCode.B);
