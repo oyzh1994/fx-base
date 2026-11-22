@@ -267,6 +267,11 @@ public class DBUtil {
                 value = value.substring(1, value.length() - 1);
             }
             return "\"" + value.replace("\"", "\"\"") + "\"";
+        } else if (dialect == DBDialect.SQLSERVER) {
+            if (value.length() > 1 && value.startsWith("[") && value.endsWith("]")) {
+                value = value.substring(1, value.length() - 1);
+            }
+            return "[" + value.replace("]", "]]") + "]";
         } else if (dialect == DBDialect.SQLITE) {
             if (value.length() > 1 && value.startsWith("\"") && value.endsWith("\"")) {
                 value = value.substring(1, value.length() - 1);
@@ -343,6 +348,7 @@ public class DBUtil {
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
                 || dialect == DBDialect.POSTGRESQL
+                || dialect == DBDialect.SQLSERVER
                 || dialect == DBDialect.ORACLE
                 || dialect == DBDialect.SQLITE;
     }
@@ -362,6 +368,7 @@ public class DBUtil {
                 || dialect == DBDialect.MARIADB
                 || dialect == DBDialect.DAMENG
                 || dialect == DBDialect.POSTGRESQL
+                || dialect == DBDialect.SQLSERVER
                 || dialect == DBDialect.ORACLE
                 || dialect == DBDialect.SQLITE) {
             if (val instanceof CharSequence v) {
@@ -372,7 +379,9 @@ public class DBUtil {
                 // 只有首尾引号成对出现时才视为外部包装，避免破坏JSONPath等合法值
                 if (v1.length() >= 2
                         && ((v1.startsWith("'") && v1.endsWith("'"))
-                        || (v1.startsWith("\"") && v1.endsWith("\"")))) {
+                        || (v1.startsWith("\"") && v1.endsWith("\""))
+                        || (dialect == DBDialect.SQLSERVER
+                        && v1.startsWith("[") && v1.endsWith("]")))) {
                     v1 = v1.substring(1, v1.length() - 1);
                 }
                 return v1;
