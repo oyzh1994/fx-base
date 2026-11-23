@@ -430,8 +430,12 @@ public class StageManager {
         if (window == null) {
             window = getFrontWindow();
         }
+        boolean showMask = true;
+        if (window instanceof Stage stage && stage.isFullScreen()) {
+            showMask = OSUtil.isMacOS();
+        }
         // 判断是否处于mask状态
-        if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
+        if (showMask && !PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
             // 设置状态位
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 窗口
@@ -455,7 +459,7 @@ public class StageManager {
             // 显示遮罩
             StageMask.showMask(window, maskCallback, cancelAction, closeCallback);
         } else {// 直接执行
-            callback.run();
+            FXUtil.runLater(callback);
         }
     }
 
@@ -496,21 +500,21 @@ public class StageManager {
      * @return 弹窗父窗口
      */
     public static Window resolveDialogOwner(Window owner) {
-        if (owner == null) {
-            return null;
-        }
-        for (Window window : Window.getWindows()) {
-            if (!window.isShowing()) {
-                continue;
-            }
-            Window target = null;
-            if (window instanceof StageMask mask) {
-                target = mask.targetWindow();
-            }
-            if (target != null && matchesOwner(target, owner)) {
-                return window;
-            }
-        }
+        //if (owner == null) {
+        //    return null;
+        //}
+        //for (Window window : Window.getWindows()) {
+        //    if (!window.isShowing()) {
+        //        continue;
+        //    }
+        //    Window target = null;
+        //    if (window instanceof StageMask mask) {
+        //        target = mask.targetWindow();
+        //    }
+        //    if (target != null && matchesOwner(target, owner)) {
+        //        return window;
+        //    }
+        //}
         return owner;
     }
 
