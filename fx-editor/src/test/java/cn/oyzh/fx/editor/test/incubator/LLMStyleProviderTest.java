@@ -1,6 +1,6 @@
 package cn.oyzh.fx.editor.test.incubator;
 
-import cn.oyzh.fx.editor.incubator.EditorStyleProvider;
+import cn.oyzh.fx.editor.incubator.control.LLMStyleProvider;
 import javafx.scene.paint.Color;
 import jfx.incubator.scene.control.richtext.model.StyleAttributeMap;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  * @author oyzh
  * @since 2026-11-06
  */
-public class EditorStyleProviderTest {
+public class LLMStyleProviderTest {
 
     /**
      * 聊天语法
@@ -42,7 +42,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void lightThemeColors() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
         List<StyledToken> tokens = provider.tokenize(
                 "访问 https://example.com/api 和 /var/log/nginx/error.log，执行 `systemctl restart nginx`");
 
@@ -67,7 +67,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void darkThemeColors() {
-        EditorStyleProvider provider = this.provider(DARK_THEME);
+        LLMStyleProvider provider = this.provider(DARK_THEME);
         List<StyledToken> tokens = provider.tokenize("访问 https://example.com/api 和 /var/log/nginx/error.log");
 
         StyledToken link = find(tokens, "https://example.com/api");
@@ -82,7 +82,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void schemeLessLinkAndMarkdownLink() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
         List<StyledToken> tokens = provider.tokenize(
                 "看 github.com/org/repo 和 [文档](https://example.com/doc) 以及 www.example.com");
 
@@ -99,11 +99,16 @@ public class EditorStyleProviderTest {
         StyledToken www = find(tokens, "www.example.com");
         assertNotNull(www);
         assertEquals(Color.web("#0969DA"), textColor(www));
+
+        StyledToken titled = find(provider.tokenize(
+                "[文档](https://example.com/doc \"标题\")"), "https://example.com/doc");
+        assertNotNull(titled);
+        assertEquals(Color.web("#0969DA"), textColor(titled));
     }
 
     @Test
     public void dangerousCommandIsRed() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
         List<StyledToken> tokens = provider.tokenize("不要执行 sudo rm -rf /");
         StyledToken danger = find(tokens, "sudo rm -rf");
         assertNotNull(danger);
@@ -112,7 +117,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void logLevelsAndStacktrace() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
 
         List<StyledToken> tokens = provider.tokenize(
                 "2026-11-06 23:15:22.456 ERROR [main] c.e.Foo NullPointerException: failed");
@@ -134,7 +139,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void accessLogStatus() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
 
         List<StyledToken> tokens = provider.tokenize(
                 "192.168.1.10 - - [06/Nov/2026:23:15:22 +0800] \"GET /api HTTP/1.1\" 500 1234 \"-\" \"curl/8.0\"");
@@ -147,7 +152,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void codeBlockColors() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
         provider.tokenize("```java");
         assertEquals(Color.web("#6E7781"), textColor(find(provider.tokenize("// 注释"), "// 注释")));
         List<StyledToken> tokens = provider.tokenize(
@@ -166,7 +171,7 @@ public class EditorStyleProviderTest {
 
     @Test
     public void markdownEmphasisAndHeading() {
-        EditorStyleProvider provider = this.provider(LIGHT_THEME);
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
 
         StyledToken boldItalic = find(provider.tokenize("***粗斜体***"), "粗斜体");
         assertNotNull(boldItalic);
@@ -179,13 +184,68 @@ public class EditorStyleProviderTest {
         assertTrue(Boolean.TRUE.equals(heading.style().get(StyleAttributeMap.BOLD)));
     }
 
+    @Test
+    public void markdownEmphasisVariants() {
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
+
+        StyledToken bold = find(provider.tokenize("__粗体__"), "粗体");
+        assertNotNull(bold);
+        assertTrue(Boolean.TRUE.equals(bold.style().get(StyleAttributeMap.BOLD)));
+
+        StyledToken italic = find(provider.tokenize("_斜体_"), "斜体");
+        assertNotNull(italic);
+        assertTrue(Boolean.TRUE.equals(italic.style().get(StyleAttributeMap.ITALIC)));
+
+        StyledToken nested = find(provider.tokenize("**粗体 _斜体_**"), "斜体");
+        assertNotNull(nested);
+        assertTrue(Boolean.TRUE.equals(nested.style().get(StyleAttributeMap.ITALIC)));
+
+        StyledToken strike = find(provider.tokenize("~~删除~~"), "删除");
+        assertNotNull(strike);
+        assertTrue(Boolean.TRUE.equals(strike.style().get(StyleAttributeMap.STRIKE_THROUGH)));
+        assertEquals(Color.web("#6E7781"), textColor(strike));
+    }
+
+    @Test
+    public void markdownInlineCodeWithNestedBackticks() {
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
+        List<StyledToken> tokens = provider.tokenize("使用 ``a`b`` 代码");
+
+        assertEquals(Color.web("#116329"), textColor(find(tokens, "a")));
+        assertEquals(Color.web("#116329"), textColor(find(tokens, "b")));
+        assertEquals(Color.web("#1F2328"), textColor(find(tokens, " 代码")));
+    }
+
+    @Test
+    public void markdownTableAndHtml() {
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
+
+        assertEquals(Color.web("#1F2328"), textColor(find(provider.tokenize("| 名称 | 状态 |"), "名称")));
+        assertEquals(Color.web("#6E7781"), textColor(find(provider.tokenize("| --- | :---: |"), "---")));
+
+        StyledToken tableBold = find(provider.tokenize("| 1 | **正常** |"), "正常");
+        assertNotNull(tableBold);
+        assertTrue(Boolean.TRUE.equals(tableBold.style().get(StyleAttributeMap.BOLD)));
+
+        assertEquals(Color.web("#953800"), textColor(find(provider.tokenize("<details><summary>说明</summary>"), "details")));
+        assertEquals(Color.web("#116329"), textColor(find(provider.tokenize("A&nbsp;B"), "&nbsp;")));
+    }
+
+    @Test
+    public void markdownTaskListState() {
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
+
+        assertEquals(Color.web("#116329"), textColor(find(provider.tokenize("- [x] 完成"), "[x]")));
+        assertEquals(Color.web("#9A6700"), textColor(find(provider.tokenize("- [ ] 待办"), "[ ]")));
+    }
+
     /**
      * 构造指定主题的样式提供者
      */
-    private EditorStyleProvider provider(String theme) {
-        EditorStyleProvider provider = new EditorStyleProvider();
-        provider.setGrammar(IGrammarSource.fromResource(EditorStyleProviderTest.class, GRAMMAR));
-        provider.setTheme(IThemeSource.fromResource(EditorStyleProviderTest.class, theme));
+    private LLMStyleProvider provider(String theme) {
+        LLMStyleProvider provider = new LLMStyleProvider();
+        provider.setGrammar(IGrammarSource.fromResource(LLMStyleProviderTest.class, GRAMMAR));
+        provider.setTheme(IThemeSource.fromResource(LLMStyleProviderTest.class, theme));
         return provider;
     }
 

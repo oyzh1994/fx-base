@@ -23,6 +23,15 @@
       "include": "#autolink"
     },
     {
+      "include": "#html-comment"
+    },
+    {
+      "include": "#html-tag"
+    },
+    {
+      "include": "#html-entity"
+    },
+    {
       "include": "#heading"
     },
     {
@@ -146,7 +155,13 @@
       "include": "#escape"
     },
     {
+      "include": "#bold-italic-underscore"
+    },
+    {
       "include": "#bold-italic"
+    },
+    {
+      "include": "#bold-underscore"
     },
     {
       "include": "#bold"
@@ -175,13 +190,13 @@
   ],
   "repository": {
     "fenced-code": {
-      "begin": "^\\s*(`{3,}|~{3,})([\\w#+.-]*)\\s*$",
+      "begin": "^\\s*(`{3,}|~{3,})[ \\t]*([^`\\s]*)?[^`]*$",
       "beginCaptures": {
         "1": {
           "name": "punctuation.definition.fenced-code.block.llm"
         },
         "2": {
-          "name": "fenced-code.language.llm entity.name.type.llm"
+          "name": "fenced-code.language.llm"
         }
       },
       "end": "^\\s*(`{3,}|~{3,})\\s*$",
@@ -199,14 +214,18 @@
       ]
     },
     "inline-code": {
-      "begin": "`+",
-      "end": "`+|$",
-      "name": "markup.inline.raw.string.llm",
-      "patterns": [
-        {
-          "include": "#code-content"
+      "match": "(`+)((?:[^`]|(?!(?<!`)\\1(?!`))`)*+)(\\1)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.raw.llm"
+        },
+        "2": {
+          "name": "markup.inline.raw.string.llm"
+        },
+        "3": {
+          "name": "punctuation.definition.raw.llm"
         }
-      ]
+      }
     },
     "code-content": {
       "patterns": [
@@ -465,7 +484,27 @@
       "name": "markup.bold.llm",
       "patterns": [
         {
-          "include": "#emphasis-content"
+          "include": "#bold-content"
+        }
+      ]
+    },
+    "bold-underscore": {
+      "begin": "(?<![\\w_])__(?=\\S)",
+      "end": "__(?![\\w_])|$",
+      "name": "markup.bold.llm",
+      "patterns": [
+        {
+          "include": "#bold-content"
+        }
+      ]
+    },
+    "bold-italic-underscore": {
+      "begin": "(?<![\\w_])___(?=\\S)",
+      "end": "___|$",
+      "name": "markup.bold-italic.llm",
+      "patterns": [
+        {
+          "include": "#bold-content"
         }
       ]
     },
@@ -480,7 +519,7 @@
       ]
     },
     "italic-underscore": {
-      "begin": "(?<![\\w_])_(?=\\S)(?!\\d)",
+      "begin": "(?<![\\w_])_(?!_)(?=\\S)(?!\\d)",
       "end": "_(?![\\w_])|$",
       "name": "markup.italic.llm",
       "patterns": [
@@ -515,8 +554,34 @@
       "match": "^(?:sudo\\s+)?(?:docker-compose|docker|ssh|scp|sftp|rsync|curl|wget|git|kubectl|helm|systemctl|journalctl|service|mysqldump|mysql|psql|redis-cli|mongo|mongosh|tar|unzip|zip|gzip|grep|egrep|awk|sed|find|xargs|cat|tail|head|less|more|ls|cd|pwd|mkdir|rmdir|rm|cp|mv|ln|touch|chmod|chown|chgrp|ps|top|htop|iotop|df|du|free|uptime|who|w|last|netstat|ss|lsof|iptables|nft|firewall-cmd|ufw|ping|traceroute|dig|nslookup|host|nc|telnet|openssl|ssh-keygen|crontab|mount|umount|fdisk|lsblk|mkfs|dd|sysctl|modprobe|useradd|userdel|usermod|passwd|su|sudo|apt-get|apt|yum|dnf|pacman|brew|npm|pnpm|yarn|pip3|pip|python3|python|java|node|cargo|cmake|make|mvn|gradle|ansible-playbook|ansible|terraform|vagrant|k9s|watch|nohup|screen|tmux|env|export|source|echo|printf|bash|sh|zsh)\\b",
       "name": "support.function.command.llm"
     },
+    "html-comment": {
+      "begin": "<!--",
+      "end": "-->",
+      "name": "comment.block.html.llm"
+    },
+    "html-tag": {
+      "match": "(</?)([A-Za-z][\\w:-]*)([^<>]*?)(/?>)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.tag.llm"
+        },
+        "2": {
+          "name": "entity.name.tag.html.llm"
+        },
+        "3": {
+          "name": "meta.tag.attributes.html.llm"
+        },
+        "4": {
+          "name": "punctuation.definition.tag.llm"
+        }
+      }
+    },
+    "html-entity": {
+      "match": "&(?:[A-Za-z][A-Za-z0-9]+|#[0-9]+|#x[0-9A-Fa-f]+);",
+      "name": "constant.character.entity.html.llm"
+    },
     "markdown-link": {
-      "match": "(!?)\\[([^\\]\\n]*)\\]\\(([^)\\s]*)\\)",
+      "match": "(!?)\\[([^\\]\\n]*)\\]\\(\\s*(?:<([^>\\n]*)>|([^)\\s]+))(?:\\s+(?:\"([^\"]*)\"|'([^']*)'|\\(([^)]*)\\)))?\\s*\\)",
       "captures": {
         "1": {
           "name": "punctuation.definition.image.llm"
@@ -526,6 +591,18 @@
         },
         "3": {
           "name": "markup.underline.link.llm"
+        },
+        "4": {
+          "name": "markup.underline.link.llm"
+        },
+        "5": {
+          "name": "string.other.link.description.title.llm"
+        },
+        "6": {
+          "name": "string.other.link.description.title.llm"
+        },
+        "7": {
+          "name": "string.other.link.description.title.llm"
         }
       }
     },
@@ -552,15 +629,30 @@
       }
     },
     "task-item": {
-      "match": "^(\\s*)([-*+]|\\d{1,3}[.)])(\\s+)(\\[[ xX]\\])(?=\\s)",
-      "captures": {
-        "2": {
-          "name": "punctuation.definition.list.llm"
+      "patterns": [
+        {
+          "match": "^(\\s*)([-*+]|\\d{1,3}[.)])(\\s+)(\\[[xX]\\])(?=\\s)",
+          "captures": {
+            "2": {
+              "name": "punctuation.definition.list.llm"
+            },
+            "4": {
+              "name": "keyword.other.task.checked.llm"
+            }
+          }
         },
-        "4": {
-          "name": "keyword.other.task.llm"
+        {
+          "match": "^(\\s*)([-*+]|\\d{1,3}[.)])(\\s+)(\\[ \\])(?=\\s)",
+          "captures": {
+            "2": {
+              "name": "punctuation.definition.list.llm"
+            },
+            "4": {
+              "name": "keyword.other.task.unchecked.llm"
+            }
+          }
         }
-      }
+      ]
     },
     "list-item": {
       "match": "^(\\s*)([-*+]|\\d{1,3}[.)])(\\s+)",
@@ -590,12 +682,23 @@
         }
       },
       "end": "$",
+      "name": "markup.table.llm",
       "patterns": [
+        {
+          "include": "#table-separator"
+        },
+        {
+          "include": "#inline-markdown"
+        },
         {
           "match": "\\|",
           "name": "punctuation.separator.table.llm"
         }
       ]
+    },
+    "table-separator": {
+      "match": "\\s*:?-{3,}:?\\s*(?:\\|\\s*:?-{3,}:?\\s*)+\\|?\\s*$",
+      "name": "markup.table.separator.llm"
     },
     "bare-domain": {
       "match": "(?i)\\b((?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+(?:com|cn|net|org|io|dev|app|cloud|ai|co|me|info|xyz|top|site|tech|online|store|biz|tv|cc|edu|gov|mil|int|us|uk|de|jp|fr|ru|in|au|ca|hk|tw|sg|kr|eu|nl|se|ch|it|es|br|mx))(?::\\d{1,5})?(?:/[A-Za-z0-9\\-._~:/?#\\[\\]@!$&()*+,;=%]*[A-Za-z0-9\\-/?#\\[\\]@&$+=%])?(?![\\w-])",
@@ -621,6 +724,15 @@
           "include": "#autolink"
         },
         {
+          "include": "#html-comment"
+        },
+        {
+          "include": "#html-tag"
+        },
+        {
+          "include": "#html-entity"
+        },
+        {
           "include": "#inline-code"
         },
         {
@@ -642,6 +754,15 @@
           "include": "#escape"
         },
         {
+          "include": "#bold-italic-underscore"
+        },
+        {
+          "include": "#bold-italic"
+        },
+        {
+          "include": "#bold-underscore"
+        },
+        {
           "include": "#bold"
         },
         {
@@ -652,6 +773,9 @@
         },
         {
           "include": "#strikethrough"
+        },
+        {
+          "include": "#number"
         }
       ]
     },
@@ -665,6 +789,15 @@
         },
         {
           "include": "#autolink"
+        },
+        {
+          "include": "#html-comment"
+        },
+        {
+          "include": "#html-tag"
+        },
+        {
+          "include": "#html-entity"
         },
         {
           "include": "#inline-code"
@@ -683,6 +816,61 @@
         },
         {
           "include": "#email"
+        },
+        {
+          "include": "#escape"
+        }
+      ]
+    },
+    "bold-content": {
+      "patterns": [
+        {
+          "include": "#markdown-link"
+        },
+        {
+          "include": "#markdown-reference-link"
+        },
+        {
+          "include": "#autolink"
+        },
+        {
+          "include": "#html-comment"
+        },
+        {
+          "include": "#html-tag"
+        },
+        {
+          "include": "#html-entity"
+        },
+        {
+          "include": "#inline-code"
+        },
+        {
+          "include": "#url"
+        },
+        {
+          "include": "#www-url"
+        },
+        {
+          "include": "#bare-domain"
+        },
+        {
+          "include": "#scp-remote"
+        },
+        {
+          "include": "#email"
+        },
+        {
+          "include": "#escape"
+        },
+        {
+          "include": "#italic-star"
+        },
+        {
+          "include": "#italic-underscore"
+        },
+        {
+          "include": "#strikethrough"
         }
       ]
     },
@@ -692,7 +880,7 @@
       "name": "markup.bold-italic.llm",
       "patterns": [
         {
-          "include": "#emphasis-content"
+          "include": "#bold-content"
         }
       ]
     },

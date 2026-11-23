@@ -163,24 +163,29 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
     );
 
     /**
+     * 样式锁
+     */
+    protected final Object styleLock = new Object();
+
+    /**
      * 样式提供者
      */
-    private final StyleProvider styleProvider = new EditorStyleProvider();
+    protected StyleProvider styleProvider = new EditorStyleProvider();
 
     /**
      * 流式文本model
      */
-    private final TextFlowModel textFlowModel = new TextFlowModel();
+    protected TextFlowModel textFlowModel = new TextFlowModel();
 
     /**
      * 富文本域model
      */
-    private final RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
+    protected RichTextAreaModel richTextAreaModel = new RichTextAreaModel();
 
     /**
      * 编辑器语法装饰器
      */
-    private final EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
+    protected EditorSyntaxDecorator syntaxDecorator = new EditorSyntaxDecorator();
 
     /**
      * 折叠配置
@@ -405,7 +410,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
                     String path = "/tm4javafx/grammars/" + syntaxesName;
                     // 切换语法会重置样式提供者内部的分词状态，必须与后台着色任务互斥，
                     // 否则可能用半切换的语法着色，出现整篇文本只有一种颜色的情况
-                    synchronized (this.styleProvider) {
+                    synchronized (this.styleLock) {
                         this.styleProvider.setGrammar(IGrammarSource.fromResource(Editor.class, path));
                         // 加载成功后才记录，避免加载失败后再也不重试
                         this.syntaxesName = syntaxesName;
@@ -517,7 +522,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             this.folds = List.copyOf(updated);
             this.syntaxDecorator.setFolds(this.folds);
             this.refreshText();
-        this.refreshBlockLayout();
+            this.refreshBlockLayout();
         }
     }
 
@@ -1031,9 +1036,6 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
      */
     public String getTextTrim() {
         String text = this.plainText();
-        if (text == null) {
-            return null;
-        }
         return text.trim();
     }
 
@@ -1459,7 +1461,7 @@ public class Editor extends CodeArea implements RemoveNodeable, ScrollBarAdapter
             // 根据主题的明暗模式和颜色相似度解析最接近的编辑器主题
             String path = EditorUtil.resolveThemeResource(style);
             // 设置主题，与后台着色任务互斥，避免切换过程中被并发使用
-            synchronized (this.styleProvider) {
+            synchronized (this.styleLock) {
                 this.styleProvider.setTheme(IThemeSource.fromResource(Editor.class, path));
                 // 应用颜色
                 StyleHelper.applyThemeSettings(this, this.styleProvider.getThemeSettings());
