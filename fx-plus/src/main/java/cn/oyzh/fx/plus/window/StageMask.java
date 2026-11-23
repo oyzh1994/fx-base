@@ -21,7 +21,10 @@ import javafx.stage.Window;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * 舞台遮罩
+ * 舞台遮罩（独立透明窗口实现）
+ *
+ * <p>注意：Windows 全屏下该遮罩窗口可能被其他窗口遮挡，优先使用 {@link EmbeddedMask}。
+ * 该类保留作为无法内嵌到目标场景时的回退实现。</p>
  *
  * @author oyzh
  * @since 2025-03-12

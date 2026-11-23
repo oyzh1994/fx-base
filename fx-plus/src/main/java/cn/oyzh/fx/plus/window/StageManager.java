@@ -430,12 +430,8 @@ public class StageManager {
         if (window == null) {
             window = getFrontWindow();
         }
-        boolean showMask = true;
-        if (window instanceof Stage stage && stage.isFullScreen()) {
-            showMask = OSUtil.isMacOS();
-        }
         // 判断是否处于mask状态
-        if (showMask && !PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
+        if (!PropertiesUtil.has(window, MASK_SHOWING_KEY)) {
             // 设置状态位
             PropertiesUtil.set(window, MASK_SHOWING_KEY, true);
             // 窗口
@@ -457,7 +453,19 @@ public class StageManager {
             // 遮罩关闭时移除状态，避免后续 showMask 直接执行回调
             Runnable closeCallback = () -> PropertiesUtil.remove(finalWindow, MASK_SHOWING_KEY);
             // 显示遮罩
-            StageMask.showMask(window, maskCallback, cancelAction, closeCallback);
+            EmbeddedMask.showMask(window, maskCallback, cancelAction, closeCallback, () -> {
+                boolean showMask;
+                if (finalWindow instanceof Stage stage && stage.isFullScreen()) {
+                    showMask = OSUtil.isMacOS();
+                } else {
+                    showMask = true;
+                }
+                if (showMask) {
+                    StageMask.showMask(finalWindow, callback, cancelAction, closeCallback);
+                } else {
+                    FXUtil.runLater(callback);
+                }
+            });
         } else {// 直接执行
             FXUtil.runLater(callback);
         }
