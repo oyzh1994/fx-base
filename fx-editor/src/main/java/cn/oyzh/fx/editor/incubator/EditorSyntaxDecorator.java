@@ -10,8 +10,10 @@ import javafx.scene.AccessibleRole;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import jfx.incubator.scene.control.richtext.TextPos;
 import jfx.incubator.scene.control.richtext.model.CodeTextModel;
 import jfx.incubator.scene.control.richtext.model.RichParagraph;
@@ -943,7 +945,16 @@ public class EditorSyntaxDecorator extends StatelessSyntaxDecorator {
         arrow.getStyleClass().add("editor-fold-arrow");
         Label title = new Label(fold.title());
         title.getStyleClass().add("editor-fold-title");
-        HBox header = new HBox(5, arrow, title);
+        HBox header = new HBox(5, arrow);
+        header.getChildren().add(title);
+        if (fold.indicatorColor() != null) {
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            header.getChildren().add(spacer);
+            Circle indicator = new Circle(3.5, fold.indicatorColor());
+            indicator.getStyleClass().add("editor-fold-indicator");
+            header.getChildren().add(indicator);
+        }
         header.getStyleClass().addAll("editor-block-header", "editor-fold-header",
                 fold.collapsed() ? "collapsed" : "expanded");
         header.setAlignment(Pos.CENTER_LEFT);

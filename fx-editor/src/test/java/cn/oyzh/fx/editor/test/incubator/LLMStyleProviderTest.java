@@ -239,6 +239,16 @@ public class LLMStyleProviderTest {
         assertEquals(Color.web("#9A6700"), textColor(find(provider.tokenize("- [ ] 待办"), "[ ]")));
     }
 
+    @Test
+    public void commandResultMarkers() {
+        LLMStyleProvider provider = this.provider(LIGHT_THEME);
+
+        assertEquals(Color.web("#116329"),
+                textColor(find(provider.tokenize("✓ $ mvn -q -DskipTests compile"), "✓")));
+        assertEquals(Color.web("#CF222E"),
+                textColor(find(provider.tokenize("✗ $ curl https://example.com"), "✗")));
+    }
+
     /**
      * 构造指定主题的样式提供者
      */

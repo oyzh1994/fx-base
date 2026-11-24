@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
  * @param title          折叠标题
  * @param collapsed      是否折叠
  * @param bodyColor      展开后的正文颜色
+ * @param indicatorColor 标题状态指示色，为空表示不显示
  * @author oyzh
  * @since 2026-11-21
  */
@@ -21,7 +22,8 @@ public record EditorFold(String id,
                          int endParagraph,
                          String title,
                          boolean collapsed,
-                         Color bodyColor) {
+                         Color bodyColor,
+                         Color indicatorColor) {
 
     public EditorFold {
         if (id == null || id.isBlank()) {
@@ -41,7 +43,26 @@ public record EditorFold(String id,
      */
     public EditorFold withCollapsed(boolean collapsed) {
         return new EditorFold(this.id, this.startParagraph, this.endParagraph,
-                this.title, collapsed, this.bodyColor);
+                this.title, collapsed, this.bodyColor, this.indicatorColor);
+    }
+
+    /**
+     * 创建折叠配置
+     *
+     * @param id             折叠标识
+     * @param startParagraph 起始段落
+     * @param endParagraph   结束段落
+     * @param title          折叠标题
+     * @param collapsed      是否折叠
+     * @param bodyColor      正文颜色
+     */
+    public EditorFold(String id,
+                      int startParagraph,
+                      int endParagraph,
+                      String title,
+                      boolean collapsed,
+                      Color bodyColor) {
+        this(id, startParagraph, endParagraph, title, collapsed, bodyColor, null);
     }
 
     /**
@@ -58,6 +79,6 @@ public record EditorFold(String id,
                       int endParagraph,
                       String title,
                       boolean collapsed) {
-        this(id, startParagraph, endParagraph, title, collapsed, null);
+        this(id, startParagraph, endParagraph, title, collapsed, null, null);
     }
 }

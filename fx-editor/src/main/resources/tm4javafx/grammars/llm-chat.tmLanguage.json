@@ -140,6 +140,18 @@
       "include": "#shell-prompt"
     },
     {
+      "include": "#command-result-success"
+    },
+    {
+      "include": "#command-result-error"
+    },
+    {
+      "include": "#command-result-pending"
+    },
+    {
+      "include": "#command-result-cancelled"
+    },
+    {
       "include": "#dangerous-command"
     },
     {
@@ -463,6 +475,50 @@
         },
         "4": {
           "name": "support.function.command.llm"
+        }
+      }
+    },
+    "command-result-success": {
+      "match": "^(✓)(\\s+\\$\\s+)",
+      "captures": {
+        "1": {
+          "name": "markup.command-result.success.llm"
+        },
+        "2": {
+          "name": "punctuation.definition.prompt.llm"
+        }
+      }
+    },
+    "command-result-error": {
+      "match": "^(✗)(\\s+\\$\\s+)",
+      "captures": {
+        "1": {
+          "name": "markup.command-result.error.llm"
+        },
+        "2": {
+          "name": "punctuation.definition.prompt.llm"
+        }
+      }
+    },
+    "command-result-pending": {
+      "match": "^(…)(\\s+\\$\\s+)",
+      "captures": {
+        "1": {
+          "name": "markup.command-result.pending.llm"
+        },
+        "2": {
+          "name": "punctuation.definition.prompt.llm"
+        }
+      }
+    },
+    "command-result-cancelled": {
+      "match": "^(−)(\\s+\\$\\s+)",
+      "captures": {
+        "1": {
+          "name": "markup.command-result.cancelled.llm"
+        },
+        "2": {
+          "name": "punctuation.definition.prompt.llm"
         }
       }
     },

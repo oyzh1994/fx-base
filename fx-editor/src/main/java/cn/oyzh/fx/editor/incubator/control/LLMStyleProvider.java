@@ -173,6 +173,19 @@ public class LLMStyleProvider extends EditorStyleProvider {
         if (scope.contains("task.unchecked")) {
             return palette.warning();
         }
+        // 命令执行结果标记
+        if (scope.contains("command-result.success")) {
+            return palette.code();
+        }
+        if (scope.contains("command-result.error")) {
+            return palette.danger();
+        }
+        if (scope.contains("command-result.pending")) {
+            return palette.warning();
+        }
+        if (scope.contains("command-result.cancelled")) {
+            return palette.muted();
+        }
         // 代码块语言标识
         if (scope.contains("fenced-code.language")) {
             return palette.command();
@@ -220,6 +233,7 @@ public class LLMStyleProvider extends EditorStyleProvider {
         }
         if (scope.contains("markup.hr")
                 || scope.contains("punctuation.definition.list")
+                || scope.contains("punctuation.definition.prompt")
                 || scope.contains("punctuation.definition.quote")
                 || scope.contains("punctuation.definition.fenced")
                 || scope.contains("punctuation.separator.table")
