@@ -16,6 +16,7 @@ import com.sun.javafx.util.Logging;
 import javafx.animation.AnimationTimer;
 import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -802,6 +803,25 @@ public class FXUtil {
                             callback.accept(newValue2);
                         }
                     });
+                }
+            });
+        }
+    }
+
+    /**
+     * 属性就绪事件
+     *
+     * @param value    值
+     * @param callback 回调
+     */
+    public static <T> void onValueReady(ObservableValue<T> value, Consumer<T> callback) {
+        // 监听窗口就绪
+        if (value.getValue() != null) {
+            callback.accept(value.getValue());
+        } else {
+            value.subscribe((oldValue1, newValue1) -> {
+                if (newValue1 != null) {
+                    callback.accept(newValue1);
                 }
             });
         }
