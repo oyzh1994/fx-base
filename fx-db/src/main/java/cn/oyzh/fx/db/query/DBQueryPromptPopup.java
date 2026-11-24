@@ -85,7 +85,11 @@ public abstract class DBQueryPromptPopup<E extends DBQueryPromptItem, T extends 
         // 初始化数据
         this.listView().init(items);
         // 判断是否为空
-        return !this.listView().isItemEmpty();
+        boolean result = !this.listView().isItemEmpty();
+        if (result) {
+            this.listView().select(0);
+        }
+        return result;
     }
 
     /**
@@ -101,6 +105,10 @@ public abstract class DBQueryPromptPopup<E extends DBQueryPromptItem, T extends 
             return;
         }
         KeyCode code = event.getCode();
+        // 修饰键释放不改变提示状态
+        if (this.isModifierKey(code)) {
+            return;
+        }
         // 已显示
         if (this.isShowing()) {
             // 按键下
@@ -123,13 +131,8 @@ public abstract class DBQueryPromptPopup<E extends DBQueryPromptItem, T extends 
                 }
             }
         }
-        // 更新按键
-        if (DBQueryUtil.UPDATE_CODES.contains(code)) {
-            this.hide();
-            return;
-        }
         // 判断按键特征，按需隐藏提示组件
-        if (KeyboardUtil.isMainModifierDown(event) || !DBQueryUtil.PROMPT_CODES.contains(code)) {
+        if (KeyboardUtil.isMainModifierDown(event) || !this.isPromptKey(event)) {
             this.hide();
             return;
         }
@@ -175,7 +178,42 @@ public abstract class DBQueryPromptPopup<E extends DBQueryPromptItem, T extends 
      * @return 结果
      */
     protected boolean tokenAvailable() {
-        return this.token != null && this.token.isNotEmpty();
+        return this.token != null;
+    }
+
+    /**
+     * 是否触发提示的按键
+     *
+     * @param event 按键事件
+     * @return 结果
+     */
+    protected boolean isPromptKey(KeyEvent event) {
+        KeyCode code = event.getCode();
+        if (DBQueryUtil.PROMPT_CODES.contains(code) || DBQueryUtil.UPDATE_CODES.contains(code)) {
+            return true;
+        }
+        if (code.isLetterKey() || code.isDigitKey()) {
+            return true;
+        }
+        return switch (code) {
+            case QUOTE, BACK_QUOTE, COMMA, PERIOD, SEMICOLON, COLON, EQUALS,
+                    OPEN_BRACKET, CLOSE_BRACKET, BACK_SLASH, SLASH, PLUS, MINUS,
+                    MULTIPLY, DIVIDE, DECIMAL -> true;
+            default -> false;
+        };
+    }
+
+    /**
+     * 是否修饰键
+     *
+     * @param code 按键
+     * @return 结果
+     */
+    protected boolean isModifierKey(KeyCode code) {
+        return switch (code) {
+            case SHIFT, CONTROL, ALT, META, ALT_GRAPH, CAPS, WINDOWS, COMMAND -> true;
+            default -> false;
+        };
     }
 
     /**
