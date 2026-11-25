@@ -47,6 +47,16 @@ public class DBUtilTest {
     }
 
     @Test
+    public void escapesMysqlLineBreaks() {
+        assertEquals("'row-1\\nsecond line\\r'",
+                DBUtil.wrapString("row-1\nsecond line\r", DBDialect.MYSQL));
+        assertEquals("'row-1\\nsecond line'",
+                DBUtil.wrapString("row-1\nsecond line", DBDialect.MARIADB));
+        assertEquals("'row-10 \\\\slash ''quote''\\nsecond line\t😀'",
+                DBUtil.wrapString("row-10 \\slash 'quote'\nsecond line\t😀", DBDialect.MYSQL));
+    }
+
+    @Test
     public void preservesQuotedDefaultsWithoutSingleQuoteCrash() {
         assertEquals("'N/A'", DBUtil.wrapData("'N/A'", DBDialect.ORACLE));
         assertEquals("''''", DBUtil.wrapData("'", DBDialect.ORACLE));

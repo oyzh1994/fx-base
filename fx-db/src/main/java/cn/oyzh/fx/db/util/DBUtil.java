@@ -338,9 +338,31 @@ public class DBUtil {
             return val;
         }
         String escaped = (dialect == DBDialect.MYSQL || dialect == DBDialect.MARIADB)
-                ? val.replace("\\", "\\\\")
+                ? escapeMySqlString(val)
                 : val;
         return "'" + escaped.replace("'", "''") + "'";
+    }
+
+    /**
+     * 转义MySQL字符串
+     *
+     * @param value 字符串
+     * @return 转义结果
+     */
+    private static String escapeMySqlString(String value) {
+        StringBuilder result = new StringBuilder(value.length());
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '\\' -> result.append("\\\\");
+                case '\n' -> result.append("\\n");
+                case '\r' -> result.append("\\r");
+                case '\0' -> result.append("\\0");
+                case '\u001A' -> result.append("\\Z");
+                default -> result.append(c);
+            }
+        }
+        return result.toString();
     }
 
     private static boolean isSqlDialect(DBDialect dialect) {
