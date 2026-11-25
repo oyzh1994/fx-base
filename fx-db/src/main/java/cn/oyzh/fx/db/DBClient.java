@@ -133,7 +133,7 @@ public interface DBClient {
      * @return raw result sets
      * @throws Exception execution error
      */
-   default DBRawQueryResults executeSqlRaw(String name, String sql) throws Exception {
+    default DBRawQueryResults executeSqlRaw(String name, String sql) throws Exception {
         DBRawQueryResults results = new DBRawQueryResults();
         Connection connection;
         try {
@@ -234,4 +234,15 @@ public interface DBClient {
      * @throws Exception 异常
      */
     Long getGeneratedKeys(Statement statement) throws Exception;
+
+    /**
+     * 查询用户自定义类型，并按依赖顺序排列。
+     *
+     * @param name 名称
+     * @return 类型定义列表
+     */
+    default List<? extends DBTypeDefinition> selectTypes(String name) {
+        return List.of();
+    }
+
 }
