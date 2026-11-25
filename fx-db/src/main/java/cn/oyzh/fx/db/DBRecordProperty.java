@@ -201,6 +201,13 @@ public class DBRecordProperty extends SimpleObjectProperty<Object> implements De
         return this.column;
     }
 
+    /**
+     * 更新原始值
+     */
+    public void updateOriginal() {
+
+    }
+
     @Override
     public void destroy() {
         if (this.node != null) {

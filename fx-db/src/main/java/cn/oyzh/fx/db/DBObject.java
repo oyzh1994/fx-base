@@ -260,6 +260,12 @@ public class DBObject implements Destroyable {
      * 清空状态
      */
     public void clearStatus() {
+        if (this instanceof DBRecord record) {
+            for (DBRecordProperty property : record.getProperties().values()) {
+                property.updateOriginal();
+                property.setChanged(false);
+            }
+        }
         this.setChanged(false);
         this.setCreated(false);
         this.setDeleted(false);
