@@ -86,6 +86,9 @@ public class DBNodeUtil {
      * @return 结果
      */
     public static Color getNodeBackground(DBColumn column) {
+        if (column.isGenerated()) {
+            return Color.valueOf("#E5E7EB");
+        }
         if (column.supportJson()) {
             return Color.valueOf("#C9E4E8");
         }

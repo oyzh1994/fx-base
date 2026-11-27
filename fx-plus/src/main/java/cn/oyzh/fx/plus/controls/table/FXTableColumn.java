@@ -214,15 +214,7 @@ public class FXTableColumn<S, T> extends TableColumn<S, T> implements FlexAdapte
                 }
             });
         };
-        if (this.getTableView() != null) {
-            func2.accept(this.getTableView());
-        } else {
-            this.tableViewProperty().subscribe(tableView -> {
-                if (tableView != null) {
-                    func2.accept(tableView);
-                }
-            });
-        }
+        FXUtil.onValueReady(this.tableViewProperty(), func2::accept);
     }
 
     /**
