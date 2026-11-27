@@ -533,10 +533,16 @@ public class FixedClipChannel extends ClipChannel {
                 // This clipboard originated from this RDP channel. Advertising
                 // it back to the same server creates an ownership loop and can
                 // restart a large remote-file transfer.
+                JulLog.debug("跳过本地剪贴板通告：内容由本 RDP 通道发布");
                 return;
             }
             String signature = clipboardSignature(local);
             boolean hasText = local.hasText();
+            if (!hasText && !local.hasFiles()) {
+                // 本地剪贴板读不到任何可用内容时，向远程发送空格式列表会清空
+                // 远程剪贴板，右键菜单也就不会出现"粘贴"。记录原因便于诊断。
+                JulLog.debug("本地剪贴板无文本/文件，将向远程通告空格式列表");
+            }
 
             announcedFiles = null;
             if (local.hasFiles()) {

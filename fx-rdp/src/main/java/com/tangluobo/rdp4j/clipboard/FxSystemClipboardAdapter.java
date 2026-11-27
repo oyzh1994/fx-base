@@ -58,15 +58,40 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 		try {
 			if (com.sun.jna.Platform.isMac()) {
 				MacPasteboard.NativeContents contents = MacPasteboard.read();
-				if (contents == null) {
-					return LocalContents.empty();
+				String text = contents == null ? null : contents.text();
+				List<File> files = contents == null ? List.of() : contents.files();
+				if (text == null || text.isEmpty()) {
+					// 原生接口只查询 public.utf8-plain-text。部分应用(富文本/HTML/
+					// UTF16 剪贴板)只发布其它 flavor，原生读取会得到空。若就此返回
+					// 空，announceLocalFormats 会向远程发送空格式列表，远程 Windows
+					// 的右键菜单便不会出现"粘贴"。回退到 JavaFX 剪贴板再读一次。
+					String fallback = readFxText();
+					if (fallback != null && !fallback.isEmpty()) {
+						JulLog.debug("剪贴板原生读取为空，已回退 JavaFX 读取: len=" + fallback.length());
+						text = fallback;
+					}
 				}
-				return localContents(contents.text(), contents.files());
+				return localContents(text, files);
 			}
 			return callOnFxThread(this::readOnFxThread);
 		} catch (RuntimeException e) {
 			JulLog.debug("Clipboard read failed: " + e.getMessage());
 			return LocalContents.empty();
+		}
+	}
+
+	/**
+	 * 从 JavaFX 系统剪贴板读取文本，读取失败返回 null。
+	 */
+	private String readFxText() {
+		try {
+			return callOnFxThread(() -> {
+				Clipboard clipboard = Clipboard.getSystemClipboard();
+				return clipboard.hasString() ? clipboard.getString() : null;
+			});
+		} catch (RuntimeException e) {
+			JulLog.debug("JavaFX 剪贴板回退读取失败: " + e.getMessage());
+			return null;
 		}
 	}
 
@@ -85,13 +110,24 @@ public final class FxSystemClipboardAdapter implements SystemClipboardAdapter {
 
 	private LocalContents localContents(String text, List<File> files) {
 		boolean owned = ownsClipboard;
-		if (owned && publishedText != null && !publishedText.equals(text)) {
-			// The clipboard text is no longer ours. Without this check the flag
-			// would stay set forever (nothing clears it for a JavaFX write) and
-			// local copies would never be announced to the server again.
-			ownsClipboard = false;
-			publishedText = null;
-			owned = false;
+		if (owned) {
+			// 上次由本通道发布的内容分为两类：文本(publishedText)与文件列表
+			// (publishedText 为 null)。两类都需要判断剪贴板是否已被其它应用接管：
+			// 文本被改写，或文件列表消失/被文本替换。旧逻辑只判断文本，发布过
+			// 文件后 publishedText 恒为 null，ownsClipboard 会永久卡在 true，
+			// 导致本地再拷贝文本时 announceLocalFormats 一直 return，远程右键
+			// 永远不显示"粘贴"。
+			boolean stillOurs;
+			if (publishedText != null) {
+				stillOurs = publishedText.equals(text);
+			} else {
+				stillOurs = (text == null || text.isEmpty()) && files != null && !files.isEmpty();
+			}
+			if (!stillOurs) {
+				ownsClipboard = false;
+				publishedText = null;
+				owned = false;
+			}
 		}
 		return new LocalContents(text, files, owned);
 	}
